@@ -1,0 +1,10 @@
+app/code/community/Zipmoney/ZipmoneyPayment app/code/community/Zipmoney/ZipmoneyPayment
+app/design/adminhtml/default/default/layout/zipmoneypayment.xml app/design/adminhtml/default/default/layout/zipmoneypayment.xml
+app/design/frontend/base/default/layout/zipmoney app/design/frontend/base/default/layout/zipmoney
+app/design/frontend/base/default/template/zipmoney app/design/frontend/base/default/template/zipmoney
+app/etc/modules/Zipmoney_Payment.xml app/etc/modules/Zipmoney_Payment.xml
+media/zipmoney media/zipmoney
+skin/frontend/base/default/zipmoney skin/frontend/base/default/zipmoney
+lib/lib lib/ZipMoney
+js/zipmoney js/zipmoney
+zipmoney.package.yaml zipmoney.package.yaml
