@@ -1,0 +1,325 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zipmoney_ZipmoneyPayment>
+            <version>1.0.0</version>
+        </Zipmoney_ZipmoneyPayment>
+    </modules>
+    <frontend>
+        <routers>
+            <zipmoneypayment>
+                <use>standard</use>
+                <args>
+                    <module>Zipmoney_ZipmoneyPayment</module>
+                    <frontName>zipmoneypayment</frontName>
+                </args>
+            </zipmoneypayment>
+        </routers>
+        <layout>
+            <updates>
+                <zipmoneypayment>
+                    <file>zipmoney/zipmoneypayment.xml</file>
+                </zipmoneypayment>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <translations>
+                    <files>
+                        <default>Zipmoney_ZipmoneyPayment.csv</default>
+                    </files>
+                </translations>
+            </modules>
+        </translate>
+    </frontend>
+
+
+    <global>
+        <fieldsets>
+            <sales_convert_quote_payment>
+                <check_no>
+                    <to_order_payment>*</to_order_payment>
+                </check_no>
+                <check_date>
+                    <to_order_payment>*</to_order_payment>
+                </check_date>
+            </sales_convert_quote_payment>
+        </fieldsets>
+        <models>
+            <zipmoneypayment>
+                <class>Zipmoney_ZipmoneyPayment_Model</class>
+                <resourceModel>pay_mysql4</resourceModel>
+            </zipmoneypayment>
+        </models>
+        <resources>
+            <zipmoneypayment_setup>
+                <setup>
+                    <module>Zipmoney_ZipmoneyPayment</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </zipmoneypayment_setup>
+            <zipmoneypayment_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </zipmoneypayment_write>
+            <zipmoneypayment_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </zipmoneypayment_read>
+        </resources>
+        <blocks>
+			<adminhtml>
+                <rewrite>
+                    <sales_order_view_history>Zipmoney_ZipmoneyPayment_Block_Adminhtml_Sales_Order_View_History</sales_order_view_history>
+				</rewrite>
+            </adminhtml>
+            <zipmoneypayment>
+                <class>Zipmoney_ZipmoneyPayment_Block</class>
+            </zipmoneypayment>
+   
+        </blocks>
+        <helpers>
+            <zipmoneypayment>
+                <class>Zipmoney_ZipmoneyPayment_Helper</class>
+            </zipmoneypayment>
+        </helpers>
+        <payment>
+            <groups>
+                <zipmoneypayment>zipMoney</zipmoneypayment>
+            </groups>
+        </payment>
+        <sales>
+            <order>
+                <statuses>
+                    <zip_authorised translate="label">
+                        <label>zipMoney Authorised</label>
+                    </zip_authorised>
+                    <zip_authorise_under_review translate="label">
+                        <label>zipMoney Pending</label>
+                    </zip_authorise_under_review>
+                    <zip_cancelled translate="label">
+                        <label>Canceled</label>
+                    </zip_cancelled>
+                    <zip_captured translate="label">
+                        <label>zipMoney Captured</label>
+                    </zip_captured>
+                    <zip_capture_pending translate="label">
+                        <label>zipMoney Pending Capture</label>
+                    </zip_capture_pending>
+                    <zip_declined translate="label">
+                        <label>zipMoney Declined</label>
+                    </zip_declined>
+                    <zip_order_cancelled translate="label">
+                        <label>Canceled</label>
+                    </zip_order_cancelled>
+                    <zip_pending translate="label">
+                        <label>Pending</label>
+                    </zip_pending>
+                    <zip_refund translate="label">
+                        <label>zipMoney Refund</label>
+                    </zip_refund>
+                    <zip_refund_pending translate="label">
+                        <label>zipMoney Pending Refund</label>
+                    </zip_refund_pending>
+                </statuses>
+                <states>
+                    <pending_payment>
+                        <statuses>
+                            <zip_declined/>
+                            <zip_pending/>
+                        </statuses>
+                        <visible_on_front/>
+                    </pending_payment>
+                    <processing_payment>
+                        <statuses>
+                            <zip_captured/>
+                        </statuses>
+                        <visible_on_front/>
+                    </processing_payment>
+                    <cancel_payment>
+                        <statuses>
+                            <zip_cancelled/>
+                        </statuses>
+                        <visible_on_front/>
+                    </cancel_payment>
+                </states>
+            </order>
+        </sales>
+        <events>
+          
+            <admin_system_config_changed_section_payment>
+                <observers>
+                    <zipmoney_config_save_observer>
+                        <class>zipmoneypayment/observer</class>
+                        <method>requestConfigFromZip</method>
+                    </zipmoney_config_save_observer>
+                </observers>
+            </admin_system_config_changed_section_payment>
+
+            <sales_order_address_save_after>
+                <observers>
+                    <zipmoney_order_shipping_address_save_observer>
+                        <class>zipmoneypayment/observer</class>
+                        <method>notifyShippingAddressUpdated</method>
+                    </zipmoney_order_shipping_address_save_observer>
+                </observers>
+            </sales_order_address_save_after>
+
+            <sales_order_save_before>
+                <observers>
+                    <zipmoney_set_order_invoice_action_flag_observer>
+                        <class>zipmoneypayment/observer</class>
+                        <method>setInvoiceActionFlag</method>
+                    </zipmoney_set_order_invoice_action_flag_observer>
+                </observers>
+            </sales_order_save_before>
+
+            <order_cancel_after>
+                <observers>
+                    <zipmoney_order_cancel_after_observer>
+                        <class>zipmoneypayment/observer</class>
+                        <method>notifyOrderCancelled</method>
+                    </zipmoney_order_cancel_after_observer>
+                </observers>
+            </order_cancel_after>
+            
+            <controller_front_init_before>
+                <observers>
+                    <elasticsearch_lib_load>
+                        <type>singleton</type>
+                        <class>zipmoneypayment/observer</class>
+                        <method>controllerFrontInitBefore</method>
+                    </elasticsearch_lib_load>
+                </observers>
+            </controller_front_init_before>
+        </events>
+    </global>
+
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <zipmoneypayment after="Mage_Adminhtml">Zipmoney_ZipmoneyPayment_Adminhtml</zipmoneypayment>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <zipmoneypayment>
+                                            <title>zipMoney</title>
+                                        </zipmoneypayment>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                        <zipmoneypayment translate="title" module="zipmoneypayment">
+                            <title>zipMoney</title>
+                            <sort_order>70</sort_order>
+                        </zipmoneypayment>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <zipmoneypayment>
+                    <file>zipmoneypayment.xml</file>
+                </zipmoneypayment>
+            </updates>
+        </layout>
+    </adminhtml>
+    <default>
+        <payment>
+            <zipmoneypayment>
+                <group>zipmoneypayment</group>
+                <active>1</active>
+                <model>zipmoneypayment/payment</model>
+                <title>zipMoney - Buy Now, Pay Later</title>
+                <sort_order>0</sort_order>
+                <id></id>
+                <key></key>
+                <environment>sandbox</environment>
+                <payment_action>authorize</payment_action>
+            </zipmoneypayment>
+
+        
+            <zipmoney_widgets_onfiguration>
+                <group>zipmoneypayment</group>
+                <productactive>enabled</productactive>
+                <cartactive>1</cartactive>
+                <checkoutactive>1</checkoutactive>
+            </zipmoney_widgets_onfiguration>
+
+            <zipmoney_marketing_banners>
+                <banner_active>1</banner_active>
+            </zipmoney_marketing_banners>
+
+            <zipmoney_home_page_banner>
+                <strip_banner_active>1</strip_banner_active>
+            </zipmoney_home_page_banner>
+            <zipmoney_product_page_banner>
+                <strip_banner_active>1</strip_banner_active>
+            </zipmoney_product_page_banner>
+            <zipmoney_category_page_banner>
+                <strip_banner_active>1</strip_banner_active>
+            </zipmoney_category_page_banner>
+            <zipmoney_cart_page_banner>
+                <strip_banner_active>1</strip_banner_active>
+            </zipmoney_cart_page_banner>
+
+
+            <zipmoney_checkout>
+                <group>zipmoneypayment</group>
+                <product>zipMoney</product>
+                <title>Pay Later with zipMoney</title>
+                <displaydetail>1</displaydetail>
+                <detailmessage>Interest Free and Flexible - get a decision in seconds!</detailmessage>
+                <minimum_total>1</minimum_total>
+                <maximum_total>1000</maximum_total>
+                <display_message>0</display_message>
+                <message>Available on orders up to $%d. Don't worry if its a little higher, you can always pay a deposit.</message>
+            </zipmoney_checkout>
+
+            <zipmoney_developer_settings>
+                <group>zipmoneypayment</group>
+                <timeout>60</timeout>
+                <logging_enabled>1</logging_enabled>
+                <log_file>zipMoney-payment.log</log_file>
+                <log_level>7</log_level>
+            </zipmoney_developer_settings>
+
+            <zipmoney_handling>
+                <group>zipmoneypayment</group>
+                <service_unavailable_heading>The service is unavailable</service_unavailable_heading>
+                <service_unavailable_body>Unfortunately the zipMoney - Buy now, Pay later service is currently unavailable. We will be right back and apologies for the inconvenience.</service_unavailable_body>
+                <customer_error>Error</customer_error>
+            </zipmoney_handling>
+        </payment>
+    </default>
+	
+    <phpunit>
+        <suite>
+            <modules>
+                <Zipmoney_ZipmoneyPayment/>
+            </modules>
+        </suite>
+    </phpunit>
+</config>

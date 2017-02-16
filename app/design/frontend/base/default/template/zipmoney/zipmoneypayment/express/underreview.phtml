@@ -1,0 +1,21 @@
+<style>
+    .zip-application-under-review-message {
+        border: 1px solid #3d6611;
+        background-color: #eff5ea;
+        background-image: url(<?php echo $this->getMsgIconUrl('note');?>);
+        background-repeat: no-repeat;
+        background-position: 10px 10px;
+        color: #3d6611;
+        padding: 10px 0px 10px 33px;
+        margin-top: 20px;
+    }
+</style>
+<div class="zip-application-under-review-message">
+
+    <img style="float: right; padding-right: 17px; padding-top: 5px;  width: 150px;" src="<?php echo $this->getZipLogoImageUrl(); ?>" />
+
+    <strong><?php echo $this->getMessage(); ?></strong>
+    <br />
+    <?php echo $this->getDescription(); ?>
+</div>
+

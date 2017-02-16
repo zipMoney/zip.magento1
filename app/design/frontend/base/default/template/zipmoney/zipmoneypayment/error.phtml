@@ -1,0 +1,39 @@
+<div class="page-title">
+    <h1><?php echo $this->__(Mage::getStoreConfig('payment/zipmoney_handling/service_unavailable_heading')) ?></h1>
+</div>
+<p>
+ <?php
+    $message="";
+    switch($this->getRequest()->getParam('code'))
+    {
+        case 400:
+        $message="400 Bad Request";
+            break;
+        case 401:
+            $message="401 Unauthorized";
+            break;
+        case 403:
+            $message="403 Forbidden";
+            break;
+        case 404:
+            $message="404 Not Found";
+            break;
+        case 409:
+            $message="409 Conflict";
+            break;
+        default:
+            $message=$this->getRequest()->getParam('code'). " General error";
+        break;
+    }
+   echo $message;
+    ?>
+   
+</p>
+<p>
+    
+    <?php echo $this->__(Mage::getStoreConfig('payment/zipmoney_handling/service_unavailable_body')) ?>
+    
+</p>
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>

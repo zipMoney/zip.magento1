@@ -1,0 +1,132 @@
+########################################################################################################################
+##                                                                                                                    ##
+## ZipMoney package.yaml                                                                                                       ##
+##                                                                                                                    ##
+########################################################################################################################
+
+package_yaml_version: '0.0'
+
+
+## version_ids is an array of Magento Connect package formats to create
+## 1 = Pre-1.5.0.0
+## 2 = 1.5.0.0 & later
+version_ids:
+  - '2'
+
+## Whether or not to create the tarball
+## @todo: Move this into a command-line parameter
+_create: '1'
+
+##################
+## Package Info ##
+##################
+
+name: zipMoney_Payments
+channel: community
+summary: zipMoney payment extension for Magento
+description: zipMoney payment extension for Magento
+license: OSL
+license_uri: 'http://opensource.org/licenses/OSL-3.0'
+
+file_name: Zipmoney_ZipmoneyPayment
+
+##################
+## Release Info ##
+##################
+
+stability: stable
+version: 3.0.0
+notes: 'ZipmoneyPayment'
+
+#############
+## Authors ##
+#############
+
+authors:
+  name:
+    - 'zipMoney'
+  user:
+    - 'zipMoney'
+  email:
+    - info@zipmoney.com.au
+
+##################
+## Dependencies ##
+##################
+
+depends_php_min: 5.3.0
+depends_php_max: 6.0.0
+
+depends:
+  package:
+    name:
+      - ''
+    channel:
+      - ''
+    min:
+      - ''
+    max:
+      - ''
+    ## Enclose files in double quotes, and delimit by backslash n (\n), e.g.: "file1\nfile2\nfile3"
+    files:
+      - ''
+  extension:
+    name:
+      - Core
+    min:
+      - ''
+    max:
+      - ''
+
+##############
+## Contents ##
+##############
+
+## Note: each subsection must have matching array elements. See file docblock above.
+contents:
+
+  ## For target options, @see \Mage_Connect_Package_Target::_getTargetMap
+  target:
+    - magecommunity
+    - mageetc
+    - magedesign
+    - magedesign
+    - magedesign
+    - magemedia
+    - mageskin
+    - magelib
+    - mageweb
+
+  ## Each path must omit the initial portion of the uri. This is provided by the target.
+  ## @see \Mage_Connect_Package_Target::_getTargetMap
+  path:
+    - ZipMoney/ZipMoneyPayment
+    - modules/Zipmoney_Payment.xml
+    - adminhtml/default/default/layout/zipmoneypayment.xml
+    - frontend/base/default/layout/zipmoney
+    - frontend/base/default/template/zipmoney
+    - zipmoney
+    - frontend/base/default/zipmoney
+    - ZipMoney
+    - js/zipmoney
+
+  ## type can either be 'file' or 'dir'. Directories are added recursively.
+  type:
+    - dir
+    - file
+    - file
+    - dir
+    - dir
+    - dir
+    - dir
+    - dir
+    - dir
+
+  ## include and exclude must be valid regular expressions (e.g. '/*\.bak/'. They are passed directly into preg_match)
+  ## @see \Mage_Connect_Package::addContentDir
+  include:
+    - ''
+    - ''
+  ignore:
+    - ''
+    - ''

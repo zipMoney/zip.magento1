@@ -1,0 +1,55 @@
+
+<style>
+.zip-order-success-message {
+    border: 1px solid #3d6611;  
+    background-color: #eff5ea;
+    background-image: url(<?php echo $this->getSkinUrl('images/i_msg-success.gif');?>);
+    background-repeat: no-repeat;
+    background-position: 10px 10px;
+    color: #3d6611;
+    padding: 10px 0px 10px 33px; 
+    margin-top: 20px;
+}
+    .button[title="<?php echo $this->__('Continue Shopping') ?>"] {
+        display: none;
+    }
+    #zipMoney-success-continue-shopping, #zipMoney-success-buttons-set {
+        display: block;
+    }
+</style>
+
+<?php
+$order = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
+if ($order->getPayment()->getMethod() == "zipmoneypayment" && $order->getStatus() == "zip_authorise_under_review") {
+    
+    echo "<div class='zip-order-success-message'>";
+    ?>
+    <img style="float: right; padding-right: 17px; padding-top: 5px;  width: 150px;" src="<?php echo $this->getSkinUrl('zipmoney/images/zipmoney-logo-full.png'); ?>" />
+     
+    <strong>Your order is currently under review by zipMoney and will be processed very shortly.</strong>
+    <br />
+    Don't worry, it usually takes less than 10 minutes! For any enquiries please<br /> contact: customercare@zipmoney.com.au
+    
+    <?php 
+    echo "</div>";
+}
+?>
+<div class="buttons-set" id="zipMoney-success-buttons-set">
+    <button id="zipMoney-success-continue-shopping" type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location = '<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>
+
+<script type="text/javascript">
+    Event.observe(window, 'load', function () {
+        $$('.button[title="<?php echo $this->__('Continue Shopping') ?>"]').each(function(element) {
+            if (!element.id || element.id == undefined) {
+                var parentEle = element.up();
+                if (parentEle && parentEle != undefined) {
+                    if (parentEle.hasClassName('buttons-set')) {
+                        parentEle.hide();
+                        return false;
+                    }
+                }
+            }
+        });
+    });
+</script>

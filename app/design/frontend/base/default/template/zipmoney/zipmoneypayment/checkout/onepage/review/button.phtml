@@ -1,0 +1,72 @@
+<?php
+/**
+ * @category  Aligent
+ * @package   zipmoney
+ * @author    Andi Han <andi@aligent.com.au>
+ * @copyright 2014 Aligent Consulting.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.aligent.com.au/
+ */
+?>
+
+<script type="text/javascript">
+window.redirectToZipMoney = function ()
+    {
+        showRedirectingText();
+        new Ajax.Request('<?php echo $this->getExpressRedirectUrl(); ?>', {
+            method: 'post',
+            parameters: {},
+            onSuccess: function(oTransport) {
+                try{
+                    oResponse = oTransport.responseJSON;
+                }
+                catch (e) {
+                    oResponse = {};
+                }
+                var vRedirectUrl = oResponse.redirect_url;
+                if (vRedirectUrl) {
+                    if (<?php echo $this->_isIframeFlowEnabled(); ?>) {
+                        if (typeof(zipMoney) != 'undefined') {
+                            zipMoney.checkout(vRedirectUrl);
+                            window.scroll(0, 0);
+                        } else {
+                            alert('<?php echo $this->__('Can not redirect to zipMoney.') ?>');
+                        }
+                    } else {
+                        location.href = vRedirectUrl;
+                    }
+                } else {
+                    alert("<?php echo $this->__('Can not redirect to zipMoney, no more error message.') ?>");
+                }
+                resetRedirectButtonText();
+            },
+            onFailure: function(oTransport) {
+                try{
+                    oResponse = oTransport.responseJSON;
+                }
+                catch (e) {
+                    oResponse = {};
+                }
+                if (oResponse.error_messages) {
+                    alert(oResponse.error_messages);
+                } else {
+                    alert("<?php echo $this->__('Can not redirect to zipMoney, no more error message.') ?>");
+                }
+                resetRedirectButtonText();
+            }
+        });
+    }
+</script>
+
+<button id="zipmoney-checkout-express-payment-buttonss" type="submit" title="<?php echo $this->__('Go to zipMoney and pay at zipMoney') ?>" class="button btn-checkout" onclick="redirectToZipMoney()">
+    <span>
+        <span>
+            <?php echo $this->__('Place Order') ?>
+        </span>
+    </span>
+</button>
+
+<span class="please-wait" id="redirecting-to-zipmoney" style="display:none;">
+    <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Redirecting to zipMoney...') ?>" title="<?php echo $this->__('Redirecting to zipMoney...') ?>" class="v-middle" /> <?php echo $this->__('Redirecting to zipMoney...') ?>
+</span>
+

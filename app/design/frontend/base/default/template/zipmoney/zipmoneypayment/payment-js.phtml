@@ -1,0 +1,40 @@
+<?php
+if (Mage::getStoreConfig('payment/zipmoney_developer_settings/jquery_enabled') == 1):
+    ?>
+    <script type="text/javascript" src="<?php echo $this->getSkinUrl('zipmoney/js/jquery-1.9.0.min.js') ?>"></script>
+   
+    <?php
+endif;
+if (Mage::getStoreConfig('payment/zipmoney_developer_settings/fancybox_enabled') == 1):
+    ?>
+    <script type="text/javascript" src="<?php echo $this->getSkinUrl('zipmoney/popup/fancybox/jquery.fancybox.js') ?>"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('zipmoney/popup/fancybox/jquery.fancybox.css') ?>" media="all" />
+    <?php
+endif;
+?>
+    
+    
+    
+    
+ <script>
+
+        jQuery.noConflict();
+        jQuery(document).ready(function() {
+            jQuery("#zipmoney-learnmore").fancybox({
+                'autoSize': false,
+                'href': '',
+                'width': 690,
+                'height': 640,
+                'transitionIn': 'elastic',
+                'transitionOut': 'elastic',
+                'type': 'iframe',
+                'padding': 5,
+                'fitToView': true
+            });
+            jQuery(".zipmoney-hover").hover(function() {
+                jQuery(this).click();
+            });
+
+
+        });
+    </script>

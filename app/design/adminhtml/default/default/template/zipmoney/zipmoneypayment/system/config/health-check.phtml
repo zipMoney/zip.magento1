@@ -1,0 +1,73 @@
+<script type="text/javascript">
+    //<![CDATA[
+    function healthCheck() {
+    
+    $("messages").update("");
+
+        new Ajax.Request('<?php echo $this->getAjaxHealthCheckUrl(Zipmoney_ZipmoneyPayment_Block_Adminhtml_System_Config_HealthCheck::HEALTH_CHECK_TYPE_API_ENDPOINT) ?>', {
+            method:     'get',
+            onSuccess: render_msg
+        });
+
+    new Ajax.Request('<?php echo $this->getAjaxHealthCheckUrl(Zipmoney_ZipmoneyPayment_Block_Adminhtml_System_Config_HealthCheck::HEALTH_CHECK_TYPE_SUBSCRIBE_ENDPOINT) ?>', {
+            method:     'get',
+            onSuccess: render_msg
+
+        });
+
+    new Ajax.Request('<?php echo $this->getAjaxHealthCheckUrl(Zipmoney_ZipmoneyPayment_Block_Adminhtml_System_Config_HealthCheck::HEALTH_CHECK_TYPE_CONFIG_OPTIONS) ?>', {
+            method:     'get',
+            onSuccess: render_msg
+        });
+
+    }
+
+  function render_msg(transport)
+  {
+    var response = transport.responseText.evalJSON();
+
+    
+    if(response){
+      if($("messages").childElements().length < 1)
+           $("messages").insert("<ul class='messages'></ul>");
+        
+      var text = response.message;
+          
+          if( typeof response.message == 'object'){
+            text = '';              
+            for(var i = 0; i < response.message.length; i++){
+              text += response.message[i];
+
+              if(i!=response.message.length-1)
+                text+="<br/>";
+            }
+          } 
+
+        if(response.success){ 
+          
+          if($$("div#messages .messages .success-msg").length < 1)
+             $$("div#messages .messages")[0].insert("<li class='success-msg'>" + text + "</li>");
+        else
+             $$("div#messages .messages .success-msg")[0].insert(" <br> " + text);
+           
+        } else  if(response.type){  
+          
+          if($$("div#messages .messages .notice-msg").length < 1)
+             $$("div#messages .messages")[0].insert("<li class='notice-msg'>" + text + "</li>");
+        else
+             $$("div#messages .messages .notice-msg")[0].insert(" <br> " + text);
+           
+        } else {
+              
+        if($$("div#messages .messages .error-msg").length < 1)
+             $$("div#messages .messages")[0].insert("<li class='error-msg'>" + text + "</li>");
+        else
+             $$("div#messages .messages .error-msg")[0].insert(" <br> " + text);
+      }    
+    }
+
+  }
+    //]]>
+</script>
+ 
+<?php echo $this->getButtonHtml() ?>

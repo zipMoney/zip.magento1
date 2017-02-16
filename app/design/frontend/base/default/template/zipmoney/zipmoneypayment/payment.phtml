@@ -1,0 +1,233 @@
+<?php
+$session = Mage::getSingleton('checkout/session');
+$orderIncrementId = $session->getLastRealOrderId();
+$order = Mage::getModel('sales/order')->loadByIncrementId($orderIncrementId);
+$billingaddress = $order->getBillingAddress();
+$shippingaddress = $order->getShippingAddress();
+
+$currencyDesc = Mage::app()->getStore()->getCurrentCurrencyCode();
+$totals = number_format($order->getGrandTotal(), 2, '.', '');
+$address = $billingaddress->getStreet();
+$address1 = $shippingaddress->getStreet();
+$ordered_items = $order->getAllItems();
+$_customer_dob = "";
+foreach ($ordered_items as $item) {
+    $item_name = $item->getName();
+    $item_id = $item->getProductId();
+    $_newProduct = Mage::getModel('catalog/product')->load($item_id);
+    $item_sku = $_newProduct->getSku();
+    $item_desc = strip_tags($_newProduct->getShortDescription());
+    $image_url = $this->helper('catalog/image')->init($_newProduct, 'image');
+    $category = "";
+    foreach ($_newProduct->getCategoryIds() as $category_id) {
+        $category.= "," . Mage::getModel('catalog/category')->load($category_id)->getName();
+    }
+    $category = ltrim($category, ",");
+    $order_items[] = array(
+        'quantity' => (int) $item->getQtyOrdered(),
+        'name' => "$item_name",
+        'price' => (float) $item->getPrice(),
+        'description' => "$item_desc",
+        'category' => $category,
+        'image_url' => "$image_url",
+        'sku' => "$item_sku",
+        'id' => "$item_id"
+    );
+}
+
+$i = 0;
+if ($this->helper('customer')->isLoggedIn()) {
+    $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
+    $prefix = $customer->getPrefix();
+    $gender = $customer->getGender();
+
+    $logCustomer = Mage::getModel('log/customer')->loadByCustomer($customer);
+    $lastVisited = $logCustomer->getLoginAtTimestamp();
+    $lastVisited = date('Y-m-d H:i:s', $lastVisited);
+
+    $_customer_createat = substr($customer->getCreatedAt(), 0, 10) . " 00:00:00";
+    $_customer_dob = $customer->getDob();
+    $orderCollection = Mage::getModel('sales/order')->getCollection()
+            ->addFieldToFilter('customer_id', array('eq' => array($customer->getId())))
+            ->addFieldToFilter('status', array('eq' => 'complete'));
+
+    $lifetime_sales_amount = 0;
+    $maximum_sale_value = 0;
+
+
+    foreach ($orderCollection AS $order_row) {
+        if ($order_row->getStatus() == 'complete') {
+            $i++;
+            $lifetime_sales_amount+=$order_row->getGrandTotal();
+            if ($order_row->getGrandTotal() > $maximum_sale_value) {
+                $maximum_sale_value = $order_row->getGrandTotal();
+            }
+        } else {
+            $lifetime_sales_refunded_amount+=$order_row->getGrandTotal();
+        }
+    }
+    if ($i > 0)
+        $average_sale_value = (float) round($lifetime_sales_amount / $i, 2);
+    else
+        $average_sale_value = 0;
+    $lifetime_sales_refunded_amount = 0;
+    $orderCollection_2 = Mage::getModel('sales/order')->getCollection()
+            ->addFieldToFilter('customer_id', array('eq' => array($customer->getId())))
+            ->addFieldToFilter('status', array('eq' => 'closed'));
+    foreach ($orderCollection_2 AS $order_row) {
+
+        $lifetime_sales_refunded_amount+=$order_row->getGrandTotal();
+    }
+} else {
+    $prefix = $order->getCustomerPrefix();
+    $gender = $order->getCustomerGender();
+    $_customer_dob = $order->getCustomerDob();
+    $lastVisited = "";
+    $lifetime_sales_amount = 0;
+    $maximum_sale_value = 0;
+    $average_sale_value = 0;
+    $lifetime_sales_refunded_amount = 0;
+}
+
+//if ($_customer_dob == "")
+//    $_customer_dob = date('Y-m-d H:i:s', time());
+$totals_ = $order->getData();
+$order_ = array(
+    'id' => "$orderIncrementId",
+    'tax' => (float) $totals_['tax_amount'],
+    'shipping_value' => (float) $totals_['shipping_amount'],
+    'total' => (float) $totals,
+    'detail' => $order_items
+);
+if ($gender == '')
+    $gender = 0;
+
+$consumer = array(
+    'gender' => $gender,
+    'email' => $order->getCustomerEmail(),
+    'first_name' => $order->getCustomerFirstname(),
+    'last_name' => $order->getCustomerLastname(),
+    'phone' => $billingaddress->getTelephone(),
+    'title' => "$prefix",
+    'account_created_on' => "$_customer_createat",
+    'last_login' => "$lastVisited",
+    'lifetime_sales_amount' => (float) $lifetime_sales_amount,
+    'average_sale_value' => (float) $average_sale_value,
+    'maximum_sale_value' => (float) $maximum_sale_value,
+    'lifetime_sales_units' => (int) $i,
+    'lifetime_sales_refunded_amount' => (float) $lifetime_sales_refunded_amount
+);
+if ($_customer_dob != "") {
+    $consumer['dob'] = "$_customer_dob";
+}
+$address_b = "";
+if (isset($address[0])) {
+    $address_b = $address[0];
+} else {
+    $address_b.=$address[1];
+}
+$billing_address = array(
+    'suburb' => $billingaddress->getCity(),
+    'state' => $billingaddress->getRegion(),
+    'postcode' => $billingaddress->getPostcode(),
+    'street_number' => "222",
+    'street_name' => "$address_b",
+    'unitType' => "",
+    "unitNumber" => "",
+    'timeAtAddress' => 0,
+    'street_type' => "",
+    'addressType' => 1,
+    'city' => $billingaddress->getCity(),
+    'country' => $billingaddress->getCountryId(),
+    'title' => $billingaddress->getPrefix(),
+    'first_name' => $billingaddress->getFirstname(),
+    'last_name' => $billingaddress->getLastname()
+);
+$address_s = "";
+if (isset($address[0])) {
+    $address_s = $address1[0];
+} else {
+    $address_s.=$address1[1];
+}
+$shipping_address = array(
+    'suburb' => $shippingaddress->getCity(),
+    'state' => $shippingaddress->getRegion(),
+    'postcode' => $shippingaddress->getPostcode(),
+    'street_number' => "222",
+    'street_name' => "$address_s",
+    'unitType' => "",
+    "unitNumber" => "",
+    'timeAtAddress' => 0,
+    'street_type' => "",
+    'addressType' => 2,
+    'city' => $shippingaddress->getCity(),
+    'country' => $shippingaddress->getCountryId(),
+    'title' => $shippingaddress->getPrefix(),
+    'first_name' => $shippingaddress->getFirstname(),
+    'last_name' => $shippingaddress->getLastname()
+);
+if (Mage::helper('zipmoneypayment')->isCaptureMethod()) {
+    $charge = true;
+} else {
+    $charge = false;
+}
+
+$data_ = array(
+    'charge' => $charge,
+    'currency_code' => "$currencyDesc",
+    'consumer' => $consumer,
+    'billing_address' => $billing_address,
+    'shipping_address' => $shipping_address,
+    'return_url' => Mage::getUrl('zipmoneypayment/standard/success/'),
+    'cancel_url' => Mage::getUrl('zipmoneypayment/standard/cancel/'),
+    'notify_url' => Mage::getUrl('zipmoneypayment/standard/success/'),
+    'error_url' => Mage::getUrl('zipmoneypayment/standard/error/'),
+    'decline_url'   => Mage::getUrl('checkout/cart'),
+    'cart_url'      => Mage::getUrl('checkout/cart'),
+    'success_url'   => Mage::getUrl('zipmoneypayment/standard/success/'),
+    'refer_url'     => Mage::getUrl('zipmoneypayment/standard/success/'),
+    'merchant_id' => trim(Mage::getStoreConfig('payment/zipmoneypayment/id')),
+    'order_id' => $orderIncrementId,
+    'merchant_key' => trim(Mage::getStoreConfig('payment/zipmoneypayment/key')),
+    'txn_id' => "",
+    'order' => $order_,
+    'changedBy' => "",
+    "txn_id" => 1,
+);
+
+
+$data_post = json_encode($data_);
+
+
+
+Mage::helper('zipmoneypayment')->writelog("Data submit:", $data_post);
+$oApiHelper = Mage::helper('zipmoneypayment/api');
+$gateway_url = $oApiHelper->getApi()->getEndpointUrl(ZipMoney_ApiSettings::API_TYPE_CHECKOUT);
+$error_check = $oApiHelper->getApi()->getEndpointUrl(ZipMoney_ApiSettings::API_TYPE_HEART_BEAT);
+
+
+$httpClientConfig = array('maxredirects' => 0);
+$client = new Varien_Http_Client($gateway_url, $httpClientConfig);
+$client->setRawData($data_post, 'application/json')->setMethod(Varien_Http_Client::POST);
+$client->setHeaders(array(
+    'content-length' => strlen($data_post),
+    'content-type' => 'application/json'));
+
+    $response = $client->request();
+   
+
+if (!$response->isSuccessful()) {
+    $message = $response->getMessage();
+    header('Location: ' . Mage::getUrl('zipmoneypayment/standard/error/') . "?code=$message");
+  
+}
+else
+{ 
+    $result = new Varien_Object();
+    $result->addData(json_decode($response->getBody()));
+     Mage::helper('zipmoneypayment')->writelog("URL ->:", $result->getRedirectUrl());
+    Mage::helper('zipmoneypayment')->writelog("Gateway:", $gateway_url);
+    Mage::helper('zipmoneypayment')->writelog("Result:", $result);
+    header('Location: ' . $result->getRedirectUrl());
+    
+}
