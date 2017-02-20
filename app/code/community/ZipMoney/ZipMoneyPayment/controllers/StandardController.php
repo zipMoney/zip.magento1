@@ -1,11 +1,12 @@
 <?php
+use \zipMoney\ApiException;
+
 class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayment_Controller_Abstract {
 
   protected $_checkoutType = 'zipmoneypayment/standard_checkout';
 
   public function indexAction() 
   { 
-
     try {
       $this->_initCheckout();
 
@@ -24,11 +25,19 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
     } catch (Mage_Core_Exception $e) {
       $this->_getCheckoutSession()->addError($e->getMessage());      
       $this->_logger->debug($e->getMessage());
+      $this->getResponse()->setHttpResponseCode(500);
+    } catch (ApiException $e) {
+      $this->_getCheckoutSession()->addError($this->__('Unable to start Checkout.'));
+      $this->_logger->debug("Errors:-".json_encode($e->getResponseBody()));
+      $this->getResponse()->setHttpResponseCode($e->getCode());
     } catch (Exception $e) {
       $this->_getCheckoutSession()->addError($this->__('Unable to start Checkout.'));
       $this->_logger->debug($e->getMessage());
+      $this->getResponse()->setHttpResponseCode(500);
     }
   }
+
+  
 
 }
   

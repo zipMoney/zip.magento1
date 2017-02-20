@@ -80,7 +80,6 @@
             <zipmoneypayment>
                 <class>Zipmoney_ZipmoneyPayment_Block</class>
             </zipmoneypayment>
-   
         </blocks>
         <helpers>
             <zipmoneypayment>
@@ -98,33 +97,6 @@
                     <zip_authorised translate="label">
                         <label>zipMoney Authorised</label>
                     </zip_authorised>
-                    <zip_authorise_under_review translate="label">
-                        <label>zipMoney Pending</label>
-                    </zip_authorise_under_review>
-                    <zip_cancelled translate="label">
-                        <label>Canceled</label>
-                    </zip_cancelled>
-                    <zip_captured translate="label">
-                        <label>zipMoney Captured</label>
-                    </zip_captured>
-                    <zip_capture_pending translate="label">
-                        <label>zipMoney Pending Capture</label>
-                    </zip_capture_pending>
-                    <zip_declined translate="label">
-                        <label>zipMoney Declined</label>
-                    </zip_declined>
-                    <zip_order_cancelled translate="label">
-                        <label>Canceled</label>
-                    </zip_order_cancelled>
-                    <zip_pending translate="label">
-                        <label>Pending</label>
-                    </zip_pending>
-                    <zip_refund translate="label">
-                        <label>zipMoney Refund</label>
-                    </zip_refund>
-                    <zip_refund_pending translate="label">
-                        <label>zipMoney Pending Refund</label>
-                    </zip_refund_pending>
                 </statuses>
                 <states>
                     <pending_payment>
@@ -151,16 +123,8 @@
         </sales>
         <events>
           
-            <admin_system_config_changed_section_payment>
-                <observers>
-                    <zipmoney_config_save_observer>
-                        <class>zipmoneypayment/observer</class>
-                        <method>requestConfigFromZip</method>
-                    </zipmoney_config_save_observer>
-                </observers>
-            </admin_system_config_changed_section_payment>
 
-            <sales_order_address_save_after>
+           <!--  <sales_order_address_save_after>
                 <observers>
                     <zipmoney_order_shipping_address_save_observer>
                         <class>zipmoneypayment/observer</class>
@@ -168,15 +132,15 @@
                     </zipmoney_order_shipping_address_save_observer>
                 </observers>
             </sales_order_address_save_after>
-
-            <sales_order_save_before>
+ -->
+            <!-- <sales_order_save_before>
                 <observers>
                     <zipmoney_set_order_invoice_action_flag_observer>
                         <class>zipmoneypayment/observer</class>
                         <method>setInvoiceActionFlag</method>
                     </zipmoney_set_order_invoice_action_flag_observer>
                 </observers>
-            </sales_order_save_before>
+            </sales_order_save_before> -->
 
             <order_cancel_after>
                 <observers>
@@ -257,7 +221,7 @@
                 <id></id>
                 <key></key>
                 <environment>sandbox</environment>
-                <payment_action>authorize</payment_action>
+                <payment_action>capture</payment_action>
             </zipmoneypayment>
 
         

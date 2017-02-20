@@ -21,8 +21,8 @@
                             <frontend_model>zipmoneypayment/adminhtml_system_config_fieldset_expanded</frontend_model>
                             <fields>
                                 <id translate="label">
-                                    <label>zipMoney ID</label>
-                                    <tooltip>Enter the zipMoney Merchant ID provided to you on setup of your Merchant Account. Note: may be different for 'Test' or 'Live' environment</tooltip>
+                                    <label>zipMoney Public Key</label>
+                                    <tooltip>Enter the zipMoney Merchant Public provided to you on setup of your Merchant Account. Note: may be different for 'Test' or 'Live' environment</tooltip>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>10</sort_order>
                                     <show_in_default>1</show_in_default>
@@ -30,8 +30,8 @@
                                     <show_in_store>0</show_in_store>
                                 </id>
                                 <key>
-                                    <label>zipMoney Key</label>
-                                    <tooltip>Enter the zipMoney Merchant API Key provided to you on setup of your Merchant Account. Note: may be different for 'Test' or 'Live' environment</tooltip>
+                                    <label>zipMoney Private Key</label>
+                                    <tooltip>Enter the zipMoney Merchant Private  Key provided to you on setup of your Merchant Account. Note: may be different for 'Test' or 'Live' environment</tooltip>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>20</sort_order>
                                     <show_in_default>1</show_in_default>
