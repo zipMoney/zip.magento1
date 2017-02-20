@@ -1,0 +1,101 @@
+tables:
+  sales/quote_item:
+
+    -
+      item_id: 1011
+      quote_id: 101
+      store_id: 1
+      created_at: "2014-12-18 15:17:22"
+      updated_at: "2014-12-18 15:17:22"
+      product_id: 101
+      product_type: "simple"
+      weight: 1.0000
+      is_virtual: 0
+      sku: "testSkuProd101"
+      name: "Test Product 101"
+      qty: 1
+      price: 50.00
+      base_price: 50.00
+      row_total: 50.00
+      tax_amount: 0
+      tax_percent: 0
+
+    -
+      item_id: 1021
+      quote_id: 102
+      store_id: 1
+      created_at: "2014-12-18 15:17:22"
+      updated_at: "2014-12-18 15:17:22"
+      product_id: 102
+      product_type: "simple"
+      weight: 1.0000
+      is_virtual: 0
+      sku: "testSkuProd102"
+      name: "Test Product 102"
+      qty: 1
+      price: 50.00
+      price_incl_tax: 50.00
+      base_price: 50.00
+      row_total: 50.00
+      tax_amount: 0
+      tax_percent: 0
+
+    -
+      item_id: 1031
+      quote_id: 103
+      store_id: 1
+      created_at: "2014-12-18 15:17:22"
+      updated_at: "2014-12-18 15:17:22"
+      product_id: 102
+      product_type: "simple"
+      weight: 1.0000
+      is_virtual: 0
+      sku: "testSkuProd102"
+      name: "Test Product 102"
+      qty: 1
+      price: 50.00
+      price_incl_tax: 50.00
+      base_price: 50.00
+      row_total: 50.00
+      tax_amount: 0
+      tax_percent: 0
+
+    -
+      item_id: 1041
+      quote_id: 104
+      store_id: 1
+      created_at: "2014-12-18 15:17:22"
+      updated_at: "2014-12-18 15:17:22"
+      product_id: 102
+      product_type: "simple"
+      weight: 1.0000
+      is_virtual: 0
+      sku: "testSkuProd102"
+      name: "Test Product 102"
+      qty: 1
+      price: 50.00
+      price_incl_tax: 50.00
+      base_price: 50.00
+      row_total: 50.00
+      tax_amount: 0
+      tax_percent: 0
+
+    -
+      item_id: 1051
+      quote_id: 105
+      store_id: 1
+      created_at: "2014-12-18 15:17:22"
+      updated_at: "2014-12-18 15:17:22"
+      product_id: 102
+      product_type: "simple"
+      weight: 1.0000
+      is_virtual: 0
+      sku: "testSkuProd102"
+      name: "Test Product 102"
+      qty: 1
+      price: 50.00
+      price_incl_tax: 50.00
+      base_price: 50.00
+      row_total: 50.00
+      tax_amount: 0
+      tax_percent: 0
