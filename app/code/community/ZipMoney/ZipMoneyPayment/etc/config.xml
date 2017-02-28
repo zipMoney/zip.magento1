@@ -72,11 +72,11 @@
             </zipmoneypayment_read>
         </resources>
         <blocks>
-			<adminhtml>
+			<!-- <adminhtml>
                 <rewrite>
                     <sales_order_view_history>Zipmoney_ZipmoneyPayment_Block_Adminhtml_Sales_Order_View_History</sales_order_view_history>
 				</rewrite>
-            </adminhtml>
+            </adminhtml> -->
             <zipmoneypayment>
                 <class>Zipmoney_ZipmoneyPayment_Block</class>
             </zipmoneypayment>
@@ -222,15 +222,15 @@
                 <key></key>
                 <environment>sandbox</environment>
                 <payment_action>capture</payment_action>
+                <incontext_checkout>1</incontext_checkout>
             </zipmoneypayment>
 
-        
-            <zipmoney_widgets_onfiguration>
+            <zipmoney_widgets_configuration>
                 <group>zipmoneypayment</group>
                 <productactive>enabled</productactive>
                 <cartactive>1</cartactive>
                 <checkoutactive>1</checkoutactive>
-            </zipmoney_widgets_onfiguration>
+            </zipmoney_widgets_configuration>
 
             <zipmoney_marketing_banners>
                 <banner_active>1</banner_active>
@@ -248,7 +248,6 @@
             <zipmoney_cart_page_banner>
                 <strip_banner_active>1</strip_banner_active>
             </zipmoney_cart_page_banner>
-
 
             <zipmoney_checkout>
                 <group>zipmoneypayment</group>
@@ -270,12 +269,16 @@
                 <log_level>7</log_level>
             </zipmoney_developer_settings>
 
-            <zipmoney_handling>
+          
+            <zipmoney_messages>
                 <group>zipmoneypayment</group>
                 <service_unavailable_heading>The service is unavailable</service_unavailable_heading>
                 <service_unavailable_body>Unfortunately the zipMoney - Buy now, Pay later service is currently unavailable. We will be right back and apologies for the inconvenience.</service_unavailable_body>
                 <customer_error>Error</customer_error>
-            </zipmoney_handling>
+                <referred_header>Your application has been referred</referred_header>
+                <referred_body>Your application is currently under review by zipMoney and will be processed very shortly.You can contact the customer care at customercare@zipmoney.com.au for any enquiries.</referred_body>
+
+            </zipmoney_messages>
         </payment>
     </default>
 	

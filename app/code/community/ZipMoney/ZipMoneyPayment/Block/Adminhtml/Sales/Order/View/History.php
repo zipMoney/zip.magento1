@@ -47,34 +47,34 @@ class Zipmoney_ZipmoneyPayment_Block_Adminhtml_Sales_Order_View_History extends 
         return parent::_prepareLayout();
     }
 
-    public function getStatuses()
-    {
+  //   public function getStatuses()
+  //   {
 	
-		$arry_status_zip = array(
-		Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_NEW,
-		Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_AUTHORIZED,
-		Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_PROCESSING,
-		Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_CANCELLED,
-		Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_REFUND,
-		Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_AUTHORIZED_REVIEW,
-		Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_ORDER_CANCELLED,
-		Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_ORDER_DECLINED		
-		);
-        $state = $this->getOrder()->getState();
-        $statuses = $this->getOrder()->getConfig()->getStateStatuses($state);
-		if($this->getOrder()->getPayment()->getMethodInstance()->getCode()!="zipmoneypayment")
-		{
-			foreach($statuses as  $key=>$value)
-			{
-				if(in_array($key,$arry_status_zip))	
-					{
-					unset($statuses[$key]);
-					}
-			}
-		}
+		// $arry_status_zip = array(
+		// Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_NEW,
+		// Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_AUTHORIZED,
+		// Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_PROCESSING,
+		// Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_CANCELLED,
+		// Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_REFUND,
+		// Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_AUTHORIZED_REVIEW,
+		// Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_ORDER_CANCELLED,
+		// Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_ORDER_DECLINED		
+		// );
+  //       $state = $this->getOrder()->getState();
+  //       $statuses = $this->getOrder()->getConfig()->getStateStatuses($state);
+		// if($this->getOrder()->getPayment()->getMethodInstance()->getCode()!="zipmoneypayment")
+		// {
+		// 	foreach($statuses as  $key=>$value)
+		// 	{
+		// 		if(in_array($key,$arry_status_zip))	
+		// 			{
+		// 			unset($statuses[$key]);
+		// 			}
+		// 	}
+		// }
 	
-        return $statuses;
-    }
+  //       return $statuses;
+  //   }
 
     public function canSendCommentEmail()
     {

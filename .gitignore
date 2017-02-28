@@ -1,3 +1,4 @@
 /magento/
 /vendor/
 .DS_Store
+*.lock

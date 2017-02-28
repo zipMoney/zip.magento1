@@ -1,9 +1,11 @@
 <?php
-use \zipMoney\Client\Api\CheckoutsApi; 
 use \zipMoney\Model\CreateCheckoutRequest as CheckoutRequest;
 use \zipMoney\Model\CreateChargeRequest as ChargeRequest;
+use \zipMoney\Model\CreateRefundRequest as RefundRequest;
+use \zipMoney\Model\CaptureChargeRequest;
 use \zipMoney\Model\Shopper;
-use \zipMoney\Model\Order;
+use \zipMoney\Model\CheckoutOrder;
+use \zipMoney\Model\ChargeOrder;
 use \zipMoney\Model\Authority;
 use \zipMoney\Model\OrderShipping;
 use \zipMoney\Model\OrderShippingTracking;
@@ -42,18 +44,19 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
 
   public function getQuote()
   {
-    if($this->_quote){
+    if($this->_quote){      
+      $this->_order = null;
       return $this->_quote;
-    } else {
-      $this->setQuote(Mage::getSingleton('checkout/session')->getQuote());
     }
 
     return $this->_quote;
   }
 
   public function setOrder($order)
-  {
+  { 
+
     if($order){
+      $this->_quote = null;
       $this->_order = $order;
     }
     return $this;
@@ -67,12 +70,14 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
     return null;
   }
 
-  public function prepareCheckout($checkoutSource)
+  public function prepareCheckout($quote)
   {
     $checkoutReq = new CheckoutRequest();
 
+    $this->setQuote($quote);
+
     $checkoutReq->setShopper($this->getShopper())
-                ->setOrder($this->getOrderDetails())
+                ->setOrder($this->getOrderDetails(new CheckoutOrder))
                 ->setMetadata($this->getMetadata())
                 ->setConfig($this->getCheckoutConfiguration());
 
@@ -80,17 +85,55 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
   }
 
 
-  public function prepareCharge()
+  public function prepareCharge($order)
   {
     $chargeReq = new ChargeRequest();
 
-    $chargeReq->setReference($this->getOrderDetails())
-              ->setOrder($this->getOrderDetails())
+    $this->setOrder($order);
+
+    $order = $this->getOrder();
+
+    $grand_total = $order->getGrandTotal() ? $order->getGrandTotal() : 0;
+    $currency = $order->getOrderCurrencyCode() ? $order->getOrderCurrencyCode() : null;
+
+    $chargeReq->setAmount((float)$grand_total)
+              ->setCurrency($currency)
+              ->setOrder($this->getOrderDetails(new ChargeOrder))
               ->setMetadata($this->getMetadata())
               ->setCapture($this->_config->isCharge())
               ->setAuthority($this->getAuthority());
 
     return $chargeReq;
+  }
+
+  public function prepareRefund($order, $amount, $reason )
+  {
+    $chargeReq = new RefundRequest();
+
+    $this->setOrder($order);
+
+    $currency = $order->getOrderCurrencyCode() ? $order->getOrderCurrencyCode() : null;
+
+    $chargeReq->setAmount((float)$amount)
+              ->setReason($reason)
+              ->setChargeId($order->getPayment()->getZipmoneyChargeId())
+              ->setMetadata($this->getMetadata());
+
+    return $chargeReq;
+  }
+
+
+  public function prepareCaptureCharge($order, $amount)
+  {
+    $captureChargeReq = new CaptureChargeRequest();
+
+    $this->setOrder($order);
+
+    $order = $this->getOrder();
+
+    $captureChargeReq->setAmount((float)$amount);
+
+    return $captureChargeReq;
   }
 
   public function getShopper()
@@ -164,77 +207,71 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
     return $shipping;
   }
 
-  public function getOrderDetails()
+  public function getOrderDetails($reqOrder)
   {
     $reference = 0;
     $cart_reference = 0;
 
-
-
     if($quote = $this->getQuote()){
       $shipping_address = $quote->getShippingAddress();
-
       $reference = $quote->getReservedOrderId() ? $quote->getReservedOrderId() : '0';
       $cart_reference = $quote->getId();
-      
       $shipping_amount = $shipping_address ? $shipping_address->getShippingInclTax():0.00;
       $discount_amount = $shipping_address ? $shipping_address->getDiscountAmount():0.00;
       $tax_amount = $shipping_address ? $shipping_address->getTaxAmount():0.00;
       $grand_total = $quote->getGrandTotal() ? $quote->getGrandTotal() : 0.00;
       $currency = $quote->getQuoteCurrencyCode() ? $quote->getQuoteCurrencyCode() : null;
     } else if($order = $this->getOrder()){
-
       $reference = $order->getIncrementId() ? $order->getIncrementId() : '0';
-      $shipping_amount = $order->getShippingInclTax() ? $order->getShippingInclTax() : 0.00;
-      $discount_amount = $order->getDiscountAmount() ? $order->getDiscountAmount() : 0.00;
-      $tax_amount = $order->getTaxAmount() ? $order->getTaxAmount() : 0.00;
-      $grand_total = $order->getGrandTotal() ? $order->getGrandTotal() : 0.00;
-      $currency = $order->getOrderCurrencyCode() ? $order->getOrderCurrencyCode() : null;
-    }
+      $shipping_amount = $order->getShippingInclTax() ? $order->getShippingInclTax() : 0;
+      $discount_amount = $order->getDiscountAmount() ? $order->getDiscountAmount() : 0;
+      $tax_amount = $order->getTaxAmount() ? $order->getTaxAmount() : 0;
+     }
   
     $orderItems = $this->getOrderItems();
 
     // Discount Item
-    if($discount_amount){
+    if($discount_amount >  0){
       $discountItem = new OrderItem;
       $discountItem->setName("Discount");
-      $discountItem->setAmount($discount_amount);      
+      $discountItem->setAmount((float)$discount_amount);      
       $discountItem->setQuantity(1);      
       $discountItem->setType("discount");
       $orderItems[] = $discountItem;
     }
 
     // Shipping Item
-    if($shipping_amount){
+    if($shipping_amount > 0){
       $shippingItem = new OrderItem;      
       $shippingItem->setName("Shipping");
-      $shippingItem->setAmount($shipping_amount);
+      $shippingItem->setAmount((float)$shipping_amount);
       $shippingItem->setType("shipping");      
       $shippingItem->setQuantity(1);      
       $orderItems[] = $shippingItem;
     }
 
     // Tax Item
-    if($tax_amount){
+    if($tax_amount > 0){
       $taxItem = new OrderItem;      
       $taxItem->setName("Tax");
-      $taxItem->setAmount($tax_amount);
+      $taxItem->setAmount((float)$tax_amount);
       $taxItem->setType("tax");            
       $taxItem->setQuantity(1);      
       $orderItems[] = $taxItem;
     }
 
+    if(isset($grand_total) && $quote)
+      $reqOrder->setAmount($grand_total);
+    
+    if(isset($currency) && $quote)
+       $reqOrder->setCurrency($currency);
 
-    $order = new Order;
+    $reqOrder->setReference($reference)
+            ->setCartReference((string)$cart_reference)
+            ->setShipping($this->getShippingDetails())
+            ->setItems($orderItems);
 
-    $order->setReference($reference)
-          ->setCurrency($currency)
-          ->setCartReference($cart_reference)
-          ->setAmount($grand_total)
-          ->setShipping($this->getShippingDetails())
-          ->setItems($orderItems);
-
-    return $order;      
+    return $reqOrder;      
   }
 
   public function getOrderItems()
@@ -252,21 +289,30 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
 
     /** @var Mage_Sales_Model_Order_Item $oItem */
     foreach($items as $item) {
+       
         if($item->getParentItemId()) {
           continue;   // Only sends parent items to zipMoney
         }
+        
         $orderItem = new OrderItem;
+        
         if ($item->getDescription()) {
           $description = $item->getDescription();
         } else {
           $description = $this->_getProductShortDescription($item, $storeId);
         }
 
+        if($quote){
+          $qty = $item->getQty();
+        } else if($order){
+          $qty = $item->getQtyOrdered();
+        }
+
         $orderItem->setName($item->getName())
-                  ->setAmount($item->getPriceInclTax() ? $item->getPriceInclTax() : 0.00)
+                  ->setAmount($item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0.00)
                   ->setReference((string)$item->getId())
                   ->setDescription($description)
-                  ->setQuantity(round($item->getQty()))
+                  ->setQuantity(round($qty))
                   ->setType("sku")
                   ->setImageUri($this->_getProductImage($item))
                   ->setItemUri($item->getProduct()->getProductUrl())
@@ -291,19 +337,21 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
   public function getAuthority()
   { 
 
-    $checkout_id = $this->getOrder()->getCheckoutId();
+    $quoteId = $this->getOrder()->getQuoteId();
+    $quote = Mage::getModel('sales/quote')->load($quoteId);
+    $checkout_id = $quote->getZipmoneyCid();
 
     $authority = new Authority;
     $authority->setType('checkout_id')
               ->setValue($checkout_id);
   
-    return $metadata;
+    return $authority;
   }
 
   public function getCheckoutConfiguration()
   {
     $checkout_config = new CheckoutConfiguration();
-    $redirect_url = Mage::helper("zipmoneypayment")->getUrl('zipmoneypayment/callback', array('_secure' => true));
+    $redirect_url = Mage::helper("zipmoneypayment")->getUrl('zipmoneypayment/complete', array('_secure' => true));
 
     $checkout_config->setRedirectUri($redirect_url);
 

@@ -60,8 +60,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
         if ($orderIncId) {
           $order = Mage::getModel('sales/order')->loadByIncrementId($orderIncId);
           if ($order && $order->getId()) {
-            $vMessage = $this->__('Can not activate the quote. It has already been converted to order.');
-            throw Mage::exception('Zipmoney_ZipmoneyPayment', $vMessage);
+            Mage::throwException($this->__('Can not activate the quote. It has already been converted to order.'));
           }
         }
 
@@ -89,8 +88,6 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
     }
     return false;
   }
-
-
 
   
 }

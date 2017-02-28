@@ -11,4 +11,11 @@ $installer->addAttribute('quote', 'zipmoney_cid', array(
     'visible'   => false
 ));
 
+$installer->addAttribute('order_payment', 'zipmoney_charge_id', array(
+    'label'     => 'zipMoney Charge Id',
+    'type'      => 'varchar',
+    'required'  => false,
+    'visible'   => false
+));
+
 $installer->endSetup();

@@ -1,39 +1,29 @@
-<div class="page-title">
-    <h1><?php echo $this->__(Mage::getStoreConfig('payment/zipmoney_handling/service_unavailable_heading')) ?></h1>
-</div>
-<p>
- <?php
-    $message="";
-    switch($this->getRequest()->getParam('code'))
-    {
-        case 400:
-        $message="400 Bad Request";
-            break;
-        case 401:
-            $message="401 Unauthorized";
-            break;
-        case 403:
-            $message="403 Forbidden";
-            break;
-        case 404:
-            $message="404 Not Found";
-            break;
-        case 409:
-            $message="409 Conflict";
-            break;
-        default:
-            $message=$this->getRequest()->getParam('code'). " General error";
-        break;
+
+<style>
+    .zip-error-message {
+        border: 1px solid #3d6611;
+        background-color: #eff5ea;
+        background-image: url(<?php echo $this->getMsgIconUrl('error');?>);
+        background-repeat: no-repeat;
+        background-position: 10px 10px;
+        color: #3d6611;
+        padding: 10px 0px 10px 33px;
+        margin-top: 20px;
     }
-   echo $message;
-    ?>
-   
-</p>
-<p>
-    
-    <?php echo $this->__(Mage::getStoreConfig('payment/zipmoney_handling/service_unavailable_body')) ?>
-    
-</p>
+</style>
+
+<div class="page-title">
+     <h1><?php echo $this->getHeadText(); ?></h1>
+</div>
+
+<div class="zip-error-message">
+    <img style="float: right; padding-right: 17px; padding-top: 5px;  width: 150px;" src="<?php echo $this->getZipLogoImageUrl(); ?>" />
+    <p><strong><?php echo $this->getErrorTypeText();?></strong></p>
+    <p><?php echo $this->getBodyText(); ?></p>
+</div>
+
 <div class="buttons-set">
-    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'">
+        <span><span><?php echo $this->__('Continue Shopping') ?></span></span>
+    </button>
 </div>
