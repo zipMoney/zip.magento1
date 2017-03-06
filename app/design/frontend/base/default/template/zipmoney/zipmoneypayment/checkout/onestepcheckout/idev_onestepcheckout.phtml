@@ -1,0 +1,16 @@
+<script>
+//<![CDATA[
+Event.observe(window,'load', function() {    
+  if(window.$zipCheckout!=undefined){
+    window.$zipCheckout.setup({
+      checkoutExtension:'idev_onestepcheckout',
+      methodCode: 'zipmoneypayment',
+      redirect: <?php echo $this->isRedirect(); ?>,    
+      baseUrl:'<?php echo Mage::getBaseUrl(); ?>',
+      loaderImageUrl:'<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif'); ?>',
+      checkoutUri:'<?php echo $this->getCheckoutUrl(); ?>',
+      completeUri:'<?php echo $this->getCompleteUrl(); ?>',
+    });
+  }
+});
+</script>

@@ -1,13 +1,35 @@
 <?php
-
+/**
+ * @category  Zipmoney
+ * @package   Zipmoney_ZipmoneyPayment
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments Pty Ltd.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Controller_Front_Action
-{
+{ 
+  /**
+   * @var Zipmoney_ZipmoneyPayment_Model_Logger
+   */ 
 	protected $_logger;
-	protected $_helper;
+
+	/**
+   * @var Zipmoney_ZipmoneyPayment_Helper_Data
+   */ 
+  protected $_helper;
+
+  /**
+   * @var Mage_Sales_Model_Quote
+   */ 
 	protected $_quote;
-	protected $_checkout;
-  protected $_charge;
-	
+	/**
+   * @var Zipmoney_ZipmoneyPayment_Model_Standard_Checkout
+   */
+  protected $_checkout;
+  /**
+   * Instantiate config
+   */
 	protected function _construct()
 	{
 		parent::_construct();
@@ -65,7 +87,7 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
   }
 
   /**
-   * Return checkout quote object
+   * Return checkout quote object from database
    *
    * @return Mage_Sales_Model_Quote
    */
@@ -120,7 +142,10 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 
     return $this->_checkout;
   }
-
+  
+  /**
+   * Sets the Http Headers, Response Code and Responde Body
+   */
 	protected function _sendResponse($data, $responseCode = Mage_Api2_Model_Server::HTTP_OK)
 	{
 		$this->getResponse()->setHttpResponseCode($responseCode);
@@ -129,31 +154,40 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 		$this->getResponse()->setBody($jsonData);
 	}
 
-
-  protected function _isValidResult()
+  /**
+   * Checks if the result passed in the query string is valid
+   *
+   * @return boolean
+   */
+  protected function _isResultValid()
   {
-
     if(!$this->getRequest()->getParam('result') || 
        !in_array($this->getRequest()->getParam('result'), $this->_validResults)){
       $this->_logger->error($this->_helper->__("Invalid Result"));
       return false;
     }
-
     return true;
   }
 
-
-  protected function _isValidCheckoutId()
+  /**
+   * Checks if the Checkout Id passed in the query string is valid
+   *
+   * @return boolean
+   */
+  protected function _isCheckoutIdValid()
   {
-
     if(!$this->getRequest()->getParam('checkoutId')){
       $this->_logger->error($this->_helper->__("Could not find the checkout id in the querystring"));
       return true;
     }
-
     return true;
   }
 
+  /**
+   * Checks if the Session Quote is valid, if not use the db quote.
+   *
+   * @return boolean
+   */
   protected function _verifyQuote()
   {
     $sessionQuote = $this->_getQuote();
@@ -170,20 +204,22 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 
     if($use_db_quote){
       $dbQuote = $this->_getDbQuote($zipMoneyCid);
-
       if(!$dbQuote){
         $this->_logger->warn($this->_helper->__("Quote doesnot exist for the given checkout_id."));
         return false;
       } else {
         $this->_logger->info($this->_helper->__("Loading DB Quote"));
       }
-
       $this->_setQuote($dbQuote);
     }
-
     return true;
   }
 
+  /**
+   * Redirects to the cart page.
+   *
+   * @return boolean
+   */
   public function declinedAction()
   {    
     $this->_logger->debug($this->_helper->__('Calling declinedAction'));
@@ -191,14 +227,23 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     $this->_redirect('checkout/cart');
   }
 
+  /**
+   * Redirects to the cart page.
+   *
+   * @return boolean
+   */
   public function cancelledAction()
   {    
     $this->_logger->debug($this->_helper->__('Calling cancelledAction'));
 
     $this->_redirect('checkout/cart');
-
   }
 
+  /**
+   * Redirects to the referred page.
+   *
+   * @return boolean
+   */
   public function referredAction()
   {
 
@@ -218,6 +263,11 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 
   }
   
+  /**
+   * Redirects to the error page.
+   *
+   * @return boolean
+   */
   public function errorAction()
   { 
     $this->_logger->debug($this->_helper->__('Calling errorAction'));
@@ -232,6 +282,5 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
       $this->_logger->error(json_encode($this->getRequest()->getParams()));
       $this->_getCheckoutSession()->addError($this->__('An error occurred during redirecting to error page.'));
     }
-    
   }
 }

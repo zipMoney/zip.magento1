@@ -1,54 +1,90 @@
 <?php
 use \zipMoney\ApiException;
+/**
+ * @category  Zipmoney
+ * @package   Zipmoney_ZipmoneyPayment
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments Pty Ltd.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
 class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayment_Controller_Abstract {
   
+  /**
+   * Valid Application Results
+   *
+   * @var array
+   */  
   protected $_validResults = array('approved','declined','cancelled','referred');
 
+  /**
+   * Charges Api Class
+   *
+   * @var string
+   */  
   protected $_apiClass  = '\zipMoney\Client\Api\ChargesApi';
+  
+  /**
+   * Checkout Model
+   *
+   * @var string
+   */
   protected $_checkoutType = 'zipmoneypayment/standard_checkout';
-
-  protected $_result = null;
-  protected $_zipmoneyCid = null;
-
+  
+  /**
+   * Common Route
+   *
+   * @const
+   */
   const ZIPMONEY_STANDARD_ROUTE = "zipmoneypayment/standard";
+  
+  /**
+   * Error Route
+   *
+   * @const
+   */
+  const ZIPMONEY_ERROR_ROUTE = self::ZIPMONEY_STANDARD_ROUTE."/error";
 
 
+  /**
+   * Return from zipMoney and handle the result of the application
+   */
   public function indexAction() 
   {
-    /* 
-     * TODO
-     * - Check if the result exists. Check if checkout_id exists.
-     * - Validate the checkout id.
-     */
+    
     $this->_logger->debug($this->_helper->__("On Callback Controller"));
 
-    if(!$this->_isValidResult())
-    {            
-      $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/error');
+    // Is result valid?
+    if(!$this->_isResultValid()){            
+      $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE);
       return;
     }
 
     $result = $this->getRequest()->getParam('result');
     
-    $this->_logger->debug($this->_helper->__("State:- %s", $result));
+    $this->_logger->debug($this->_helper->__("Result:- %s", $result));
 
-    // Check the authenticity of the referrer
+    // Handle the application result
     switch ($result) {
+
       case 'approved':
+        /**
+         * - Create order
+         * - Create the charge against the customer using the checkout id
+         */
+
         try {
 
-          // Check if the checkout id is valid
-          if(!$this->_isValidCheckoutId())
-          {            
-            $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/error');
+          // Is checkout id valid?
+          if(!$this->_isCheckoutIdValid()){            
+            $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
             return;
           }
 
-          // Initialize the checkout model
-          if(!$this->_verifyQuote())
-          {
-            $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/error');
+          // Is the quote valid? 
+          if(!$this->_verifyQuote()){
+            $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE);
             return;
           }
 
@@ -57,7 +93,8 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
 
           // Make sure the qoute is active
           $this->_helper->activateQuote($this->_getQuote());
-          
+
+          // Set quote to the chekout model
           $this->_checkout->setQuote($this->_getQuote());
 
           // Create the Order
@@ -113,13 +150,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
        // Dispatch the referred action
         $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/error');
         break;
-
-        # code...
-        break;
     }
   }
-
-
 }
-  
 ?>

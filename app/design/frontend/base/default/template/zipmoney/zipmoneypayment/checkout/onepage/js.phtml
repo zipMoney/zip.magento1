@@ -1,0 +1,32 @@
+<script>
+//<![CDATA[
+var zipMoneyCheckout = function(){};
+
+console.log(111);
+
+zipMoneyCheckout.prototype = {
+
+  _placeOrderBtn: null,
+
+  init: function(){
+
+    this._placeOrderBtn = $$('<?php echo $this->getPlaceOrderButtonSelector(); ?>')[0];
+
+    if(payment.currentMethod == "zipmoneypayment"){
+      if(this._placeOrderBtn) {
+        this._placeOrderBtn.setAttribute('onclick', '');
+        
+        Zip.Checkout.attachButton("#place-order",{
+          redirect: <?php echo $this->isRedirect(); ?>,
+          checkoutUri:'<?php echo $this->getCheckoutUrl(); ?>',
+          completeUri:'<?php echo $this->getCompleteUrl(); ?>',
+        });
+      }
+    } 
+  }
+}
+
+window.$zmCheckout = new zipMoneyCheckout();
+$zmCheckout.init();
+//]]>
+</script>

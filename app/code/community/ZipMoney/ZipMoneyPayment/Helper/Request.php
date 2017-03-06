@@ -307,6 +307,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
         } else if($order){
           $qty = $item->getQtyOrdered();
         }
+      $this->_logger->debug(json_encode($item->getData()));
 
         $orderItem->setName($item->getName())
                   ->setAmount($item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0.00)

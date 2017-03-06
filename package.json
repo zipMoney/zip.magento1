@@ -1,0 +1,27 @@
+{
+  "name": "zipmoney-checkout",
+  "version": "1.0.0",
+  "description": "Magento specific library for handling zipMoney Checkout",
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-cache": "^0.4.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.3",
+    "jshint": "^2.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zipMoney/zipmoney-widget-js.git"
+  },
+  "author": "Sagar Bhandari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zipMoney/zipmoney-widget-js/issues"
+  },
+  "homepage": "https://github.com/zipMoney/zipmoney-widget-js#readme"
+}

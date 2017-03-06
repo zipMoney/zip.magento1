@@ -1,4 +1,12 @@
 <?php
+/**
+ * @category  Zipmoney
+ * @package   Zipmoney_ZipmoneyPayment
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments Pty Ltd.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
 class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
 
@@ -411,6 +419,7 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
                  ->save();
 
     $this->_redirectUrl = $checkout->getUri();   
+    $this->_logger->debug("Redirect Uri:- ".$this->_redirectUrl);
 
     return $checkout;
   }
@@ -575,9 +584,7 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
    */
   public function placeOrder()
   {
-    // $this->_order =  Mage::getSingleton("sales/order")->load(287);
-    // return $this->_order;
-
+  
     $this->_logger->debug($this->_helper->__('Quote Grand Total:- %s', $this->_quote->getGrandTotal()));
     $this->_logger->debug($this->_helper->__('Quote Checkout Method:- %s', $this->_quote->getCheckoutMethod()));
     $this->_logger->debug($this->_helper->__('Quote Customer Id:- %s', $this->_quote->getCutomerId()));
