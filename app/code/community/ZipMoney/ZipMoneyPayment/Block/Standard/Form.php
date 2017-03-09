@@ -6,7 +6,6 @@ class Zipmoney_ZipmoneyPayment_Block_Standard_Form extends Mage_Payment_Block_Fo
     protected $_config;
 
     protected function _construct() {
-      
         $message = '';
 
         $min = Mage::getStoreConfig('payment/zipmoney_checkout/minimum_total');
@@ -14,10 +13,11 @@ class Zipmoney_ZipmoneyPayment_Block_Standard_Form extends Mage_Payment_Block_Fo
         
         $showmessage    = Mage::getStoreConfig('payment/zipmoney_checkout/display_message');
         $message_notice = Mage::getStoreConfig('payment/zipmoney_checkout/message');
+        
         $total          = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
-        $product        = Mage::getStoreConfig('payment/zipmoney_checkout/product');
+        $product        = Mage::getStoreConfig('payment/zipmoney/product');
 
-        if (Mage::getStoreConfig('payment/zipmoney_checkout/displaydetail')) {
+        if (Mage::getStoreConfig('payment/zipmoney/displaydetail')) {
             $message_ = Mage::helper('zipmoneypayment')->__(Mage::getStoreConfig('payment/zipmoney_checkout/detailmessage'));
             $message .= '<b>' . $message_ . ' </b><a href="#" id="zipmoney-learn-more" class="zip-hover"  zm-widget="popup"  zm-popup-asset="checkoutdialog">';
             $message .= Mage::helper('zipmoneypayment')->__('Learn more');
@@ -40,10 +40,7 @@ class Zipmoney_ZipmoneyPayment_Block_Standard_Form extends Mage_Payment_Block_Fo
         // known issue: code above will render only static mark image
         $this->setTemplate('zipmoney/zipmoneypayment/redirect.phtml')
                 ->setRedirectMessage($message)
-                // ->setRedirectMessage(
-                //     Mage::helper('paypal')->__('You will be redirected to the zipMoney website when you place an order.')
-                // )
-                ->setMethodTitle('') // Output PayPal mark, omit title
+                //->setMethodTitle('zipMon') // Output PayPal mark, omit title
                 ->setMethodLabelAfterHtml($mark->toHtml());
 
         return parent::_construct();

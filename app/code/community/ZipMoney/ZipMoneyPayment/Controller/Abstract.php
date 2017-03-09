@@ -176,7 +176,7 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    */
   protected function _isCheckoutIdValid()
   {
-    if(!$this->getRequest()->getParam('checkoutId')){
+    if(!$this->getRequest()->getParam('checkout_id')){
       $this->_logger->error($this->_helper->__("Could not find the checkout id in the querystring"));
       return true;
     }
@@ -191,7 +191,7 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
   protected function _verifyQuote()
   {
     $sessionQuote = $this->_getQuote();
-    $zipMoneyCid = $this->getRequest()->getParam('checkoutId');
+    $zipMoneyCid = $this->getRequest()->getParam('checkout_id');
     $use_db_quote = false;
 
     if(!$sessionQuote){

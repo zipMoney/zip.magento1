@@ -400,7 +400,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
 
     $this->_quote->reserveOrderId()->save(); 
 
-
     $request = Mage::helper('zipmoneypayment/request')->prepareCheckout($this->_quote);
 
     $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request)); 
@@ -413,8 +412,12 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
       Mage::throwException($this->_helper->__('Cannot get redirect URL from zipMoney.'));
     } 
 
+    $this->_logger->debug("Checkout Response:- ".$this->_helper->json_encode($checkout));
+
     $this->_checkoutId  = $checkout->getId();
     
+    $this->_logger->debug("Checkout Id:- ".$this->_checkoutId);
+
     $this->_quote->setZipmoneyCid($this->_checkoutId)
                  ->save();
 
@@ -505,9 +508,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
     return $refund;
   }
 
-
-
-
   /**
    * Create quote in Zip side if not existed, and request for redirect url
    *
@@ -542,6 +542,42 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
 
     return $charge;
   }
+
+
+  /**
+   * Create quote in Zip side if not existed, and request for redirect url
+   *
+   * @param $quote
+   * @return null
+   * @throws Mage_Core_Exception
+   */
+  public function cancelCharge()
+  {
+    if (!$this->_order || !$this->_order->getId()) {      
+      Mage::throwException($this->_helper->__('The order does not exist.'));
+    }
+    
+    $this->_logger->debug("Cancel Charge For Order:- ".$this->_order->getId()); 
+
+    $charge = $this->getApi()
+                   ->chargesCancel($this->_order->getPayment()->getZipmoneyChargeId());
+    
+    $this->_logger->debug("Cancel Charge Response:- ".$this->_helper->json_encode($charge));
+    
+    if(isset($response->error)){
+      Mage::throwException($this->_helper->__('Could not cancel the charge'));
+    }
+
+    if(!$charge->getState()){
+      Mage::throwException($this->_helper->__('Invalid Charge Cancel'));
+    }
+
+    $this->_logger->debug($this->_helper->__("Charge State:- %s",$charge->getState()));
+
+    return $charge;
+  }
+
+
 
 
   protected function _chargeResponse($charge, $isAuthAndCapture)

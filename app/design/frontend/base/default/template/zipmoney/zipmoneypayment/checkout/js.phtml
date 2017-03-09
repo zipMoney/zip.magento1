@@ -1,0 +1,20 @@
+<?php 
+$extension_name = $this->getExtensionName();
+?>
+
+<script type="text/javascript">
+  //<![CDATA[
+  Event.observe(window,'load', function() {   
+    if(window.$zipCheckout!=undefined){
+      window.$zipCheckout.setup({
+        checkoutExtension:'<?php echo $extension_name;?>',
+        methodCode: 'zipmoneypayment',
+        redirect: <?php echo $this->isRedirect(); ?>,    
+        baseUrl:'<?php echo Mage::getBaseUrl(); ?>',
+        loaderImageUrl:'<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif'); ?>',
+        checkoutUri:'<?php echo $this->getCheckoutUrl(); ?>',
+        completeUri:'<?php echo $this->getCompleteUrl(); ?>',
+      });
+    }
+  });
+</script>

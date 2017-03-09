@@ -5,7 +5,7 @@ Zip_Mage_Checkout.prototype = {
   _btn: null,
   initialize: function(superClass){
     this.super = superClass;    
-    this._btn = $('place-order');
+    this._btn = $$('.btn-checkout')[0];
   },
   setup: function(superClass){
     this.super = superClass;

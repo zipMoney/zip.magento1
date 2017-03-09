@@ -26,10 +26,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 	protected $_canFetchTransactionInfo = true;
 	protected $_canCreateBillingAgreement = true;
 	protected $_canReviewPayment = true;
-
-	// protected $_client =  Zipmoney_ZipmoneyPayment_Model_Config::MODULE_VERSION;
-	// protected $_platform = Zipmoney_ZipmoneyPayment_Model_Config::MODULE_PLATFORM;
-			 
+		 
 	/**
 	 * zipMoney Payment instance
 	 *
@@ -154,22 +151,40 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
 		return false;
 	}
-	
-	/**
-	 * Return Order place redirect url
-	 *
-	 * @return string
-	 */
-	public function getOrderPlaceRedirectUrl() {
-			/**
-			 * Will be called when placing order
-			 * see app/code/core/Mage/Checkout/Model/Type/Onepage.php:808
-			 * and app/code/core/Mage/Paypal/Model/Standard.php:108
-			 */
-			return Mage::getUrl('zipmoneypayment/standard/redirect', array('_secure' => true));
-	}
 
- 
+
+  public function cancel(Varien_Object $payment)
+  {
+    $this->_logger->info($this->_helper->__("Cancelling Order"));
+
+    if ($payment && $payment->getOrder()) {
+      Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
+    }
+
+    $orderId = $payment->getOrder()->getIncrementId();
+    $order = Mage::getModel('sales/order')
+                    ->loadByIncrementId($orderId);
+
+    $this->_checkout = Mage::getModel($this->_checkoutType, array('api_class' => $this->_chargesApiClass));    
+    $this->_checkout->setOrder($order);
+
+    try {
+      
+      $this->_checkout->cancelCharge();
+      
+      $this->_logger->info($this->_helper->__("Cancel request Order [ %s ] was successfull",$orderId));
+      return $this;
+    } catch (Mage_Core_Exception $e) {
+      $this->_logger->debug($e->getMessage());
+    } catch (ApiException $e) {
+      $this->_logger->debug("Errors:-".json_encode($e->getResponseBody()));
+    } catch (Exception $e) {
+      $this->_logger->debug($e->getMessage());
+    }
+    
+    Mage::throwException($this->_helper->__("Unable to cancel the order in zipMoney."));
+    return false;
+  }
 
 	/**
 	 * Return zipMoney Express redirect url if current request is not savePayment (which works for oneStepCheckout)
@@ -177,13 +192,48 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 	 */
 	public function getCheckoutRedirectUrl() 
   {
-    return null;
-    // if($this->_config->isInContextCheckout()){      
-    //   $this->_logger->info("In-Context Checkout");
-    //   return null;
-    // }
+    $action     = Mage::app()->getRequest()->getActionName();
+    $controller = Mage::app()->getRequest()->getControllerName();
+    $module     = Mage::app()->getRequest()->getModuleName();
     
-    // return Mage::getUrl('zipmoneypayment/standard');
+    $this->_logger->debug($this->_helper->__("Action: %s Controller: %s Module: %s",$action,$controller,$module));
+
+    if (
+        ($module == 'checkout' &&  $controller == 'onepage' &&  $action == 'savePayment') 
+      ) {
+      $url = null;
+    } else {
+
+      if($this->_config->isInContextCheckout()){ 
+        /* Return current url with extra param appended, so that it will refresh current page with the  
+         * param if the param is present, will popup zipMoney iframe checkout
+         */
+
+        $this->_logger->info("In-Context Checkout");
+        
+        
+        if(Mage::app()->getRequest()->isAjax())
+          $currentUrl = Mage::helper('checkout/url')->getCheckoutUrl();
+        else
+          $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+        
+        //$currentUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB,true)."zipmoneypayment/standard/redirect/";
+
+        if (Mage::app()->getRequest()->getParam('zip-in-context') != 'true') {
+          $urlArr = parse_url($currentUrl);
+          if (!isset($urlArr['zip-in-context'])) {
+            $url = $currentUrl . (parse_url($currentUrl, PHP_URL_QUERY) ? '&' : '?') . 'zip-in-context=true';
+          }
+        }
+      } else {
+        // return the zipmoney redirect url
+        $url = Mage::getUrl('zipmoneypayment/standard/getredirecturl/');
+      }
+    }
+    
+    $this->_logger->info("Payment Redirect Url:- ".$url);
+
+    return $url;
 	}
 
 }

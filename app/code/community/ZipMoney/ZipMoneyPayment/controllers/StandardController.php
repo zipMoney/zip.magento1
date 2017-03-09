@@ -58,6 +58,13 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
 
     $this->_sendResponse(array('message' => $this->_helper->__('Can not redirect to zipMoney.')), Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR);
   }
+
+
+  public function redirectAction()
+  {
+    $this->loadLayout();
+    $this->renderLayout();
+  }
 }
   
 ?>

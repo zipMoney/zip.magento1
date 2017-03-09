@@ -124,29 +124,21 @@
         <events>
           
 
-           <!--  <sales_order_address_save_after>
-                <observers>
-                    <zipmoney_order_shipping_address_save_observer>
-                        <class>zipmoneypayment/observer</class>
-                        <method>notifyShippingAddressUpdated</method>
-                    </zipmoney_order_shipping_address_save_observer>
-                </observers>
-            </sales_order_address_save_after>
- -->
-            <!-- <sales_order_save_before>
+           <!-- 
+            <sales_order_save_before>
                 <observers>
                     <zipmoney_set_order_invoice_action_flag_observer>
                         <class>zipmoneypayment/observer</class>
                         <method>setInvoiceActionFlag</method>
                     </zipmoney_set_order_invoice_action_flag_observer>
                 </observers>
-            </sales_order_save_before> -->
-
+            </sales_order_save_before>
+ -->
             <order_cancel_after>
                 <observers>
                     <zipmoney_order_cancel_after_observer>
                         <class>zipmoneypayment/observer</class>
-                        <method>notifyOrderCancelled</method>
+                        <method>cancelOrder</method>
                     </zipmoney_order_cancel_after_observer>
                 </observers>
             </order_cancel_after>
@@ -214,6 +206,7 @@
         <payment>
             <zipmoneypayment>
                 <group>zipmoneypayment</group>
+                <product>zipmoney</product>
                 <active>1</active>
                 <model>zipmoneypayment/payment</model>
                 <title>zipMoney - Buy Now, Pay Later</title>
@@ -223,6 +216,7 @@
                 <environment>sandbox</environment>
                 <payment_action>capture</payment_action>
                 <incontext_checkout>1</incontext_checkout>
+                <message>zipMoney</message>
             </zipmoneypayment>
 
             <zipmoney_widgets_configuration>

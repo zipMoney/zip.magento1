@@ -1,41 +1,38 @@
 var Zip_Idev_OnestepCheckout = Class.create();
 Zip_Idev_OnestepCheckout.prototype = {
   super: null,
-  _btn: null,
-  _zipBtn: null,
-  _zipBtnId : 'zipmoneypayment-place-order',
-  initialize: function(superClass){
-    this._btn = $('onestepcheckout-place-order');
-  },
+  initialize: function(superClass){},
   setup: function(superClass){    
     var $this = this;
     this.super = superClass;
+    this.super._btn = $('onestepcheckout-place-order');
+    this.super._selectedPaymentCode =  payment.currentMethod;
 
-    this.setupZipButton();        
-    this.switchButtons();
+    this.super.setupZipPlaceOrderButton();
+    
+    this.super._zipBtn.observe('click', function(e){
+      _this.checkout(_this,e);
+    });
+
+    this.super.switchButtons();
     this.methodChange();
+
+    if($$("onestepcheckout-place-order-loading").length){
+      $$("onestepcheckout-place-order-loading").remove();
+    }
+
+    /* Disable button to avoid multiple clicks */
+    this._btn.removeClassName('grey').addClassName('orange');
+    this._btn.disabled = false;
 
     Ajax.Responders.register({
       onComplete: function(request, transport) {
         // Avoid AJAX callback for internal AJAX request
         if (typeof request.parameters.doNotMakeAjaxCallback == 'undefined') {          
-           $this.switchButtons();
+           $this.super.switchButtons();
         }
       }
     });
-  },
-  setupZipButton: function(){
-    var btnClone = this._btn.clone(true);
-
-    btnClone.setAttribute('id', this._zipBtnId);
-
-    this._btn.insert({before: btnClone});
-    var _this = this;
-    btnClone.observe('click', function(e){
-      _this.checkout(_this,e);
-    });
-
-    this._zipBtn = btnClone;
   },
   checkout:function(_this,e){
     var form = new VarienForm('onestepcheckout-form');
@@ -63,49 +60,15 @@ Zip_Idev_OnestepCheckout.prototype = {
       }
     }
   }, 
-  // Displays buttonToShow and hides other
-  switchButtons: function(hideAll) {
-    var btnToShow = '';
-    var submitEl = this._btn;
-    var zipBtn = this._zipBtn;
-    var buttons = [zipBtn, submitEl];
-
-    if($$("onestepcheckout-place-order-loading").length){
-      $$("onestepcheckout-place-order-loading").remove();
-    }
-
-    /* Disable button to avoid multiple clicks */
-    submitEl.removeClassName('grey').addClassName('orange');
-    submitEl.disabled = false;
-
-    if (!hideAll) {
-      if (payment.currentMethod == this.super.options.methodCode) {
-        btnToShow = zipBtn;
-      } else {
-        btnToShow = submitEl;
-      }
-    } 
-
-    buttons.each(function(elem){
-      if (elem) {
-        if (elem == btnToShow) {
-          elem.show();
-        } else {
-          elem.hide();
-        }
-      }
-    });
-  },
   methodChange: function(){
     var paymentEls = $$('#checkout-payment-method-load input[name="payment[method]"]');
     var _this = this;
-
     paymentEls.each(function (el) {
       el.observe("click",function(){
-        _this.switchButtons();
+        _this.super._selectedPaymentCode = payment.currentMethod;
+        _this.super.switchButtons();
       });
     });
-
   }
 }
 

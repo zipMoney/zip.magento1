@@ -11,6 +11,7 @@
             <block type="zipmoneypayment/cms_landingPage" name="landingPage"  />
         </reference>
     </zipmoneypayment_index_landingpage>
+    
 <!-- 
     <cms_index_index>
         <reference name="head">
@@ -150,10 +151,12 @@
 
     <checkout_onepage_savepayment>
         <reference name="checkout.onepage.review.info.items.before">
-            <block type="zipmoneypayment/checkout" name="zipmoneypayment.checkout" template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml">
+            <block  type="zipmoneypayment/checkout" 
+                    name="zipmoneypayment.checkout" 
+                    template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml">
                 <action method="setData">
-                    <name>button_selector</name>
-                    <value>button[type=submit][class~="btn-checkout"]</value>
+                    <name>extension_name</name>
+                    <value>Mage_Checkout</value>
                 </action>
             </block>
         </reference>
@@ -173,10 +176,45 @@
             </block>
         </reference> 
         <reference name="before_body_end"> 
-           <block type="zipmoneypayment/checkout" name="zipmoneypayment.onestepcheckout" template="zipmoney/zipmoneypayment/checkout/onestepcheckout/idev_onestepcheckout.phtml" />
+           <block type="zipmoneypayment/checkout" 
+                  name="zipmoneypayment.idev_onestepcheckout" 
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
+                <action method="setData">
+                    <name>extension_name</name>
+                    <value>idev_onestepcheckout</value>
+                </action>
+           </block>
         </reference>
     </onestepcheckout_index_index>
     <!-- End Idev Onestep Checkout -->
+
+    <!-- IWD Onestep Checkout Version 6-->
+    <iwd_opc_index_index>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>zipmoney/css/style.css</stylesheet>
+            </action>
+            <block type="core/text" name="zipmoney-checkout-js-lib">
+                <action method="setText">
+                    <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
+                </action>
+            </block>
+        </reference> 
+        <!-- <reference name="content">            
+            <block type="zipmoneypayment/widget_rootEl" name="root_el"></block>
+        </reference> -->
+        <reference name="before_body_end"> 
+           <block type="zipmoneypayment/checkout" 
+                  name="zipmoneypayment.iwd_onestepcheckout" 
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
+                <action method="setData">
+                    <name>extension_name</name>
+                    <value>iwd_onestepcheckout</value>
+                </action>
+           </block>
+        </reference>
+    </iwd_opc_index_index>
+    <!-- End IWD Onestep Checkout Version 6-->
 
     <!-- IWD Onestep Checkout -->
     <opc_index_index>
@@ -194,11 +232,17 @@
             <block type="zipmoneypayment/widget_rootEl" name="root_el"></block>
         </reference> -->
         <reference name="before_body_end"> 
-           <block type="zipmoneypayment/checkout" name="zipmoneypayment.onestepcheckout" template="zipmoney/zipmoneypayment/checkout/onestepcheckout/iwd_onestepcheckout.phtml" />
+           <block type="zipmoneypayment/checkout" 
+                  name="zipmoneypayment.iwd_onestepcheckout" 
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
+                <action method="setData">
+                    <name>extension_name</name>
+                    <value>iwd_onestepcheckout</value>
+                </action>
+           </block>
         </reference>
     </opc_index_index>
     <!-- End IWD Onestep Checkout -->
-
 
     <aitcheckout_checkout_index>
         <reference name="head">
@@ -212,7 +256,14 @@
             </block>
         </reference>
         <reference name="before_body_end"> 
-           <block type="zipmoneypayment/checkout" name="zipmoneypayment.aitoc" template="zipmoney/zipmoneypayment/checkout/onestepcheckout/aitoc_aitcheckout.phtml" />
+           <block type="zipmoneypayment/checkout" 
+                  name="zipmoneypayment.aitoc" 
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
+                <action method="setData">
+                    <name>extension_name</name>
+                    <value>Aitoc_Aitcheckout</value>
+                </action>
+           </block>
         </reference>
     </aitcheckout_checkout_index>
 
@@ -228,13 +279,44 @@
                 </action>
             </block>
         </reference> 
-        <!-- <reference name="before_body_end"> 
-           <block type="zipmoneypayment/checkout" name="zipmoneypayment.onestepcheckout" template="zipmoney/zipmoneypayment/checkout/onestepcheckout/iwd_onestepcheckout.phtml" />
-        </reference> -->
+        <reference name="before_body_end"> 
+           <block type="zipmoneypayment/checkout" 
+                  name="zipmoneypayment.aw_onestepcheckout" 
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
+                <action method="setData">
+                    <name>extension_name</name>
+                    <value>aw_onestepcheckout</value>
+                </action>
+           </block>
+        </reference>
     </aw_onestepcheckout_index_index>
     <!-- End AW Onestep Checkout -->
 
 
+    <!-- MageStore Onestep Checkout -->
+    <magestore_onestepcheckout_index_index>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>zipmoney/css/style.css</stylesheet>
+            </action>
+            <block type="core/text" name="zipmoney-checkout-js-lib">
+                <action method="setText">
+                    <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
+                </action>
+            </block>
+        </reference> 
+        <reference name="before_body_end"> 
+           <block type="zipmoneypayment/checkout" 
+                  name="zipmoneypayment.magestore_onestepcheckout" 
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
+                <action method="setData">
+                    <name>extension_name</name>
+                    <value>magestore_onestepcheckout</value>
+                </action>
+           </block>
+        </reference>
+    </magestore_onestepcheckout_index_index>
+    <!-- End MageStore Onestep Checkout -->
 
     <gomage_checkout_onepage_index>
         <reference name="head">
@@ -248,12 +330,35 @@
             </block>
         </reference> 
         <reference name="before_body_end"> 
-           <block type="zipmoneypayment/checkout" name="zipmoneypayment.aitoc" template="zipmoney/zipmoneypayment/checkout/onestepcheckout/gomage_checkout.phtml" />
+           <block type="zipmoneypayment/checkout" 
+                  name="zipmoneypayment.aitoc" 
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
+                <action method="setData">
+                    <name>extension_name</name>
+                    <value>GoMage_Checkout</value>
+                </action>
+           </block>
         </reference>
     </gomage_checkout_onepage_index>
 
-
-
+    <zipmoneypayment_standard_redirect>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>zipmoney/css/style.css</stylesheet>
+            </action>
+            <block type="core/text" name="zipmoney-checkout-js-lib">
+                <action method="setText">
+                    <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
+                </action>
+            </block>
+        </reference> 
+        <reference name="content">
+            <block type="zipmoneypayment/checkout" 
+                  name="zipmoneypayment.aitoc" 
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
+           </block>
+        </reference>
+    </zipmoneypayment_standard_redirect>
 
 
     <zipmoneypayment_standard_referred>

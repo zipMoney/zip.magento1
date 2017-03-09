@@ -136,6 +136,19 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
     return $captureChargeReq;
   }
 
+
+  public function prepareCaptureCancel($order, $amount)
+  {
+    $captureChargeReq = new CaptureChargeRequest();
+
+    $this->setOrder($order);
+
+    $order = $this->getOrder();
+
+
+    return $captureChargeReq;
+  }
+
   public function getShopper()
   {
     $customer = null;
@@ -307,7 +320,6 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
         } else if($order){
           $qty = $item->getQtyOrdered();
         }
-      $this->_logger->debug(json_encode($item->getData()));
 
         $orderItem->setName($item->getName())
                   ->setAmount($item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0.00)
