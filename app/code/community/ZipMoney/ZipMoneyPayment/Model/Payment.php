@@ -37,7 +37,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 	protected $_helper = null;
 	protected $_checkout  = null;
   protected $_config = null;
-  protected $_checkoutType = 'zipmoneypayment/standard_checkout';
+  protected $_chargeModel = 'zipmoneypayment/charge';
   protected $_chargesApiClass  = '\zipMoney\Client\Api\ChargesApi';
   protected $_refundsApiClass  = '\zipMoney\Client\Api\RefundsApi';
 
@@ -61,7 +61,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     $this->_logger = Mage::getSingleton('zipmoneypayment/logger');
     $this->_config = Mage::getSingleton('zipmoneypayment/config');
 
-
  	}
 
 
@@ -76,8 +75,8 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     $order = Mage::getModel('sales/order')
             				->loadByIncrementId($orderId);
 
-		$this->_checkout = Mage::getModel($this->_checkoutType, array('api_class' => $this->_chargesApiClass));
-    $this->_checkout->setOrder($order);
+		$this->_charge = Mage::getModel($this->_chargeModel);
+    $this->_charge->setOrder($order);
 
     try {
 	    
@@ -85,7 +84,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 	    	Mage::throwException($this->_helper->__("Please provide the capture amount"));
 	    }
 
-    	$this->_checkout->captureCharge($amount);
+    	$this->_charge->captureCharge($amount);
  		 
  		  $this->_logger->info($this->_helper->__("Payment for Order [ %s ] was captured successfully",$orderId));
 
@@ -122,8 +121,8 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     $order = Mage::getModel('sales/order')
             				->loadByIncrementId($orderId);
 
-		$this->_checkout = Mage::getModel($this->_checkoutType, array('api_class' => $this->_refundsApiClass));    
-    $this->_checkout->setOrder($order);
+		$this->_charge = Mage::getModel($this->_chargeModel, array('api_class' => $this->_refundsApiClass));    
+    $this->_charge->setOrder($order);
 
     try {
 	    
@@ -131,7 +130,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 	    	Mage::throwException($this->_helper->__("Please provide the capture amount"));
 	    }
 
-    	$refund = $this->_checkout->refund($amount,$reason);
+    	$refund = $this->_charge->refundCharge($amount,$reason);
  		  
  		  $this->_logger->info($this->_helper->__("Refund for Order [ %s ] for amount %s was successfull",$orderId, $amount));
 
@@ -165,12 +164,12 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     $order = Mage::getModel('sales/order')
                     ->loadByIncrementId($orderId);
 
-    $this->_checkout = Mage::getModel($this->_checkoutType, array('api_class' => $this->_chargesApiClass));    
-    $this->_checkout->setOrder($order);
+    $this->_charge = Mage::getModel($this->_chargeModel);    
+    $this->_charge->setOrder($order);
 
     try {
       
-      $this->_checkout->cancelCharge();
+      $this->_charge->cancelCharge();
       
       $this->_logger->info($this->_helper->__("Cancel request Order [ %s ] was successfull",$orderId));
       return $this;

@@ -17,21 +17,14 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
    *
    * @var string
    */  
-  protected $_checkoutType = 'zipmoneypayment/standard_checkout';
+  protected $_checkoutModel = 'zipmoneypayment/checkout';
   
-  /**
-   * zipMoney Checkouts Api Class
-   *
-   * @var string
-   */  
-  protected $_apiClass = '\zipMoney\Client\Api\CheckoutsApi';
   
   /**
    * Start the checkout by requesting the redirect url and checkout id
    */
   public function indexAction() 
   {         
-    
 
     try {        
       $this->_logger->info($this->_helper->__('Starting Checkout'));

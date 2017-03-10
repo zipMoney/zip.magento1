@@ -30,7 +30,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
    *
    * @var string
    */
-  protected $_checkoutType = 'zipmoneypayment/standard_checkout';
+  protected $_chargeModel = 'zipmoneypayment/charge';
   
   /**
    * Common Route
@@ -60,6 +60,11 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
       $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE);
       return;
     }
+
+    /*
+     * ToDO
+     * - Verify current user's session. Check if the current user is the same as the one with checkout id
+     */
 
     $result = $this->getRequest()->getParam('result');
     
@@ -95,10 +100,10 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
           $this->_helper->activateQuote($this->_getQuote());
 
           // Set quote to the chekout model
-          $this->_checkout->setQuote($this->_getQuote());
+          $this->_charge->setQuote($this->_getQuote());
 
           // Create the Order
-          $this->_checkout->placeOrder();
+          $this->_charge->placeOrder();
 
           $session = $this->_getCheckoutSession();
           $session->clearHelperData();
@@ -109,13 +114,13 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
                     ->setLastSuccessQuoteId($quoteId);
           }
 
-          if($order = $this->_checkout->getOrder()) {
+          if($order = $this->_charge->getOrder()) {
             $session->setLastOrderId($order->getId())
                     ->setLastRealOrderId($order->getIncrementId());
           }
           
           // Create charge for the order
-          $this->_checkout->charge();
+          $this->_charge->charge();
 
           // Redirect to success page
           $this->getResponse()->setRedirect(Mage::getUrl('checkout/onepage/success'));
@@ -143,6 +148,21 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
         $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/cancelled');
         break;
       case 'referred':
+
+         // Is checkout id valid?
+          if(!$this->_isCheckoutIdValid()){            
+            $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
+            return;
+          }
+
+          // Is the quote valid? 
+          if(!$this->_verifyQuote()){
+            $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE);
+            return;
+          }
+          // Make sure the qoute is active
+          $this->_helper->deactivateQuote($this->_getQuote());
+
         // Dispatch the referred action
         $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/referred');
         break;

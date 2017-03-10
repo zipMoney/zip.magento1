@@ -8,37 +8,15 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
+class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
 
   /**
    * State helper variables
    * @var string
    */
-  protected $_redirectUrl = '';
-  protected $_checkoutId = '';
   protected $_chargeResult = '';
-  /**
-   * @var Mage_Customer_Model_Session
-   */
-  protected $_quote;
-
-  protected $_api;
-
-  protected $_response;
-
-  protected $_helper;
-
-  protected $_requestHelper;
   
-  /**
-   * @var Mage_Customer_Model_Session
-   */
-  protected $_customerSession;
-
-  private $_apiClass = null;
-
-  
-  const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
+  protected $_apiClass = '\zipMoney\Client\Api\ChargesApi';
 
   /**
    * Set quote and config instances
@@ -46,14 +24,7 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
    */
   public function __construct($params = array())
   {
-    if (isset($params['quote'])) {
-      if($params['quote'] instanceof Mage_Sales_Model_Quote){
-        $this->_quote = $params['quote'];
-      }
-      else{
-        Mage::throwException('Quote instance is required.');
-      }
-    } else if (isset($params['order'])) {      
+    if (isset($params['order'])) {      
       if($params['order'] instanceof Mage_Sales_Model_Order){
         $this->_order = $params['order'];
       } else {
@@ -71,18 +42,10 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
     } 
 
 
-    $this->_customerSession = isset($params['session']) && $params['session'] instanceof Mage_Customer_Model_Session
-            ? $params['session'] : Mage::getSingleton('customer/session'); 
-  
-    $this->_helper = Mage::helper("zipmoneypayment");   
-    
-    $this->_logger = Mage::getSingleton('zipmoneypayment/logger');
-    
-    $merchant_private_key  = Mage::getSingleton('zipmoneypayment/config')->getMerchantPrivateKey();
-    $environment  = Mage::getSingleton('zipmoneypayment/config')->getEnvironment();
+    $this->setApi($this->_apiClass);
 
-    \zipMoney\Configuration::getDefaultConfiguration()->setApiKey('Authorization', "Bearer ".$merchant_private_key);
-    \zipMoney\Configuration::getDefaultConfiguration()->setEnvironment($environment);
+    parent::__construct($params);
+
   }
 
   /**
@@ -363,6 +326,37 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
   }
 
 
+  protected function _chargeResponse($charge, $isAuthAndCapture)
+  {
+
+    switch ($charge->getState()) {
+      case 'captured':
+        /* 
+         * Capture Payment 
+         */
+        $this->_logger->info($this->_helper->__("Capture Payment"));
+          
+        $this->_capture($charge->getId(), $isAuthAndCapture);
+        
+        break;
+      case 'authorised':
+        /* 
+         * Authorise Payment 
+         */   
+        $this->_logger->info($this->_helper->__("Authorise Payment"));
+
+        $this->_authorise($charge->getId());
+
+        break;
+      default:
+        # code...
+        break;
+    }
+    
+    return $charge;
+  }
+
+
   /**
    * Create quote in Zip side if not existed, and request for redirect url
    *
@@ -446,7 +440,7 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
     $this->_logger->debug("Charge Request:- ".$this->_helper->json_encode($request)); 
 
     $charge = $this->getApi()
-                     ->chargesCreate($request);
+                   ->chargesCreate($request);
     
     $this->_logger->debug("Charge Response:- ".$this->_helper->json_encode($charge));
     
@@ -479,7 +473,7 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
    * @return null
    * @throws Mage_Core_Exception
    */
-  public function refund($amount, $reason)
+  public function refundCharge($amount, $reason)
   {
     if (!$this->_order || !$this->_order->getId()) {      
       Mage::throwException($this->_helper->__('The order does not exist.'));
@@ -578,39 +572,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
   }
 
 
-
-
-  protected function _chargeResponse($charge, $isAuthAndCapture)
-  {
-
-    switch ($charge->getState()) {
-      case 'captured':
-        /* 
-         * Capture Payment 
-         */
-        $this->_logger->info($this->_helper->__("Capture Payment"));
-          
-        $this->_capture($charge->getId(), $isAuthAndCapture);
-        
-        break;
-      case 'authorised':
-        /* 
-         * Authorise Payment 
-         */   
-        $this->_logger->info($this->_helper->__("Authorise Payment"));
-
-        $this->_authorise($charge->getId());
-
-        break;
-      default:
-        # code...
-        break;
-    }
-    
-    return $charge;
-  }
-
-
   /**
    * Place the order and recurring payment profiles when customer returned from paypal
    * Until this moment all quote data must be valid
@@ -674,8 +635,8 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout{
       case Mage_Sales_Model_Order::STATE_PROCESSING:
       case Mage_Sales_Model_Order::STATE_COMPLETE:
       case Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW:
-          $order->queueNewOrderEmail();
-          break;
+        $order->queueNewOrderEmail();
+        break;
     }
     $this->_order = $order;
     return $order;

@@ -24,9 +24,13 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    */ 
 	protected $_quote;
 	/**
-   * @var Zipmoney_ZipmoneyPayment_Model_Standard_Checkout
+   * @var Zipmoney_ZipmoneyPayment_Model_Checkout
    */
   protected $_checkout;
+  /**
+   * @var Zipmoney_ZipmoneyPayment_Model_Charge
+   */
+  protected $_charge;
   /**
    * Instantiate config
    */
@@ -118,7 +122,7 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 			Mage::throwException($this->_helper->__('Unable to initialize the Checkout.'));
 		}
 
-		$this->_checkout = Mage::getModel($this->_checkoutType, array('quote'=>$quote,'api_class' => $this->_apiClass));
+		$this->_checkout = Mage::getModel($this->_checkoutModel, array('quote'=> $quote));
     
 		return $this->_checkout;
 	}
@@ -138,9 +142,9 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
       Mage::throwException($this->_helper->__('Unable to initialize the Checkout.'));
     }
 
-    $this->_checkout = Mage::getModel($this->_checkoutType, array('api_class' => $this->_apiClass));
+    $this->_charge = Mage::getModel($this->_chargeModel);
 
-    return $this->_checkout;
+    return $this->_charge;
   }
   
   /**

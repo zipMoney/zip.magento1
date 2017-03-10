@@ -211,12 +211,9 @@
                 <model>zipmoneypayment/payment</model>
                 <title>zipMoney - Buy Now, Pay Later</title>
                 <sort_order>0</sort_order>
-                <id></id>
-                <key></key>
                 <environment>sandbox</environment>
                 <payment_action>capture</payment_action>
                 <incontext_checkout>1</incontext_checkout>
-                <message>zipMoney</message>
             </zipmoneypayment>
 
             <zipmoney_widgets_configuration>
@@ -263,7 +260,6 @@
                 <log_level>7</log_level>
             </zipmoney_developer_settings>
 
-          
             <zipmoney_messages>
                 <group>zipmoneypayment</group>
                 <service_unavailable_heading>The service is unavailable</service_unavailable_heading>
@@ -271,7 +267,6 @@
                 <customer_error>Error</customer_error>
                 <referred_header>Your application has been referred</referred_header>
                 <referred_body>Your application is currently under review by zipMoney and will be processed very shortly.You can contact the customer care at customercare@zipmoney.com.au for any enquiries.</referred_body>
-
             </zipmoney_messages>
         </payment>
     </default>
