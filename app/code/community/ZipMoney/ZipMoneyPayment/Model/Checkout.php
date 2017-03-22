@@ -16,13 +16,13 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
    */
   protected $_redirectUrl = '';
   protected $_checkoutId = '';
-  
+
   /**
    * zipMoney Checkouts Api Class
    *
    * @var string
-   */  
-  protected $_apiClass = '\zipMoney\Client\Api\CheckoutsApi';
+   */
+  protected $_apiClass = '\zipMoney\Api\CheckoutsApi';
 
   const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
 
@@ -39,7 +39,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
       else{
         Mage::throwException('Quote instance is required.');
       }
-    } 
+    }
 
     $this->setApi($this->_apiClass);
 
@@ -61,7 +61,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
     if (!$this->_quote || !$this->_quote->getId()) {
       Mage::throwException(Mage::helper('zipmoneypayment')->__('The quote does not exist.'));
     }
-  
+
     if ($this->_quote->getIsMultiShipping()) {
       $this->_quote->setIsMultiShipping(false);
       $this->_quote->removeAllAddresses();
@@ -70,12 +70,12 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
     $checkoutMethod = $this->getCheckoutMethod();
     $isAllowedGuestCheckout = Mage::helper('checkout')->isAllowedGuestCheckout($this->_quote, $this->_quote->getStoreId());
     $isCustomerLoggedIn = $this->getCustomerSession()->isLoggedIn();
-    $this->_logger->debug("Checkout Method:- ".$checkoutMethod); 
-    $this->_logger->debug("Is Allowed Guest Checkout :- ".$isAllowedGuestCheckout); 
-    $this->_logger->debug("Is Customer Logged In :- ".$isCustomerLoggedIn); 
+    $this->_logger->debug("Checkout Method:- ".$checkoutMethod);
+    $this->_logger->debug("Is Allowed Guest Checkout :- ".$isAllowedGuestCheckout);
+    $this->_logger->debug("Is Customer Logged In :- ".$isCustomerLoggedIn);
 
-    if ((!$checkoutMethod || $checkoutMethod != Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER) && 
-      !$isAllowedGuestCheckout && 
+    if ((!$checkoutMethod || $checkoutMethod != Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER) &&
+      !$isAllowedGuestCheckout &&
       !$isCustomerLoggedIn) {
       Mage::throwException(Mage::helper('zipmoneypayment')->__('Please log in to proceed to checkout.'));
     }
@@ -87,26 +87,26 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
       Mage::throwException($this->_helper->__('Cannot process the order due to zero amount.'));
     }
 
-    $this->_quote->reserveOrderId()->save(); 
+    $this->_quote->reserveOrderId()->save();
 
     $request = $this->_payload->getCheckoutPayload($this->_quote);
 
-    $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request)); 
+    $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request));
 
-    $checkout = $this->getApi()->checkoutsCreate($request);           
+    $checkout = $this->getApi()->checkoutsCreate($request);
 
     $this->_logger->debug("Checkout Response:- ".$this->_helper->json_encode($checkout));
 
     if(isset($checkout->error)){
       Mage::throwException($this->_helper->__('Cannot get redirect URL from zipMoney.'));
-    } 
+    }
 
     $this->_checkoutId  = $checkout->getId();
-    
+
     $this->_quote->setZipmoneyCid($this->_checkoutId)
                  ->save();
 
-    $this->_redirectUrl = $checkout->getUri();  
+    $this->_redirectUrl = $checkout->getUri();
 
     return $checkout;
   }
@@ -115,11 +115,11 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
   public function getRedirectUrl()
   {
     return $this->_redirectUrl;
-  } 
+  }
 
   public function getCheckoutId()
   {
     return $this->_checkoutId;
-  } 
+  }
 
 }

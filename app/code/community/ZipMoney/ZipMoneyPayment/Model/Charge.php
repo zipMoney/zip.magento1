@@ -15,8 +15,8 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    * @var string
    */
   protected $_chargeResult = '';
-  
-  protected $_apiClass = '\zipMoney\Client\Api\ChargesApi';
+
+  protected $_apiClass = '\zipMoney\Api\ChargesApi';
 
   protected $_response = null;
 
@@ -26,13 +26,13 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    */
   public function __construct($params = array())
   {
-    if (isset($params['order'])) {      
+    if (isset($params['order'])) {
       if($params['order'] instanceof Mage_Sales_Model_Order){
         $this->_order = $params['order'];
       } else {
         Mage::throwException('Order instance is required.');
       }
-    }  
+    }
 
     if (isset($params['api_class'])) {
       if(class_exists($params['api_class'])){
@@ -41,7 +41,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
       } else {
         Mage::throwException("Invalid Api Class [ ".$params['api_class']." ]");
       }
-    } 
+    }
 
 
     $this->setApi($this->_apiClass);
@@ -66,7 +66,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   }
 
 
-  
+
   /**
    * Prepare quote for customer registration and customer order submit
    * and restore magento customer data from quote
@@ -78,11 +78,11 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $quote      = $this->_quote;
     $billing    = $quote->getBillingAddress();
     $shipping   = $quote->isVirtual() ? null : $quote->getShippingAddress();
-    
+
     $this->_logger->info($this->_helper->__('Creating new customer with email %s', $quote->getCustomerEmail()));
 
     $customerId = $this->_helper->lookupCustomerId($quote->getCustomerEmail());
-    if ($customerId) {            
+    if ($customerId) {
       $this->_logger->info($this->_helper->__('The email has already been used for customer (id: %s) ', $customerId));
       $this->getCustomerSession()->loginById($customerId);
       return $this->_prepareCustomerQuote();
@@ -132,7 +132,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $quote->setCustomer($customer);
 
     $this->_logger->debug($this->_helper->__('Customer password is %s ', ($customer->getPassword() ? 'not empty' : 'empty')));
-    
+
     $this->_logger->debug($this->_helper->__('Customer password_hash is %s ', ($customer->getPasswordHash() ? 'not empty' : 'empty')));
 
     $this->_logger->info($this->_helper->__('The new customer has been created successfully. Customer id: %s', $customer->getId()));
@@ -150,13 +150,13 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $quote      = $this->_quote;
     $billing    = $quote->getBillingAddress();
     $shipping   = $quote->isVirtual() ? null : $quote->getShippingAddress();
-    
 
-    if($this->getCustomerSession()->isLoggedIn()){        
+
+    if($this->getCustomerSession()->isLoggedIn()){
       $this->_logger->debug($this->_helper->__('Load customer from session.'));
-      $customer = $this->getCustomerSession()->getCustomer();    
+      $customer = $this->getCustomerSession()->getCustomer();
       $this->_logger->debug($this->_helper->__("Creating Order as Logged in Customer "));
-    } else {          
+    } else {
       $this->_logger->debug($this->_helper->__('Load customer from db.'));
       $customer = Mage::getSingleton("customer/customer")->load($quote->getCustomerId());
       $this->_logger->debug($this->_helper->__("Creating Order on behalf of Customer %s",$quote->getCustomerId()));
@@ -229,18 +229,18 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   protected function _verifyOrderState()
   {
     $currentState = $this->_order->getState();
-    
+
     if ($currentState != Mage_Sales_Model_Order::STATE_NEW) {
       Mage::throwException($this->_helper->__('Invalid order state.'));
     }
 
   }
-  
+
 
   protected function _checkTransactionExists($txnId)
   {
     $payment = $this->_order->getPayment();
-   
+
     if ($payment && $payment->getId()) {
       $transaction = $payment->getTransaction($txnId);
       if ($transaction && $transaction->getId()) {
@@ -265,7 +265,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $payment->setTransactionId($txnId)
             ->setIsTransactionClosed(0)
             ->registerAuthorizationNotification($amount);
-    
+
     $this->_logger->info($this->_helper->__("Payment Authorised"));
 
     $this->_order->setStatus(self::STATUS_MAGENTO_AUTHORIZED)
@@ -287,14 +287,14 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
       // Check if order has valid state and status
       $orderStatus = $this->_order->getStatus();
       $orderState = $this->_order->getState();
-      
-      if (($orderState != Mage_Sales_Model_Order::STATE_PROCESSING && 
+
+      if (($orderState != Mage_Sales_Model_Order::STATE_PROCESSING &&
            $orderState != Mage_Sales_Model_Order::STATE_PENDING_PAYMENT) ||
           ($orderStatus != self::STATUS_MAGENTO_AUTHORIZED)) {
         Mage::throwException($this->_helper->__('Invalid order state or status.'));
       }
 
-    } else {    
+    } else {
       // Check if order has valid state and status
       $this->_verifyOrderState();
     }
@@ -303,7 +303,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $this->_checkTransactionExists($txnId);
 
     $payment = $this->_order->getPayment();
-    
+
     $parentTxnId = null;
 
     /* If the capture has a corresponding authorisation before
@@ -326,9 +326,9 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     if (!$this->_order->canInvoice()) {
       Mage::throwException($this->_helper->__('Cannot create invoice for the order.'));
     }
-    
+
     $amount = $this->_order->getBaseTotalDue();
-    
+
     if($parentTxnId) {
       $payment->setParentTransactionId($parentTxnId);
       $payment->setShouldCloseParentTransaction(true);
@@ -339,14 +339,14 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
             ->setPreparedMessage('')
             ->setIsTransactionClosed(0)
             ->registerCaptureNotification($amount);
-    
+
     $this->_logger->info($this->_helper->__("Payment Captured"));
 
     $this->_order->save();
 
-    // Invoice 
+    // Invoice
     $invoice = $payment->getCreatedInvoice();
-    
+
     if ($invoice && !$this->_order->getEmailSent()) {
       $this->_order->sendNewOrderEmail()
                    ->addStatusHistoryComment($this->_helper->__('Notified customer about invoice #%s.', $invoice->getIncrementId()))
@@ -361,16 +361,16 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
     switch ($charge->getState()) {
       case 'captured':
-        /* 
-         * Capture Payment 
-         */          
+        /*
+         * Capture Payment
+         */
         $this->_capture($charge->getId(), $isAuthAndCapture);
-        
+
         break;
       case 'authorised':
-        /* 
-         * Authorise Payment 
-         */   
+        /*
+         * Authorise Payment
+         */
         $this->_authorise($charge->getId());
 
         break;
@@ -378,7 +378,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
         # code...
         break;
     }
-    
+
     return $charge;
   }
 
@@ -392,21 +392,21 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    */
   public function charge()
   {
-    if (!$this->_order || !$this->_order->getId()) {      
+    if (!$this->_order || !$this->_order->getId()) {
       Mage::throwException($this->_helper->__('The order does not exist.'));
     }
-    
+
     $payload = $this->_payload->getChargePayload($this->_order);
-    
-    $this->_logger->debug("Charge Payload:- ".$this->_helper->json_encode($payload)); 
+
+    $this->_logger->debug("Charge Payload:- ".$this->_helper->json_encode($payload));
 
     $idempotency_key = uniqid();
-    
+
     $charge = $this->getApi()
                    ->chargesCreate($payload,$idempotency_key);
-    
+
     $this->_logger->debug("Charge Response:- ".$this->_helper->json_encode($charge));
-    
+
     if(isset($response->error)){
       Mage::throwException($this->_helper->__('Could not create the charge'));
     }
@@ -414,7 +414,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     if(!$charge->getState() || !$charge->getId()){
       Mage::throwException($this->_helper->__('Invalid Charge'));
     }
-    
+
     $this->_logger->debug($this->_helper->__("Charge State:- %s",$charge->getState()));
 
     if($charge->getId()){
@@ -438,23 +438,23 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    */
   public function refundCharge($amount, $reason)
   {
-    if (!$this->_order || !$this->_order->getId()) {      
+    if (!$this->_order || !$this->_order->getId()) {
       Mage::throwException($this->_helper->__('The order does not exist.'));
     }
-    
-    if (!$amount) {      
+
+    if (!$amount) {
       Mage::throwException($this->_helper->__('Please provide the refund amount.'));
     }
-    
+
     $payload = $this->_payload->getRefundPayload($this->_order, $amount, $reason);
-    
-    $this->_logger->debug("Refund Payload:- " . $this->_helper->json_encode($payload)); 
+
+    $this->_logger->debug("Refund Payload:- " . $this->_helper->json_encode($payload));
 
     $refund = $this->getApi()
                    ->refundsCreate($payload);
-    
+
     $this->_logger->debug("Refund Response:- ".$this->_helper->json_encode($refund));
-    
+
     if(isset($response->error)){
       Mage::throwException($this->_helper->__('Could not create the refund'));
     }
@@ -474,19 +474,19 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    */
   public function captureCharge($amount)
   {
-    if (!$this->_order || !$this->_order->getId()) {      
+    if (!$this->_order || !$this->_order->getId()) {
       Mage::throwException($this->_helper->__('The order does not exist.'));
     }
-    
+
     $payload = $this->_payload->getCapturePayload($this->_order, $amount);
-    
-    $this->_logger->debug("Capture Charge Payload:- ".$this->_helper->json_encode($payload)); 
+
+    $this->_logger->debug("Capture Charge Payload:- ".$this->_helper->json_encode($payload));
 
     $charge = $this->getApi()
                    ->chargesCapture($this->_order->getPayment()->getZipmoneyChargeId(),$payload);
-    
+
     $this->_logger->debug("Capture Charge Response:- ".$this->_helper->json_encode($charge));
-    
+
     if(isset($response->error)){
       Mage::throwException($this->_helper->__('Could not capture the charge'));
     }
@@ -510,17 +510,17 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    */
   public function cancelCharge()
   {
-    if (!$this->_order || !$this->_order->getId()) {      
+    if (!$this->_order || !$this->_order->getId()) {
       Mage::throwException($this->_helper->__('The order does not exist.'));
     }
-    
-    $this->_logger->debug("Cancel Charge For Order:- ".$this->_order->getId()); 
+
+    $this->_logger->debug("Cancel Charge For Order:- ".$this->_order->getId());
 
     $charge = $this->getApi()
                    ->chargesCancel($this->_order->getPayment()->getZipmoneyChargeId());
-    
+
     $this->_logger->debug("Cancel Charge Response:- ".$this->_helper->json_encode($charge));
-    
+
     if(isset($response->error)){
       Mage::throwException($this->_helper->__('Could not cancel the charge'));
     }
@@ -542,8 +542,8 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    * @param string $shippingMethodCode
    */
   public function placeOrder()
-  {    
-    // $order = Mage::getSingleton("sales/order")->loadByIncrementId("145000246");    
+  {
+    // $order = Mage::getSingleton("sales/order")->loadByIncrementId("145000246");
     // $this->_order = $order;
     // return $order;
     $checkoutMethod = $this->getCheckoutMethod();
@@ -551,8 +551,8 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $this->_logger->debug(
       $this->_helper->__('Quote Grand Total:- %s Quote Customer Id:- %s Checkout Method:- %s', $this->_quote->getGrandTotal(),$this->_quote->getCustomerId(),$checkoutMethod)
     );
-    
-    
+
+
     $isNewCustomer = false;
     switch ($checkoutMethod) {
       case Mage_Checkout_Model_Type_Onepage::METHOD_GUEST:
@@ -585,7 +585,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     if (!$order) {
       $this->_logger->info($this->_helper->__('Couldnot place the order'));
       return false;
-    } 
+    }
 
     $this->_logger->info($this->_helper->__('Successfull to place the order'));
 
@@ -602,5 +602,5 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $this->_order = $order;
     return $order;
   }
-  
+
 }

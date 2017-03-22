@@ -23,7 +23,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
   protected $_helper;
 
   protected $_payload;
-  
+
   /**
    * @var Mage_Customer_Model_Session
    */
@@ -31,7 +31,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
 
   private $_apiClass = null;
 
-  
+
   const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
 
   /**
@@ -41,16 +41,16 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
   public function __construct($params = array())
   {
     $this->_customerSession = isset($params['session']) && $params['session'] instanceof Mage_Customer_Model_Session
-            ? $params['session'] : Mage::getSingleton('customer/session'); 
+            ? $params['session'] : Mage::getSingleton('customer/session');
 
     $this->_config = Mage::getSingleton('zipmoneypayment/config');
 
-    $this->_helper = Mage::helper("zipmoneypayment");   
-    
+    $this->_helper = Mage::helper("zipmoneypayment");
+
     $this->_logger = Mage::getSingleton('zipmoneypayment/logger');
 
     $this->_payload = Mage::helper('zipmoneypayment/payload');
-    
+
     \zipMoney\Configuration::getDefaultConfiguration()->setApiKey('Authorization', "Bearer ".$this->_config->getMerchantPrivateKey());
     \zipMoney\Configuration::getDefaultConfiguration()->setEnvironment($this->_config->getEnvironment());
   }
@@ -94,24 +94,24 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
    * @return Mage_Customer_Model_Session
    */
   public function getCustomerSession()
-  {    
+  {
     return $this->_customerSession;
   }
 
   public function getRedirectUrl()
   {
     return $this->_redirectUrl;
-  } 
+  }
 
   public function getCheckoutId()
   {
     return $this->_checkoutId;
-  } 
+  }
 
   public function getCharge()
   {
     return $this->_charge;
-  } 
+  }
 
   public function getApi()
   {
@@ -143,7 +143,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
   {
     if ($quote) {
       $this->_quote = $quote;
-    }    
+    }
     return $this;
   }
 

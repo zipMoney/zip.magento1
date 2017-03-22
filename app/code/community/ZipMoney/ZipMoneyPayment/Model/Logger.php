@@ -72,15 +72,15 @@ class Zipmoney_ZipmoneyPayment_Model_Logger extends Mage_Core_Helper_Abstract
 
 		// errors are always logged.
 		if ($configLevel < 3) {
-				$configLevel = Zend_log::INFO; // default log level
+				$configLevel = Zend_log::DEBUG; // default log level
 		}
 
 		$file = $this->getLogFile($storeId);
-		
+
 		if ($level > $configLevel) {
 				return;
 		}
-		
+
 		Mage::log($message, $level, $file);
 	}
 
@@ -88,18 +88,18 @@ class Zipmoney_ZipmoneyPayment_Model_Logger extends Mage_Core_Helper_Abstract
 	public function debug($message, $storeId = null)
 	{
 		$this->log($message, Zend_log::DEBUG, $storeId);
-	}	
+	}
 
 	public function info($message, $storeId = null)
 	{
 		$this->log($message, Zend_log::INFO, $storeId);
-	}	
+	}
 
 	public function warn($message, $storeId = null)
 	{
 		$this->log($message, Zend_log::WARN, $storeId);
 	}
-	
+
 	public function notice($message, $storeId = null)
 	{
 		$this->log($message, Zend_log::NOTICE, $storeId);
