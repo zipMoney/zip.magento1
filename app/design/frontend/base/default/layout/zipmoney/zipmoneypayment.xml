@@ -12,128 +12,135 @@
         </reference>
     </zipmoneypayment_index_landingpage>
     
-<!-- 
     <cms_index_index>
         <reference name="head">
             <action method="addCss">
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
-        </reference>
-        <reference name="top.menu">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.top" as="zipmoneypayment.widget.top" translate="label" template="zipmoney/zipmoneypayment/widget/top.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
-        </reference>
-        <reference name="content">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.content" as="zipmoneypayment.widget.content"
-                   translate="label" template="zipmoney/zipmoneypayment/widget/topresponsive.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
-        </reference>
-    </cms_index_index> -->
-
-    <!-- <checkout_cart_index>	
-        <reference name="head">
-            <action method="addCss"><stylesheet>zipmoney/css/style.css</stylesheet></action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="zipmoney-iframe-checkout">
-                <action method="setText" ifconfig="payment/zipmoney_express_checkout/iframe_checkout_active">
-                    <text helper="zipmoneypayment/getIframeLibUrl"/>
+            <action method="addItem"><type>js_css</type><name>zipmoney/css/style.css</name></action>
+            <block type="core/text" name="jquery">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
-            </block>
+            </block>    
         </reference>
 
-        <reference name="checkout.cart.methods">
-            <block type="zipmoneypayment/checkout_cart_widgetgeneralabove"  before="checkout.cart.totals"  name="zipmoneypayment.cart.widget.general_above" />
-        </reference>
-        <reference name="checkout.cart.methods">
-            <block type="zipmoneypayment/checkout_cart_widgetspecificabove" before="checkout.cart.totals" name="zipmoneypayment.cart.widget.specific_above" />
-        </reference>
-
-        <reference name="checkout.cart.methods">
-            <block type="zipmoneypayment/checkout_cart_repaymentCalculator" before="checkout.cart.totals"  name="zipmoneypayment.cart.widget.repaymentcalculator" />
-        </reference> 
-
-        <reference name="checkout.cart.methods">
-            <block type="zipmoneypayment/checkout_cart_widgetgeneralbelow"  after="checkout.cart.totals"  name="zipmoneypayment.cart.widget.general_below" />
-        </reference>
-
-        <reference name="checkout.cart.methods">
-            <block type="zipmoneypayment/checkout_cart_widgetspecificbelow" after="checkout.cart.totals" name="zipmoneypayment.cart.widget.specific_below" />
-        </reference>
-        <reference name="top.menu">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.top" as="zipmoneypayment.widget.top" translate="label" template="zipmoney/zipmoneypayment/widget/top.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
-        </reference>
         <reference name="content">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.content" as="zipmoneypayment.widget.content"
-                   translate="label" template="zipmoney/zipmoneypayment/widget/topresponsive.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
+        </reference>   
+
+        <reference name="top.menu">
+            <block type="zipmoneypayment/advert_banner" name="zipmoneypayment.advert.banner" translate="label" template="zipmoney/zipmoneypayment/advert/banner.phtml" />
         </reference>
+    </cms_index_index>
+
+     <checkout_cart_index>	
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>zipmoney/css/style.css</stylesheet>
+            </action>
+            <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
+            <action method="addItem"><type>js_css</type><name>zipmoney/css/style.css</name></action>
+            <block type="core/text" name="jquery">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>    
+        </reference>
+  
+        <reference name="checkout.cart.methods">
+            <block type="zipmoneypayment/advert_tagline" name="zipmoneypayment.advert.tagline" template="zipmoney/zipmoneypayment/advert/tagline.phtml" />
+            <block type="zipmoneypayment/advert_widget" name="zipmoneypayment.advert.widget" template="zipmoney/zipmoneypayment/advert/widget.phtml" after="-" />
+        </reference>
+
+        <reference name="top.menu">
+            <block type="zipmoneypayment/advert_banner" name="zipmoneypayment.advert.banner" translate="label" template="zipmoney/zipmoneypayment/advert/banner.phtml" />
+        </reference>
+
+        <reference name="content">
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"></block>
+        </reference>    
     </checkout_cart_index>
+ 
 
     <catalog_product_view>
         <reference name="head">
-            <action method="addCss"><stylesheet>zipmoney/css/style.css</stylesheet></action>
+            <action method="addCss">
+                <stylesheet>zipmoney/css/style.css</stylesheet>
+            </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <action method="addJs" ifconfig="payment/zipmoney_express_checkout/iframe_checkout_active" ><script>zipmoney/iframeCheckout.js</script></action>
-            <block type="core/text" name="zipmoney-iframe-checkout">
-                <action method="setText" ifconfig="payment/zipmoney_express_checkout/iframe_checkout_active">
-                        <text helper="zipmoneypayment/getIframeLibUrl"/>
+            <action method="addItem"><type>js_css</type><name>zipmoney/css/style.css</name></action>
+            <block type="core/text" name="jquery">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
-            </block>
+            </block>    
         </reference>
-
+  
         <reference name="product.info.extrahint">
-            <block type="zipmoneypayment/catalog_product_repaymentCalculator" name="product.info.zipmoneypayment.repaymentcalculator" />
-
-            <block type="zipmoneypayment/catalog_product_widgetgeneral" name="product.info.zipmoneypayment.widgetgeneral" as="zipmoneypayment.widgetgeneral">
-                <action method="addToParentGroup">
-                    <group>detailed_info</group>
-                </action>
-            </block>
-            <block type="zipmoneypayment/catalog_product_widgetspecific" name="product.info.zipmoneypayment.widgetspecific" as="zipmoneypayment.widgetspecific">
-                <action method="addToParentGroup">
-                    <group>detailed_info</group>
-                </action>
-            </block>
+            <block type="zipmoneypayment/advert_tagline" name="zipmoneypayment.advert.tagline" template="zipmoney/zipmoneypayment/advert/tagline.phtml" />
         </reference>
         
         <reference name="product.info.addtocart">
-            <block type="page/html_wrapper" name="product.info.addtocart.widgetaddtocartgeneral" translate="label">
-                <label>zipMoney Payment</label>
-                <block type="zipmoneypayment/catalog_product_widgetaddtocartgeneral" name="product.info.addtocart.zipmoneypayment.widgetaddtocartgeneral">
-                    <action method="setIsInCatalogProduct">
-                        <value>1</value>
-                    </action>
-                </block>
-            </block>
+            <block type="zipmoneypayment/advert_widget" name="zipmoneypayment.advert.widget" template="zipmoney/zipmoneypayment/advert/widget.phtml" />
         </reference>
-        <reference name="product.info.addtocart">
-            <block type="page/html_wrapper" name="product.info.addtocart.widgetaddtocartspecific" translate="label">
-                <label>zipMoney Payment</label>
-                <block type="zipmoneypayment/catalog_product_widgetaddtocartspecific" name="product.info.addtocart.zipmoneypayment.widgetaddtocartspecific">
-                    <action method="setIsInCatalogProduct">
-                        <value>1</value>
-                    </action>
-                </block>
-            </block>
-        </reference>
+
         <reference name="top.menu">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.top" as="zipmoneypayment.widget.top" translate="label" template="zipmoney/zipmoneypayment/widget/top.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
+            <block type="zipmoneypayment/advert_banner" name="zipmoneypayment.advert.banner" translate="label" template="zipmoney/zipmoneypayment/advert/banner.phtml" />
         </reference>
+
         <reference name="content">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.content" as="zipmoneypayment.widget.content"
-                   translate="label" template="zipmoney/zipmoneypayment/widget/topresponsive.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
-        </reference>
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"></block>
+        </reference>    
     </catalog_product_view>
- -->
+
+
+    <catalog_category_default>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>zipmoney/css/style.css</stylesheet>
+            </action>
+            <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
+            <action method="addItem"><type>js_css</type><name>zipmoney/css/style.css</name></action>
+            <block type="core/text" name="jquery">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>    
+        </reference>
+
+        <reference name="top.menu">
+            <block type="zipmoneypayment/advert_banner" name="zipmoneypayment.advert.banner" translate="label" template="zipmoney/zipmoneypayment/advert/banner.phtml" />
+        </reference>
+
+        <reference name="content">
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"></block>
+        </reference>    
+    </catalog_category_default>
+   
+    <catalog_category_layered>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>zipmoney/css/style.css</stylesheet>
+            </action>
+            <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
+            <action method="addItem"><type>js_css</type><name>zipmoney/css/style.css</name></action>
+            <block type="core/text" name="jquery">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>    
+        </reference>
+
+        <reference name="top.menu">
+            <block type="zipmoneypayment/advert_banner" name="zipmoneypayment.advert.banner" translate="label" template="zipmoney/zipmoneypayment/advert/banner.phtml" />
+        </reference>
+
+        <reference name="content">
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"></block>
+        </reference>    
+    </catalog_category_layered>
    
    <!-- Onepage Checkout -->
     <checkout_onepage_index>
@@ -383,40 +390,4 @@
                    template="zipmoney/zipmoneypayment/error.phtml"/>
         </reference>
     </zipmoneypayment_standard_error>
-
-    <catalog_category_default>
-        <reference name="head">
-            <action method="addCss"><stylesheet>zipmoney/css/style.css</stylesheet></action>
-            <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-        </reference>
-        <reference name="top.menu">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.top" as="zipmoneypayment.widget.top" translate="label" template="zipmoney/zipmoneypayment/widget/top.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
-        </reference>
-        <reference name="content">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.content" as="zipmoneypayment.widget.content"
-                   translate="label" template="zipmoney/zipmoneypayment/widget/topresponsive.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
-        </reference>
-    </catalog_category_default>
-   
-    <catalog_category_layered>
-        <reference name="head">
-            <action method="addCss"><stylesheet>zipmoney/css/style.css</stylesheet></action>
-            <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-        </reference>
-        <reference name="top.menu">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.top" as="zipmoneypayment.widget.top" translate="label" template="zipmoney/zipmoneypayment/widget/top.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
-        </reference>
-        <reference name="content">
-            <block type="zipmoneypayment/widget_top" name="zipmoneypayment.widget.content" as="zipmoneypayment.widget.content"
-                   translate="label" template="zipmoney/zipmoneypayment/widget/topresponsive.phtml">
-                <label>zipMoney Marketing Widget Top</label>
-            </block>
-        </reference>
-    </catalog_category_layered>
 </layout> 

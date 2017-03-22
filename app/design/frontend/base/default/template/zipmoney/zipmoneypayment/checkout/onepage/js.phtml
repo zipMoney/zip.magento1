@@ -19,7 +19,7 @@ zipMoneyCheckout.prototype = {
         Zip.Checkout.attachButton("#place-order",{
           redirect: <?php echo $this->isRedirect(); ?>,
           checkoutUri:'<?php echo $this->getCheckoutUrl(); ?>',
-          completeUri:'<?php echo $this->getCompleteUrl(); ?>',
+          redirectUrl:'<?php echo $this->getRedirectUrl(); ?>',
         });
       }
     } 

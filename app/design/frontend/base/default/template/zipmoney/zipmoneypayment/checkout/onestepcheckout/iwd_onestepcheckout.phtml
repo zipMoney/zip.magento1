@@ -9,7 +9,7 @@ Event.observe(window,'load', function() {
       baseUrl:'<?php echo Mage::getBaseUrl(); ?>',
       loaderImageUrl:'<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif'); ?>',
       checkoutUri:'<?php echo $this->getCheckoutUrl(); ?>',
-      completeUri:'<?php echo $this->getCompleteUrl(); ?>',
+      redirectUrl:'<?php echo $this->getRedirectUrl(); ?>',
     });
   }
 });

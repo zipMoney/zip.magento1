@@ -16,7 +16,7 @@ use \zipMoney\Model\ShopperStatistics;
 use \zipMoney\Model\Metadata;
 use \zipMoney\Model\CheckoutConfiguration;
 
-class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_Helper_Abstract
+class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_Helper_Abstract
 {
   /**
    * @var Mage_Customer_Model_Session
@@ -54,7 +54,6 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
 
   public function setOrder($order)
   { 
-
     if($order){
       $this->_quote = null;
       $this->_order = $order;
@@ -70,22 +69,24 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
     return null;
   }
 
-  public function prepareCheckout($quote)
+  public function getCheckoutPayload($quote)
   {
     $checkoutReq = new CheckoutRequest();
 
     $this->setQuote($quote);
 
-    $checkoutReq->setShopper($this->getShopper())
+    $checkoutReq->setType("standard")
+                ->setShopper($this->getShopper())
                 ->setOrder($this->getOrderDetails(new CheckoutOrder))
                 ->setMetadata($this->getMetadata())
                 ->setConfig($this->getCheckoutConfiguration());
 
+              
     return $checkoutReq;
   }
 
 
-  public function prepareCharge($order)
+  public function getChargePayload($order)
   {
     $chargeReq = new ChargeRequest();
 
@@ -106,7 +107,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
     return $chargeReq;
   }
 
-  public function prepareRefund($order, $amount, $reason )
+  public function getRefundPayload($order, $amount, $reason )
   {
     $chargeReq = new RefundRequest();
 
@@ -123,7 +124,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
   }
 
 
-  public function prepareCaptureCharge($order, $amount)
+  public function getCapturePayload($order, $amount)
   {
     $captureChargeReq = new CaptureChargeRequest();
 
@@ -137,7 +138,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
   }
 
 
-  public function prepareCaptureCancel($order, $amount)
+  public function getCaptureCancelPayload($order, $amount)
   {
     $captureChargeReq = new CaptureChargeRequest();
 
@@ -152,21 +153,20 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
   public function getShopper()
   {
     $customer = null;
-    $shopper = new Shopper;
 
     if($quote = $this->getQuote()){
       $checkoutMethod = $quote->getCheckoutMethod();
 
       if ($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER || 
           $checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST) {
-        $shopper = $this->getOrderOrQuoteCustomer($shopper, $quote);// get shopper data from quote
+        $shopper = $this->getOrderOrQuoteCustomer(new Shopper, $quote);// get shopper data from quote
       } else {
         $customer = Mage::getModel('customer/customer')->load($quote->getCustomerId()); // load customer from database 
       }
       $billing_address = $quote->getBillingAddress();
     } else if($order = $this->getOrder()){
       if ($order->getCustomerIsGuest()) {
-        $shopper = $this->getOrderOrQuoteCustomer($shopper, $order);// get shopper data from order
+        $shopper = $this->getOrderOrQuoteCustomer(new Shopper, $order);// get shopper data from order
       } else {
         $customer = Mage::getModel('customer/customer')->load($order->getCustomerId()); // load customer from database 
       }  
@@ -175,8 +175,8 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
       return null;
     }
 
-    if(!$shopper && $customer->getId()) {
-      $shopper = $this->getCustomer($shopper, $customer);
+    if(!isset($shopper) && $customer->getId()) {
+      $shopper = $this->getCustomer(new Shopper, $customer);
     }
 
     if($billing_address){
@@ -279,10 +279,13 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
     if(isset($currency) && $quote)
        $reqOrder->setCurrency($currency);
 
+    if($cart_reference)
+     $reqOrder->setCartReference((string)$cart_reference);
+
     $reqOrder->setReference($reference)
-            ->setCartReference((string)$cart_reference)
             ->setShipping($this->getShippingDetails())
             ->setItems($orderItems);
+
 
     return $reqOrder;      
   }
@@ -415,11 +418,12 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
   public function getCustomer($shopper, $customer)
   {
     if(!$customer || !$customer->getId()) {
-       return null;
+      return null;
     }
 
     $logCustomer = Mage::getModel('log/customer')->loadByCustomer($customer);
     $customerData = Array();
+
 
     if(Mage::helper('customer')->isLoggedIn() || $customer->getId()) {
         // get customer merchant history
@@ -439,18 +443,19 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
       $chargeBackBefore              = false;    // any payments that have been charged back by their bank or card provider.
                                                 //  A charge back is when a customer has said they did not make the payment, and the bank forces a refund of the amount
       foreach ($orderCollection AS $order) {
-          if ($order->getState() == Mage_Sales_Model_Order::STATE_COMPLETE) {
-              $orderNum++;
-              $lifetimeSalesAmount += $order->getGrandTotal();
-              if ($oOrder->getGrandTotal() > $maximumSaleValue) {
-                  $maximumSaleValue = $order->getGrandTotal();
-              }
-          } else if ($order->getState() == Mage_Sales_Model_Order::STATE_CLOSED) {
-              $lifetimeSalesRefundedAmount += $order->getGrandTotal();
-          }
+        if ($order->getState() == Mage_Sales_Model_Order::STATE_COMPLETE) {
+            $orderNum++;
+            $lifetimeSalesAmount += $order->getGrandTotal();
+            if ($oOrder->getGrandTotal() > $maximumSaleValue) {
+                $maximumSaleValue = $order->getGrandTotal();
+            }
+        } else if ($order->getState() == Mage_Sales_Model_Order::STATE_CLOSED) {
+            $lifetimeSalesRefundedAmount += $order->getGrandTotal();
+        }
       }
+
       if ($orderNum > 0) {
-          $averageSaleValue = (float)round($lifetimeSalesAmount / $orderNum, 2);
+        $averageSaleValue = (float)round($lifetimeSalesAmount / $orderNum, 2);
       }
 
       if ($customer->getGender()) {
@@ -458,7 +463,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
       }
 
       if ($customer->getDob()) {
-        $shopper->setDob($customer->getDob());
+        $shopper->setBirthDate($customer->getDob());
       }
 
       foreach ($customer->getAddresses() as $address) {
@@ -484,8 +489,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
                ->setSalesMaxAmount($maximumSaleValue)
                ->setRefundsTotalAmount($lifetimeSalesRefundedAmount)
                ->setPreviousChargeback($chargeBackBefore)
-               ->setCurrency("AUD");
-      
+               ->setCurrency(Mage::app()->getStore()->getCurrentCurrencyCode());
 
       if ($logCustomer->getLoginAtTimestamp()) {
         $statistics->setLastLogin(date('Y-m-d H:i:s', $logCustomer->getLoginAtTimestamp()));
@@ -529,6 +533,9 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
       $reqAddress->setCountry($address->getCountryId());
       $reqAddress->setPostalCode($address->getPostcode());
       $reqAddress->setCity($address->getCity());
+
+      // $this->_logger->debug($address->getRegion());
+
       /**
        * If region_id is null, the state is saved in region directly, so the state can be got from region.
        * If region_id is a valid id, the state should be got by getRegionCode.
@@ -544,6 +551,15 @@ class Zipmoney_ZipmoneyPayment_Helper_Request extends Zipmoney_ZipmoneyPayment_H
     return null;
   }
 
+
+  protected function _getGenderText($gender)
+  {
+      $genderText = Mage::getModel('customer/customer')->getResource()
+          ->getAttribute('gender')
+          ->getSource()
+          ->getOptionText($gender);
+      return $genderText;
+  }
 
   public function getChildProduct($item)
   {

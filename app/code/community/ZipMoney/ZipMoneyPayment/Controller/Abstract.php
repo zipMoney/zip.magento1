@@ -42,16 +42,7 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 		$this->_helper = Mage::helper('zipmoneypayment');
 	}
 
-	/**
-	 * Get checkout session model instance
-	 *
-	 * @return Mage_Checkout_Model_Session
-	 */
-	protected function _getSession()
-	{
-			return Mage::getSingleton('checkout/session');
-	}
-
+	
 	/**
 	 * Return checkout session object
 	 *
@@ -61,6 +52,16 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 	{
 			return Mage::getSingleton('checkout/session');
 	}
+
+  /**
+   * Get customer session object
+   *
+   * @return Mage_Customer_Model_Session
+   */
+  protected function _getCustomerSession()
+  {
+    return Mage::getSingleton('customer/session');
+  }
 
 
 	/**
@@ -137,13 +138,15 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
   {
     $quote = $this->_getQuote();
 
+    if(!$quote->getId()){
+      Mage::throwException($this->_helper->__('Quote doesnot exist'));
+    }
+
     if (!$quote->hasItems() || $quote->getHasError()) {
-      $this->getResponse()->setHeader('HTTP/1.1','403 Forbidden');
-      Mage::throwException($this->_helper->__('Unable to initialize the Checkout.'));
+      Mage::throwException($this->_helper->__('Quote has error or no items.'));
     }
 
     $this->_charge = Mage::getModel($this->_chargeModel);
-
     return $this->_charge;
   }
   
@@ -173,39 +176,30 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     return true;
   }
 
-  /**
-   * Checks if the Checkout Id passed in the query string is valid
-   *
-   * @return boolean
-   */
-  protected function _isCheckoutIdValid()
-  {
-    if(!$this->getRequest()->getParam('checkout_id')){
-      $this->_logger->error($this->_helper->__("Could not find the checkout id in the querystring"));
-      return true;
-    }
-    return true;
-  }
-
+  
   /**
    * Checks if the Session Quote is valid, if not use the db quote.
    *
    * @return boolean
    */
-  protected function _verifyQuote()
+  protected function _retrieveQuote($forceRetrieveDbQuote=false)
   {
-    $sessionQuote = $this->_getQuote();
-    $zipMoneyCid = $this->getRequest()->getParam('checkout_id');
+    $sessionQuote = $this->_getCheckoutSession()->getQuote();
+    $zipMoneyCid  = $this->getRequest()->getParam('checkoutId');
     $use_db_quote = false;
 
+    // Return Session Quote
     if(!$sessionQuote){
       $this->_logger->error($this->_helper->__("Session Quote doesnot exist."));
       $use_db_quote = true;
     } else if($sessionQuote->getZipmoneyCid() != $zipMoneyCid){      
       $this->_logger->error($this->_helper->__("Checkout Id doesnot match with the session quote."));      
       $use_db_quote = true;
-    } 
+    } else {
+      return $sessionQuote;
+    }
 
+    //Retrurn DB Quote
     if($use_db_quote){
       $dbQuote = $this->_getDbQuote($zipMoneyCid);
       if(!$dbQuote){
@@ -214,34 +208,78 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
       } else {
         $this->_logger->info($this->_helper->__("Loading DB Quote"));
       }
-      $this->_setQuote($dbQuote);
+      return $dbQuote;
     }
-    return true;
   }
 
-  /**
-   * Redirects to the cart page.
-   *
-   * @return boolean
-   */
-  public function declinedAction()
+
+  protected function _verifyCustomerForQuote($quote)
   {    
-    $this->_logger->debug($this->_helper->__('Calling declinedAction'));
+    $currentCustomer = null;
+    $customerSession =  $this->_getCustomerSession(); 
 
-    $this->_redirect('checkout/cart');
+    // Get quote customer id
+    $quoteCustomerId = $quote->getCustomerId();
+    
+    // Get current logged in customer 
+    if ($customerSession->isLoggedIn()) {
+      $currentCustomer = $customerSession->getCustomer();
+    }      
+
+    $this->_logger->debug(
+      $this->_helper->__("Current Customer Id:- %s Quote Customer Id:- %s Quote checkout method:- %s", 
+        $customerSession->getId(),$quoteCustomerId, $quote->getCheckoutMethod())
+    );
+    
+    $log_in = false;
+    
+    if(isset($currentCustomer)) {
+      if( $currentCustomer->getId() != $quoteCustomerId ){
+        $customerSession->logout(); // Logout the logged in customer   
+        $customerSession->renewSession();         
+        //$log_in = true;
+      } 
+    } 
+    // else if($quoteCustomerId){
+    //   $log_in = true;
+    // }
+    
+    // if($quote->getCheckoutMethod() == Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER){
+    //   $quoteCustomerId = $this->_helper->lookupCustomerId($quote->getCustomerEmail());
+    // }
+    
+    // if($quote->getCheckoutMethod() != Mage_Checkout_Model_Type_Onepage::METHOD_GUEST && $log_in){
+    //   // if(!$customerSession->loginById($quoteCustomerId)){
+    //   //   Mage::throwException("Could not login");
+    //   // }
+    // } 
   }
 
-  /**
-   * Redirects to the cart page.
-   *
-   * @return boolean
-   */
-  public function cancelledAction()
-  {    
-    $this->_logger->debug($this->_helper->__('Calling cancelledAction'));
 
-    $this->_redirect('checkout/cart');
+  public function _setCustomerQuote()
+  {
+    // Retrieve a valid quote
+    if($quote = $this->_retrieveQuote()){
+      
+      // Verify that the customer is a valid customer of the quote
+      $this->_verifyCustomerForQuote($quote);
+      /* Set the session quote if required. 
+         Needs to be done after verifying the current customer */
+      if($this->_getCheckoutSession()->getQuoteId() != $quote->getId()){
+        $this->_logger->debug($this->_helper->__("Setting quote to current session"));      
+        // Set the quote in the current object
+        $this->_setQuote($quote);
+        // Set the quote in the session
+        $this->_getCheckoutSession()->setQuoteId($quote->getId());
+      }
+
+      // Make sure the qoute is active
+      $this->_helper->activateQuote($quote);
+    } else {
+      Mage::throwException("Could not retrieve the quote");
+    }
   }
+
 
   /**
    * Redirects to the referred page.
@@ -265,6 +303,11 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
       $this->_getCheckoutSession()->addError($this->__('An error occurred during redirecting to referred page.'));
     }
 
+  }
+
+  public function _redirectToCart()
+  {
+    $this->_redirect("checkout/cart");
   }
   
   /**

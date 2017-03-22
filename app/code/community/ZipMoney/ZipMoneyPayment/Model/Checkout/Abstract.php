@@ -16,11 +16,13 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
 
   protected $_api;
 
+  protected $_config;
+
   protected $_response;
 
   protected $_helper;
 
-  protected $_payloadHelper;
+  protected $_payload;
   
   /**
    * @var Mage_Customer_Model_Session
@@ -40,16 +42,17 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
   {
     $this->_customerSession = isset($params['session']) && $params['session'] instanceof Mage_Customer_Model_Session
             ? $params['session'] : Mage::getSingleton('customer/session'); 
-  
+
+    $this->_config = Mage::getSingleton('zipmoneypayment/config');
+
     $this->_helper = Mage::helper("zipmoneypayment");   
     
     $this->_logger = Mage::getSingleton('zipmoneypayment/logger');
-    
-    $merchant_private_key  = Mage::getSingleton('zipmoneypayment/config')->getMerchantPrivateKey();
-    $environment  = Mage::getSingleton('zipmoneypayment/config')->getEnvironment();
 
-    \zipMoney\Configuration::getDefaultConfiguration()->setApiKey('Authorization', "Bearer ".$merchant_private_key);
-    \zipMoney\Configuration::getDefaultConfiguration()->setEnvironment($environment);
+    $this->_payload = Mage::helper('zipmoneypayment/payload');
+    
+    \zipMoney\Configuration::getDefaultConfiguration()->setApiKey('Authorization', "Bearer ".$this->_config->getMerchantPrivateKey());
+    \zipMoney\Configuration::getDefaultConfiguration()->setEnvironment($this->_config->getEnvironment());
   }
 
   /**
@@ -91,7 +94,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
    * @return Mage_Customer_Model_Session
    */
   public function getCustomerSession()
-  {
+  {    
     return $this->_customerSession;
   }
 

@@ -16,7 +16,8 @@
      <h1><?php echo $this->getHeadText(); ?></h1>
 </div>
 
-<div class="zip-error-message">
+<div class="zip-error-message">                    
+    <?php echo $this->getChildHtml('global_messages') ?>
     <img style="float: right; padding-right: 17px; padding-top: 5px;  width: 150px;" src="<?php echo $this->getZipLogoImageUrl(); ?>" />
     <p><strong><?php echo $this->getErrorTypeText();?></strong></p>
     <p><?php echo $this->getBodyText(); ?></p>

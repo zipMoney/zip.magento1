@@ -18,7 +18,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <sort_order>10</sort_order>
-                            <frontend_model>zipmoneypayment/adminhtml_system_config_fieldset_expanded</frontend_model>
                             <fields>
                                 <active translate="label">
                                     <label>Enabled</label>
@@ -50,7 +49,7 @@
                                 </private_key>
                                 <public_key>
                                     <label>Public Key</label>
-                                    <tooltip>Enter the zipMoney Merchant Public  Key provided to you on setup of your Merchant Account. Note: may be different for 'Test' or 'Live' environment</tooltip>
+                                    <tooltip>Enter the zipMoney Merchant Public  Key provided to you on setup of your Merchant Account. Note: may be different for 'Sandbox' or 'Live' environment</tooltip>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>30</sort_order>
                                     <show_in_default>1</show_in_default>
@@ -61,12 +60,22 @@
                                     <label>Environment</label>
                                     <tooltip>Set to 'Live' to start accepting zipMoney payments on your website. Ensure your zipMoney ID and zipMoney Key are your 'Live' credentials if not in 'Test' mode</tooltip>
                                     <frontend_type>select</frontend_type>
-                                    <source_model>zipmoneypayment/source_enviroment</source_model>
+                                    <source_model>zipmoneypayment/source_environment</source_model>
                                     <sort_order>40</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
                                 </environment>
+                                <product translate="label">
+                                    <label>Product</label>
+                                    <tooltip>zipPay/zipMoney</tooltip>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>zipmoneypayment/source_product</source_model>
+                                    <sort_order>40</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                </product>
                                 <payment_action translate="label">
                                     <label>Payment Action</label>
                                     <tooltip></tooltip>
@@ -97,30 +106,66 @@
                                     <show_in_store>0</show_in_store>
                                     <frontend_class>validate-number</frontend_class>
                                 </sort_order>
+                                <minimum_total translate="label">
+                                    <label>Minimum Order Total</label>
+                                    <tooltip>The minimum order total amount required to checkout</tooltip>
+                                    <frontend_type>text</frontend_type>
+                                    <sort_order>80</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                    <frontend_class>validate-number</frontend_class>
+                                </minimum_total>
+                                <maximum_total translate="label">
+                                    <label>Maximum Order Total</label>
+                                    <tooltip>The maximum order total amount required to checkout</tooltip>
+                                    <frontend_type>text</frontend_type>
+                                    <sort_order>90</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                    <frontend_class>validate-number</frontend_class>
+                                </maximum_total>
+                                <order_total_outside_threshold_action translate="label">
+                                    <label>When order total is outside the threshold</label>
+                                    <tooltip>Hide Payment Option / Display Notice if the order total is outside the minimum/maximum total</tooltip>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>zipmoneypayment/source_orderThresholdAction</source_model>
+                                    <sort_order>100</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                </order_total_outside_threshold_action>
+                                <order_total_outside_threshold_notice translate="label">
+                                    <label>Order Total Threshold Message</label>
+                                    <tooltip>Message to be displayed along with the payment option if the order total is outside the given threshold</tooltip>
+                                    <frontend_type>textarea</frontend_type>
+                                    <sort_order>110</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>    
+                                    <depends><order_total_outside_threshold_action>display_notice</order_total_outside_threshold_action></depends> <!-- see this line -->
+                                </order_total_outside_threshold_notice>
                             </fields>
                         </zipmoneypayment>
 
-
-
-                        <zipmoney_marketing_banners_widgets type="group" translate="label">
+                        <zipmoney_advert type="group" translate="label">
                             <label>Marketing Banners Widgets and Banners</label>
                             <frontend_type>text</frontend_type>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <sort_order>40</sort_order>
-                            <frontend_model>zipmoneypayment/adminhtml_system_config_fieldset_expanded</frontend_model>
                             <fields>
-                                <zipmoney_home_page type="group" translate="label">
+                                <zipmoney_advert_home_page type="group" translate="label">
                                     <label>Home Page</label>
                                     <frontend_type>text</frontend_type>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
-                                    <frontend_model>zipmoneypayment/adminhtml_system_config_fieldset_expanded</frontend_model>
                                     <sort_order>10</sort_order>
                                     <fields>
-                                        <strip_banner_active translate="label comment">
+                                        <banner_active translate="label comment">
                                             <label>Display Strip Banner</label>                                            
                                             <tooltip>Display zipMoney marketing banner and popup on home page to give customers more information and increase conversions</tooltip>
                                             <sort_order>11</sort_order>
@@ -129,30 +174,29 @@
                                             <show_in_default>1</show_in_default>
                                             <show_in_website>1</show_in_website>
                                             <show_in_store>1</show_in_store>
-                                        </strip_banner_active>
+                                        </banner_active>
                                     </fields>
-                                </zipmoney_home_page>
+                                </zipmoney_advert_home_page>
 
-                                <zipmoney_product_page type="group" translate="label">
+                                <zipmoney_advert_product_page type="group" translate="label">
                                     <label>Product Page</label>
                                     <frontend_type>text</frontend_type>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
-                                    <frontend_model>zipmoneypayment/adminhtml_system_config_fieldset_expanded</frontend_model>
                                     <sort_order>20</sort_order>
                                     <fields>
-                                        <productactive translate="label comment">
+                                        <widget_active translate="label comment">
                                             <label>Display Widget</label>
                                             <tooltip>Display zipMoney marketing widget and popup on product pages to give customers more information and increase conversions</tooltip>
                                             <sort_order>12</sort_order>
                                             <frontend_type>select</frontend_type>
-                                            <source_model>zipmoneypayment/source_widget</source_model>
+                                            <source_model>adminhtml/system_config_source_yesno</source_model>
                                             <show_in_default>1</show_in_default>
                                             <show_in_website>1</show_in_website>
                                             <show_in_store>1</show_in_store>
-                                        </productactive>
-                                        <strip_banner_active translate="label comment">
+                                        </widget_active>
+                                        <banner_active translate="label comment">
                                             <label>Display Strip Banner</label>                                            
                                             <tooltip>Display zipMoney marketing banner and popup on product pages to give customers more information and increase conversions</tooltip>
                                             <sort_order>10</sort_order>
@@ -161,31 +205,29 @@
                                             <show_in_default>1</show_in_default>
                                             <show_in_website>1</show_in_website>
                                             <show_in_store>1</show_in_store>
-                                        </strip_banner_active>
-                                        <rep_calculator_active_product translate="label">
+                                        </banner_active>
+                                        <tagline_active translate="label">
                                             <label>Display Tagline</label>                                     
                                             <tooltip>Display the Tagline</tooltip>
                                             <frontend_type>select</frontend_type>
-                                            <source_model>adminhtml/system_config_source_yesno</source_model>                                            
+                                            <source_model>adminhtml/system_config_source_yesno</source_model>
                                             <sort_order>21</sort_order>
                                             <show_in_default>1</show_in_default>
                                             <show_in_website>1</show_in_website>
                                             <show_in_store>1</show_in_store>
-                                        </rep_calculator_active_product>
-
+                                        </tagline_active>
                                     </fields>
-                                </zipmoney_product_page>
+                                </zipmoney_advert_product_page>
  
-                                <zipmoney_category_page type="group" translate="label">
+                                <zipmoney_advert_category_page type="group" translate="label">
                                     <label>Category Page</label>
                                     <frontend_type>text</frontend_type>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
-                                    <frontend_model>zipmoneypayment/adminhtml_system_config_fieldset_expanded</frontend_model>
                                     <sort_order>30</sort_order>
                                     <fields>
-                                        <strip_banner_active translate="label comment">
+                                        <banner_active translate="label comment">
                                             <label>Display Strip Banner</label>                                            
                                             <tooltip>Display zipMoney marketing banner and popup on category pages to give customers more information and increase conversions</tooltip>
                                             <sort_order>10</sort_order>
@@ -194,32 +236,29 @@
                                             <show_in_default>1</show_in_default>
                                             <show_in_website>1</show_in_website>
                                             <show_in_store>1</show_in_store>
-                                        </strip_banner_active>
+                                        </banner_active>
                                     </fields>
-                                </zipmoney_category_page>
+                                </zipmoney_advert_category_page>
 
-                                <zipmoney_cart_page type="group" translate="label">
+                                <zipmoney_advert_cart_page type="group" translate="label">
                                     <label>Cart Page</label>
                                     <frontend_type>text</frontend_type>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
-                                    <frontend_model>zipmoneypayment/adminhtml_system_config_fieldset_expanded</frontend_model>
                                     <sort_order>40</sort_order>
                                     <fields>
-                                        
-                                        <cartactive translate="label comment">
+                                        <widget_active translate="label comment">
                                             <label>Display Widget</label>
                                             <tooltip>Display zipMoney marketing widget and popup on the cart page to give customers more information and increase conversions</tooltip>
                                             <sort_order>11</sort_order>
                                             <frontend_type>select</frontend_type>
-                                            <source_model>zipmoneypayment/source_widget</source_model>
+                                            <source_model>adminhtml/system_config_source_yesno</source_model>
                                             <show_in_default>1</show_in_default>
                                             <show_in_website>1</show_in_website> 
                                             <show_in_store>1</show_in_store>
-                                        </cartactive>
-
-                                        <strip_banner_active translate="label comment">
+                                        </widget_active>
+                                        <banner_active translate="label comment">
                                             <label>Display Strip Banner</label>                                            
                                             <tooltip>Display zipMoney marketing banner and popup on cart pages to give customers more information and increase conversions</tooltip>
                                             <sort_order>10</sort_order>
@@ -228,21 +267,21 @@
                                             <show_in_default>1</show_in_default>
                                             <show_in_website>1</show_in_website>
                                             <show_in_store>1</show_in_store>
-                                        </strip_banner_active>
-                                        <rep_calculator_active_cart translate="label">
+                                        </banner_active>
+                                        <tagline_active translate="label">
                                             <label>Display Tagline</label>                                                     
                                             <tooltip>Display the Tagline</tooltip>
                                             <frontend_type>select</frontend_type>
-                                            <source_model>adminhtml/system_config_source_yesno</source_model>                                      
+                                            <source_model>adminhtml/system_config_source_yesno</source_model>
                                             <sort_order>22</sort_order>
                                             <show_in_default>1</show_in_default>
                                             <show_in_website>1</show_in_website>
                                             <show_in_store>1</show_in_store>
-                                        </rep_calculator_active_cart>
+                                        </tagline_active>
                                     </fields>
-                                </zipmoney_cart_page>
+                                </zipmoney_advert_cart_page>
                             </fields>
-                        </zipmoney_marketing_banners_widgets>
+                        </zipmoney_advert>
                     </fields>
                 </zipmoney>
             </groups>

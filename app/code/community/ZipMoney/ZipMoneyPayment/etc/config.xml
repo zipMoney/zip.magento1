@@ -86,11 +86,11 @@
                 <class>Zipmoney_ZipmoneyPayment_Helper</class>
             </zipmoneypayment>
         </helpers>
-        <payment>
+        <!-- <payment>
             <groups>
                 <zipmoneypayment>zipMoney</zipmoneypayment>
             </groups>
-        </payment>
+        </payment> -->
         <sales>
             <order>
                 <statuses>
@@ -101,30 +101,22 @@
                 <states>
                     <pending_payment>
                         <statuses>
-                            <zip_declined/>
-                            <zip_pending/>
+                            <zip_authorised/>
                         </statuses>
                         <visible_on_front/>
                     </pending_payment>
-                    <processing_payment>
-                        <statuses>
-                            <zip_captured/>
-                        </statuses>
-                        <visible_on_front/>
-                    </processing_payment>
-                    <cancel_payment>
-                        <statuses>
-                            <zip_cancelled/>
-                        </statuses>
-                        <visible_on_front/>
-                    </cancel_payment>
                 </states>
             </order>
         </sales>
         <events>
-          
-
-           <!-- 
+            <!-- <customer_login>
+                <observers>
+                    <zipmoney_customer_login>
+                        <class>zipmoneypayment/observer</class>
+                        <method>customerLogin</method>
+                    </zipmoney_customer_login>
+                </observers>
+            </customer_login> -->
             <sales_order_save_before>
                 <observers>
                     <zipmoney_set_order_invoice_action_flag_observer>
@@ -133,8 +125,8 @@
                     </zipmoney_set_order_invoice_action_flag_observer>
                 </observers>
             </sales_order_save_before>
- -->
-            <order_cancel_after>
+
+           <!--  <order_cancel_after>
                 <observers>
                     <zipmoney_order_cancel_after_observer>
                         <class>zipmoneypayment/observer</class>
@@ -142,7 +134,7 @@
                     </zipmoney_order_cancel_after_observer>
                 </observers>
             </order_cancel_after>
-            
+             -->
             <controller_front_init_before>
                 <observers>
                     <elasticsearch_lib_load>
@@ -202,11 +194,11 @@
             </updates>
         </layout>
     </adminhtml>
+
     <default>
         <payment>
             <zipmoneypayment>
-                <group>zipmoneypayment</group>
-                <product>zipmoney</product>
+                <product>zipMoney</product>
                 <active>1</active>
                 <model>zipmoneypayment/payment</model>
                 <title>zipMoney - Buy Now, Pay Later</title>
@@ -214,55 +206,51 @@
                 <environment>sandbox</environment>
                 <payment_action>capture</payment_action>
                 <incontext_checkout>1</incontext_checkout>
-            </zipmoneypayment>
-
-            <zipmoney_widgets_configuration>
-                <group>zipmoneypayment</group>
-                <productactive>enabled</productactive>
-                <cartactive>1</cartactive>
-                <checkoutactive>1</checkoutactive>
-            </zipmoney_widgets_configuration>
-
-            <zipmoney_marketing_banners>
-                <banner_active>1</banner_active>
-            </zipmoney_marketing_banners>
-
-            <zipmoney_home_page_banner>
-                <strip_banner_active>1</strip_banner_active>
-            </zipmoney_home_page_banner>
-            <zipmoney_product_page_banner>
-                <strip_banner_active>1</strip_banner_active>
-            </zipmoney_product_page_banner>
-            <zipmoney_category_page_banner>
-                <strip_banner_active>1</strip_banner_active>
-            </zipmoney_category_page_banner>
-            <zipmoney_cart_page_banner>
-                <strip_banner_active>1</strip_banner_active>
-            </zipmoney_cart_page_banner>
-
-            <zipmoney_checkout>
-                <group>zipmoneypayment</group>
-                <product>zipMoney</product>
-                <title>Pay Later with zipMoney</title>
-                <displaydetail>1</displaydetail>
-                <detailmessage>Interest Free and Flexible - get a decision in seconds!</detailmessage>
                 <minimum_total>1</minimum_total>
                 <maximum_total>1000</maximum_total>
-                <display_message>0</display_message>
-                <message>Available on orders up to $%d. Don't worry if its a little higher, you can always pay a deposit.</message>
-            </zipmoney_checkout>
+                <detail_message>Interest Free and Flexible - get a decision in seconds!</detail_message>
+                <display_detail_message>1</display_detail_message>
+                <display_title>0</display_title>
+                <order_total_outside_threshold_action></order_total_outside_threshold_action>               
+                <order_total_outside_threshold_notice>Available on orders up to $%d. Don't worry if its a little higher, you can always pay a deposit.</order_total_outside_threshold_notice>
+            </zipmoneypayment>
+
 
             <zipmoney_developer_settings>
-                <group>zipmoneypayment</group>
-                <timeout>60</timeout>
+                <!-- <group>zipmoneypayment</group>                
+                <title>zipMoney Developer Settings</title>
+                 --><timeout>60</timeout>
                 <logging_enabled>1</logging_enabled>
                 <log_file>zipMoney-payment.log</log_file>
                 <log_level>7</log_level>
             </zipmoney_developer_settings>
 
+
+            <zipmoney_advert>
+              <!--   <group>zipmoneypayment</group>                
+                <title>zipMoney Advert Settings</title>
+               -->  <home_page>
+                    <banner_active>1</banner_active>
+                </home_page>
+                <product_page>
+                    <banner_active>1</banner_active>
+                    <tagline_active>1</tagline_active>
+                    <widget_active>1</widget_active>
+                </product_page>
+                <cart_page>
+                    <banner_active>1</banner_active>
+                    <tagline_active>1</tagline_active>
+                    <widget_active>1</widget_active>
+                </cart_page>
+                <category_page>
+                    <banner_active>1</banner_active>
+                </category_page>
+            </zipmoney_advert>
+
             <zipmoney_messages>
-                <group>zipmoneypayment</group>
-                <service_unavailable_heading>The service is unavailable</service_unavailable_heading>
+<!--                 <group>zipmoneypayment</group>
+                <title>zipMoney Messages</title>
+ -->                <service_unavailable_heading>The service is unavailable</service_unavailable_heading>
                 <service_unavailable_body>Unfortunately the zipMoney - Buy now, Pay later service is currently unavailable. We will be right back and apologies for the inconvenience.</service_unavailable_body>
                 <customer_error>Error</customer_error>
                 <referred_header>Your application has been referred</referred_header>

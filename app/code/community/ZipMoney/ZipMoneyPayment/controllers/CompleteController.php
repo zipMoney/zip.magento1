@@ -55,20 +55,40 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
     
     $this->_logger->debug($this->_helper->__("On Callback Controller"));
 
-    // Is result valid?
+    // Is result valid ?
     if(!$this->_isResultValid()){            
       $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE);
       return;
     }
 
-    /*
-     * ToDO
-     * - Verify current user's session. Check if the current user is the same as the one with checkout id
-     */
-
     $result = $this->getRequest()->getParam('result');
     
     $this->_logger->debug($this->_helper->__("Result:- %s", $result));
+
+    try {
+
+      // Is checkout id valid?
+      if(!$this->getRequest()->getParam('checkoutId')){      
+        $err_msg = $this->_helper->__("The checkoutId doesnot exist in the querystring.");
+        $this->_logger->error($err_msg);
+        Mage::throwException($err_msg);
+      }
+
+      // Set the customer quote
+      $this->_setCustomerQuote();
+
+      // Initialise the charge
+      $this->_initCharge();
+
+      // Set quote to the chekout model
+      $this->_charge->setQuote($this->_getQuote());
+
+    } catch (Exception $e) {
+      $this->_getCheckoutSession()->addError($this->_helper->__('Unable to complete the checkout.'));
+      $this->_logger->debug($e->getMessage());
+      $this->_redirectToCart();
+      return;
+    }  
 
     // Handle the application result
     switch ($result) {
@@ -78,35 +98,15 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
          * - Create order
          * - Create the charge against the customer using the checkout id
          */
-
         try {
-
-          // Is checkout id valid?
-          if(!$this->_isCheckoutIdValid()){            
-            $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
-            return;
-          }
-
-          // Is the quote valid? 
-          if(!$this->_verifyQuote()){
-            $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE);
-            return;
-          }
-
-          // Initialise the charge
-          $this->_initCharge();
-
-          // Make sure the qoute is active
-          $this->_helper->activateQuote($this->_getQuote());
-
-          // Set quote to the chekout model
-          $this->_charge->setQuote($this->_getQuote());
-
+          
           // Create the Order
           $this->_charge->placeOrder();
 
           $session = $this->_getCheckoutSession();
           $session->clearHelperData();
+          
+          $this->_logger->debug($this->_helper->__('Quote Id %s',$this->_getQuote()->getId()));
 
           // Set "last successful quote"
           if($quoteId = $this->_getQuote()->getId()){
@@ -121,56 +121,49 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
           
           // Create charge for the order
           $this->_charge->charge();
-
+         
           // Redirect to success page
           $this->getResponse()->setRedirect(Mage::getUrl('checkout/onepage/success'));
           return;
         } catch (Mage_Core_Exception $e) {
           $this->_getCheckoutSession()->addError($e->getMessage());      
           $this->_logger->debug($e->getMessage());
-          $this->getResponse()->setHttpResponseCode(500);
         } catch (ApiException $e) {
-          $this->_getCheckoutSession()->addError($this->__('Unable to process the charge'));
+          $this->_getCheckoutSession()->addError($this->_helper->__('Unable to complete the checkout.'));
           $this->_logger->debug("Error:-".json_encode($e->getResponseBody()));
-          $this->getResponse()->setHttpResponseCode($e->getCode());
         } catch (Exception $e) {
-          $this->_getCheckoutSession()->addError($this->__('Unable to process the charge'));
+          $this->_getCheckoutSession()->addError($this->_helper->__('Unable to complete the checkout.'));
           $this->_logger->debug($e->getMessage());
-          $this->getResponse()->setHttpResponseCode(500);
-        }
+        }          
+
+        $this->_redirectToCart();
         break;
       case 'declined':
-        // Dispatch the declined action
-        $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/declined');
+
+        $this->_logger->debug($this->_helper->__('Calling declinedAction'));
+        $this->_redirectToCart();
+
         break;
       case 'cancelled':  
-        // Dispatch the cancelled action
-        $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/cancelled');
+
+        $this->_logger->debug($this->_helper->__('Calling cancelledAction'));
+        $this->_redirectToCart();
+
         break;
       case 'referred':
-
-         // Is checkout id valid?
-          if(!$this->_isCheckoutIdValid()){            
-            $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
-            return;
-          }
-
-          // Is the quote valid? 
-          if(!$this->_verifyQuote()){
-            $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE);
-            return;
-          }
-          // Make sure the qoute is active
-          $this->_helper->deactivateQuote($this->_getQuote());
-
+        
+        // Make sure the qoute is active
+        $this->_helper->deactivateQuote($this->_getQuote());
         // Dispatch the referred action
         $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/referred');
         break;
       default:       
        // Dispatch the referred action
-        $this->_redirect(self::ZIPMONEY_STANDARD_ROUTE.'/error');
+        $this->_redirectToCart();
         break;
     }
   }
+
+
 }
 ?>

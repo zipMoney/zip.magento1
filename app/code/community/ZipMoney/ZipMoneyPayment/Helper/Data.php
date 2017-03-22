@@ -82,5 +82,19 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
     return false;
   }
 
+
+  /**
+   * Checks if customer with email coming from Express checkout exists
+   *
+   * @return int
+   */
+  public function lookupCustomerId($customer_email)
+  {
+    return Mage::getModel('customer/customer')
+        ->setWebsiteId(Mage::app()->getWebsite()->getId())
+        ->loadByEmail($customer_email)
+        ->getId();
+  }
+
   
 }

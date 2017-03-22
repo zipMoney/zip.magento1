@@ -1,0 +1,107 @@
+tables:
+
+  sales/order_address:
+    -
+      entity_id: 1
+      parent_id: 1
+      fax: ""
+      region: "SA"
+      postcode: 5000
+      lastname: "Han"
+      street: "162 Flinders Street"
+      city: "Adelaide"
+      email: "digital@aligent.com.au"
+      telephone: 0884619343
+      country_id: "AU"
+      region_id: 489
+      firstname: "Andi"
+      address_type: "shipping"
+      prefix: ""
+      middlename: ""
+      suffix: ""
+      shipping_method: "flatrate_flatrate"
+    -
+      entity_id: 2
+      parent_id: 1
+      fax: ""
+      region: "SA"
+      postcode: 5000
+      lastname: "Han"
+      street: "162 Flinders Street"
+      city: "Adelaide"
+      email: "digital@aligent.com.au"
+      telephone: 0884619343
+      country_id: "AU"
+      region_id: 489
+      firstname: "Andi"
+      address_type: "billing"
+
+    -
+      entity_id: 3
+      parent_id: 2
+      fax: ""
+      region: "SA"
+      postcode: 5000
+      lastname: "Han"
+      street: "162 Flinders Street"
+      city: "Adelaide"
+      email: "digital@aligent.com.au"
+      telephone: 0884619343
+      country_id: "AU"
+      region_id: 489
+      firstname: "Andi"
+      address_type: "shipping"
+      prefix: ""
+      middlename: ""
+      suffix: ""
+      shipping_method: "flatrate_flatrate"
+    -
+      entity_id: 4
+      parent_id: 2
+      fax: ""
+      region: "SA"
+      postcode: 5000
+      lastname: "Han"
+      street: "162 Flinders Street"
+      city: "Adelaide"
+      email: "digital@aligent.com.au"
+      telephone: 0884619343
+      country_id: "AU"
+      region_id: 489
+      firstname: "Andi"
+      address_type: "billing"
+
+    -
+      entity_id: 5
+      parent_id: 3
+      fax: ""
+      region: "SA"
+      postcode: 5000
+      lastname: "Han"
+      street: "162 Flinders Street"
+      city: "Adelaide"
+      email: "digital@aligent.com.au"
+      telephone: 0884619343
+      country_id: "AU"
+      region_id: 489
+      firstname: "Andi"
+      address_type: "shipping"
+      prefix: ""
+      middlename: ""
+      suffix: ""
+      shipping_method: "flatrate_flatrate"
+    -
+      entity_id: 6
+      parent_id: 3
+      fax: ""
+      region: "SA"
+      postcode: 5000
+      lastname: "Han"
+      street: "162 Flinders Street"
+      city: "Adelaide"
+      email: "digital@aligent.com.au"
+      telephone: 0884619343
+      country_id: "AU"
+      region_id: 489
+      firstname: "Andi"
+      address_type: "billing"

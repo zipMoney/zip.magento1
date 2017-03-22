@@ -49,7 +49,8 @@ zipCheckout.prototype = {
     Zip.Checkout.init({
       redirect: this.options.redirect,
       checkoutUri: this.options.checkoutUri,
-      completeUri: this.options.completeUri
+      redirectUri: this.options.redirectUrl,
+      onError:this.onError
     });
   },
   onError: function(msg){

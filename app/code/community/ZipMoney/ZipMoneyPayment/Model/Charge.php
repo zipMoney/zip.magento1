@@ -8,7 +8,7 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
+class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
 
   /**
    * State helper variables
@@ -17,6 +17,8 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
   protected $_chargeResult = '';
   
   protected $_apiClass = '\zipMoney\Client\Api\ChargesApi';
+
+  protected $_response = null;
 
   /**
    * Set quote and config instances
@@ -63,19 +65,8 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
     return $this;
   }
 
-  /**
-   * Checks if customer with email coming from Express checkout exists
-   *
-   * @return int
-   */
-  protected function _lookupCustomerId()
-  {
-    return Mage::getModel('customer/customer')
-        ->setWebsiteId(Mage::app()->getWebsite()->getId())
-        ->loadByEmail($this->_quote->getCustomerEmail())
-        ->getId();
-  }
 
+  
   /**
    * Prepare quote for customer registration and customer order submit
    * and restore magento customer data from quote
@@ -88,9 +79,9 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
     $billing    = $quote->getBillingAddress();
     $shipping   = $quote->isVirtual() ? null : $quote->getShippingAddress();
     
-    $this->_logger->info($this->_helper->__('Prepare to create new customer with email %s', $quote->getCustomerEmail()));
+    $this->_logger->info($this->_helper->__('Creating new customer with email %s', $quote->getCustomerEmail()));
 
-    $customerId = $this->_lookupCustomerId();
+    $customerId = $this->_helper->lookupCustomerId($quote->getCustomerEmail());
     if ($customerId) {            
       $this->_logger->info($this->_helper->__('The email has already been used for customer (id: %s) ', $customerId));
       $this->getCustomerSession()->loginById($customerId);
@@ -115,33 +106,36 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
      * @todo integration with dynamica attributes customer_dob, customer_taxvat, customer_gender
      */
     if ($quote->getCustomerDob() && !$billing->getCustomerDob()) {
-        $billing->setCustomerDob($quote->getCustomerDob());
+      $billing->setCustomerDob($quote->getCustomerDob());
     }
 
     if ($quote->getCustomerTaxvat() && !$billing->getCustomerTaxvat()) {
-        $billing->setCustomerTaxvat($quote->getCustomerTaxvat());
+      $billing->setCustomerTaxvat($quote->getCustomerTaxvat());
     }
 
     if ($quote->getCustomerGender() && !$billing->getCustomerGender()) {
-        $billing->setCustomerGender($quote->getCustomerGender());
+      $billing->setCustomerGender($quote->getCustomerGender());
     }
 
     Mage::helper('core')->copyFieldset('checkout_onepage_billing', 'to_customer', $billing, $customer);
-    $customer->setEmail($quote->getCustomerEmail());
-    $customer->setPrefix($quote->getCustomerPrefix());
-    $customer->setFirstname($quote->getCustomerFirstname());
-    $customer->setMiddlename($quote->getCustomerMiddlename());
-    $customer->setLastname($quote->getCustomerLastname());
-    $customer->setSuffix($quote->getCustomerSuffix());
-    $customer->setPassword($customer->decryptPassword($quote->getPasswordHash()));
-    $customer->setPasswordHash($customer->hashPassword($customer->getPassword()));
 
-    $this->_logger->debug($this->_helper->__('Customer password is %s ', ($oCustomer->getPassword() ? 'not empty' : 'empty')));
-    $this->_logger->debug($this->_helper->__('Customer password_hash is %s ', ($oCustomer->getPasswordHash() ? 'not empty' : 'empty')));
+    $customer->setEmail($quote->getCustomerEmail())
+             ->setPrefix($quote->getCustomerPrefix())
+             ->setFirstname($quote->getCustomerFirstname())
+             ->setMiddlename($quote->getCustomerMiddlename())
+             ->setLastname($quote->getCustomerLastname())
+             ->setSuffix($quote->getCustomerSuffix())
+             ->setPassword($customer->decryptPassword($quote->getPasswordHash()))
+             ->setPasswordHash($customer->hashPassword($customer->getPassword()))
+             ->save();
 
-    $customer->save();
     $quote->setCustomer($customer);
-    $this->_logger->info($this->_helper->__('The new customer has been created successfully. Customer id: %s', $oCustomer->getId()));
+
+    $this->_logger->debug($this->_helper->__('Customer password is %s ', ($customer->getPassword() ? 'not empty' : 'empty')));
+    
+    $this->_logger->debug($this->_helper->__('Customer password_hash is %s ', ($customer->getPasswordHash() ? 'not empty' : 'empty')));
+
+    $this->_logger->info($this->_helper->__('The new customer has been created successfully. Customer id: %s', $customer->getId()));
 
     return $this;
   }
@@ -156,32 +150,67 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
     $quote      = $this->_quote;
     $billing    = $quote->getBillingAddress();
     $shipping   = $quote->isVirtual() ? null : $quote->getShippingAddress();
+    
 
-    $customer = $this->getCustomerSession()->getCustomer();
-    if (!$billing->getCustomerId() || $billing->getSaveInAddressBook()) {
-        $customerBilling = $billing->exportCustomerAddress();
-        $customer->addAddress($customerBilling);
-        $billing->setCustomerAddress($customerBilling);
+    if($this->getCustomerSession()->isLoggedIn()){        
+      $this->_logger->debug($this->_helper->__('Load customer from session.'));
+      $customer = $this->getCustomerSession()->getCustomer();    
+      $this->_logger->debug($this->_helper->__("Creating Order as Logged in Customer "));
+    } else {          
+      $this->_logger->debug($this->_helper->__('Load customer from db.'));
+      $customer = Mage::getSingleton("customer/customer")->load($quote->getCustomerId());
+      $this->_logger->debug($this->_helper->__("Creating Order on behalf of Customer %s",$quote->getCustomerId()));
     }
+
+    if (!$billing->getCustomerId() || $billing->getSaveInAddressBook()) {
+      $customerBilling = $billing->exportCustomerAddress();
+      $customer->addAddress($customerBilling);
+      $billing->setCustomerAddress($customerBilling);
+    }
+
     if ($shipping && ((!$shipping->getCustomerId() && !$shipping->getSameAsBilling())
         || (!$shipping->getSameAsBilling() && $shipping->getSaveInAddressBook()))) {
-        $customerShipping = $shipping->exportCustomerAddress();
-        $customer->addAddress($customerShipping);
-        $shipping->setCustomerAddress($customerShipping);
+      $customerShipping = $shipping->exportCustomerAddress();
+      $customer->addAddress($customerShipping);
+      $shipping->setCustomerAddress($customerShipping);
     }
 
     if (isset($customerBilling) && !$customer->getDefaultBilling()) {
-        $customerBilling->setIsDefaultBilling(true);
+      $customerBilling->setIsDefaultBilling(true);
     }
+
     if ($shipping && isset($customerBilling) && !$customer->getDefaultShipping() && $shipping->getSameAsBilling()) {
-        $customerBilling->setIsDefaultShipping(true);
+      $customerBilling->setIsDefaultShipping(true);
     } elseif ($shipping && isset($customerShipping) && !$customer->getDefaultShipping()) {
-        $customerShipping->setIsDefaultShipping(true);
+      $customerShipping->setIsDefaultShipping(true);
     }
+
     $quote->setCustomer($customer);
 
     return $this;
   }
+
+  /**
+   * Involve new customer to system
+   *
+   * @return Zipmoney_ZipmoneyPayment_Model_Express_Checkout
+   */
+  protected function _involveNewCustomer()
+  {
+      $customer = $this->_quote->getCustomer();
+      if ($customer->isConfirmationRequired()) {
+        $customer->sendNewAccountEmail('confirmation');
+        $url = Mage::helper('customer')->getEmailConfirmationUrl($customer->getEmail());
+        $this->getCustomerSession()->addSuccess(
+            Mage::helper('customer')->__('Account confirmation is required. Please, check your e-mail for confirmation link. To resend confirmation email please <a href="%s">click here</a>.', $url)
+        );
+      } else {
+        $customer->sendNewAccountEmail();
+          //$this->getCustomerSession()->loginById($customer->getId());
+      }
+      return $this;
+  }
+
 
   /**
    * Make sure addresses will be saved without validation errors
@@ -236,6 +265,8 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
     $payment->setTransactionId($txnId)
             ->setIsTransactionClosed(0)
             ->registerAuthorizationNotification($amount);
+    
+    $this->_logger->info($this->_helper->__("Payment Authorised"));
 
     $this->_order->setStatus(self::STATUS_MAGENTO_AUTHORIZED)
                  ->save();
@@ -248,7 +279,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
 
   protected function _capture($txnId, $isAuthAndCapture = false)
   {
-    
     /* If the capture has a corresponding authorisation before
      * authorise -> capture
      */
@@ -297,10 +327,8 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
       Mage::throwException($this->_helper->__('Cannot create invoice for the order.'));
     }
     
-
     $amount = $this->_order->getBaseTotalDue();
     
-
     if($parentTxnId) {
       $payment->setParentTransactionId($parentTxnId);
       $payment->setShouldCloseParentTransaction(true);
@@ -311,6 +339,8 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
             ->setPreparedMessage('')
             ->setIsTransactionClosed(0)
             ->registerCaptureNotification($amount);
+    
+    $this->_logger->info($this->_helper->__("Payment Captured"));
 
     $this->_order->save();
 
@@ -333,9 +363,7 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
       case 'captured':
         /* 
          * Capture Payment 
-         */
-        $this->_logger->info($this->_helper->__("Capture Payment"));
-          
+         */          
         $this->_capture($charge->getId(), $isAuthAndCapture);
         
         break;
@@ -343,8 +371,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
         /* 
          * Authorise Payment 
          */   
-        $this->_logger->info($this->_helper->__("Authorise Payment"));
-
         $this->_authorise($charge->getId());
 
         break;
@@ -364,83 +390,20 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
    * @return null
    * @throws Mage_Core_Exception
    */
-  public function start()
-  {
-
-    if (!$this->_quote || !$this->_quote->getId()) {
-      Mage::throwException(Mage::helper('zipmoneypayment')->__('The quote does not exist.'));
-    }
-  
-    if ($this->_quote->getIsMultiShipping()) {
-      $this->_quote->setIsMultiShipping(false);
-      $this->_quote->removeAllAddresses();
-    }
-
-    $checkoutMethod = $this->getCheckoutMethod();
-
-    if ((!$checkoutMethod || 
-        $checkoutMethod != Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER) && 
-        !Mage::helper('checkout')->isAllowedGuestCheckout($this->_quote, $this->_quote->getStoreId())) 
-    {
-      Mage::throwException(Mage::helper('zipmoneypayment')->__('Please log in to proceed to checkout.'));
-    }
-
-    // Calculate Totals
-    $this->_quote->collectTotals();
-
-    if (!$this->_quote->getGrandTotal() && !$this->_quote->hasNominalItems()) {
-      Mage::throwException($this->_helper->__('Cannot process the order due to zero amount.'));
-    }
-
-    $this->_quote->reserveOrderId()->save(); 
-
-    $request = Mage::helper('zipmoneypayment/request')->prepareCheckout($this->_quote);
-
-    $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request)); 
-
-    $checkout = $this->getApi()->checkoutsCreate($request);           
-
-    $this->_logger->debug("Checkout Response:- ".$this->_helper->json_encode($checkout));
-
-    if(isset($checkout->error)){
-      Mage::throwException($this->_helper->__('Cannot get redirect URL from zipMoney.'));
-    } 
-
-    $this->_logger->debug("Checkout Response:- ".$this->_helper->json_encode($checkout));
-
-    $this->_checkoutId  = $checkout->getId();
-    
-    $this->_logger->debug("Checkout Id:- ".$this->_checkoutId);
-
-    $this->_quote->setZipmoneyCid($this->_checkoutId)
-                 ->save();
-
-    $this->_redirectUrl = $checkout->getUri();   
-    $this->_logger->debug("Redirect Uri:- ".$this->_redirectUrl);
-
-    return $checkout;
-  }
-
-
-  /**
-   * Create quote in Zip side if not existed, and request for redirect url
-   *
-   * @param $quote
-   * @return null
-   * @throws Mage_Core_Exception
-   */
   public function charge()
   {
     if (!$this->_order || !$this->_order->getId()) {      
       Mage::throwException($this->_helper->__('The order does not exist.'));
     }
     
-    $request = Mage::helper('zipmoneypayment/request')->prepareCharge($this->_order);
+    $payload = $this->_payload->getChargePayload($this->_order);
     
-    $this->_logger->debug("Charge Request:- ".$this->_helper->json_encode($request)); 
+    $this->_logger->debug("Charge Payload:- ".$this->_helper->json_encode($payload)); 
 
+    $idempotency_key = uniqid();
+    
     $charge = $this->getApi()
-                   ->chargesCreate($request);
+                   ->chargesCreate($payload,$idempotency_key);
     
     $this->_logger->debug("Charge Response:- ".$this->_helper->json_encode($charge));
     
@@ -452,8 +415,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
       Mage::throwException($this->_helper->__('Invalid Charge'));
     }
     
-  //  $charge->setState("authorised");
-
     $this->_logger->debug($this->_helper->__("Charge State:- %s",$charge->getState()));
 
     if($charge->getId()){
@@ -463,6 +424,8 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
     }
 
     $this->_chargeResponse($charge,false);
+
+    return $charge;
   }
 
 
@@ -483,12 +446,12 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
       Mage::throwException($this->_helper->__('Please provide the refund amount.'));
     }
     
-    $request = Mage::helper('zipmoneypayment/request')->prepareRefund($this->_order, $amount, $reason);
+    $payload = $this->_payload->getRefundPayload($this->_order, $amount, $reason);
     
-    $this->_logger->debug("Refund Request:- " . $this->_helper->json_encode($request)); 
+    $this->_logger->debug("Refund Payload:- " . $this->_helper->json_encode($payload)); 
 
     $refund = $this->getApi()
-                   ->refundsCreate($request);
+                   ->refundsCreate($payload);
     
     $this->_logger->debug("Refund Response:- ".$this->_helper->json_encode($refund));
     
@@ -515,12 +478,12 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
       Mage::throwException($this->_helper->__('The order does not exist.'));
     }
     
-    $request = Mage::helper('zipmoneypayment/request')->prepareCaptureCharge($this->_order, $amount);
+    $payload = $this->_payload->getCapturePayload($this->_order, $amount);
     
-    $this->_logger->debug("Capture Charge Request:- ".$this->_helper->json_encode($request)); 
+    $this->_logger->debug("Capture Charge Payload:- ".$this->_helper->json_encode($payload)); 
 
     $charge = $this->getApi()
-                   ->chargesCapture($this->_order->getPayment()->getZipmoneyChargeId(),$request);
+                   ->chargesCapture($this->_order->getPayment()->getZipmoneyChargeId(),$payload);
     
     $this->_logger->debug("Capture Charge Response:- ".$this->_helper->json_encode($charge));
     
@@ -571,7 +534,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
     return $charge;
   }
 
-
   /**
    * Place the order and recurring payment profiles when customer returned from paypal
    * Until this moment all quote data must be valid
@@ -580,15 +542,16 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
    * @param string $shippingMethodCode
    */
   public function placeOrder()
-  {
-  
-    $this->_logger->debug($this->_helper->__('Quote Grand Total:- %s', $this->_quote->getGrandTotal()));
-    $this->_logger->debug($this->_helper->__('Quote Checkout Method:- %s', $this->_quote->getCheckoutMethod()));
-    $this->_logger->debug($this->_helper->__('Quote Customer Id:- %s', $this->_quote->getCutomerId()));
-    
+  {    
+    // $order = Mage::getSingleton("sales/order")->loadByIncrementId("145000246");    
+    // $this->_order = $order;
+    // return $order;
     $checkoutMethod = $this->getCheckoutMethod();
+
+    $this->_logger->debug(
+      $this->_helper->__('Quote Grand Total:- %s Quote Customer Id:- %s Checkout Method:- %s', $this->_quote->getGrandTotal(),$this->_quote->getCustomerId(),$checkoutMethod)
+    );
     
-    $this->_logger->debug($this->_helper->__('Quote Checkout Method:- %s', $checkoutMethod));
     
     $isNewCustomer = false;
     switch ($checkoutMethod) {
@@ -600,7 +563,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
         $isNewCustomer = true;
         break;
       default:
-        $this->_logger->debug($this->_helper->__('Load customer from session.'));
         $this->_prepareCustomerQuote();
         break;
     }
@@ -610,7 +572,6 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
     $service = Mage::getModel('sales/service_quote', $this->_quote);
     $service->submitAll();
     $this->_quote->save();
-
     if ($isNewCustomer) {
       try {
         $this->_involveNewCustomer();
@@ -642,101 +603,4 @@ class Zipmoney_ZipmoneyPayment_Model_Standard_Checkout extends Zipmoney_Zipmoney
     return $order;
   }
   
-  /**
-   * Get checkout method
-   *
-   * @return string
-   */
-  public function getCheckoutMethod()
-  {
-    if ($this->getCustomerSession()->isLoggedIn()) {
-      return Mage_Checkout_Model_Type_Onepage::METHOD_CUSTOMER;
-    }
-    if (!$this->_quote->getCheckoutMethod()) {
-      if (Mage::helper('checkout')->isAllowedGuestCheckout($this->_quote)) {
-        $this->_quote->setCheckoutMethod(Mage_Checkout_Model_Type_Onepage::METHOD_GUEST);
-      } else {
-        $this->_quote->setCheckoutMethod(Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER);
-      }
-    }
-    return $this->_quote->getCheckoutMethod();
-  }
-
-  /**
-   * Get customer session object
-   *
-   * @return Mage_Customer_Model_Session
-   */
-  public function getCustomerSession()
-  {
-    return $this->_customerSession;
-  }
-
-  public function getRedirectUrl()
-  {
-    return $this->_redirectUrl;
-  } 
-
-  public function getCheckout()
-  {
-    return $this->_checkout;
-  } 
-
-  public function getCharge()
-  {
-    return $this->_charge;
-  } 
-
-  public function getCheckoutId()
-  {
-    return $this->_checkoutId;
-  } 
-
-  public function getApi()
-  {
-    if(null === $this->_api){
-      Mage::throwException($this->_helper->__('Api class has not been set.'));
-    }
-
-    return $this->_api;
-  }
-
-
-  public function setApi($api)
-  {
-    if(is_object($api)) {
-      $this->_api =  $api;
-    } else if(is_string($api)) {
-      $this->_api = new $api;
-    }
-
-    return $this;
-  }
-
-  public function getQuote()
-  {
-    return $this->_quote;
-  }
-
-  public function setQuote($quote)
-  {
-    if ($quote) {
-      $this->_quote = $quote;
-    }
-  }
-
-  public function getOrder()
-  {
-    return $this->_order;
-  }
-
-
-  public function setOrder($order)
-  {
-    if ($order) {
-      $this->_order = $order;
-    }
-  }
-
-
 }

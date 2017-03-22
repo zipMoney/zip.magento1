@@ -25,7 +25,7 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
 		return Mage::getBaseUrl()."zipmoneypayment/standard/";
 	}
 
-	public function getCompleteUrl()
+	public function getRedirectUrl()
 	{
 		return Mage::getBaseUrl()."zipmoneypayment/complete/";
 	}
@@ -39,6 +39,5 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
 	{
 		return $this->getButtonSelector() ? $this->getButtonSelector() : $this->_button_selector;
 	}
-
 
 }

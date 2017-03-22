@@ -32,7 +32,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 	 *
 	 * @var Zipmoney_ZipmoneyPayment_Model_Payment
 	 */
-
 	protected $_logger = null;
 	protected $_helper = null;
 	protected $_checkout  = null;
@@ -66,7 +65,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
 	public function capture(Varien_Object $payment, $amount)
 	{
-    
     if ($payment && $payment->getOrder()) {
       Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
     }
@@ -104,18 +102,16 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
 	public function refund(Varien_Object $payment, $amount)
 	{
-		
 		if ($payment && $payment->getOrder()) {
       Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
     }
 
-
    	$param = Mage::app()->getRequest()->getParam('creditmemo');
     $reason = $param['comment_text'];
+    
     if (!$reason) {
       $reason = 'N/A';
     }
-
 
     $orderId = $payment->getOrder()->getIncrementId();
     $order = Mage::getModel('sales/order')
@@ -146,7 +142,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
       $this->_logger->debug($e->getMessage());
     }
 	  
-	  Mage::throwException($this->_helper->__("Unable to capture the payment."));
+	  Mage::throwException($this->_helper->__("Unable to refund the payment."));
 
 		return false;
 	}
@@ -185,6 +181,17 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     return false;
   }
 
+
+  protected function _getQuote()
+  { 
+    if (!$this->_quote) {
+      $this->_quote = $this->_getCheckoutSession()->getQuote();
+    }
+
+    return $this->_quote;
+  }
+
+
 	/**
 	 * Return zipMoney Express redirect url if current request is not savePayment (which works for oneStepCheckout)
 	 * @return null|string
@@ -204,6 +211,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     } else {
 
       if($this->_config->isInContextCheckout()){ 
+        
         /* Return current url with extra param appended, so that it will refresh current page with the  
          * param if the param is present, will popup zipMoney iframe checkout
          */
@@ -224,9 +232,24 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
             $url = $currentUrl . (parse_url($currentUrl, PHP_URL_QUERY) ? '&' : '?') . 'zip-in-context=true';
           }
         }
+        
       } else {
-        // return the zipmoney redirect url
-        $url = Mage::getUrl('zipmoneypayment/standard/getredirecturl/');
+        
+        $quote = $this->_getQuote();
+
+        // Check if the quote has items and errors
+        if (!$quote->hasItems() || $quote->getHasError()) {
+          Mage::throwException($this->_helper->__('Unable to initialize the Checkout.'));
+        }
+        
+        $checkout = Mage::getModel('zipmoneypayment/checkout', array('quote'=> $quote));
+        $checkout->start();
+
+        if($url = $checkout->getRedirectUrl()) {
+          $this->_logger->info($this->_helper->__('Successful to get redirect url [ %s ] ', $redirectUrl));           
+        } else {
+          Mage::throwException("Failed to get redirect url.");
+        }
       }
     }
     
@@ -234,5 +257,108 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
     return $url;
 	}
+
+  /**
+   * Check method for processing with base currency
+   *
+   * @param string $currencyCode
+   * @return bool
+   */
+  public function canUseForCurrency($currencyCode)
+  {
+      if (!in_array($currencyCode, array("AUD","NZD"))) {
+        return false;
+      }
+      return true;
+  }
+
+  /**
+   * Can use for order threshold
+   *
+   * @param Mage_Sales_Model_Quote $quote
+   * @return bool
+   */
+  public function canUseForQuoteThreshold($quote)
+  {
+    $total = $quote->getBaseGrandTotal();
+    $minTotal = $this->_config->getOrderTotalMinimum();
+    $maxTotal = $this->_config->getOrderTotalMaximum();
+      
+    if ((!empty($minTotal) && $total < $minTotal || !empty($maxTotal) && $total > $maxTotal) &&
+      $this->_config->getOrderTotalOutsideThresholdAction() == 'hide'
+     ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Check zero total
+   *
+   * @param Mage_Sales_Model_Quote $quote
+   * @return bool
+   */
+  public function canUseForZeroTotal($quote)
+  {
+    if ($quote->getBaseGrandTotal() < 0.0001 && $this->getCode() != 'free' ){
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Is available method
+   *
+   * @param Mage_Sales_Model_Quote $quote
+   * @return bool
+   */
+  public function isAvailable($quote = null)
+  {
+    return $this->isAvailableForQuote($quote) && parent::isAvailable($quote);
+  }
+
+  /**
+   * Added verification for quote (compatibility reason)
+   *
+   * @param Mage_Sales_Model_Quote $quote
+   * @return bool
+   */
+  public function isAvailableForQuote($quote = null)
+  {
+    if ($quote) {
+
+      $shipToCountry = $quote->getShippingAddress()->getCountry();
+      $billToCountry = $quote->getBillingAddress()->getCountry();
+
+      if (!empty($shipToCountry) && !$this->canUseForCountry($shipToCountry) && !$this->canUseForCountry($billToCountry)) {
+        $this->_logger->info($this->_helper->__("%s or %s is not supported.",$shipToCountry,$billToCountry));
+        return false;
+      }
+
+      if (!$this->canUseForCurrency($quote->getStore()->getBaseCurrencyCode())) {       
+        $this->_logger->info($this->_helper->__("%s is not supported.",$quote->getStore()->getBaseCurrencyCode()));
+        return false;
+      }
+
+      if (!$this->canUseCheckout()) {        
+        $this->_logger->info($this->_helper->__("Cannot use for checkout"));
+        return false;
+      }
+
+      if (!$this->canUseForQuoteThreshold($quote)) {
+        $this->_logger->info($this->_helper->__("Cannot use outside the order threshold"));
+        return false;
+      }
+
+      if (!$this->canUseForZeroTotal($quote)) {        
+        $this->_logger->info($this->_helper->__("Cannot use for zero total"));
+        return false;
+      }
+
+    }
+
+    return true;
+  }
 
 }

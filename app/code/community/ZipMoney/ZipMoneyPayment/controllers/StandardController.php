@@ -25,13 +25,11 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
    */
   public function indexAction() 
   {         
-
     try {        
       $this->_logger->info($this->_helper->__('Starting Checkout'));
       // Initialize the checkout model
-      $this->_initCheckout();
       // Start the checkout process
-      $this->_checkout->start();
+      $this->_initCheckout()->start();
 
       if($redirectUrl = $this->_checkout->getRedirectUrl()) {
         $this->_logger->info($this->_helper->__('Successful to get redirect url [ %s ] ', $redirectUrl));           

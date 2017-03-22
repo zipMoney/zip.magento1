@@ -1,4 +1,5 @@
 <?php
+use \zipMoney\ApiException;
 
 class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 {
@@ -47,13 +48,10 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 
     if ($payment && $payment->getId()) {
       if($payment->getMethod()=="zipmoneypayment") {
-        $this->_logger->debug($payment->getMethod());
         return true;
       }
     }
     
-    $this->_logger->debug("zipMoney Order 3");
-
     return false;
   }
 
@@ -152,13 +150,9 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 
     try {
 
-		  $this->_checkout = Mage::getModel(
-		  																		"zipmoneypayment/standard_checkout", 
-																					array('api_class' => "\zipMoney\Client\Api\ChargesApi" ,
-																							  'order'=>$order)
-		  																 );
-		  
-		  $this->_checkout->cancelCharge();
+      $this->_charge = Mage::getModel("zipmoneypayment/charge", 
+                              array('api_class' => "\zipMoney\Client\Api\ChargesApi",  'order'=>$order));    
+		  $this->_charge->cancelCharge();
 	  } catch (Mage_Core_Exception $e) {
       $this->_logger->debug($e->getMessage());
     } catch (ApiException $e) {
@@ -169,4 +163,24 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
     
     Mage::throwException($this->_helper->__("Unable to cancel the order in zipMoney."));
 	}
+
+  public function customerLogin()
+  {    
+    $this->_logger->debug($this->_helper->__('Calling customerLogin'));
+
+    $session = Mage::getSingleton('customer/session');
+    $this->_logger->debug($this->_helper->__($session->getAfterAuthUrl()));
+
+    // if (strpos(Mage::helper('core/http')->getHttpReferer(), 'checkout') === false) {    
+    //   $this->_logger->debug($this->_helper->__('Calling customerLogin 1'));
+
+    //     $session->setAfterAuthUrl("http://google.com.au");
+    // } else {      
+    //   $this->_logger->debug($this->_helper->__('Calling customerLogin 2'));
+
+    //     $session->setAfterAuthUrl("http://google.com.au");
+    // }
+
+    // $session->setBeforeAuthUrl('');
+  }
 }

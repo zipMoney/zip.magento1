@@ -2,10 +2,10 @@
 
 
 /**
- * Class Zipmoney_ZipmoneyPayment_Test_Model_Observer
+ * Class Zipmoney_ZipmoneyPayment_Test_Model_Checkout
  * @loadSharedFixture scope.yaml
  */
-class Zipmoney_ZipmoneyPayment_Test_Model_Standard_Checkout extends EcomDev_PHPUnit_Test_Case
+class Zipmoney_ZipmoneyPayment_Test_Model_Checkout extends EcomDev_PHPUnit_Test_Case
 {   
   private $_checkout;
   
@@ -28,9 +28,8 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Standard_Checkout extends EcomDev_PHPU
     $quote = Mage::getModel('sales/quote')->load(103);
     
     $this->_checkoutsApi = $this->getMock('\zipMoney\Client\Api\CheckoutsApi');
-    $this->_chargesApi = $this->getMock('\zipMoney\Client\Api\ChargesApi');
 
-    $this->_checkout = Mage::getSingleton('zipmoneypayment/standard_checkout');
+    $this->_checkout = Mage::getSingleton('zipmoneypayment/checkout');
 
   }
 
@@ -47,16 +46,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Standard_Checkout extends EcomDev_PHPU
     @session_write_close();
   }
 
-  /**
-   * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getApi   
-   * @group Zipmoney_ZipmoneyPayment
-   */
-  public function testGetChargesApi()
-  {       
-    $this->_checkout->setApi("\zipMoney\Client\Api\ChargesApi");
-    $this->assertTrue($this->_checkout->getApi() instanceof \zipMoney\Client\Api\ChargesApi);
-  } 
+  
 
 
   /**
@@ -70,26 +60,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Standard_Checkout extends EcomDev_PHPU
     $this->assertTrue($this->_checkout->getApi() instanceof \zipMoney\Client\Api\CheckoutsApi);
   }
   
-  /**
-   * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote
-   * @group Zipmoney_ZipmoneyPayment
-   * @loadFixture quotes.yaml
-   * @dataProvider dataProvider
-   */
-  public function testSetAndGetQuote($storeId,$quoteId)
-  {    
-    $appEmulation = Mage::getSingleton('core/app_emulation');
-    $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
-
-    $quote = Mage::getModel('sales/quote')->load($quoteId);
-
-    $this->_checkout->setQuote($quote);
-
-    $this->assertTrue($this->_checkout->getQuote() instanceof Mage_Sales_Model_Quote);
-    $this->assertEquals($this->_checkout->getQuote()->getId(),$quoteId);
-  }
-
+  
   /**
    * @test
    * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
@@ -210,64 +181,5 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Standard_Checkout extends EcomDev_PHPU
     $this->_checkout->start("checkout");
   }
 
-  /**
-   * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
-   * @group Zipmoney_ZipmoneyPayment     
-   * @loadFixture products.yaml
-   * @loadFixture customers.yaml
-   * @loadFixture orders.yaml
-   * @loadFixture order_items.yaml
-   * @loadFixture order_addresses.yaml   
-   * @dataProvider dataProvider
-   */
-  public function testCharge($storeId,$orderId)
-  {
-    $appEmulation = Mage::getSingleton('core/app_emulation');
-    $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
-    
-    $this->_checkout = Mage::getModel('zipmoneypayment/standard_checkout');
-
-    $order = Mage::getModel('sales/order')->load($orderId);
-    
-    $this->_checkout->setOrder($order);
-
-    $charge = new \zipMoney\Model\Charge;
-
-    $charge_id = "112343";
-    $charge->setId($charge_id);
-    $charge->setState("captured");
-
-    $this->_chargesApi->expects($this->any())
-              ->method('chargesCreate')
-              ->willReturn( $charge  );
-    
-    $this->_checkout->setApi($this->_chargesApi);
-    $response = $this->_checkout->charge();
-
-    $this->assertEquals($this->_charge->getResponse()->getState(),"captured");
-  }
-  
-  /**
-   * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
-   * @group Zipmoney_ZipmoneyPayment  
-   * @expectedException  Exception
-   * @expectedExceptionMessage The order does not exist.
-   * @dataProvider dataProvider
-   */
-  public function testChargeRaisesExceptionOrderDoesnotExist($storeId,$orderId)
-  {
-    $appEmulation = Mage::getSingleton('core/app_emulation');
-    $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
-
-    $order = Mage::getModel('sales/order')->load($orderId);
-       
-    $this->_checkout->setOrder($order);
-    
-    $this->_checkout->setApi($this->_checkoutsApi);    
-    $this->_checkout->charge();
-  }
-  
 
 }
