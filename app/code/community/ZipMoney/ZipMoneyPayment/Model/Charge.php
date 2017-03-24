@@ -57,6 +57,9 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    */
   protected function _prepareGuestQuote()
   {
+
+    $this->_logger->info($this->_helper->__('Preparing guest quote') );
+    
     $quote = $this->_quote;
     $quote->setCustomerId(null)
         ->setCustomerEmail($quote->getBillingAddress()->getEmail())
@@ -79,6 +82,8 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $billing    = $quote->getBillingAddress();
     $shipping   = $quote->isVirtual() ? null : $quote->getShippingAddress();
     
+    $this->_logger->info($this->_helper->__('Preparing new customer quote') );
+
     $this->_logger->info($this->_helper->__('Creating new customer with email %s', $quote->getCustomerEmail()));
 
     $customerId = $this->_helper->lookupCustomerId($quote->getCustomerEmail());
@@ -151,6 +156,8 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $billing    = $quote->getBillingAddress();
     $shipping   = $quote->isVirtual() ? null : $quote->getShippingAddress();
     
+    $this->_logger->info($this->_helper->__('Preparing logged in customer quote') );
+
 
     if($this->getCustomerSession()->isLoggedIn()){        
       $this->_logger->debug($this->_helper->__('Load customer from session.'));
@@ -383,6 +390,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   }
 
 
+
   /**
    * Create quote in Zip side if not existed, and request for redirect url
    *
@@ -509,7 +517,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    * @throws Mage_Core_Exception
    */
   public function cancelCharge()
-  {
+  {    
     if (!$this->_order || !$this->_order->getId()) {      
       Mage::throwException($this->_helper->__('The order does not exist.'));
     }

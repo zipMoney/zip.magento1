@@ -329,12 +329,6 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
     $quote = Mage::getModel('sales/quote')->load($quoteId);
     $this->_charge->setQuote($quote);
 
-    $customer = Mage::getSingleton("customer/session");
-    $customer->setCustomer(Mage::getSingleton("customer/customer")->load(1));
-
-    print_r($customer->getCustomer()->getData());
-   
-
     $order = $this->_charge->placeOrder();
 
     $this->assertNotNull($order->getId());

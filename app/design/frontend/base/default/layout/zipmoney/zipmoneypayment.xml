@@ -155,7 +155,7 @@
             </block>
         </reference> 
     </checkout_onepage_index>
-
+<!-- 
     <checkout_onepage_savepayment>
         <reference name="checkout.onepage.review.info.items.before">
             <block  type="zipmoneypayment/checkout" 
@@ -167,7 +167,7 @@
                 </action>
             </block>
         </reference>
-    </checkout_onepage_savepayment>
+    </checkout_onepage_savepayment> -->
     <!-- End Onepage Checkout -->
    
     <!-- Idev Onestep Checkout -->

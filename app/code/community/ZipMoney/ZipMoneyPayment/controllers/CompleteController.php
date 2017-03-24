@@ -113,7 +113,6 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
             $session->setLastQuoteId($quoteId)
                     ->setLastSuccessQuoteId($quoteId);
           }
-
           if($order = $this->_charge->getOrder()) {
             $session->setLastOrderId($order->getId())
                     ->setLastRealOrderId($order->getIncrementId());

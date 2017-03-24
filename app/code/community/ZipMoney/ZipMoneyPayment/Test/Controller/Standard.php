@@ -43,13 +43,13 @@ class Zipmoney_ZipmoneyPayment_Test_Controller_Standard extends EcomDev_PHPUnit_
   }
 
 
-  public function testIndexAction()
-  {
+  // public function testIndexAction()
+  // {
 
-    $response = $this->dispatch('zipmoneypayment/standard');
-    $this->assertResponseHttpCode(500);
+  //   $response = $this->dispatch('zipmoneypayment/standard');
+  //   $this->assertResponseHttpCode(500);
 
-  }
+  // }
   
 
 }

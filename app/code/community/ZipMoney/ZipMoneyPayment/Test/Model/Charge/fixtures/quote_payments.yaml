@@ -19,7 +19,7 @@ tables:
     -
       entity_id: 1001
       quote_id: 104
-      method: someOtherPayment
+      method: zipmoneypayment
 
     -
       entity_id: 1101
