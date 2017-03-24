@@ -183,4 +183,65 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 
     // $session->setBeforeAuthUrl('');
   }
+
+
+  public function chargeOrder($observer)
+  {
+    /** @var Mage_Sales_Model_Order $order */
+    $event = $observer->getEvent();
+    $order = $event->getOrder();
+    $quote = $event->getQuote();
+
+    if($order->getPayment()->getMethod()!="zipmoneypayment")
+    {
+      return;
+    }
+    
+    $this->_logger->debug($this->_helper->__("Charge Order"));
+
+    try {
+       
+      if(!$order->getId()){
+        Mage::throwException($this->_helper->__("The order doesnot exist."));
+      }      
+
+      // Check if the quote exists
+      if(!$quote->getId()){
+        Mage::throwException($this->_helper->__("The quote doesnot exist."));
+      }     
+      
+      // Check if the zipMoney Checkout Id Exists
+      if(!$quote->getZipmoneyCid()){
+        Mage::throwException($this->_helper->__("The zipMoney Checkout Id doesnot exist."));
+      }    
+      Mage::throwException($this->_helper->__("The order has already been charged."));
+
+      // Check if the Order Has been charged
+      if($order->getPayment()->getZipmoneyChargeId()){
+        Mage::throwException($this->_helper->__("The order has already been charged."));
+      }      
+     
+      // Initialise the charge
+      $this->_charge = Mage::getSingleton('zipmoneypayment/charge');
+
+      // Set quote to the chekout model
+      $this->_charge->setOrder($order)
+                    ->charge();
+
+    } catch (ApiException $e) {
+      $this->_logger->debug("Error:-".json_encode($e->getResponseBody()));      
+      Mage::throwException("Unable to complete the checkout");
+    } catch (Exception $e) {
+      $this->_logger->debug($e->getMessage());      
+
+      // Mage::throwException("An error occurred while completing the checkout");
+      $controller = $observer->getEvent()->getControllerAction();
+
+      $controller->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+      $response = array('error' => -1, 'message' =>'Error');
+
+      return $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+
+    }     
+  }
 }

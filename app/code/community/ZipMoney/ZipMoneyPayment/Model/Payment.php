@@ -180,6 +180,16 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     Mage::throwException($this->_helper->__("Unable to cancel the order in zipMoney."));
     return false;
   }
+  
+  /**
+   * Return checkout session object
+   *
+   * @return Mage_Checkout_Model_Session
+   */
+  protected function _getCheckoutSession()
+  {
+      return Mage::getSingleton('checkout/session');
+  }
 
 
   protected function _getQuote()
@@ -190,7 +200,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
     return $this->_quote;
   }
-
 
 	/**
 	 * Return zipMoney Express redirect url if current request is not savePayment (which works for oneStepCheckout)

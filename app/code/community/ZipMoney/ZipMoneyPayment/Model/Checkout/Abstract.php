@@ -143,7 +143,8 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
   {
     if ($quote) {
       $this->_quote = $quote;
-    }
+    }    
+    return $this;
   }
 
   public function getOrder()
@@ -157,6 +158,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
     if ($order) {
       $this->_order = $order;
     }
+    return $this;
   }
 
 

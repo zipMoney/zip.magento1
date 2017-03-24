@@ -1,6 +1,9 @@
 var zipCheckout = Class.create();
 
+
 zipCheckout.prototype = {
+  _checkoutComplete: false,
+  _checkoutResult: null,
   _extensions:[],
   _btn: null,
   _zipBtn: null,
@@ -9,7 +12,62 @@ zipCheckout.prototype = {
   options: { 
     methodCode: "zipmoneypayment"
   },
-  initialize: function(){},
+  initialize: function(){
+    var _this = this;
+    document.observe("dom:loaded", function() {
+      Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
+          var _payment = this;
+          var validator = new Validation(this.form);
+          
+              if (this.validate() && validator.validate()) {
+                  
+                if (payment.currentMethod=='zipmoneypayment'){
+                    checkout.setLoadWaiting('payment');
+                   // if(!_this._checkoutComplete){
+                      var request = new Ajax.Request(
+                             this.saveUrl,
+                             {
+                               method:'post',
+                               onComplete: function(){},//remove default method like placeholder
+                               onSuccess: function(transport){
+                                _this.redirectZip(transport,_payment);
+                               },//remove default method like placeholder
+                               onFailure: checkout.ajaxFailure.bind(checkout),
+                               parameters: Form.serialize(this.form)
+                             }
+                         );
+                   // } 
+                } else{
+                  save(); //return default method
+                }             
+              }
+              
+      });
+    });
+
+  },
+ 
+  redirectZip:function(transport, _payment){
+    var _this = this;
+    Zip.Checkout.init({
+      redirect: false,
+      checkoutUri: "http://local.zipmoney.com.au/magento-ce-1.9.2.2-apiv2/zipmoneypayment/standard/",
+      onComplete: function(response){
+        payment.resetLoadWaiting(transport);     
+        _this._checkoutComplete  = true; 
+        _this._checkoutResult = response;
+        if(response.state == "approved" || response.state == "referred"){
+          _payment.nextStep(transport);
+        } 
+
+      },
+      onError: function(response){           
+        _this._checkoutResult = response;
+        _this._checkoutComplete  = true; 
+        payment.resetLoadWaiting(transport);     
+      }
+    });
+  },
   setupZipPlaceOrderButton: function(){
     var btnClone = this._btn.clone(true);
     var _this = this;
@@ -19,6 +77,7 @@ zipCheckout.prototype = {
     this._btn.insert({before: btnClone});
     
     this._zipBtn = btnClone;
+    
   },
   // Displays buttonToShow and hides other
   switchButtons: function(hideAll) {
@@ -50,6 +109,9 @@ zipCheckout.prototype = {
       redirect: this.options.redirect,
       checkoutUri: this.options.checkoutUri,
       redirectUri: this.options.redirectUrl,
+      onComplete: function(response){
+        console.log(response);
+      },
       onError:this.onError
     });
   },

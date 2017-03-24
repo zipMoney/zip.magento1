@@ -126,6 +126,15 @@
                 </observers>
             </sales_order_save_before>
 
+            <checkout_type_onepage_save_order_after>
+                <observers>
+                    <zipmoney_set_order_invoice_action_flag_observer>
+                        <class>zipmoneypayment/observer</class>
+                        <method>chargeOrder</method>
+                    </zipmoney_set_order_invoice_action_flag_observer>
+                </observers>
+            </checkout_type_onepage_save_order_after>
+
            <!--  <order_cancel_after>
                 <observers>
                     <zipmoney_order_cancel_after_observer>

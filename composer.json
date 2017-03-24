@@ -36,11 +36,11 @@
             "type":"package",
             "package": {
               "name": "zipMoney/zipMoney-MerchantApi-php",
-              "version": "dev-feature/api",
+              "version": "dev-master",
               "source": {
                   "url": "https://github.com/zipmoney/zipMoney-MerchantApi-php",
                   "type": "git",
-                  "reference": "feature/api"
+                  "reference": "master"
                 }
             }
         }
