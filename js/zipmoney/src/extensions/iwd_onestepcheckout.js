@@ -9,21 +9,24 @@ Zip_IWD_OnestepCheckout.prototype = {
     var _this = this;
     
     this.super = superClass;
+
     this.super._btn = $('iwd_opc_place_order_button');
+    this.super._onComplete = this.onComplete.bind(this);
+    this.super._onError = this.onError.bind(this);
 
     // Super object is IWD
     if(typeof IWD != 'undefined'){
-      IWD.OPC.Plugin.event('saveOrder',function(){
-        IWD.OPC.Checkout.saveOrderUrl = null;
-        _this.super.redirectToZip();
-        return true;
-      });
+      if(typeof IWD.OPC != 'undefined'){
+        IWD.OPC.Plugin.event('saveOrder',function(){
+          IWD.OPC.Checkout.saveOrderUrl = null;
+          _this.super.checkout();
+          return true;
+        });
+      }
     }
-
     // For IWD_OPC v6. Super object is OnePage
-    if(OnePage !=undefined){     
+    if(OnePage !=undefined){  
       PaymentMethod.prototype.saveSection = function () {
-        this.showLoader(Singleton.get(OnePage).sectionContainer);
         switch (this.getPaymentMethodCode()) {
           case Singleton.get(PaymentMethodStripe).code:
             Singleton.get(PaymentMethodStripe).originalThis = _this;
@@ -34,12 +37,24 @@ Zip_IWD_OnestepCheckout.prototype = {
             clearTimeout(Singleton.get(OnePage).validateTimeout);
             clearTimeout(Singleton.get(OnePage).blurTimeout);
             Singleton.get(OnePage).showLoader(Singleton.get(OnePage).sectionContainer);
-            _this.super.redirectToZip();
+            _this.super.checkout();
+            break;
           default:
             OnePage.prototype.saveSection.apply(this, arguments);
         }
       };
     }
+  },
+  onComplete: function(response){     
+    if(response.state == "approved" || response.state == "referred"){
+      location.href = this.super.options.redirectUrl + "?result=" + response.state + "&checkoutId=" + response.checkoutId;
+    } else {
+      Singleton.get(OnePage).hideLoader(Singleton.get(OnePage).sectionContainer);
+    }
+  },
+  onError: function(response){ 
+    Singleton.get(OnePage).hideLoader(Singleton.get(OnePage).sectionContainer);
+    alert("An error occurred while getting the redirect url from zipMoney");
   }
 }
 

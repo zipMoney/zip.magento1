@@ -3,7 +3,7 @@ use \zipMoney\ApiException;
 
 class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_Abstract {
 
-	protected $_code = 'zipmoneypayment';
+	protected $_code = Zipmoney_ZipmoneyPayment_Model_Config::METHOD_CODE;
 	protected $_formBlockType = 'zipmoneypayment/standard_form';
 	protected $_isInitializeNeeded = true;
 	protected $_url = "";
@@ -293,9 +293,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     $minTotal = $this->_config->getOrderTotalMinimum();
     $maxTotal = $this->_config->getOrderTotalMaximum();
 
-    if ((!empty($minTotal) && $total < $minTotal || !empty($maxTotal) && $total > $maxTotal) &&
-      $this->_config->getOrderTotalOutsideThresholdAction() == 'hide'
-     ) {
+    if (!empty($minTotal) && $total < $minTotal ){
       return false;
     }
 

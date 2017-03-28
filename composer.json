@@ -23,18 +23,6 @@
         {
             "type":"package",
             "package": {
-              "name": "zipMoney/zipmoney-apiv2-php",
-              "version": "dev-feature/apiv2",
-              "source": {
-                  "url": "https://github.com/zipmoney/zipmoney-apiv2-php",
-                  "type": "git",
-                  "reference": "feature/apiv2"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package": {
               "name": "zipMoney/zipMoney-MerchantApi-php",
               "version": "dev-master",
               "source": {

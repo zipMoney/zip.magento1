@@ -155,6 +155,21 @@
             </block>
         </reference> 
     </checkout_onepage_index>
+    
+    <checkout_onepage_paymentmethod>
+        <reference name="root">
+            <reference name="checkout.onepage.payment.methods.additional">
+                <block  type="zipmoneypayment/checkout" 
+                        name="additional" 
+                        template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml">
+                    <action method="setData">
+                        <name>extension_name</name>
+                        <value>Mage_Checkout</value>
+                    </action>
+                </block>
+            </reference>
+        </reference>
+    </checkout_onepage_paymentmethod>
 
     <!-- <checkout_onepage_savepayment>
         <reference name="checkout.onepage.review.info.items.before">

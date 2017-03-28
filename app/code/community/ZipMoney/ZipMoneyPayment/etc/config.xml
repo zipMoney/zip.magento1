@@ -218,8 +218,7 @@
                 <minimum_total>1</minimum_total>
                 <maximum_total>1000</maximum_total>
                 <detail_message>Interest Free and Flexible - get a decision in seconds!</detail_message>
-                <display_detail_message>1</display_detail_message>
-                <display_title>0</display_title>
+                <display_title>1</display_title>
                 <order_total_outside_threshold_action></order_total_outside_threshold_action>               
                 <order_total_outside_threshold_notice>Available on orders up to $%d. Don't worry if its a little higher, you can always pay a deposit.</order_total_outside_threshold_notice>
             </zipmoneypayment>

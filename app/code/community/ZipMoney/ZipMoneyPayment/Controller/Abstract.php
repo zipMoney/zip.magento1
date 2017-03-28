@@ -18,6 +18,10 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    * @var Zipmoney_ZipmoneyPayment_Helper_Data
    */
   protected $_helper;
+  /**
+   * @var Zipmoney_ZipmoneyPayment_Model_Config
+   */
+  protected $_config;
 
   /**
    * @var Mage_Sales_Model_Quote
@@ -38,7 +42,8 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 	{
 		parent::_construct();
 
-		$this->_logger = Mage::getSingleton("zipmoneypayment/logger");
+    $this->_logger = Mage::getSingleton("zipmoneypayment/logger");
+    $this->_config = Mage::getSingleton("zipmoneypayment/config");
 		$this->_helper = Mage::helper('zipmoneypayment');
 	}
 

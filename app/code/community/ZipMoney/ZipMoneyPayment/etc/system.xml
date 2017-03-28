@@ -116,26 +116,6 @@
                                     <show_in_store>0</show_in_store>
                                     <frontend_class>validate-number</frontend_class>
                                 </minimum_total>
-                                <order_total_outside_threshold_action translate="label">
-                                    <label>When order total is outside the threshold</label>
-                                    <tooltip>Hide Payment Option / Display Notice if the order total is outside the minimum/maximum total</tooltip>
-                                    <frontend_type>select</frontend_type>
-                                    <source_model>zipmoneypayment/source_orderThresholdAction</source_model>
-                                    <sort_order>100</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                </order_total_outside_threshold_action>
-                                <order_total_outside_threshold_notice translate="label">
-                                    <label>Order Total Threshold Message</label>
-                                    <tooltip>Message to be displayed along with the payment option if the order total is outside the given threshold</tooltip>
-                                    <frontend_type>textarea</frontend_type>
-                                    <sort_order>110</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                    <depends><order_total_outside_threshold_action>display_notice</order_total_outside_threshold_action></depends> <!-- see this line -->
-                                </order_total_outside_threshold_notice>
                             </fields>
                         </zipmoneypayment>
 

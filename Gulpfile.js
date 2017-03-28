@@ -49,6 +49,7 @@ gulp.task('default', ['clean'], function() {
 // Watch
 gulp.task('watch', function() {
   gulp.watch('js/zipmoney/src/**/*.js', ['scripts']);
+  //gulp.watch('js/zipmoney/src/zipmoney-checkout.js', ['scripts']);
   livereload.listen();
   gulp.watch(['js/zipmoney/dist/scripts']).on('change', livereload.changed);
 });

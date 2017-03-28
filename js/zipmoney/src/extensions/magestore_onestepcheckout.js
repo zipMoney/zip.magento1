@@ -19,7 +19,7 @@ Zip_MageStore_OnestepCheckout.prototype = {
           if (validator.validate() && checkpayment()) {
             this.disabled = true;
             disable_payment();
-            _this.super.redirectToZip();
+            _this.super.checkout();
           }
         })
       }

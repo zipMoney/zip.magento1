@@ -1,23 +1,29 @@
 var zipCheckout = Class.create();
 
 zipCheckout.prototype = {
+  _checkoutComplete: false,
+  _checkoutResult: null,
   _extensions:[],
   _btn: null,
   _zipBtn: null,
   _zipBtnId : 'zipmoneypayment-place-order',
   _selectedPaymentCode: null,
+  _onComplete: null,
+  _onError: null,
   options: { 
     methodCode: "zipmoneypayment"
   },
-  initialize: function(){},
+  initialize: function(){
+    this._onComplete = this.onComplete.bind(this);
+    this._onError = this.onError.bind(this);
+  },
   setupZipPlaceOrderButton: function(){
     var btnClone = this._btn.clone(true);
+  
     var _this = this;
 
     btnClone.setAttribute('id', this._zipBtnId);
-
     this._btn.insert({before: btnClone});
-    
     this._zipBtn = btnClone;
   },
   // Displays buttonToShow and hides other
@@ -45,21 +51,27 @@ zipCheckout.prototype = {
       }
     });
   },
-  redirectToZip: function(){
+  onComplete: function(response){    
+    if(response.state == "approved" || response.state == "referred"){
+      location.href = this.options.redirectUrl + "?result=" + response.state + "&checkoutId=" + response.checkoutId;
+    }
+  },
+  onError: function(response){       
+    alert("An error occurred while getting the redirect url from zipMoney");
+  },
+  checkout: function(){
     Zip.Checkout.init({
       redirect: this.options.redirect,
       checkoutUri: this.options.checkoutUri,
       redirectUri: this.options.redirectUrl,
-      onError:this.onError
+      onComplete: this._onComplete,
+      onError: this._onError
     });
   },
-  onError: function(msg){
-    console.log(msg);
-  },  
   getCurrentExtension: function(){
     var $this = this;
     var extObj = null;
-    
+
     this._extensions.each(function(extension){
       if(extension.name.toLowerCase() == $this.options.checkoutExtension.toLowerCase()){
         extObj = new extension.class;
@@ -79,12 +91,11 @@ zipCheckout.prototype = {
       if(ext!=undefined){
         ext.setup(this);
       }
-
       queryParams = document.URL.toQueryParams();
       
       if (queryParams['zip-in-context'] != undefined &&  
           queryParams['zip-in-context'] == 'true') {
-        this.redirectToZip();
+        this.checkout();
       }
     } catch (e){
       console.log(e);

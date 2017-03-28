@@ -128,9 +128,15 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
         } catch (Mage_Core_Exception $e) {
           $this->_getCheckoutSession()->addError($e->getMessage());      
           $this->_logger->debug($e->getMessage());
-        } catch (ApiException $e) {
-          $this->_getCheckoutSession()->addError($this->_helper->__('Unable to complete the checkout.'));
-          $this->_logger->debug("Error:-".json_encode($e->getResponseBody()));
+        } catch (ApiException $e) {          
+          $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
+          switch ($e->getCode()) {
+            case 402:          
+              $this->_getCheckoutSession()->addError($this->_helper->__('The payment was declined by Zip.(MG001)'));
+              break;
+            default:
+              $this->_getCheckoutSession()->addError($this->_helper->__('Unable to complete the checkout.'));
+          }
         } catch (Exception $e) {
           $this->_getCheckoutSession()->addError($this->_helper->__('Unable to complete the checkout.'));
           $this->_logger->debug($e->getMessage());
@@ -164,57 +170,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
     }
   }
 
-  /**
-   * Return from zipMoney and handle the result of the application
-   */
-  public function chargeAction() 
-  {
-    
-    $this->_logger->debug($this->_helper->__("On Charge Action"));
-    
-    try {
-    
-       $lastOrderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-
-       $this->_logger->debug($this->_helper->__("Last Order Id %s",$lastOrderId));
-
-      // Is checkout id valid?
-      if(!$lastOrderId){      
-        $err_msg = $this->_helper->__("The last order doesnot exist.");
-        $this->_logger->error($err_msg);
-        Mage::throwException($err_msg);
-      }
-
-      $order = Mage::getModel('sales/order')->load($lastOrderId);
-      
-      if(!$order->getId()){
-        $err_msg = $this->_helper->__("The order doesnot exist.");
-        $this->_logger->error($err_msg);
-        Mage::throwException($err_msg);
-      }      
-
-      // Initialise the charge
-      $this->_charge = Mage::getModel($this->_chargeModel);
-
-      // Set quote to the chekout model
-      $this->_charge->setOrder($order)
-                    ->charge();
-      // Redirect to success page
-      $this->getResponse()->setRedirect(Mage::getUrl('checkout/onepage/success'));
-      return;
-        
-    } catch (Mage_Core_Exception $e) {
-      $this->_logger->debug($e->getMessage());
-      $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
-    } catch (ApiException $e) {
-      $this->_logger->debug("Error:-".json_encode($e->getResponseBody()));      
-      $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
-    } catch (Exception $e) {
-      $this->_logger->debug($e->getMessage());      
-      $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
-    }     
-  }
-
+  
   /**
    * Return from zipMoney and handle the result of the application
    */

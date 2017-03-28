@@ -3,6 +3,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 {
 	const MODULE_VERSION = "1.0.0";
 	const MODULE_PLATFORM = "Magento";
+	const METHOD_CODE = "zipmoneypayment";
 
 	const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
 	
@@ -208,6 +209,11 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	public function getDisplayMethodTitle()
 	{
 		return (bool)Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_DISPLAY_TITLE);
+	}
+
+	public function getMethodCode()
+	{
+		return self::METHOD_CODE;
 	}
 
 }

@@ -15,7 +15,7 @@ GoMage_Checkout.prototype = {
       if(this._btn) {
         this._btn.setAttribute('onclick', '');
         this._btn.observe('click',function(){
-          _this.super.redirectToZip();
+          _this.super.checkout();
         })
       }
     } 
