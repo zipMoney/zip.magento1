@@ -106,6 +106,16 @@
                                     <show_in_store>0</show_in_store>
                                     <frontend_class>validate-number</frontend_class>
                                 </sort_order>
+                                <log_setting translate="label">
+                                    <label>Log Setting</label>
+                                    <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>
+                                    <source_model>zipmoneypayment/source_logsetting</source_model>
+                                    <frontend_type>select</frontend_type>
+                                    <sort_order>80</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                </log_setting>
                                 <minimum_total translate="label">
                                     <label>Minimum Order Total</label>
                                     <tooltip>The minimum order total amount required to checkout</tooltip>

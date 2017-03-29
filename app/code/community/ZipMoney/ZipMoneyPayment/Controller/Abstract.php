@@ -35,6 +35,20 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    * @var Zipmoney_ZipmoneyPayment_Model_Charge
    */
   protected $_charge;
+
+  /**
+   * Common Route
+   *
+   * @const
+   */
+  const ZIPMONEY_STANDARD_ROUTE = "zipmoneypayment/standard";
+  
+  /**
+   * Error Route
+   *
+   * @const
+   */
+  const ZIPMONEY_ERROR_ROUTE = self::ZIPMONEY_STANDARD_ROUTE."/error";
   /**
    * Instantiate config
    */
@@ -315,6 +329,21 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     $this->_redirect("checkout/cart");
   }
 
+  public function _redirectToError()
+  {
+    $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
+  }
+
+  public function _redirectToCartOrError()
+  {
+    if($this->_getQuote()->getIsActive()){
+      $this->_redirectToCart();
+    } else {
+      $this->_redirectToError();
+    }
+  }
+
+  
   /**
    * Redirects to the error page.
    *

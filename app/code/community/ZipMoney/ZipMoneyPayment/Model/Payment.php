@@ -152,13 +152,20 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
   {
     $this->_logger->info($this->_helper->__("Cancelling Order"));
 
+
     if ($payment && $payment->getOrder()) {
       Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
     }
 
+
     $orderId = $payment->getOrder()->getIncrementId();
     $order = Mage::getModel('sales/order')
                     ->loadByIncrementId($orderId);
+
+    if($order->getPayment()->getMethod() != "zipmoneypayment" )
+    {
+      return;
+    }
 
     $this->_charge = Mage::getModel($this->_chargeModel);
     $this->_charge->setOrder($order);
@@ -226,7 +233,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
          */
 
         $this->_logger->info("In-Context Checkout");
-
 
         if(Mage::app()->getRequest()->isAjax())
           $currentUrl = Mage::helper('checkout/url')->getCheckoutUrl();
@@ -320,10 +326,10 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
    * @param Mage_Sales_Model_Quote $quote
    * @return bool
    */
-  // public function isAvailable($quote = null)
-  // {
-  //   return $this->isAvailableForQuote($quote) && parent::isAvailable($quote);
-  // }
+  public function isAvailable($quote = null)
+  {
+    return $this->isAvailableForQuote($quote) && parent::isAvailable($quote);
+  }
 
   /**
    * Added verification for quote (compatibility reason)

@@ -12,7 +12,6 @@ Zip_Idev_OnestepCheckout.prototype = {
     this.super.setupZipPlaceOrderButton();
     this.super._zipBtn.observe('click',this.idevCheckout.bind(this));
     this.super.switchButtons();
-    this.methodChange();
     this.removeLoader();
     /* Disable button to avoid multiple clicks */
     this.super._btn.removeClassName('grey').addClassName('orange');
@@ -21,8 +20,9 @@ Zip_Idev_OnestepCheckout.prototype = {
     Ajax.Responders.register({
       onComplete: function(request, transport) {
         // Avoid AJAX callback for internal AJAX request
-        if (typeof request.parameters.doNotMakeAjaxCallback == 'undefined') {          
-           $this.super.switchButtons();
+        if (typeof request.parameters.doNotMakeAjaxCallback == 'undefined') {   
+          $this.methodChange();       
+          $this.super.switchButtons();
         }
       }
     });
@@ -81,6 +81,7 @@ Zip_Idev_OnestepCheckout.prototype = {
   methodChange: function(){
     var paymentEls = $$('.payment-methods #checkout-payment-method-load input[name="payment[method]"]');
     var _this = this;
+    
     paymentEls.each(function (el) {
       el.observe("click",function(){
         _this.super._selectedPaymentCode = payment.currentMethod;

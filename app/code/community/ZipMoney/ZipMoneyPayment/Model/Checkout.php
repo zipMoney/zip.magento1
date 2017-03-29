@@ -70,6 +70,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
     $checkoutMethod = $this->getCheckoutMethod();
     $isAllowedGuestCheckout = Mage::helper('checkout')->isAllowedGuestCheckout($this->_quote, $this->_quote->getStoreId());
     $isCustomerLoggedIn = $this->getCustomerSession()->isLoggedIn();
+    
     $this->_logger->debug("Checkout Method:- ".$checkoutMethod);
     $this->_logger->debug("Is Allowed Guest Checkout :- ".$isAllowedGuestCheckout);
     $this->_logger->debug("Is Customer Logged In :- ".$isCustomerLoggedIn);
@@ -93,20 +94,26 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
 
     $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request));
 
-    $checkout = $this->getApi()->checkoutsCreate($request);
+    try {
 
-    $this->_logger->debug("Checkout Response:- ".$this->_helper->json_encode($checkout));
+      $checkout = $this->getApi()->checkoutsCreate($request);
 
-    if(isset($checkout->error)){
-      Mage::throwException($this->_helper->__('Cannot get redirect URL from zipMoney.'));
-    }
+      $this->_logger->debug("Checkout Response:- ".$this->_helper->json_encode($checkout));
 
-    $this->_checkoutId  = $checkout->getId();
+      if(isset($checkout->error)){
+        Mage::throwException($this->_helper->__('Cannot get redirect URL from zipMoney.'));
+      }
 
-    $this->_quote->setZipmoneyCid($this->_checkoutId)
-                 ->save();
+      $this->_checkoutId  = $checkout->getId();
 
-    $this->_redirectUrl = $checkout->getUri();
+      $this->_quote->setZipmoneyCid($this->_checkoutId)
+                   ->save();
+
+      $this->_redirectUrl = $checkout->getUri();
+    } catch(\zipMoney\ApiException $e){
+      $this->_logger->debug("Errors:- ".json_encode($e->getResponseBody()));      
+      Mage::throwException($this->_helper->__('An error occurred while to requesting the redirect url.'));
+    } 
 
     return $checkout;
   }

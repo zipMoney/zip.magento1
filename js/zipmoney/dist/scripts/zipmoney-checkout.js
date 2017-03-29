@@ -1,8 +1,6 @@
 var zipCheckout = Class.create();
 
 zipCheckout.prototype = {
-  _checkoutComplete: false,
-  _checkoutResult: null,
   _extensions:[],
   _btn: null,
   _zipBtn: null,
@@ -180,7 +178,6 @@ Zip_Idev_OnestepCheckout.prototype = {
     this.super.setupZipPlaceOrderButton();
     this.super._zipBtn.observe('click',this.idevCheckout.bind(this));
     this.super.switchButtons();
-    this.methodChange();
     this.removeLoader();
     /* Disable button to avoid multiple clicks */
     this.super._btn.removeClassName('grey').addClassName('orange');
@@ -189,8 +186,9 @@ Zip_Idev_OnestepCheckout.prototype = {
     Ajax.Responders.register({
       onComplete: function(request, transport) {
         // Avoid AJAX callback for internal AJAX request
-        if (typeof request.parameters.doNotMakeAjaxCallback == 'undefined') {          
-           $this.super.switchButtons();
+        if (typeof request.parameters.doNotMakeAjaxCallback == 'undefined') {   
+          $this.methodChange();       
+          $this.super.switchButtons();
         }
       }
     });
@@ -249,6 +247,7 @@ Zip_Idev_OnestepCheckout.prototype = {
   methodChange: function(){
     var paymentEls = $$('.payment-methods #checkout-payment-method-load input[name="payment[method]"]');
     var _this = this;
+    
     paymentEls.each(function (el) {
       el.observe("click",function(){
         _this.super._selectedPaymentCode = payment.currentMethod;
@@ -380,6 +379,8 @@ Zip_Mage_Checkout.prototype = {
       if (this.validate() && validator.validate()) {
         if (this.currentMethod=='zipmoneypayment'){
           checkout.setLoadWaiting('payment');
+           // _this.checkout();
+
           var request = new Ajax.Request(
                 this.saveUrl,
                 {
@@ -398,12 +399,12 @@ Zip_Mage_Checkout.prototype = {
   onSuccess: function(transport) {
 
     if (transport && transport.responseText){
-        try{
-            response = eval('(' + transport.responseText + ')');
-        }
-        catch (e) {
-            response = {};
-        }
+      try{
+        response = eval('(' + transport.responseText + ')');
+      }
+      catch (e) {
+        response = {};
+      }
     }
     /*
      * if there is an error in payment, need to show error message
@@ -439,17 +440,32 @@ Zip_Mage_Checkout.prototype = {
     }
   },
   onError: function(response){       
-    console.log(response);
     alert("An error occurred while getting the redirect url from zipMoney");
     this._payment.resetLoadWaiting(this._transport);
   },
-  checkout: function(){
+  onCheckout: function(resolve, reject, args){
+    // xr.post(this.checkoutUri).then(function(response){
+    //   console.log(response);
+    // }).catch(reject);
+
+    new Ajax.Request(
+            this.checkoutUri,
+            {
+              method:'post',
+              onSuccess: _this.onSuccess.bind(_this),
+              onFailure: checkout.ajaxFailure.bind(checkout),
+              parameters: Form.serialize(this.form)
+            }
+         );
+  },
+  checkout: function(){    
     Zip.Checkout.init({
-      redirect: this.options.redirect,
-      checkoutUri: this.options.checkoutUri,
-      redirectUri: this.options.redirectUrl,
+      redirect: this.super.options.redirect,
+      checkoutUri: this.super.options.checkoutUri,
+      redirectUri: this.super.options.redirectUrl,
       onComplete: this.onComplete.bind(this),
       onError: this.onError.bind(this)
+      //onCheckout:this.onCheckout.bind(this)
     });
   }
 }

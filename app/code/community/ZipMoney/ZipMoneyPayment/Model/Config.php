@@ -6,6 +6,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	const METHOD_CODE = "zipmoneypayment";
 
 	const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
+	const STATUS_MAGENTO_DECLINED = "zip_declined";
 	
 	const PAYMENT_ZIPMONEY_PAYMENT_ACTIVE	= 'payment/zipmoneypayment/active';
 	const PAYMENT_ZIPMONEY_PAYMENT_ENVIRONMENT = 'payment/zipmoneypayment/environment';
@@ -35,8 +36,13 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	const IFRAME_API_URL_TEST = 'https://account.sandbox.zipmoney.com.au/scripts/iframe/zipmoney-checkout.js';
 	const IFRAME_API_URL_DEVELOPMENT = 'http://account.dev1.zipmoney.com.au/scripts/iframe/zipmoney-checkout.js';
 
-	const PAYMENT_METHOD_LOGO = array( "zipmoney" => "http://d3k1w8lx8mqizo.cloudfront.net/logo/25px/zipmoney.png",
-																		 "zippay" => "http://d3k1w8lx8mqizo.cloudfront.net/logo/25px/zippay.png");
+	const PAYMENT_METHOD_LOGO_ZIP = "http://d3k1w8lx8mqizo.cloudfront.net/logo/25px/";
+
+	protected $_error_codes_map = array("account_insufficient_funds" => "MG1-0001",
+																 "account_inoperative" => "MG1-0002",
+																 "account_locked" => "MG1-0003",
+																 "amount_invalid" => "MG1-0004",
+																 "fraud_check" => "MG1-0005");
 
 	protected $_merchantPublicKey = null;
 	protected $_merchantPrivateKey = null;
@@ -202,9 +208,8 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	 */
 	public function getMethodLogo()
 	{		
-		return  self::PAYMENT_METHOD_LOGO[strtolower($this->getProduct())];
+		return  self::PAYMENT_METHOD_LOGO_ZIP.strtolower($this->getProduct()).".png";
 	}
-
 
 	public function getDisplayMethodTitle()
 	{
@@ -214,6 +219,16 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	public function getMethodCode()
 	{
 		return self::METHOD_CODE;
+	}
+
+	public function getMappedErrorCode($errorCode)
+	{
+		if(!in_array($errorCode, array_keys($this->_error_codes_map)))
+		{
+			return false;
+		}
+
+		return $this->_error_codes_map[$errorCode];
 	}
 
 }

@@ -18,6 +18,7 @@ $installer->startSetup();
  */
 $data = array(
     array('zip_authorised', 'zipMoney Authorised')
+//    array('zip_declined', 'zipMoney Payment Declined')
 );
 
 /**

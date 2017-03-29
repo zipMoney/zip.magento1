@@ -96,5 +96,26 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
         ->getId();
   }
 
+  public function declineOrder($order, $order_comment = null)
+  {
+    if($order){
+      if($order_comment){
+        $order->addStatusHistoryComment($order_comment)
+              ->save();
+      }
+      $order->setStatus(Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_DECLINED)->save();
+    }      
+  }
+
+  public function cancelOrder($order, $order_comment = null)
+  {
+    if($order){
+      if($order_comment){
+        $order->addStatusHistoryComment($order_comment)
+              ->save();
+      }
+      $order->cancel()->save();
+    }      
+  }
   
 }

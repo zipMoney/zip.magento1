@@ -31,37 +31,36 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
     }
 
     try {
-      //throw new Exception("Error Processing Request", 1);
+        //throw new Exception("Error Processing Request", 1);
 
-      if (!$this->getRequest()->isPost()) {
-        $this->_ajaxRedirectResponse();
-        return;
-      }
+        if (!$this->getRequest()->isPost()) {
+          $this->_ajaxRedirectResponse();
+          return;
+        }
 
-      $result = $this->getOnepage()->savePayment(array("method" => $this->_config->getMethodCode()));
+        $result = $this->getOnepage()->savePayment(array("method" => $this->_config->getMethodCode()));
 
-      $this->_logger->info($this->_helper->__('Starting Checkout'));
+        $this->_logger->info($this->_helper->__('Starting Checkout'));
 
-      // Initialize the checkout model
-      // Start the checkout process
-      $this->_initCheckout()->start();
+        // Initialize the checkout model
+        // Start the checkout process
+        $this->_initCheckout()->start();
 
-      if($redirectUrl = $this->_checkout->getRedirectUrl()) {
-        $this->_logger->info($this->_helper->__('Successful to get redirect url [ %s ] ', $redirectUrl));
-        $data = array( 'redirect_uri' => $redirectUrl ,'message'  => $this->_helper->__('Redirecting to zipMoney.'));
-        return $this->_sendResponse($data, Mage_Api2_Model_Server::HTTP_OK);
-      } else {
-        Mage::throwException("Failed to get redirect url.");
-      }
+        if($redirectUrl = $this->_checkout->getRedirectUrl()) {
+          $this->_logger->info($this->_helper->__('Successful to get redirect url [ %s ] ', $redirectUrl));
+          $data = array( 'redirect_uri' => $redirectUrl ,'message'  => $this->_helper->__('Redirecting to zipMoney.'));
+          return $this->_sendResponse($data, Mage_Api2_Model_Server::HTTP_OK);
+        } else {
+          Mage::throwException("Failed to get redirect url.");
+        }
+
     } catch (Mage_Core_Exception $e) {
-      $this->_logger->debug($e->getMessage());
-    } catch (ApiException $e) {
-      $this->_logger->debug("Errors:- ".json_encode($e->getResponseBody()));
+        $this->_logger->debug($e->getMessage());
     } catch (Exception $e) {
-      $this->_logger->debug($e->getMessage());
+        $this->_logger->debug($e->getMessage());
     }
 
-    $this->_sendResponse(array('message' => $this->_helper->__('Can not redirect to zipMoney.')), Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR);
+    $this->_sendResponse(array('message' => $this->_helper->__('Can not get the redirect url from zipMoney.')), Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR);
   }
 
 

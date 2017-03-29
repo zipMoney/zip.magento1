@@ -165,27 +165,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
     Mage::throwException($this->_helper->__("Unable to cancel the order in zipMoney."));
 	}
 
-  public function customerLogin()
-  {
-    $this->_logger->debug($this->_helper->__('Calling customerLogin'));
-
-    $session = Mage::getSingleton('customer/session');
-    $this->_logger->debug($this->_helper->__($session->getAfterAuthUrl()));
-
-    // if (strpos(Mage::helper('core/http')->getHttpReferer(), 'checkout') === false) {
-    //   $this->_logger->debug($this->_helper->__('Calling customerLogin 1'));
-
-    //     $session->setAfterAuthUrl("http://google.com.au");
-    // } else {
-    //   $this->_logger->debug($this->_helper->__('Calling customerLogin 2'));
-
-    //     $session->setAfterAuthUrl("http://google.com.au");
-    // }
-
-    // $session->setBeforeAuthUrl('');
-  }
-
-
   public function chargeOrder($observer)
   {
     /** @var Mage_Sales_Model_Order $order */
@@ -202,20 +181,17 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 
     try {
 
-      if(!$order->getId()){
-        Mage::throwException($this->_helper->__("The order doesnot exist."));
-      }
-
       // Check if the quote exists
       if(!$quote->getId()){
         Mage::throwException($this->_helper->__("The quote doesnot exist."));
+      }  
+      if(!$order->getId()){
+        Mage::throwException($this->_helper->__("The order doesnot exist."));
       }
-
       // Check if the zipMoney Checkout Id Exists
       if(!$quote->getZipmoneyCid()){
         Mage::throwException($this->_helper->__("The zipMoney Checkout Id doesnot exist."));
       }
-
       // Check if the Order Has been charged
       if($order->getPayment()->getZipmoneyChargeId()){
         Mage::throwException($this->_helper->__("The order has already been charged."));
@@ -223,25 +199,23 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 
       // Initialise the charge
       $this->_charge = Mage::getSingleton('zipmoneypayment/charge');
-
       // Set quote to the chekout model
       $this->_charge->setOrder($order)
                     ->charge();
 
-    } catch (ApiException $e) {
-      $this->_logger->debug("Error:-".json_encode($e->getResponseBody()));
-      Mage::throwException("Unable to complete the checkout");
+    } catch (Mage_Core_Exception $e) {
+
+        $this->_logger->debug($e->getMessage());
+        Mage::getSingleton('checkout/session')->addError($message);
+        throw new Mage_Payment_Model_Info_Exception($message);
+
     } catch (Exception $e) {
-      $this->_logger->debug($e->getMessage());
 
-      // Mage::throwException("An error occurred while completing the checkout");
-      $controller = $observer->getEvent()->getControllerAction();
-
-      $controller->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
-      $response = array('error' => -1, 'message' =>'Error');
-
-      return $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
-
+        $this->_logger->debug($e->getMessage()); 
+        $message = $this->_helper("Could not process the payment");
+        Mage::getSingleton('checkout/session')->addError($message);
+        throw new Mage_Payment_Model_Info_Exception($message); 
     }
+
   }
 }

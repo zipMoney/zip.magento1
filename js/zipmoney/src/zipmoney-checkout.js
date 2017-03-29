@@ -1,8 +1,6 @@
 var zipCheckout = Class.create();
 
 zipCheckout.prototype = {
-  _checkoutComplete: false,
-  _checkoutResult: null,
   _extensions:[],
   _btn: null,
   _zipBtn: null,

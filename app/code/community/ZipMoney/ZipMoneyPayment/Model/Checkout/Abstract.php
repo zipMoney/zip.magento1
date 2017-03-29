@@ -161,5 +161,10 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
     return $this;
   }
 
+  public function genIdempotencyKey()
+  {
+    return uniqid();
+  }
+
 
 }
