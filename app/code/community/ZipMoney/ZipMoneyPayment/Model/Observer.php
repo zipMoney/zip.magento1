@@ -73,14 +73,14 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 
     /**
      * do not create invoice if any of the follow is true
-     *  1) order status from '' to 'zip_pending', and order new state is 'new' or 'processing'
-     *  2) order status from 'zip_pending' to 'zip_authorised', and order new state is 'new' or 'processing'
+     *  1) order status from '' to 'pending', and order new state is 'new' or 'processing'
+     *  2) order status from 'pending' to 'zip_authorised', and order new state is 'new' or 'processing'
      */
     // if (Mage_Sales_Model_Order::STATE_NEW == $state || Mage_Sales_Model_Order::STATE_PROCESSING == $state) {
-    //   if (!$originalStatus  && Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_NEW == $status) {
+    //   if (!$originalStatus) {
     //     return true;
     //   }
-    //   if (Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_NEW == $originalStatus  && Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_AUTHORIZED == $status) {
+    //   if (Zipmoney_ZipmoneyPayment_Model_Config::STATUS_MAGENTO_AUTHORIZED == $status) {
     //     return true;
     //   }
     // }
@@ -185,6 +185,7 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
       if(!$quote->getId()){
         Mage::throwException($this->_helper->__("The quote doesnot exist."));
       }  
+      
       if(!$order->getId()){
         Mage::throwException($this->_helper->__("The order doesnot exist."));
       }
@@ -207,6 +208,7 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 
         $this->_logger->debug($e->getMessage());
         Mage::getSingleton('checkout/session')->addError($message);
+      
         throw new Mage_Payment_Model_Info_Exception($message);
 
     } catch (Exception $e) {
@@ -214,6 +216,7 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
         $this->_logger->debug($e->getMessage()); 
         $message = $this->_helper("Could not process the payment");
         Mage::getSingleton('checkout/session')->addError($message);
+        
         throw new Mage_Payment_Model_Info_Exception($message); 
     }
 

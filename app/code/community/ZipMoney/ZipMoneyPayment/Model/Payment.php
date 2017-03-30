@@ -37,8 +37,8 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 	protected $_checkout  = null;
   protected $_config = null;
   protected $_chargeModel = 'zipmoneypayment/charge';
-  protected $_chargesApiClass  = '\zipMoney\Client\Api\ChargesApi';
-  protected $_refundsApiClass  = '\zipMoney\Client\Api\RefundsApi';
+  protected $_chargesApiClass  = '\zipMoney\Api\ChargesApi';
+  protected $_refundsApiClass  = '\zipMoney\Api\RefundsApi';
 
 
 	/**
@@ -207,6 +207,13 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
     return $this->_quote;
   }
+
+  // public function getOrderPlaceRedirectUrl()
+  // {
+
+  //   return  Mage::getBaseUrl()."zipmoneypayment/complete/charge";
+
+  // }
 
 	/**
 	 * Return zipMoney Express redirect url if current request is not savePayment (which works for oneStepCheckout)

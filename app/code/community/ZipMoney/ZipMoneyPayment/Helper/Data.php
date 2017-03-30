@@ -117,5 +117,13 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
       $order->cancel()->save();
     }      
   }
+
+  public function getTransaction($order_id){
+    $transaction = Mage::getModel('sales/order_payment_transaction')
+                                ->getCollection()
+                                ->addAttributeToFilter('order_id', array('eq' => $order_id));
+
+    return $transaction;                          
+  }
   
 }

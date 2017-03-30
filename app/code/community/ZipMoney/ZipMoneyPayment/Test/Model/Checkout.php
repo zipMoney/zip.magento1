@@ -27,7 +27,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Checkout extends EcomDev_PHPUnit_Test_
 
     $quote = Mage::getModel('sales/quote')->load(103);
     
-    $this->_checkoutsApi = $this->getMock('\zipMoney\Client\Api\CheckoutsApi');
+    $this->_checkoutsApi = $this->getMock('\zipMoney\Api\CheckoutsApi');
 
     $this->_checkout = Mage::getSingleton('zipmoneypayment/checkout');
 
@@ -56,8 +56,8 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Checkout extends EcomDev_PHPUnit_Test_
    */
   public function testGetCheckoutApi()
   {       
-    $this->_checkout->setApi("\zipMoney\Client\Api\CheckoutsApi");
-    $this->assertTrue($this->_checkout->getApi() instanceof \zipMoney\Client\Api\CheckoutsApi);
+    $this->_checkout->setApi("\zipMoney\Api\CheckoutsApi");
+    $this->assertTrue($this->_checkout->getApi() instanceof \zipMoney\Api\CheckoutsApi);
   }
   
   

@@ -146,14 +146,13 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
 
     $order = $this->getOrder();
 
-
     return $captureChargeReq;
   }
 
   public function getShopper()
   {
     $customer = null;
-
+    $shopper = new Shopper;
     if($quote = $this->getQuote()){
       $checkoutMethod = $quote->getCheckoutMethod();
 

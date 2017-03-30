@@ -3,6 +3,7 @@ Zip_IWD_OnestepCheckout.prototype = {
   super: null,
   _btn: null,
   _zipBtn: null,
+  _isV6:null,
   _zipBtnId : 'zipmoneypayment_place_order',
   initialize: function(superClass){},
   setup: function(superClass){    
@@ -17,6 +18,7 @@ Zip_IWD_OnestepCheckout.prototype = {
     // Super object is IWD
     if(typeof IWD != 'undefined'){
       if(typeof IWD.OPC != 'undefined'){
+        this._isV6 = false;
         IWD.OPC.Plugin.event('saveOrder',function(){
           IWD.OPC.Checkout.saveOrderUrl = null;
           _this.super.checkout();
@@ -24,8 +26,10 @@ Zip_IWD_OnestepCheckout.prototype = {
         });
       }
     }
+
     // For IWD_OPC v6. Super object is OnePage
-    if(OnePage !=undefined){  
+    if(typeof OnePage != 'undefined'){  
+      this._isV6 = true;
       PaymentMethod.prototype.saveSection = function () {
         switch (this.getPaymentMethodCode()) {
           case Singleton.get(PaymentMethodStripe).code:
@@ -49,11 +53,25 @@ Zip_IWD_OnestepCheckout.prototype = {
     if(response.state == "approved" || response.state == "referred"){
       location.href = this.super.options.redirectUrl + "?result=" + response.state + "&checkoutId=" + response.checkoutId;
     } else {
-      Singleton.get(OnePage).hideLoader(Singleton.get(OnePage).sectionContainer);
+      if(this._isV6){
+        Singleton.get(OnePage).hideLoader(Singleton.get(OnePage).sectionContainer);
+      } else {
+        IWD.OPC.Checkout.hideLoader();
+        IWD.OPC.Checkout.unlockPlaceOrder();
+        IWD.OPC.saveOrderStatus = false;
+      }
     }
   },
   onError: function(response){ 
-    Singleton.get(OnePage).hideLoader(Singleton.get(OnePage).sectionContainer);
+    
+    if(this._isV6){
+      Singleton.get(OnePage).hideLoader(Singleton.get(OnePage).sectionContainer);
+    } else {
+      IWD.OPC.Checkout.hideLoader();
+      IWD.OPC.Checkout.unlockPlaceOrder();
+      IWD.OPC.saveOrderStatus = false;
+    }
+
     alert("An error occurred while getting the redirect url from zipMoney");
   }
 }

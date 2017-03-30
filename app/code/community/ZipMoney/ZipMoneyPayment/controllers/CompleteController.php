@@ -81,9 +81,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
 
             $this->_charge->charge();
             // Redirect to success page
-            $this->getResponse()->setRedirect(Mage::getUrl('checkout/onepage/success'));
-            return;
-
+            return $this->getResponse()->setRedirect(Mage::getUrl('checkout/onepage/success'));
         } catch (Mage_Core_Exception $e) {
           
             $this->_getCheckoutSession()->addError($e->getMessage());      
@@ -123,15 +121,13 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
     $session = $this->_getCheckoutSession();
 
     $orderId = $session->getLastOrderId();
-    $quoteId = $session->setLastQuoteId();
+    $quoteId = $session->getLastQuoteId();
 
     $order = Mage::getSingleton("sales/order")->load($orderId);
     $quote = Mage::getSingleton("sales/quote")->load($quoteId);
     
     $this->_logger->debug($this->_helper->__("On Charge Order Action"));
     
-    $order_status_history_comment = '';
-
     try {
         // Check if the quote exists
         if(!$quote->getId()){
@@ -142,7 +138,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
         }
         // Check if the zipMoney Checkout Id Exists
         if(!$quote->getZipmoneyCid()){
-          Mage::throwException($this->_helper->__("The zipMoney Checkout Id doesnot exist."));
+          Mage::throwException($this->_helper->__("The order has not been approved by zipMoney or the zipMoney Checkout Id doesnot exist."));
         }
         // Check if the Order Has been charged
         if($order->getPayment()->getZipmoneyChargeId()){
@@ -153,20 +149,14 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
         // Set quote to the chekout model
         $this->_charge->setOrder($order)
                       ->charge();
-
+        return $this->getResponse()->setRedirect(Mage::getUrl('checkout/onepage/success'));
     } catch (Mage_Core_Exception $e) {
-          
         $this->_getCheckoutSession()->addError($e->getMessage());      
         $this->_logger->debug($e->getMessage());
-          
     } catch (Exception $e) {
-      
-        $message = "Could not process the payment";
         $this->_logger->debug($e->getMessage());
-        $this->_getCheckoutSession()->addError($message);          
+        $this->_getCheckoutSession()->addError($this->_helper->__('An error occurred while to completing the checkout.'));
     }
-    
-   
     $this->_redirectToCartOrError();
   }
 }

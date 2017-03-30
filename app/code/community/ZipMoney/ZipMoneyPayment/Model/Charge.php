@@ -54,7 +54,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   /**
    * Prepare quote for guest checkout order submit
    *
-   * @return Mage_Paypal_Model_Express_Checkout
+   * @return Zipmoney_ZipmoneyPayment_Model_Charge
    */
   protected function _prepareGuestQuote()
   {

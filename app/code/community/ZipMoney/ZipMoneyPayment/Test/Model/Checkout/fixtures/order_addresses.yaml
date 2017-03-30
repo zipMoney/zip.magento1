@@ -8,13 +8,13 @@ tables:
       region: "SA"
       postcode: 5000
       lastname: "Han"
-      street: "162 Flinders Street"
-      city: "Adelaide"
+      street: "50 Bridge Street"
+      city: "Sydney"
       email: "digital@aligent.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
-      firstname: "Andi"
+      firstname: "zipMoney"
       address_type: "shipping"
       prefix: ""
       middlename: ""
@@ -27,13 +27,13 @@ tables:
       region: "SA"
       postcode: 5000
       lastname: "Han"
-      street: "162 Flinders Street"
-      city: "Adelaide"
+      street: "50 Bridge Street"
+      city: "Sydney"
       email: "digital@aligent.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
-      firstname: "Andi"
+      firstname: "zipMoney"
       address_type: "billing"
 
     -
@@ -43,13 +43,13 @@ tables:
       region: "SA"
       postcode: 5000
       lastname: "Han"
-      street: "162 Flinders Street"
-      city: "Adelaide"
+      street: "50 Bridge Street"
+      city: "Sydney"
       email: "digital@aligent.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
-      firstname: "Andi"
+      firstname: "zipMoney"
       address_type: "shipping"
       prefix: ""
       middlename: ""
@@ -62,13 +62,13 @@ tables:
       region: "SA"
       postcode: 5000
       lastname: "Han"
-      street: "162 Flinders Street"
-      city: "Adelaide"
+      street: "50 Bridge Street"
+      city: "Sydney"
       email: "digital@aligent.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
-      firstname: "Andi"
+      firstname: "zipMoney"
       address_type: "billing"
 
     -
@@ -78,13 +78,13 @@ tables:
       region: "SA"
       postcode: 5000
       lastname: "Han"
-      street: "162 Flinders Street"
-      city: "Adelaide"
+      street: "50 Bridge Street"
+      city: "Sydney"
       email: "digital@aligent.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
-      firstname: "Andi"
+      firstname: "zipMoney"
       address_type: "shipping"
       prefix: ""
       middlename: ""
@@ -97,11 +97,11 @@ tables:
       region: "SA"
       postcode: 5000
       lastname: "Han"
-      street: "162 Flinders Street"
-      city: "Adelaide"
+      street: "50 Bridge Street"
+      city: "Sydney"
       email: "digital@aligent.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
-      firstname: "Andi"
+      firstname: "zipMoney"
       address_type: "billing"

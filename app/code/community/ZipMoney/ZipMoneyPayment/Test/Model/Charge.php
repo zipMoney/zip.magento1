@@ -35,9 +35,9 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
     $this->_mockSessionCookie('core/session');
     $this->_mockSessionCookie('checkout/session');
 
-    $this->_chargesApi = $this->getMock('\zipMoney\Client\Api\ChargesApi');
+    $this->_chargesApi = $this->getMock('\zipMoney\Api\ChargesApi');
 
-    $this->_refundsApi = $this->getMock('\zipMoney\Client\Api\RefundsApi');
+    $this->_refundsApi = $this->getMock('\zipMoney\Api\RefundsApi');
 
     $this->_charge = Mage::getSingleton('zipmoneypayment/charge');
 
@@ -77,8 +77,8 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
    */
   public function testGetChargesApi()
   {       
-    $this->_charge->setApi("\zipMoney\Client\Api\ChargesApi");
-    $this->assertTrue($this->_charge->getApi() instanceof \zipMoney\Client\Api\ChargesApi);
+    $this->_charge->setApi("\zipMoney\Api\ChargesApi");
+    $this->assertTrue($this->_charge->getApi() instanceof \zipMoney\Api\ChargesApi);
   } 
 
   /**
@@ -331,9 +331,6 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
 
     $customer = Mage::getSingleton("customer/session");
     $customer->setCustomer(Mage::getSingleton("customer/customer")->load(1));
-
-    print_r($customer->getCustomer()->getData());
-   
 
     $order = $this->_charge->placeOrder();
 

@@ -6,7 +6,6 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	const METHOD_CODE = "zipmoneypayment";
 
 	const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
-	const STATUS_MAGENTO_DECLINED = "zip_declined";
 	
 	const PAYMENT_ZIPMONEY_PAYMENT_ACTIVE	= 'payment/zipmoneypayment/active';
 	const PAYMENT_ZIPMONEY_PAYMENT_ENVIRONMENT = 'payment/zipmoneypayment/environment';

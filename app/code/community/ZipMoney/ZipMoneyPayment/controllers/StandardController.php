@@ -31,14 +31,13 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
     }
 
     try {
-        //throw new Exception("Error Processing Request", 1);
 
         if (!$this->getRequest()->isPost()) {
           $this->_ajaxRedirectResponse();
           return;
         }
 
-        $result = $this->getOnepage()->savePayment(array("method" => $this->_config->getMethodCode()));
+       // $result = $this->getOnepage()->savePayment(array("method" => $this->_config->getMethodCode()));
 
         $this->_logger->info($this->_helper->__('Starting Checkout'));
 
