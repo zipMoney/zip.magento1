@@ -235,15 +235,16 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       $currency = $quote->getQuoteCurrencyCode() ? $quote->getQuoteCurrencyCode() : null;
     } else if($order = $this->getOrder()){
       $reference = $order->getIncrementId() ? $order->getIncrementId() : '0';
-      $shipping_amount = $order->getShippingInclTax() ? $order->getShippingInclTax() : 0;
+      $shipping_amount = $order->getShippingAmount() ? $order->getShippingAmount()  + $order->getShippingTaxAmount() : 0;
       $discount_amount = $order->getDiscountAmount() ? $order->getDiscountAmount() : 0;
       $tax_amount = $order->getTaxAmount() ? $order->getTaxAmount() : 0;
      }
   
     $orderItems = $this->getOrderItems();
+    
 
     // Discount Item
-    if($discount_amount >  0){
+    if($discount_amount <  0){
       $discountItem = new OrderItem;
       $discountItem->setName("Discount");
       $discountItem->setAmount((float)$discount_amount);      
@@ -260,16 +261,6 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       $shippingItem->setType("shipping");      
       $shippingItem->setQuantity(1);      
       $orderItems[] = $shippingItem;
-    }
-
-    // Tax Item
-    if($tax_amount > 0){
-      $taxItem = new OrderItem;      
-      $taxItem->setName("Tax");
-      $taxItem->setAmount((float)$tax_amount);
-      $taxItem->setType("tax");            
-      $taxItem->setQuantity(1);      
-      $orderItems[] = $taxItem;
     }
 
     if(isset($grand_total) && $quote)
@@ -322,6 +313,11 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
         } else if($order){
           $qty = $item->getQtyOrdered();
         }
+        
+
+        
+        //print_r($item->getData());
+
 
         $orderItem->setName($item->getName())
                   ->setAmount($item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0.00)
@@ -334,7 +330,6 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
                   ->setProductCode($item->getSku());  
         $itemsArray[] = $orderItem;
     }
-
 
 
 

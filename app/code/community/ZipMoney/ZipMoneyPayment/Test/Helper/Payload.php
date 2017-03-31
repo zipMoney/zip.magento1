@@ -75,26 +75,5 @@ class Zipmoney_ZipmoneyPayment_Test_Helper_Payload extends EcomDev_PHPUnit_Test_
     $checkoutPayload = $this->_payload->getCheckoutPayload($quote);
     
   }
-
-  /**
-   * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote
-   * @group Zipmoney_ZipmoneyPayment     
-   * @loadFixture customers.yaml      
-   * @loadFixture products.yaml      
-   * @loadFixture quotes.yaml
-   * @loadFixture quote_payments.yaml      
-   * @loadFixture quote_items.yaml
-   * @loadFixture quote_addresses.yaml   
-   * @dataProvider dataProvider
-   */
-  public function testGetCheckoutPayload($quoteId)
-  {
-  
-    $quote = Mage::getModel('sales/quote')->load($quoteId);
-
-    $checkoutPayload = $this->_payload->getCheckoutPayload($quote);
-    
-  }
   
 }

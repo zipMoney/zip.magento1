@@ -208,12 +208,10 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     return $this->_quote;
   }
 
-  // public function getOrderPlaceRedirectUrl()
-  // {
-
-  //   return  Mage::getBaseUrl()."zipmoneypayment/complete/charge";
-
-  // }
+  public function getOrderPlaceRedirectUrl()
+  {
+    return  Mage::getBaseUrl()."zipmoneypayment/complete/charge";
+  }
 
 	/**
 	 * Return zipMoney Express redirect url if current request is not savePayment (which works for oneStepCheckout)
