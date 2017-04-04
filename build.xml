@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="magento-gateway" default="build" basedir=".">
-
+    
     <property name="vendor-dir" value="${project.basedir}/vendor/"/>
+    <property name="global-vendor-dir" value="~/.composer/vendor/"/>
+    <property name="composer"   value="${global-vendor-dir}bin/composer --working-dir=${project.basedir}"/>
     <property name="bin.composer" value="${vendor-dir}bin/composer --working-dir=${project.basedir}"/>
+    <property name="phpunit"    value="${global-vendor-dir}bin/phpunit" />
+
     <property name="bin.mage-ci"  value="${vendor-dir}bin/mage-ci" />
     <property name="bin.magerun"  value="${vendor-dir}bin/n98-magerun --root-dir=${magento.base_dir}" />
-    <property name="bin.phpunit"  value="${vendor-dir}bin/phpunit" />
+    <property name="bin.phpunit"  value="${global-vendor-dir}bin/phpunit" />
     <property name="extension.base_dir" value="${project.basedir}" />
-
 
     <import file="${vendor-dir}punkstar/mageqa/build.xml" />
 
@@ -26,5 +29,24 @@
 
     <target name="package" description="Package module into a magento connect package">
         <exec dir="${magento.base_dir}" command="../build.sh ${build}" passthru="true" checkreturn="true" />
+    </target>
+
+    <target name="testplugin" description="Package module into a magento connect package">
+        <exec command="phpunit" passthru="true" checkreturn="true" />
+    </target>
+
+    <target name="tag" description="Create">
+        <propertyregex property="tagname" subject="${env.branch}"  pattern="^(\*|\d+(\.\d+){0,2}(\.\*)?)$"   match="$1" casesensitive="false" defaultvalue="false"/>                
+        <echo msg="${tagname}" />
+        <if>
+            <ispropertytrue property="tagname" />
+            <then>
+                <echo msg="Is a tag  ${tagname}" />                
+                <exec dir="${magento.base_dir}" command="mkdir -p var/connect &amp;&amp; sed -ri 's/^(version:\s*[0-9]*\.*[0-9]*\.*[0-9]*).*/\1\.'&quot;$1&quot;'/gm' zipmoney.package.yaml &amp;&amp; n98-magerun.phar extension:create -f zipmoney.package.yaml" passthru="true" checkreturn="true" />
+            </then>
+            <else>
+                <echo msg="Is not a tag, so not tagging" />
+            </else>
+        </if>
     </target>
 </project>
