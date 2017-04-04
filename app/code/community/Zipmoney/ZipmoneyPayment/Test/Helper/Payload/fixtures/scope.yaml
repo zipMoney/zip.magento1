@@ -1,0 +1,20 @@
+scope:
+  website: # Initialize websites
+    - website_id: 99
+      code: testing
+      name: testing Website
+      default_group_id: 99
+  group: # Initializes store groups
+    - group_id: 99
+      website_id: 99
+      name: testing Group
+      default_store_id: 99
+      root_category_id: 2 # Default Category
+  store: # Initializes store views
+    - store_id: 99
+      website_id: 99
+      group_id: 99
+      code: testing
+      name: testing Store
+      is_active: 1
+
