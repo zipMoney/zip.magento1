@@ -109,7 +109,7 @@
                                 <log_setting translate="label">
                                     <label>Log Setting</label>
                                     <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>
-                                    <source_model>zipmoneypayment/source_logsetting</source_model>
+                                    <source_model>zipmoneypayment/source_logSetting</source_model>
                                     <frontend_type>select</frontend_type>
                                     <sort_order>80</sort_order>
                                     <show_in_default>1</show_in_default>

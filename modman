@@ -4,7 +4,6 @@ app/design/adminhtml/default/default/layout/zipmoneypayment.xml app/design/admin
 app/design/adminhtml/default/default/template/zipmoney app/design/adminhtml/default/default/template/zipmoney
 app/design/frontend/base/default/layout/zipmoney app/design/frontend/base/default/layout/zipmoney
 app/design/frontend/base/default/template/zipmoney app/design/frontend/base/default/template/zipmoney
-media/zipmoney media/zipmoney
 skin/frontend/base/default/zipmoney skin/frontend/base/default/zipmoney
 vendor/zipmoney lib/Zipmoney/vendor/zipmoney
 vendor/composer lib/Zipmoney/vendor/composer
