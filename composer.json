@@ -1,36 +1,14 @@
 {
     "name": "zipmoney/magento-zipmoneypayment",
-    "description": "Magento Extension for enabling zipMoney Payment",
+    "description": "Magento 1 Extension for enabling zipMoney Payment",
     "require": {
-        "zipMoney/zipMoney-MerchantApi-php": "dev-master"
+        "zipmoney/merchantapi-php": "~1.0"
     },
     "authors": [
         {
-            "name": "zipMoney Payments",
+            "name": "zipMoney Payments Pty Ltd",
             "email": "sagar.bhandari@zipmoney.com.au"
         }
     ],
-    "minimum-stability": "dev",
-    "autoload": {
-        "psr-4": {
-          "zipMoney\\" : "vendor/zipMoney/zipMoney-MerchantApi-php/lib/"
-         }
-    },
-    "autoload-dev": {
-        "psr-4": { "zipMoneyPHP\\" : "zipMoney/zipMoney-MerchantApi-php/test/" }
-    },
-    "repositories": [
-        {
-            "type":"package",
-            "package": {
-              "name": "zipMoney/zipMoney-MerchantApi-php",
-              "version": "dev-master",
-              "source": {
-                  "url": "https://github.com/zipMoney/zipMoney-MerchantApi-php",
-                  "type": "git",
-                  "reference": "master"
-                }
-            }
-        }
-    ]
+    "minimum-stability": "dev"
 }
