@@ -92,7 +92,6 @@ contents:
     - magedesign
     - magedesign
     - magedesign
-    - magemedia
     - mageskin
     - magelib
     - mageweb
@@ -100,14 +99,13 @@ contents:
   ## Each path must omit the initial portion of the uri. This is provided by the target.
   ## @see \Mage_Connect_Package_Target::_getTargetMap
   path:
-    - ZipMoney/ZipMoneyPayment
+    - Zipmoney/ZipmoneyPayment
     - modules/Zipmoney_Payment.xml
     - adminhtml/default/default/layout/zipmoneypayment.xml
     - frontend/base/default/layout/zipmoney
     - frontend/base/default/template/zipmoney
-    - zipmoney
     - frontend/base/default/zipmoney
-    - ZipMoney
+    - Zipmoney
     - js/zipmoney
 
   ## type can either be 'file' or 'dir'. Directories are added recursively.

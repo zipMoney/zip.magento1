@@ -3,7 +3,6 @@
     "description": "Magento 1 Extension for enabling zipMoney Payment",
     "require": { 
         "firegento/mage-ci": "dev-master",
-        "punkstar/mageqa": "dev-aligent",
         "n98/magerun": "dev-feature-create-connect-package as 1.x-dev",
         "zipmoney/merchantapi-php": "~1.0"
     },

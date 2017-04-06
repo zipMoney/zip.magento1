@@ -93,7 +93,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Checkout extends EcomDev_PHPUnit_Test_
               ->willReturn( $checkout  );
     
     $this->_checkout->setApi($this->_checkoutsApi);
-    $this->_checkout->start("checkout");
+    $this->_checkout->start();
 
 
     $this->assertEquals($this->_checkout->getCheckoutId(),$checkout_id);
@@ -118,7 +118,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Checkout extends EcomDev_PHPUnit_Test_
     $this->_checkout->setQuote($quote);
     
     $this->_checkout->setApi($this->_checkoutsApi);    
-    $this->_checkout->start("checkout");
+    $this->_checkout->start();
   }
 
 
@@ -155,7 +155,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Checkout extends EcomDev_PHPUnit_Test_
                   ->willReturn( $checkout  );
     
     $this->_checkout->setApi($this->_checkoutsApi);
-    $this->_checkout->start("checkout");
+    $this->_checkout->start();
   }
 
   /**
@@ -178,7 +178,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Checkout extends EcomDev_PHPUnit_Test_
     
     $this->_checkout->setApi($this->_checkoutsApi);    
 
-    $this->_checkout->start("checkout");
+    $this->_checkout->start();
   }
 
 

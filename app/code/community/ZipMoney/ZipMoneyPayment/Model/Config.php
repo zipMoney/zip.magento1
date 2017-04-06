@@ -61,10 +61,10 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 		$value = null;
 		$storeId = Mage::getSingleton('zipmoneypayment/storeScope')->getStoreId();
 		if ($storeId === null) {
-			$scope = Mage::getSingleton('zipmoneypayment/storeScope')->getCurrentScope();
-			if (is_array($scope)) {
-				$scope = isset($scope['scope']) ? $scope['scope'] : 'default';
-				$scopeId = isset($scope['scope_id']) ? $scope['scope_id'] : 0;
+			$scopeArr = Mage::getSingleton('zipmoneypayment/storeScope')->getCurrentScope();
+			if (is_array($scopeArr)) {
+				$scope = isset($scopeArr['scope']) ? $scopeArr['scope'] : 'default';
+				$scopeId = isset($scopeArr['scope_id']) ? $scopeArr['scope_id'] : 0;
 				if ($scope == 'default') {     // default scope
 					$value = Mage::getStoreConfig($scope);
 				} else {                        // websites scope
