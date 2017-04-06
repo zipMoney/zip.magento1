@@ -130,17 +130,17 @@
   </target>
 
   <target name="package" description="Package module into a magento connect package">
-    <exec dir="${magento.base_dir}" command="../build.sh ${build}" passthru="true" checkreturn="true" />
+    <exec dir="${magento.base_dir}" command="mkdir -p var/connect &amp;&amp; sed -ri 's/^(version:\s**).*/\1\.'&quot;${tagname}&quot;'/gm' zipmoney.package.yaml &amp;&amp; ${bin.magerun} extension:create -f zipmoney.package.yaml" passthru="true" checkreturn="true" />
   </target>
-
-  <target name="tag" description="Create">
-    <propertyregex property="tagname" subject="${env.branch}"  pattern="^(\*|\d+(\.\d+){0,2}(\.\*)?)$"   match="$1" casesensitive="false" defaultvalue="false"/>                
+  
+  <target name="package" description="Create">
+    <propertyregex property="tagname" subject="${env.branch}"  pattern="^(\*|\d+(\.\d+){0,2}(\.\*)?)$"   match="$1" casesensitive="false" defaultvalue="false"/>
     <echo msg="${tagname}" />
     <if>
       <ispropertytrue property="tagname" />
       <then>
-          <echo msg="Is a tag  ${tagname}" />                
-          <exec dir="${magento.base_dir}" command="mkdir -p var/connect &amp;&amp; sed -ri 's/^(version:\s*[0-9]*\.*[0-9]*\.*[0-9]*).*/\1\.'&quot;$1&quot;'/gm' zipmoney.package.yaml &amp;&amp; n98-magerun.phar extension:create -f zipmoney.package.yaml" passthru="true" checkreturn="true" />
+          <echo msg="Is a tag  ${tagname}" />         
+          <exec dir="${magento.base_dir}" command="mkdir -p var/connect &amp;&amp; sed -ri 's/^(version:\s**).*/\1\.'&quot;${tagname}&quot;'/gm' zipmoney.package.yaml &amp;&amp; ${bin.magerun} extension:create -f zipmoney.package.yaml" passthru="true" checkreturn="true" />
       </then>
       <else>
           <echo msg="Is not a tag, so not tagging" />
@@ -148,3 +148,4 @@
     </if>
   </target>
 </project>
+
