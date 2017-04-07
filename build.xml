@@ -146,8 +146,8 @@
       <ispropertytrue property="tagname" />
       <then>
           <echo msg="Is a tag  ${tagname}" />      
-          <phingcall target="create_package">
-          <phingcall target="publish_to_s3">
+          <phingcall target="create_package"/>
+          <phingcall target="publish_to_s3"/>
       </then>
       <else>
           <echo msg="Is not a tag, so not tagging" />
