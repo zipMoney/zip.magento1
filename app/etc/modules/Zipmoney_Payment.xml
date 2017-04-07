@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zipmoney_ZipmoneyPayment>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Sales />
+            </depends>
+        </Zipmoney_ZipmoneyPayment>
+    </modules>
+</config>

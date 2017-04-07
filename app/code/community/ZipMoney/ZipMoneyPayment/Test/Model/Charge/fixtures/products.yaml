@@ -1,0 +1,42 @@
+eav:
+  catalog_product:
+    - entity_id: 1
+      entity_type_id: 4
+      attribute_set_id: 1
+      type_id: simple
+      sku: "testSkuProd1"
+      price: 10.00
+
+    - entity_id: 2
+      entity_type_id: 4
+      attribute_set_id: 1
+      type_id: simple
+      sku: "testSkuProd2"
+      price: 20.00
+
+    - entity_id: 3
+      entity_type_id: 4
+      attribute_set_id: 1
+      type_id: simple
+      sku: "testSkuProd3"
+      price: 30.00
+
+    - entity_id: 101
+      entity_type_id: 4
+      attribute_set_id: 1
+      type_id: simple
+      sku: "testSkuProd101"
+      price: 50.00
+      stock:
+        qty: 0.00
+        is_in_stock: 0
+
+    - entity_id: 102
+      entity_type_id: 4
+      attribute_set_id: 1
+      type_id: simple
+      sku: "testSkuProd102"
+      price: 50.00
+      stock:
+        qty: 300.00
+        is_in_stock: 1

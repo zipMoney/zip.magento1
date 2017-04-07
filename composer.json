@@ -1,35 +1,19 @@
 {
-    "name": "zipmoney/magento-zipmoneypayment-apiv2",
-    "require-dev": {
-        "phpunit/phpunit": "4.1.x-dev",
-        "phing/phing": "~2.11@dev",
-        "composer/composer": "~1.0@dev",
+    "name": "zipmoney/magento-zipmoneypayment",
+    "description": "Magento 1 Extension for enabling zipMoney Payment",
+    "require": { 
         "firegento/mage-ci": "dev-master",
-        "punkstar/mageqa": "dev-aligent",
         "n98/magerun": "dev-feature-create-connect-package as 1.x-dev",
-        "zipmoney/zipmoney-php": "1.0.*"
-
+        "zipmoney/merchantapi-php": "~1.0"
     },
     "authors": [
         {
-            "name": "Luke Mills",
-            "email": "luke@aligent.com.au"
+            "name": "zipMoney Payments Pty Ltd",
+            "email": "sagar.bhandari@zipmoney.com.au"
         }
     ],
     "minimum-stability": "dev",
     "repositories": [
-        {
-            "type":"package",
-            "package": {
-              "name": "zipMoney/zipmoney-apiv2-php",
-              "version":"master",
-              "source": {
-                  "url": "https://github.com/zipMoney/zipmoney-apiv2-php",
-                  "type": "git",
-                  "reference":"master"
-                }
-            }
-        },
         {
             "type": "vcs",
             "url": "https://github.com/aligent/mageqa.git"

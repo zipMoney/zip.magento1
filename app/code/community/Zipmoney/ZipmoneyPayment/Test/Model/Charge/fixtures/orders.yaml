@@ -1,0 +1,116 @@
+tables:
+
+  sales/order:
+    -
+      entity_id: 1
+      increment_id: 100000001
+      state: new
+      status: pending
+      store_id: 99
+      created_at: "2011-08-15 00:53:21"
+      updated_at: "2011-08-15 00:53:22"
+      base_grand_total: 30.00
+      grand_total: 30.00
+      total_paid: 30.00
+      base_total_paid: 30.00
+      tax: 0.00
+      shipping_value: 0.00
+      quote_id: 1
+      shipping_address_id: 1
+      applied_rule_ids: ""
+      global_currency_code: "AUD"
+      order_currency_code: "AUD"
+      base_to_global_rate: 1.0000
+      base_to_order_rate: 1.0000
+      customer_taxvat: ""
+      subtotal: 30.00
+      base_subtotal: 30.00
+      subtotal_with_discount: 30.00
+      base_subtotal_with_discount: 30.00
+      store_to_order_rate: 1.0000
+      store_to_base_rate: 1.0000
+
+    -
+      entity_id: 2
+      increment_id: 100000002
+      state: new
+      status: pending
+      store_id: 99
+      created_at: "2011-08-15 00:53:21"
+      updated_at: "2011-08-15 00:53:22"
+      base_grand_total: 100.00
+      grand_total: 100.00
+      total_paid: 100.00
+      base_total_paid: 100.00
+      tax: 0.00
+      shipping_value: 0.00
+      quote_id: 2
+      applied_rule_ids: ""
+      global_currency_code: "AUD"      
+      order_currency_code: "AUD"
+      base_to_global_rate: 1.0000
+      base_to_order_rate: 1.0000
+      customer_taxvat: ""
+      subtotal: 100.00
+      base_subtotal: 100.00
+      subtotal_with_discount: 100.00
+      base_subtotal_with_discount: 100.00
+      store_to_order_rate: 1.0000
+      store_to_base_rate: 1.0000
+
+    -
+      entity_id: 3
+      increment_id: 100000003
+      state: new
+      status: pending
+      store_id: 99
+      created_at: "2011-08-15 00:53:21"
+      updated_at: "2011-08-15 00:53:22"
+      base_grand_total: 90.00
+      grand_total: 90.00
+      total_paid: 90.00
+      base_total_paid: 90.00
+      tax: 0.00
+      shipping_value: 0.00
+      quote_id: 1
+      applied_rule_ids: ""
+      global_currency_code: "AUD"     
+      order_currency_code: "AUD"
+      base_to_global_rate: 1.0000
+      base_to_order_rate: 1.0000
+      customer_taxvat: ""
+      subtotal: 90.00
+      base_subtotal: 90.00
+      subtotal_with_discount: 90.00
+      base_subtotal_with_discount: 90.00
+      store_to_order_rate: 1.0000
+      store_to_base_rate: 1.0000
+
+
+  sales/order_payment:
+    -
+      entity_id: 1
+      parent_id: 1
+      method: zipmoneypayment
+      base_shipping_amount: 0.00
+      shipping_amount: 0.00
+      base_amount_ordered: 30.00
+      amount_ordered: 30.00
+
+    -
+      entity_id: 2
+      parent_id: 2
+      method: zipmoneypayment
+      base_shipping_amount: 0.00
+      shipping_amount: 0.00
+      base_amount_ordered: 100.00
+      amount_ordered: 100.00
+
+    -
+      entity_id: 3
+      parent_id: 3
+      method: zipmoneypayment
+      base_shipping_amount: 0.00
+      shipping_amount: 0.00
+      base_amount_ordered: 90.00
+      amount_ordered: 90.00
