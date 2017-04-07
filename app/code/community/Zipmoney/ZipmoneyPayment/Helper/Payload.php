@@ -174,7 +174,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       return null;
     }
 
-    if(!isset($shopper) && $customer->getId()) {
+    if($customer && $customer->getId()) {
       $shopper = $this->getCustomer(new Shopper, $customer);
     }
 
