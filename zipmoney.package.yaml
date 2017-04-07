@@ -21,10 +21,10 @@ _create: '1'
 ## Package Info ##
 ##################
 
-name: zipMoney_Payments
+name: Zipmoney_ZipmoneyPayment
 channel: community
-summary: zipMoney payment extension for Magento
-description: zipMoney payment extension for Magento
+summary: zipMoney Payment extension for Magento 1
+description: zipMoney Payment extension for Magento 1
 license: OSL
 license_uri: 'http://opensource.org/licenses/OSL-3.0'
 
@@ -35,7 +35,7 @@ file_name: Zipmoney_ZipmoneyPayment
 ##################
 
 stability: stable
-version: *
+version: {version}
 notes: 'ZipmoneyPayment'
 
 #############
