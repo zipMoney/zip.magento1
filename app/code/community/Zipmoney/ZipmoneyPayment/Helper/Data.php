@@ -10,7 +10,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
   
   public function getCheckoutJsLibUrl(){
 
-    return '<script src="https://static.zipmoney.com.au/checkout/checkout-v1.min.js"></script><script src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS).'zipmoney/dist/scripts/zipmoney-checkout.js?v1.0.'.time().'"></script>';
+    return '<script src="https://static.zipmoney.com.au/checkout/checkout-v1.min.js"></script><script src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS).'zipmoney/dist/scripts/zipcheckout.js?v1.0.'.time().'"></script>';
   }
 
   public function json_encode($object)

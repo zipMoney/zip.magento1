@@ -16,7 +16,7 @@ var gulp = require('gulp'),
 // Scripts
 gulp.task('scripts', ['jshint'], function() {
   return gulp.src(['js/zipmoney/src/**/*.js'])
-    .pipe(concat('zipmoney-checkout.js'))
+    .pipe(concat('zipcheckout.js'))
     .pipe(gulp.dest('js/zipmoney/dist/scripts'))
     .pipe(rename({
       suffix: '.min'
