@@ -18,7 +18,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -40,7 +40,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -68,7 +68,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -99,7 +99,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -121,7 +121,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -147,8 +147,16 @@
                 <action method="setText">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
-            </block>
+            </block> 
+            <block type="core/text" name="zipmoney-widgets-js">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>  
         </reference> 
+        <reference name="content">            
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"></block>
+        </reference>
     </checkout_onepage_index>
     
     <checkout_onepage_paymentmethod>

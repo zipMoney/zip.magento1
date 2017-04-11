@@ -76,7 +76,7 @@ Zip_Mage_Checkout.prototype = {
     if(response.state == "approved"){
       this._payment.nextStep(this._transport);
     } else if(response.state == "referred"){
-      location.href = this.options.redirectUrl + "?result=referred&checkoutId=" + response.checkoutId;
+      location.href = this.super.options.redirectUrl + "?result=referred&checkoutId=" + response.checkoutId;
     }
   },
   onError: function(response){       
@@ -84,10 +84,6 @@ Zip_Mage_Checkout.prototype = {
     this._payment.resetLoadWaiting(this._transport);
   },
   onCheckout: function(resolve, reject, args){
-    // xr.post(this.checkoutUri).then(function(response){
-    //   console.log(response);
-    // }).catch(reject);
-
     new Ajax.Request(
             this.checkoutUri,
             {
