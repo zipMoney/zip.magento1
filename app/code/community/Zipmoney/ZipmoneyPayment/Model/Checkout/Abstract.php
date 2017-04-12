@@ -56,9 +56,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
     $apiConfig->setApiKey('Authorization', $this->_config->getMerchantPrivateKey())
               ->setApiKeyPrefix('Authorization', 'Bearer')
               ->setEnvironment($this->_config->getEnvironment())
-              ->setPlatform("Magento/".Mage::getVersion()." Zipmoney_ZipmoneyPayment/1.0.0")
-              ->setDebug(true)
-              ->setDebugFile('/var/www/zipmoney/magento-ce-1.9.2.2-apiv2/test.log');
+              ->setPlatform("Magento/".Mage::getVersion()." Zipmoney_ZipmoneyPayment/1.0.0");
   }
 
   /**
