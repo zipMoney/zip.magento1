@@ -1,12 +1,6 @@
 <?php
 
 class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Helper_Abstract {
-
-
-  public function getZipMoneyCheckoutLib()
-  {
-    return '<script src="https://static.zipmoney.com.au/checkout/checkout-v1.min.js"></script>';
-  }
   
   public function getCheckoutJsLibUrl(){
 

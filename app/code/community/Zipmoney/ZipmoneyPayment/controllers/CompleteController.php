@@ -155,7 +155,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
         $this->_logger->debug($e->getMessage());
     } catch (Exception $e) {
         $this->_logger->debug($e->getMessage());
-        $this->_getCheckoutSession()->addError($this->_helper->__('An error occurred while to completing the checkout.'));
+        $this->_getCheckoutSession()->addError($this->_helper->__('An error occurred while to trying to complete the checkout.'));
     }
     $this->_redirectToCartOrError();
   }
