@@ -41,9 +41,11 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
       }
     }
 
-    parent::__construct($params);
 
+    parent::__construct($params);
+    
     $this->setApi($this->_apiClass);
+
   }
 
 
