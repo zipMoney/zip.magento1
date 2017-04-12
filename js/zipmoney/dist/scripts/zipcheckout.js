@@ -397,24 +397,14 @@ Zip_Mage_Checkout.prototype = {
       if (this.validate() && validator.validate()) {
         if (this.currentMethod=='zipmoneypayment'){
           checkout.setLoadWaiting('payment');
-           // _this.checkout();
-
-          var request = new Ajax.Request(
-                this.saveUrl,
-                {
-                  method:'post',
-                  onSuccess: _this.onSuccess.bind(_this),
-                  onFailure: checkout.ajaxFailure.bind(checkout),
-                  parameters: Form.serialize(this.form)
-                }
-             );
+          _this.checkout();
         } else{
           save(); //return default method
         }
       }
     });
   },
-  onSuccess: function(transport) {
+  onSuccess: function(transport,resolve,reject) {
 
     if (transport && transport.responseText){
       try{
@@ -433,7 +423,7 @@ Zip_Mage_Checkout.prototype = {
             for (var i=0;i<fields.length;i++) {
                 var field = null;
                 if (field = $(fields[i])) {
-                    Validation.ajaxError(field, response.error);
+                  Validation.ajaxError(field, response.error);
                 }
             }
             return;
@@ -444,10 +434,15 @@ Zip_Mage_Checkout.prototype = {
             alert(response.error);
         }
         return;
+    } else if(response.redirect_uri){    
+      resolve({
+        data: {redirect_uri: response.redirect_uri}
+      });
+    } else {
+      reject();
     }
 
     this._transport = transport;
-    this.checkout(transport);
   },
   onComplete: function(response){    
     this._payment.resetLoadWaiting(this._transport);
@@ -462,24 +457,31 @@ Zip_Mage_Checkout.prototype = {
     this._payment.resetLoadWaiting(this._transport);
   },
   onCheckout: function(resolve, reject, args){
+    var _this = this;
     new Ajax.Request(
-            this.checkoutUri,
-            {
-              method:'post',
-              onSuccess: _this.onSuccess.bind(_this),
-              onFailure: checkout.ajaxFailure.bind(checkout),
-              parameters: Form.serialize(this.form)
-            }
-         );
+      this.super.options.checkoutUri,
+      {
+        method:'post',
+        onSuccess: function(response){
+          _this.onSuccess(response,resolve,reject).bind(_this);
+        },
+        onFailure: function(response){
+          checkout.ajaxFailure.bind(checkout);
+          reject();
+        },
+        parameters: Form.serialize(this._payment.form) + "&review=true"
+      }
+     );
   },
   checkout: function(){    
+  
     Zip.Checkout.init({
       redirect: this.super.options.redirect,
       checkoutUri: this.super.options.checkoutUri,
       redirectUri: this.super.options.redirectUrl,
       onComplete: this.onComplete.bind(this),
-      onError: this.onError.bind(this)
-      //onCheckout:this.onCheckout.bind(this)
+      onError: this.onError.bind(this),
+      onCheckout:this.onCheckout.bind(this)
     });
   }
 }
