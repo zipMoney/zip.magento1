@@ -26,7 +26,12 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    * @param array $params
    */
   public function __construct($params = array())
-  {
+  {    
+
+    parent::__construct($params);    
+    
+    $this->setApi($this->_apiClass);
+
     if (isset($params['order'])) {
       if($params['order'] instanceof Mage_Sales_Model_Order){
         $this->_order = $params['order'];
@@ -43,11 +48,6 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
         Mage::throwException("Invalid Api Class [ ".$params['api_class']." ]");
       }
     }
-
-
-    $this->setApi($this->_apiClass);
-
-    parent::__construct($params);
 
   }
 
