@@ -52,11 +52,11 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
     $this->_payload = Mage::helper('zipmoneypayment/payload');
 
     $apiConfig = \zipMoney\Configuration::getDefaultConfiguration();
-
+    
     $apiConfig->setApiKey('Authorization', $this->_config->getMerchantPrivateKey())
               ->setApiKeyPrefix('Authorization', 'Bearer')
               ->setEnvironment($this->_config->getEnvironment())
-              ->setPlatform("Magento/".Mage::getVersion()." Zipmoney_ZipmoneyPayment/1.0.0");
+              ->setPlatform("Magento/".Mage::getVersion()." Zipmoney_ZipmoneyPayment/".$this->_helper->getExtensionVersion());
   }
 
   /**
