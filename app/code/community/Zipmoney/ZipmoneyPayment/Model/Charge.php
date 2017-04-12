@@ -36,8 +36,11 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
       } else {
         Mage::throwException('Order instance is required.');
       }
-    }
-    parent::__construct($params);
+    }    
+
+
+    $this->setApi($this->_apiClass);
+
 
     if (isset($params['api_class'])) {
       if(class_exists($params['api_class'])){
@@ -47,6 +50,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
         Mage::throwException("Invalid Api Class [ ".$params['api_class']." ]");
       }
     }
+
   }
 
   /**
@@ -435,9 +439,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
       // Cancel the order
       $this->_helper->cancelOrder($this->_order,$e->getResponseObject()->getError()->getMessage());
       Mage::throwException($message);
-
     } 
-
     return $charge;
   }
 
