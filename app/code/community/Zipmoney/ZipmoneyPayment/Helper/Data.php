@@ -119,5 +119,10 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
 
     return $transaction;                          
   }
+
+  public function getExtensionVersion()
+  {
+    return (string) Mage::getConfig()->getNode()->modules->Zipmoney_ZipmoneyPayment->version;
+  }
   
 }
