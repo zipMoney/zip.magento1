@@ -131,7 +131,7 @@
 
   <target name="create_package" description="Package module into a magento connect package">
     <exec dir="${magento.base_dir}" command="mkdir -p var/connect" />
-    <exec dir="${extension.base_dir}" command="sed -ri 's/\{version\}/${build}/gm' zipmoney.package.yaml" />
+    <exec dir="${extension.base_dir}" command="sed -ri 's/\{version\}/${env.branch}/gm' zipmoney.package.yaml" />
     <exec dir="${extension.base_dir}" command="${bin.magerun} extension:create -f zipmoney.package.yaml" />
   </target>
 
