@@ -136,7 +136,7 @@
   </target>
 
   <target name="publish_to_s3">
-      <exec dir="${magento.base_dir}/var/connect" command="aws s3 cp Zipmoney_ZipmoneyPayment-v${env.branch}.tgz s3://zm-software-assets/Plugins-Libraries/Plugins/Magento1/Zipmoney_ZipmoneyPayment-v${env.branch}.tgz  --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers" passthru="true" checkreturn="true" />
+      <exec dir="${magento.base_dir}/var/connect" command="aws s3 cp Zipmoney_ZipmoneyPayment-${env.branch}.tgz s3://zm-software-assets/Plugins-Libraries/Plugins/Magento1/Zipmoney_ZipmoneyPayment-${env.branch}.tgz  --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers" passthru="true" checkreturn="true" />
   </target>
 
   <target name="package" description="Create">
