@@ -8,5 +8,5 @@ skin/frontend/base/default/zipmoney skin/frontend/base/default/zipmoney
 vendor/zipmoney lib/Zipmoney/vendor/zipmoney
 vendor/composer lib/Zipmoney/vendor/composer
 vendor/autoload.php lib/Zipmoney/vendor/autoload.php
-js/zipmoney js/zipmoney
+js/zipmoney/dist/ js/zipmoney/dist/
 zipmoney.package.yaml zipmoney.package.yaml
