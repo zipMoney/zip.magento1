@@ -2,7 +2,7 @@
     "name": "zipmoney/magento-zipmoneypayment",
     "description": "Magento 1 Extension for enabling zipMoney Payment",
     "require": {
-          "zipmoney/merchantapi-php": "~1.0"
+        "zipmoney/merchantapi-php": "~1.0"
     },
     "require-dev": {
         "firegento/mage-ci": "dev-master",
@@ -32,5 +32,5 @@
     "extra": {
         "magento-root-dir": "."
     },
-    "version": "1.0.0-rc1"
+    "version": "1.0.0-rc2"
 }
