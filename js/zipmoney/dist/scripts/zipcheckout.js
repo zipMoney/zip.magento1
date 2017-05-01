@@ -89,6 +89,7 @@ zipCheckout.prototype = {
       if(ext!=undefined){
         ext.setup(this);
       }
+      
       queryParams = document.URL.toQueryParams();
       
       if (queryParams['zip-in-context'] != undefined &&  
@@ -260,8 +261,8 @@ Zip_Idev_OnestepCheckout.prototype = {
 if(window.$zipCheckout != undefined){
   window.$zipCheckout.register(Zip_Idev_OnestepCheckout,'Idev_OnestepCheckout');
 }
-var Zip_IWD_OnestepCheckout = Class.create();
-Zip_IWD_OnestepCheckout.prototype = {
+var Zip_IWD_OPC = Class.create();
+Zip_IWD_OPC.prototype = {
   super: null,
   _btn: null,
   _zipBtn: null,
@@ -339,7 +340,7 @@ Zip_IWD_OnestepCheckout.prototype = {
 }
 
 if(window.$zipCheckout != undefined){
-  window.$zipCheckout.register(Zip_IWD_OnestepCheckout,'Iwd_OnestepCheckout');
+  window.$zipCheckout.register(Zip_IWD_OPC,'IWD_OPC');
 }
 
 var Zip_MageStore_OnestepCheckout = Class.create();
@@ -355,8 +356,9 @@ Zip_MageStore_OnestepCheckout.prototype = {
     this.super = superClass;
     var _this = this;
     var validator = new Validation('one-step-checkout-form');
+    var payment_method = $RF(form, 'payment[method]');
 
-    if(payment.currentMethod == this.super.options.methodCode){
+    if(payment_method == this.super.options.methodCode){
       if(this._btn) {
         this._btn.setAttribute('onclick', '');
         this._btn.observe('click',function(){

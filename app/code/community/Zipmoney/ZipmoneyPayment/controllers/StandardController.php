@@ -37,23 +37,27 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
           return;
         }
 
-        $data = $this->getRequest()->getPost('payment', array());
-        $result = $this->getOnepage()->savePayment($data);
+        if($data = $this->getRequest()->getPost('payment', array()))
+        {
+          $result = $this->getOnepage()->savePayment($data);
 
-        if (empty($result['error'])) {
-          $this->_logger->info($this->_helper->__('Payment method saved'));
-          $review = $this->getRequest()->getPost('review');
-          if(isset($review) && $review == "true"){
-            $this->loadLayout('checkout_onepage_review');
-            $result['goto_section'] = 'review';
-            $result['update_section'] = array(
-                'name' => 'review',
-                'html' => $this->getLayout()->getBlock('root')->toHtml()
-            );
+          if (empty($result['error'])) {
+            $this->_logger->info($this->_helper->__('Payment method saved'));
+            $review = $this->getRequest()->getPost('review');
+            if(isset($review) && $review == "true"){
+              $this->loadLayout('checkout_onepage_review');
+              $result['goto_section'] = 'review';
+              $result['update_section'] = array(
+                  'name' => 'review',
+                  'html' => $this->getLayout()->getBlock('root')->toHtml()
+              );
+            }
+
+          } else{
+            Mage::throwException($this->_helper->__("Failed to save the payment method"));
           }
-        } else{
-          Mage::throwException($this->_helper->__("Failed to save the payment method"));
         }
+
         $this->_logger->info($this->_helper->__('Starting Checkout'));
         // Initialize the checkout model
         // Start the checkout process

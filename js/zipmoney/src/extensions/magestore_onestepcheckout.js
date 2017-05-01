@@ -11,8 +11,9 @@ Zip_MageStore_OnestepCheckout.prototype = {
     this.super = superClass;
     var _this = this;
     var validator = new Validation('one-step-checkout-form');
+    var payment_method = $RF(form, 'payment[method]');
 
-    if(payment.currentMethod == this.super.options.methodCode){
+    if(payment_method == this.super.options.methodCode){
       if(this._btn) {
         this._btn.setAttribute('onclick', '');
         this._btn.observe('click',function(){
