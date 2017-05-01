@@ -1,5 +1,5 @@
-var Zip_IWD_OnestepCheckout = Class.create();
-Zip_IWD_OnestepCheckout.prototype = {
+var Zip_IWD_OPC = Class.create();
+Zip_IWD_OPC.prototype = {
   super: null,
   _btn: null,
   _zipBtn: null,
@@ -77,5 +77,5 @@ Zip_IWD_OnestepCheckout.prototype = {
 }
 
 if(window.$zipCheckout != undefined){
-  window.$zipCheckout.register(Zip_IWD_OnestepCheckout,'Iwd_OnestepCheckout');
+  window.$zipCheckout.register(Zip_IWD_OPC,'IWD_OPC');
 }
