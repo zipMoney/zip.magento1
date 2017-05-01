@@ -2,13 +2,13 @@
 use \zipMoney\ApiException;
 
 class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_Abstract {
-
+  
 	protected $_code = Zipmoney_ZipmoneyPayment_Model_Config::METHOD_CODE;
 	protected $_formBlockType = 'zipmoneypayment/standard_form';
 	protected $_isInitializeNeeded = true;
 	protected $_url = "";
 	protected $_dev = false;
-
+  
 	/**
 	 * Availability options
 	 */
@@ -221,37 +221,52 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
   {
     $action     = Mage::app()->getRequest()->getActionName();
     $controller = Mage::app()->getRequest()->getControllerName();
-    $module     = Mage::app()->getRequest()->getModuleName();
+    $module     = strtolower(Mage::app()->getRequest()->getControllerModule());
 
     $this->_logger->debug($this->_helper->__("Action: %s Controller: %s Module: %s",$action,$controller,$module));
+    
+    $url = null;
 
     if (
-        ($module == 'checkout' &&  $controller == 'onepage' &&  $action == 'savePayment')
+        ($module == 'mage_checkout' &&  $controller == 'onepage' &&  $action == 'savePayment')
       ) {
       $url = null;
     } else {
 
       if($this->_config->isInContextCheckout()){
+        
+
+        $this->_logger->info("In-Context Checkout");
 
         /* Return current url with extra param appended, so that it will refresh current page with the
          * param if the param is present, will popup zipMoney iframe checkout
          */
 
-        $this->_logger->info("In-Context Checkout");
+        if ($module == 'magestore_onestepcheckout' &&  $controller == 'index' &&  $action == 'saveOrder')
+        {        $this->_logger->info("In-Context Checkout");
 
-        if(Mage::app()->getRequest()->isAjax())
           $currentUrl = Mage::helper('checkout/url')->getCheckoutUrl();
-        else
-          $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+        }  
+        else if ($module == 'iwd_opc' &&  $controller == 'json' &&  $action == 'savePayment')
+        {      
+          $currentUrl = null;
+        } 
+         else {
+          if(Mage::app()->getRequest()->isAjax())
+            $currentUrl = Mage::helper('checkout/url')->getCheckoutUrl();
+          else
+            $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+        }
 
         //$currentUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB,true)."zipmoneypayment/standard/redirect/";
 
-        if (Mage::app()->getRequest()->getParam('zip-in-context') != 'true') {
+        if (Mage::app()->getRequest()->getParam('zip-in-context') != 'true' && isset($currentUrl)) {  
           $urlArr = parse_url($currentUrl);
           if (!isset($urlArr['zip-in-context'])) {
             $url = $currentUrl . (parse_url($currentUrl, PHP_URL_QUERY) ? '&' : '?') . 'zip-in-context=true';
           }
         }
+        $this->_logger->info($currentUrl);
 
       } else {
 

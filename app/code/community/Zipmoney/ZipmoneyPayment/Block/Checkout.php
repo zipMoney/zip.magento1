@@ -40,4 +40,9 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
 		return $this->getButtonSelector() ? $this->getButtonSelector() : $this->_button_selector;
 	}
 
+	public function getExtensionName()
+	{ 
+		return  strtolower(Mage::app()->getRequest()->getControllerModule());
+	}
+
 }
