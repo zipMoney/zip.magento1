@@ -48,7 +48,7 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    *
    * @const
    */
-  const ZIPMONEY_ERROR_ROUTE = self::ZIPMONEY_STANDARD_ROUTE."/error";
+  const ZIPMONEY_ERROR_ROUTE = "zipmoneypayment/standard/error";
   /**
    * Instantiate config
    */

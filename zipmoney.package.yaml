@@ -106,7 +106,7 @@ contents:
     - frontend/base/default/template/zipmoney
     - frontend/base/default/zipmoney
     - Zipmoney
-    - js/zipmoney
+    - js/zipmoney/dist
 
   ## type can either be 'file' or 'dir'. Directories are added recursively.
   type:
