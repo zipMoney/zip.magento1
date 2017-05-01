@@ -22,12 +22,12 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
 
 	public function getCheckoutUrl()
 	{
-		return Mage::getBaseUrl()."zipmoneypayment/standard/";
+		return Mage::getUrl("zipmoneypayment/standard/",true);
 	}
 
 	public function getRedirectUrl()
 	{
-		return Mage::getBaseUrl()."zipmoneypayment/complete/";
+		return Mage::getUrl("zipmoneypayment/complete/",true);
 	}
 
 	public function isRedirect()

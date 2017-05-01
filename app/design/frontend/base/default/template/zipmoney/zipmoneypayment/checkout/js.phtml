@@ -10,7 +10,6 @@ $extension_name = $this->getExtensionName();
         checkoutExtension:'<?php echo $extension_name;?>',
         methodCode: 'zipmoneypayment',
         redirect: <?php echo $this->isRedirect(); ?>,    
-        baseUrl:'<?php echo Mage::getBaseUrl(); ?>',
         loaderImageUrl:'<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif'); ?>',
         checkoutUri:'<?php echo $this->getCheckoutUrl(); ?>',
         redirectUrl:'<?php echo $this->getRedirectUrl(); ?>',
