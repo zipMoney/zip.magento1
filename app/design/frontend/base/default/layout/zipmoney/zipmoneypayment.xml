@@ -156,33 +156,10 @@
         </reference> 
         <reference name="content">            
             <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
+            <block type="zipmoneypayment/checkout" name="zipmoney.checkout" template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml"/>
         </reference>
     </checkout_onepage_index>
-    
-    <checkout_onepage_paymentmethod>
-        <reference name="root">
-            <reference name="checkout.onepage.payment.methods.additional">
-                <block  type="zipmoneypayment/checkout" 
-                        name="additional" 
-                        template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml"/>
-            </reference>
-        </reference>
-    </checkout_onepage_paymentmethod>
-
-    <!-- <checkout_onepage_savepayment>
-        <reference name="checkout.onepage.review.info.items.before">
-            <block  type="zipmoneypayment/checkout" 
-                    name="zipmoneypayment.checkout" 
-                    template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>Mage_Checkout</value>
-                </action>
-            </block>
-        </reference>
-    </checkout_onepage_savepayment> -->
-    <!-- End Onepage Checkout -->
-        
+   
     <!-- Idev Onestep Checkout -->
     <onestepcheckout_index_index>
         <reference name="head">
