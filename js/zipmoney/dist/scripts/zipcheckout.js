@@ -84,7 +84,7 @@ zipCheckout.prototype = {
       
       ext = $this.getCurrentExtension();
 
-      console.log("Initilizing zipMoney Checkout ... [ Checkout Extension :- " + config.checkoutExtension + " " + (ext!=undefined? 1 : 0 )  + " ] ");
+      console.log("Initializing zipMoney Checkout ... [ Checkout Extension :- " + config.checkoutExtension + " " + (ext!=undefined? 1 : 0 )  + " ] ");
 
       if(ext!=undefined){
         ext.setup(this);

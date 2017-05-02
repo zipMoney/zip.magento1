@@ -144,7 +144,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block> 
@@ -156,7 +156,7 @@
         </reference> 
         <reference name="content">            
             <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
-            <block type="zipmoneypayment/checkout" name="zipmoney.checkout" template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml"/>
+            <block type="zipmoneypayment/checkout" ifconfig="payment/zipmoneypayment/active" name="zipmoney.checkout" template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml"/>
         </reference>
     </checkout_onepage_index>
    
@@ -167,7 +167,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
@@ -181,9 +181,9 @@
             <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
         </reference> 
         <reference name="before_body_end"> 
-           <block type="zipmoneypayment/checkout" 
+           <block  type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.idev_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml"/>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </onestepcheckout_index_index>
     <!-- End Idev Onestep Checkout -->
@@ -195,7 +195,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
@@ -211,7 +211,7 @@
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.iwd_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml"/>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </iwd_opc_index_index>
     <!-- End IWD Onestep Checkout Version 6-->
@@ -223,7 +223,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
@@ -239,7 +239,7 @@
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.iwd_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml"/>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </opc_index_index>
     <!-- End IWD Onestep Checkout -->
@@ -250,7 +250,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
@@ -263,7 +263,7 @@
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.aitoc" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml"/>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </aitcheckout_checkout_index>
 
@@ -274,7 +274,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
@@ -287,7 +287,7 @@
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.aw_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml"/>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </aw_onestepcheckout_index_index>
     <!-- End AW Onestep Checkout -->   
@@ -298,7 +298,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
@@ -311,10 +311,9 @@
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.aitoc" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml"/>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </gomage_checkout_onepage_index>
-
 
     <zipmoneypayment_standard_referred>
         <label>zipMoney Referred</label>

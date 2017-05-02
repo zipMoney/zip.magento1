@@ -613,9 +613,6 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    */
   public function placeOrder()
   {
-    // $order = Mage::getSingleton("sales/order")->loadByIncrementId("145000246");
-    // $this->_order = $order;
-    // return $order;
     $checkoutMethod = $this->getCheckoutMethod();
 
     $this->_logger->debug(
