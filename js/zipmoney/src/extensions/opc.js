@@ -21,7 +21,7 @@ Zip_Mage_Checkout.prototype = {
           checkout.setLoadWaiting('payment');
           _this.checkout();
         } else{
-          save(); //return default method
+          paymentSave(); //return default method
         }
       }
     });

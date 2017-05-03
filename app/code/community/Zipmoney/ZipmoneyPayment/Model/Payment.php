@@ -210,7 +210,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
   public function getOrderPlaceRedirectUrl()
   {
-    return  Mage::getBaseUrl()."zipmoneypayment/complete/charge";
+    return  Mage::getUrl("zipmoneypayment/complete/charge",true);
   }
 
 	/**

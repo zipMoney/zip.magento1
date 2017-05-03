@@ -15,11 +15,9 @@ zipCheckout.prototype = {
     this._onComplete = this.onComplete.bind(this);
     this._onError = this.onError.bind(this);
   },
-  setupZipPlaceOrderButton: function(){
+  setupZipPlaceOrderButton: function(){      
     var btnClone = this._btn.clone(true);
-  
     var _this = this;
-
     btnClone.setAttribute('id', this._zipBtnId);
     this._btn.insert({before: btnClone});
     this._zipBtn = btnClone;
@@ -85,6 +83,8 @@ zipCheckout.prototype = {
       this.options = Object.extend(this.options, config );    
       
       ext = $this.getCurrentExtension();
+
+      console.log("Initializing zipMoney Checkout ... [ Checkout Extension :- " + config.checkoutExtension + " " + (ext!=undefined? 1 : 0 )  + " ] ");
 
       if(ext!=undefined){
         ext.setup(this);

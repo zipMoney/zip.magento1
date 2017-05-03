@@ -2,10 +2,9 @@
 //<![CDATA[
   if(window.$zipCheckout!=undefined){
     window.$zipCheckout.setup({
-      checkoutExtension:'Mage_Checkout',
+      checkoutExtension:'<?php echo $this->getExtensionName();?>',
       methodCode: 'zipmoneypayment',
       redirect: <?php echo $this->isRedirect(); ?>,
-      baseUrl:'<?php echo Mage::getBaseUrl(); ?>',
       checkoutUri:'<?php echo $this->getCheckoutUrl(); ?>',
       redirectUrl:'<?php echo $this->getRedirectUrl(); ?>'
     });

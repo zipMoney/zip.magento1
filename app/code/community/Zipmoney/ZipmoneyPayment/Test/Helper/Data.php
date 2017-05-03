@@ -35,7 +35,7 @@ class Zipmoney_ZipmoneyPayment_Test_Helper_Data extends EcomDev_PHPUnit_Test_Cas
    * @test
    */
   public function testVersion(){
-    $this->assertEquals($this->_data->getExtensionVersion(),"1.0.0-rc2");
+    $this->assertEquals($this->_data->getExtensionVersion(),"1.0.0-rc3");
   }
   
 }

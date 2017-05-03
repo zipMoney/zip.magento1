@@ -15,11 +15,9 @@ zipCheckout.prototype = {
     this._onComplete = this.onComplete.bind(this);
     this._onError = this.onError.bind(this);
   },
-  setupZipPlaceOrderButton: function(){
+  setupZipPlaceOrderButton: function(){      
     var btnClone = this._btn.clone(true);
-  
     var _this = this;
-
     btnClone.setAttribute('id', this._zipBtnId);
     this._btn.insert({before: btnClone});
     this._zipBtn = btnClone;
@@ -86,10 +84,11 @@ zipCheckout.prototype = {
       
       ext = $this.getCurrentExtension();
 
+      console.log("Initializing zipMoney Checkout ... [ Checkout Extension :- " + config.checkoutExtension + " " + (ext!=undefined? 1 : 0 )  + " ] ");
+
       if(ext!=undefined){
         ext.setup(this);
       }
-      
       queryParams = document.URL.toQueryParams();
       
       if (queryParams['zip-in-context'] != undefined &&  
@@ -354,9 +353,23 @@ Zip_MageStore_OnestepCheckout.prototype = {
   },
   setup: function(superClass){
     this.super = superClass;
-    var _this = this;
-    var validator = new Validation('one-step-checkout-form');
+
+    this.switchButtons();       
+
+    Ajax.Responders.register({
+      onComplete: function(request, transport) {
+        // Avoid AJAX callback for internal AJAX request
+        if (typeof request.parameters.doNotMakeAjaxCallback == 'undefined') {   
+          _this.methodChange();       
+        }
+      }
+    });
+   
+  },
+  switchButtons: function(){    
     var payment_method = $RF(form, 'payment[method]');
+    var validator = new Validation('one-step-checkout-form');
+    var _this = this;
 
     if(payment_method == this.super.options.methodCode){
       if(this._btn) {
@@ -369,7 +382,24 @@ Zip_MageStore_OnestepCheckout.prototype = {
           }
         })
       }
-    } 
+    } else {
+      if(this._btn) {
+        console.log(2222);
+        this._btn.setAttribute('onclick', 'oscPlaceOrder(this);');
+      }
+    }
+  },
+  methodChange: function(){
+    var paymentEls = $$('#checkout-payment-method-load input[name="payment[method]"]');
+    var _this = this;
+    
+    paymentEls.each(function (el) {
+      el.observe("click",function(){
+        console.log(4444)
+        _this.super._selectedPaymentCode = $RF(form, 'payment[method]');
+        _this.switchButtons();
+      });
+    });
   }
 }
 
@@ -401,7 +431,7 @@ Zip_Mage_Checkout.prototype = {
           checkout.setLoadWaiting('payment');
           _this.checkout();
         } else{
-          save(); //return default method
+          paymentSave(); //return default method
         }
       }
     });
