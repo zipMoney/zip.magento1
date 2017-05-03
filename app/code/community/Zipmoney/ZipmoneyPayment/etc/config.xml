@@ -33,7 +33,6 @@
         </translate>
     </frontend>
 
-
     <global>
         <fieldsets>
             <sales_convert_quote_payment>
@@ -99,6 +98,14 @@
             </order>
         </sales>
         <events>
+            <checkout_type_onepage_save_order>
+                <observers>
+                    <zipmoney_checkzipMoneycid>
+                        <class>zipmoneypayment/observer</class>
+                        <method>validateOrder</method>
+                    </zipmoney_checkzipMoneycid>
+                </observers>
+            </checkout_type_onepage_save_order> 
             <sales_order_save_before>
                 <observers>
                     <zipmoney_set_order_invoice_action_flag_observer>
@@ -158,13 +165,6 @@
                 </admin>
             </resources>
         </acl>
-        <layout>
-            <updates>
-                <zipmoneypayment>
-                    <file>zipmoneypayment.xml</file>
-                </zipmoneypayment>
-            </updates>
-        </layout>
     </adminhtml>
 
     <default>

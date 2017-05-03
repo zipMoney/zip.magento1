@@ -100,7 +100,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
    */
 	protected $_merchantPrivateKey = null;
 	/**
-	 * Merchant Environment
+	 * Api Environment
    * @var string
    */
 	protected $_merchantEnv = null;

@@ -63,7 +63,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
         return true;
       }
     }
-
     return false;
   }
 
@@ -230,6 +229,48 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
       $message = $this->_helper("Could not process the payment");
       Mage::getSingleton('checkout/session')->addError($message);
       throw new Mage_Payment_Model_Info_Exception($message); 
+    }
+
+  }
+  
+  /**
+   * Charge an order in zipMoney
+   *
+   * @param Varien_Event_Observer $observer
+   * @throws Mage_Payment_Model_Info_Exception | Mage_Core_Exception
+   */
+  public function validateOrder(Varien_Event_Observer $observer)
+  {
+    $event = $observer->getEvent();
+    $order = $event->getOrder();
+    $quote = $event->getQuote();
+
+    if($order->getPayment()->getMethod()!= Zipmoney_ZipmoneyPayment_Model_Config::METHOD_CODE)
+    {
+      return;
+    }
+
+    $this->_logger->debug($this->_helper->__("Validating Order."));
+    
+    $error = "An error occurred order while placing order.\n%s";
+      // Check if the quote exists
+    if(!$quote->getId()){    
+      $errorText = "The quote doesnot exist.";
+      $this->_logger->debug($this->_helper->__($errorText));
+      Mage::throwException($this->_helper->__($error,$errorText));
+    }  
+   
+    // Check if the zipMoney Checkout Id Exists
+    if(!$quote->getZipmoneyCid()){           
+      $errorText = "The order has not been approved by zipMoney.";
+      $this->_logger->debug($this->_helper->__($errorText));
+      Mage::throwException($this->_helper->__($error,$errorText));
+    }
+    // Check if the Order Has been charged
+    if($order->getPayment()->getZipmoneyChargeId()){       
+      $errorText = "This order has already been charged.";
+      $this->_logger->debug($this->_helper->__($errorText));
+      Mage::throwException($this->_helper->__($error,$errorText));
     }
 
   }
