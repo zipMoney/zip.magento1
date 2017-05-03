@@ -1,4 +1,12 @@
 <?php
+/**
+ * @category  zipMoney
+ * @package   zipmoney
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
 
 /**
@@ -104,7 +112,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
 
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
+   * @cover Zipmoney_ZipmoneyPayment_Model_Charge_charge  
    * @group Zipmoney_ZipmoneyPayment     
    * @loadFixture products.yaml
    * @loadFixture customers.yaml
@@ -141,7 +149,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
 
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
+   * @cover Zipmoney_ZipmoneyPayment_Model_Charge_charge  
    * @group Zipmoney_ZipmoneyPayment     
    * @loadFixture products.yaml
    * @loadFixture customers.yaml
@@ -178,7 +186,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
 
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
+   * @cover Zipmoney_ZipmoneyPayment_Model_Charge_captureCharge
    * @group Zipmoney_ZipmoneyPayment     
    * @loadFixture products.yaml
    * @loadFixture customers.yaml
@@ -215,7 +223,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
   
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
+   * @cover Zipmoney_ZipmoneyPayment_Model_Charge_cancelCharge 
    * @group Zipmoney_ZipmoneyPayment     
    * @loadFixture products.yaml
    * @loadFixture customers.yaml
@@ -253,7 +261,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
 
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
+   * @cover Zipmoney_ZipmoneyPayment_Model_Charge_refundCharge  
    * @group Zipmoney_ZipmoneyPayment     
    * @loadFixture products.yaml
    * @loadFixture customers.yaml
@@ -293,7 +301,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
    
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
+   * @cover Zipmoney_ZipmoneyPayment_Model_Charge_charge  
    * @group Zipmoney_ZipmoneyPayment  
    * @expectedException  Exception
    * @expectedExceptionMessage The order does not exist.
@@ -314,7 +322,7 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
   
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote   
+   * @cover Zipmoney_ZipmoneyPayment_Model_Charge_placeOrder 
    * @group Zipmoney_ZipmoneyPayment     
    * @loadFixture customers.yaml      
    * @loadFixture products.yaml      
@@ -337,5 +345,4 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
     $this->assertNotNull($order->getId());
     $this->assertEquals(Mage_Sales_Model_Order::STATE_NEW,$order->getState());
   }
-
 }

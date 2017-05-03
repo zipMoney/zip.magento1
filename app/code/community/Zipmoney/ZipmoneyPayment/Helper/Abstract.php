@@ -13,7 +13,6 @@ abstract class Zipmoney_ZipmoneyPayment_Helper_Abstract extends Mage_Core_Helper
   
   /**
    * Set quote and config instances
-   * @param array $params
    */
   public function __construct()
   {   

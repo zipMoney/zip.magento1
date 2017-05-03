@@ -1,4 +1,12 @@
 <?php
+/**
+ * @category  zipMoney
+ * @package   zipmoney
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
 
 /**
@@ -10,7 +18,6 @@ class Zipmoney_ZipmoneyPayment_Test_Helper_Data extends EcomDev_PHPUnit_Test_Cas
 
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getApi   
    * @group Zipmoney_ZipmoneyPayment
    */
   public function setUp()

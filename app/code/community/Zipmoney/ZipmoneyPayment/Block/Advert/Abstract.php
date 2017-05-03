@@ -1,15 +1,18 @@
 <?php
 /**
- * @category  Aligent
- * @package   zipmoney
- * @author    Andi Han <andi@aligent.com.au>
- * @copyright 2014 Aligent Consulting.
+ * @category  Zipmoney
+ * @package   Zipmoney_ZipmoneyPayment
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments Pty Ltd.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link      http://www.aligent.com.au/
+ * @link      http://www.zipmoney.com.au/
  */
 
 class Zipmoney_ZipmoneyPayment_Block_Advert_Abstract extends Mage_Core_Block_Template
-{
+{ 
+  /**
+   * @const string
+   */ 
 	const PAYMENT_ADVERT_PREFIX = 'payment/zipmoney_advert_';
 
 	/**
@@ -30,7 +33,12 @@ class Zipmoney_ZipmoneyPayment_Block_Advert_Abstract extends Mage_Core_Block_Tem
     }
     return false;
   }
-
+  
+  /**
+   * Returns the current page type.
+   *
+   * @return string
+   */
 	protected function _getCurrentPageType()
 	{
 		$oRequest = Mage::app()->getRequest();

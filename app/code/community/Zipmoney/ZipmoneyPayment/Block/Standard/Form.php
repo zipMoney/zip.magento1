@@ -1,12 +1,34 @@
 <?php
+/**
+ * @category  Zipmoney
+ * @package   Zipmoney_ZipmoneyPayment
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments Pty Ltd.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
-class Zipmoney_ZipmoneyPayment_Block_Standard_Form extends Mage_Payment_Block_Form {
-
+class Zipmoney_ZipmoneyPayment_Block_Standard_Form extends Mage_Payment_Block_Form 
+{
+	/**  
+   * @var string
+   */ 
 	protected $_methodCode = 'zipmoneypayment';
+	/**
+   * @var Zipmoney_ZipmoneyPayment_Model_Config
+   */ 
 	protected $_config;
+	/**
+   * @var Zipmoney_ZipmoneyPayment_Model_Logger
+   */ 
 	protected $_logger;
 
-	protected function _construct() {
+	/**
+   * Prepares the payment option mark for checkout page
+   *
+   */
+	protected function _construct() 
+	{
 		$this->_config = Mage::getSingleton("zipmoneypayment/config");
 		$this->_logger = Mage::getSingleton("zipmoneypayment/logger");
 
@@ -27,7 +49,6 @@ class Zipmoney_ZipmoneyPayment_Block_Standard_Form extends Mage_Payment_Block_Fo
 		$mark->setTemplate('zipmoney/zipmoneypayment/mark.phtml')
 				 ->setPaymentAcceptanceMarkSrc($this->_config->getMethodLogo()); 
 
-		// known issue: code above will render only static mark image
 		$this->setTemplate('zipmoney/zipmoneypayment/redirect.phtml')
 						->setRedirectMessage($message)
 						->setMethodLabelAfterHtml($mark->toHtml());
@@ -38,7 +59,11 @@ class Zipmoney_ZipmoneyPayment_Block_Standard_Form extends Mage_Payment_Block_Fo
 
 		return parent::_construct();
 	}
-
+	/**
+   * Returns the method code.
+   *
+   * @return string
+   */
 	public function getMethodCode() {
 		return $this->_methodCode;
 	}

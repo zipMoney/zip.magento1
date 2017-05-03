@@ -1,9 +1,21 @@
 <?php
 use \zipMoney\ApiException;
+/**
+ * @category  zipMoney
+ * @package   zipmoney
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
 class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
-{
+{ 
 
+  /**
+   * Sets the logger and helper models
+   *
+   */
 	public function __construct()
 	{
 		$this->_logger = Mage::getSingleton("zipmoneypayment/logger");
@@ -25,7 +37,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 	 */
 	static function init()
 	{
-
 		// Add our vendor folder to our include path
 		set_include_path(get_include_path() . PATH_SEPARATOR . Mage::getBaseDir('lib') . DS . 'Zipmoney' . DS . 'vendor');
 		// Include the autoloader for composer
@@ -33,9 +44,9 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 	}
 
   /**
-   * check if order was created by zipMoney
+   * Check if order was created by zipMoney
    *
-   * @param Mage_Sales_Model_Order $oOrder
+   * @param Mage_Sales_Model_Order $order
    * @return bool
    */
   protected function _isZipMoneyOrder(Mage_Sales_Model_Order $order)
@@ -56,6 +67,12 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
     return false;
   }
 
+  /**
+   * Checks whether to avoid invoicing
+   *
+   * @param Mage_Sales_Model_Order $order
+   * @return bool
+   */
 	protected function isAvoidInvoicing(Mage_Sales_Model_Order $order)
 	{
     if (!$order || !$order->getId()) {
@@ -118,7 +135,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
     }
   }
 
-
   /**
    * Notify zipMoney when an order is cancelled
    *
@@ -165,9 +181,14 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
     Mage::throwException($this->_helper->__("Unable to cancel the order in zipMoney."));
 	}
 
+  /**
+   * Charge an order in zipMoney
+   *
+   * @param Varien_Event_Observer $observer
+   * @throws Mage_Payment_Model_Info_Exception | Mage_Core_Exception
+   */
   public function chargeOrder($observer)
   {
-    /** @var Mage_Sales_Model_Order $order */
     $event = $observer->getEvent();
     $order = $event->getOrder();
     $quote = $event->getQuote();
@@ -176,7 +197,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
     {
       return;
     }
-
     $this->_logger->debug($this->_helper->__("Charge Order"));
 
     try {
@@ -185,7 +205,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
       if(!$quote->getId()){
         Mage::throwException($this->_helper->__("The quote doesnot exist."));
       }  
-      
       if(!$order->getId()){
         Mage::throwException($this->_helper->__("The order doesnot exist."));
       }
@@ -197,27 +216,20 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
       if($order->getPayment()->getZipmoneyChargeId()){
         Mage::throwException($this->_helper->__("The order has already been charged."));
       }
-
       // Initialise the charge
       $this->_charge = Mage::getSingleton('zipmoneypayment/charge');
       // Set quote to the chekout model
       $this->_charge->setOrder($order)
                     ->charge();
-
     } catch (Mage_Core_Exception $e) {
-
-        $this->_logger->debug($e->getMessage());
-        Mage::getSingleton('checkout/session')->addError($message);
-      
-        throw new Mage_Payment_Model_Info_Exception($message);
-
+      $this->_logger->debug($e->getMessage());
+      Mage::getSingleton('checkout/session')->addError($message);
+      throw new Mage_Payment_Model_Info_Exception($message);
     } catch (Exception $e) {
-
-        $this->_logger->debug($e->getMessage()); 
-        $message = $this->_helper("Could not process the payment");
-        Mage::getSingleton('checkout/session')->addError($message);
-        
-        throw new Mage_Payment_Model_Info_Exception($message); 
+      $this->_logger->debug($e->getMessage()); 
+      $message = $this->_helper("Could not process the payment");
+      Mage::getSingleton('checkout/session')->addError($message);
+      throw new Mage_Payment_Model_Info_Exception($message); 
     }
 
   }

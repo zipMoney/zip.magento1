@@ -8,27 +8,33 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
+class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
+{
 
   /**
-   * State helper variables
    * @var string
    */
   protected $_redirectUrl = '';
+  /**
+   * @var string
+   */
   protected $_checkoutId = '';
-
   /**
    * zipMoney Checkouts Api Class
    *
    * @var string
    */
   protected $_apiClass = '\zipMoney\Api\CheckoutsApi';
-
+  /**
+   * @const string
+   */
   const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
 
   /**
-   * Set quote and config instances
+   * Sets the quote and api class. Calls parent constructor
+   *
    * @param array $params
+   * @throws Mage_Core_Exception
    */
   public function __construct($params = array())
   {
@@ -41,24 +47,19 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
       }
     }
 
-
     parent::__construct($params);
     
     $this->setApi($this->_apiClass);
-
   }
 
-
   /**
-   * Create quote in Zip side if not existed, and request for redirect url
+   * Starts the checkout process by making checkout api call to the zipMoney API endpoint.
    *
-   * @param $quote
-   * @return null
    * @throws Mage_Core_Exception
+   * @return \zipMoney\Model\Checkout
    */
   public function start()
   {
-
     if (!$this->_quote || !$this->_quote->getId()) {
       Mage::throwException(Mage::helper('zipmoneypayment')->__('The quote does not exist.'));
     }
@@ -119,15 +120,23 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
     return $checkout;
   }
 
-
+  /**
+   * Returns the zipMoney Redirect Url
+   *
+   * @return string
+   */
   public function getRedirectUrl()
   {
     return $this->_redirectUrl;
   }
 
+  /**
+   * Returns the zipMoney Checkout Id
+   *
+   * @return string
+   */
   public function getCheckoutId()
   {
     return $this->_checkoutId;
   }
-
 }

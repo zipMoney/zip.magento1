@@ -9,8 +9,14 @@
  */
 
 class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
-{
-	protected $_config = null;
+{ 
+  /**  
+   * @var Zipmoney_ZipmoneyPayment_Model_Config
+   */ 
+  protected $_config;
+  /**
+   * @var string
+   */ 
 	protected $_button_selector = 'button[type=submit][class~="btn-checkout"]';
 		
 	public function __construct()
@@ -20,29 +26,52 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
 	  $this->_config = Mage::getSingleton('zipmoneypayment/config');
 	}
 
+	/**
+   * Returns the checkout url.
+   *
+   * @return string
+   */
 	public function getCheckoutUrl()
 	{
 		return Mage::getUrl("zipmoneypayment/standard/",true);
 	}
 
+	/**
+   * Returns the redirect url.
+   *
+   * @return string
+   */
 	public function getRedirectUrl()
 	{
 		return Mage::getUrl("zipmoneypayment/complete/",true);
 	}
 
+	/**
+   * Whether to redirect or not.
+   *
+   * @return int
+   */
 	public function isRedirect()
 	{
 		return (int)!$this->_config->isInContextCheckout();
 	}
-
+	/**
+   * Returns the place order button selector
+   *
+   * @return string
+   */
 	public function getPlaceOrderButtonSelector()
 	{
 		return $this->getButtonSelector() ? $this->getButtonSelector() : $this->_button_selector;
 	}
-
+  
+	/**
+   * Returns the extension name.
+   *
+   * @return string
+   */
 	public function getExtensionName()
 	{ 
 		return  strtolower(Mage::app()->getRequest()->getControllerModule());
 	}
-
 }
