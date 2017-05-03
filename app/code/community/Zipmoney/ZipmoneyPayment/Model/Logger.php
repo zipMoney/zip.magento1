@@ -39,7 +39,7 @@ class Zipmoney_ZipmoneyPayment_Model_Logger extends Mage_Core_Helper_Abstract
 		} else {
 			$enabled = Mage::getModel('zipmoneypayment/config')->getConfigByCurrentScope(self::LOG_SETTING);
 		}
-		return $iEnabled > 0 ? true : false;
+		return $enabled > 0 ? true : false;
 	}
 
 	/**
