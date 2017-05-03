@@ -12,9 +12,18 @@ use \zipMoney\Model\OrderShippingTracking;
 use \zipMoney\Model\Address;
 use \zipMoney\Model\OrderItem;
 use \zipMoney\Model\ShopperStatistics;
-
 use \zipMoney\Model\Metadata;
 use \zipMoney\Model\CheckoutConfiguration;
+
+/**
+ * @category  Zipmoney
+ * @package   Zipmoney_ZipmoneyPayment
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments Pty Ltd.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
+
 
 class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_Helper_Abstract
 {
@@ -24,16 +33,21 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
   protected $_customerSession;
 
   /**
-   * @var Mage_Customer_Model_Session
+   * @var Mage_Sales_Model_Quote
    */
   protected $_quote;
 
   /**
-   * @var Mage_Customer_Model_Session
+   * @var Mage_Sales_Model_Order
    */
   protected $_order;
   
-
+  /**
+   * Sets the quote to the payload object
+   * 
+   * @param Mage_Sales_Model_Quote $quote
+   * @return Zipmoney_ZipmoneyPayment_Helper_Payload
+   */
   public function setQuote($quote)
   {
     if($quote){
@@ -42,16 +56,26 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $this;
   }
 
+  /**
+   * Returns the quote from the payload object
+   * 
+   * @return Mage_Sales_Model_Quote
+   */
   public function getQuote()
   {
     if($this->_quote){      
       $this->_order = null;
       return $this->_quote;
     }
-
     return $this->_quote;
   }
 
+  /**
+   * Sets the order to the payload object
+   * 
+   * @param Mage_Sales_Model_Order $quote
+   * @return Zipmoney_ZipmoneyPayment_Helper_Payload
+   */
   public function setOrder($order)
   { 
     if($order){
@@ -61,6 +85,11 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $this;
   }
 
+  /**
+   * Returns the order from the payload object
+   * 
+   * @return Mage_Sales_Model_Order
+   */
   public function getOrder()
   {
     if($this->_order){
@@ -69,23 +98,31 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return null;
   }
 
+  /**
+   * Returns the prepared checkout request model
+   * 
+   * @param Mage_Sales_Model_Quote $quote
+   * @return \zipMoney\Model\CreateCheckoutRequest
+   */
   public function getCheckoutPayload($quote)
   {
     $checkoutReq = new CheckoutRequest();
 
     $this->setQuote($quote);
 
-    $checkoutReq->setType("standard")
+    return $checkoutReq->setType("standard")
                 ->setShopper($this->getShopper())
                 ->setOrder($this->getOrderDetails(new CheckoutOrder))
                 ->setMetadata($this->getMetadata())
                 ->setConfig($this->getCheckoutConfiguration());
-
-              
-    return $checkoutReq;
   }
 
-
+  /**
+   * Returns the prepared charge request model
+   * 
+   * @param Mage_Sales_Model_Order $order
+   * @return \zipMoney\Model\CreateChargeRequest
+   */
   public function getChargePayload($order)
   {
     $chargeReq = new ChargeRequest();
@@ -97,17 +134,23 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     $grand_total = $order->getGrandTotal() ? $order->getGrandTotal() : 0;
     $currency = $order->getOrderCurrencyCode() ? $order->getOrderCurrencyCode() : null;
 
-    $chargeReq->setAmount((float)$grand_total)
+    return $chargeReq->setAmount((float)$grand_total)
               ->setCurrency($currency)
               ->setOrder($this->getOrderDetails(new ChargeOrder))
               ->setMetadata($this->getMetadata())
               ->setCapture($this->_config->isCharge())
               ->setAuthority($this->getAuthority());
-
-    return $chargeReq;
   }
 
-  public function getRefundPayload($order, $amount, $reason )
+  /**
+   * Returns the prepared refund request model
+   * 
+   * @param Mage_Sales_Model_Order $order
+   * @param float $amount
+   * @param string $reason
+   * @return \zipMoney\Model\CreateRefundRequest
+   */
+  public function getRefundPayload($order, $amount, $reason)
   {
     $chargeReq = new RefundRequest();
 
@@ -115,15 +158,19 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
 
     $currency = $order->getOrderCurrencyCode() ? $order->getOrderCurrencyCode() : null;
 
-    $chargeReq->setAmount((float)$amount)
+    return $chargeReq->setAmount((float)$amount)
               ->setReason($reason)
               ->setChargeId($order->getPayment()->getZipmoneyChargeId())
               ->setMetadata($this->getMetadata());
-
-    return $chargeReq;
   }
 
-
+  /**
+   * Returns the prepared capture request model
+   * 
+   * @param Mage_Sales_Model_Order $order
+   * @param float $amount
+   * @return \zipMoney\Model\CaptureChargeRequest
+   */
   public function getCapturePayload($order, $amount)
   {
     $captureChargeReq = new CaptureChargeRequest();
@@ -137,7 +184,13 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $captureChargeReq;
   }
 
-
+  /**
+   * Returns the prepared capture request model
+   * 
+   * @param Mage_Sales_Model_Order $order
+   * @param float $amount
+   * @return \zipMoney\Model\CaptureChargeRequest
+   */
   public function getCaptureCancelPayload($order, $amount)
   {
     $captureChargeReq = new CaptureChargeRequest();
@@ -149,6 +202,11 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $captureChargeReq;
   }
 
+  /**
+   * Returns the prepared shopper model
+   * 
+   * @return \zipMoney\Model\Shopper
+   */
   public function getShopper()
   {
     $customer = null;
@@ -183,10 +241,14 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
         $shopper->setBillingAddress($address);
       }
     }
-    
     return $shopper;
   }
 
+  /**
+   * Returns the prepared order shipping model
+   * 
+   * @return \zipMoney\Model\OrderShipping
+   */
   public function getShippingDetails()
   {    
     $shipping = new OrderShipping;
@@ -219,6 +281,12 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $shipping;
   }
 
+  /**
+   * Returns the prepared order details model
+   * 
+   * @param CheckoutOrder|ChargeOrder $reqOrder
+   * @return \zipMoney\Model\CheckoutOrder |  \zipMoney\Model\CheckoutOrder
+   */
   public function getOrderDetails($reqOrder)
   {
     $reference = 0;
@@ -275,14 +343,16 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     $reqOrder->setReference($reference)
             ->setShipping($this->getShippingDetails())
             ->setItems($orderItems);
-
-
     return $reqOrder;      
   }
 
+  /**
+   * Returns the prepared order item model
+   * 
+   * @return \zipMoney\Model\OrderItem[]
+   */
   public function getOrderItems()
   {
-
     if($quote = $this->getQuote()){
       $items = $quote->getAllItems();
       $storeId   = $quote->getStoreId();
@@ -295,58 +365,55 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
 
     /** @var Mage_Sales_Model_Order_Item $oItem */
     foreach($items as $item) {
-       
-        if($item->getParentItemId()) {
-          continue;   // Only sends parent items to zipMoney
-        }
-        
-        $orderItem = new OrderItem;
-        
-        if ($item->getDescription()) {
-          $description = $item->getDescription();
-        } else {
-          $description = $this->_getProductShortDescription($item, $storeId);
-        }
-
-        if($quote){
-          $qty = $item->getQty();
-        } else if($order){
-          $qty = $item->getQtyOrdered();
-        }
-        
-
-        
-        //print_r($item->getData());
-
-
-        $orderItem->setName($item->getName())
-                  ->setAmount($item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0.00)
-                  ->setReference((string)$item->getId())
-                  ->setDescription($description)
-                  ->setQuantity(round($qty))
-                  ->setType("sku")
-                  ->setImageUri($this->_getProductImage($item))
-                  ->setItemUri($item->getProduct()->getProductUrl())
-                  ->setProductCode($item->getSku());  
-        $itemsArray[] = $orderItem;
+      if($item->getParentItemId()) {
+        continue;   // Only sends parent items to zipMoney
+      }
+      $orderItem = new OrderItem;
+      
+      if ($item->getDescription()) {
+        $description = $item->getDescription();
+      } else {
+        $description = $this->_getProductShortDescription($item, $storeId);
+      }
+      if($quote){
+        $qty = $item->getQty();
+      } else if($order){
+        $qty = $item->getQtyOrdered();
+      }
+    
+      $orderItem->setName($item->getName())
+                ->setAmount($item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0.00)
+                ->setReference((string)$item->getId())
+                ->setDescription($description)
+                ->setQuantity(round($qty))
+                ->setType("sku")
+                ->setImageUri($this->_getProductImage($item))
+                ->setItemUri($item->getProduct()->getProductUrl())
+                ->setProductCode($item->getSku());  
+      $itemsArray[] = $orderItem;
     }
-
-
 
    return $itemsArray;       
   }
 
-
+  /**
+   * Returns the prepared metadata model
+   * 
+   * @return \zipMoney\Model\Metadata
+   */
   public function getMetadata()
   { 
     $metadata = new Metadata;
-  
     return $metadata;
   }
 
+  /**
+   * Returns the prepared authority model
+   * 
+   * @return \zipMoney\Model\Authority
+   */
   public function getAuthority()
   { 
-
     $quoteId = $this->getOrder()->getQuoteId();
     $quote = Mage::getModel('sales/quote')->load($quoteId);
     $checkout_id = $quote->getZipmoneyCid();
@@ -358,6 +425,11 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $authority;
   }
 
+  /**
+   * Returns the prepared checkout configuration model
+   * 
+   * @return \zipMoney\Model\CheckoutConfiguration
+   */
   public function getCheckoutConfiguration()
   {
     $checkout_config = new CheckoutConfiguration();
@@ -368,12 +440,15 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
    return $checkout_config;
 
   }
+
   /**
-   * Get customer data for shopper section in json from existing quote if the customer does not exist
+   * Sets shopper from given quote | order
    *
-   * @return array|null
+   * @param \zipMoney\Model\Shopper $shopper
+   * @param Mage_Sales_Model_Order | Mage_Sales_Model_Quote $order_or_quote
+   * @return \zipMoney\Model\Shopper
    */
-  public function getOrderOrQuoteCustomer($shopper,$order_or_quote)
+  public function getOrderOrQuoteCustomer($shopper, $order_or_quote)
   {
     if(!$order_or_quote) {
       return null;
@@ -404,10 +479,11 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
 
 
   /**
-   * Get data for consumer section in json from existing customer
+   * Sets shopper from given customer 
    *
-   * @param $customer
-   * @return array|null
+   * @param \zipMoney\Model\Shopper $shopper
+   * @param  Mage_Customer_Model_Customer $customer
+   * @return \zipMoney\Model\Shopper
    */
   public function getCustomer($shopper, $customer)
   {
@@ -495,13 +571,11 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $shopper;
   }
 
-
   /**
-   * Get data for shipping_address/billing_address section in json from quote_address/order_address which depends on whether the quote is converted to order.
+   * Sets address for the request
    *
    * @param $address
-   * @param $bShippingRates
-   * @return array|null
+   * @return \zipMoney\Model\Address
    */
   protected function _getAddress($address)
   {
@@ -541,11 +615,15 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       }
       return $reqAddress;
     }
-
     return null;
   }
 
-
+  /**
+   * Retrieves the gender text
+   *
+   * @param  string $gender
+   * @return  string
+   */
   protected function _getGenderText($gender)
   {
       $genderText = Mage::getModel('customer/customer')->getResource()
@@ -555,6 +633,12 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       return $genderText;
   }
 
+  /**
+   * Retrieves the child product
+   *
+   * @param  Mage_Sales_Model_Quote_Item | Mage_Sales_Model_Order_Item $item
+   * @return  Mage_Catalog_Model_Product
+   */
   public function getChildProduct($item)
   {
     if ($option = $item->getOptionByCode('simple_product')) {
@@ -563,6 +647,12 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $item->getProduct();
   }
 
+  /**
+   * Retrieves the product image
+   *
+   * @param  Mage_Sales_Model_Quote_Item | Mage_Sales_Model_Order_Item $item
+   * @return  string
+   */
   protected function _getProductImage($item)
   {
     $imageUrl = '';
@@ -582,6 +672,13 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $imageUrl;
   }
 
+  /**
+   * Retrieves the product short description
+   *
+   * @param  Mage_Sales_Model_Quote_Item | Mage_Sales_Model_Order_Item $item 
+   * @param  int $storeId 
+   * @return  string
+   */
   private function _getProductShortDescription($item, $storeId)
   {
     $product = $this->getChildProduct($item);
@@ -603,6 +700,4 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     return $description;
   }
 
-
 }
-

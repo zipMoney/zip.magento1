@@ -1,12 +1,31 @@
 <?php
+/**
+ * @category  Zipmoney
+ * @package   Zipmoney_ZipmoneyPayment
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments Pty Ltd.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
-class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Helper_Abstract {
+class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Helper_Abstract 
+{
   
-  public function getCheckoutJsLibUrl(){
-
+  /**
+   * Returns the checkout scripts
+   *
+   * @return string
+   */
+  public function getCheckoutJsLibUrl()
+  {
     return '<script src="https://static.zipmoney.com.au/checkout/checkout-v1.min.js"></script><script src="'.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS,true).'zipmoney/dist/scripts/zipcheckout.js?v1.0.'.time().'"></script>';
   }
-
+  
+  /**
+   * Returns the json_encoded string
+   *
+   * @return string
+   */
   public function json_encode($object)
   {
     return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($object));
@@ -31,7 +50,6 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
     return $url;
   }
 
-
   /**
    * @param $oQuote
    * @return bool
@@ -41,16 +59,13 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
   {
     if ($quote && $quote->getId()) {
       if (!$quote->getIsActive()) {
-          
         $orderIncId = $quote->getReservedOrderId();
-        
         if ($orderIncId) {
           $order = Mage::getModel('sales/order')->loadByIncrementId($orderIncId);
           if ($order && $order->getId()) {
             Mage::throwException($this->__('Can not activate the quote. It has already been converted to order.'));
           }
         }
-
         $quote->setIsActive(1)
               ->save();
         $this->_logger->warn($this->__('Activated quote ' . $quote->getId() . '.'));
@@ -61,7 +76,9 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
   }
 
   /**
-   * @param $quote
+   * Deactivates the quote 
+   * 
+   * @param Mage_Sales_Model_Quote $quote 
    * @return bool
    */
   public function deactivateQuote($quote)
@@ -76,10 +93,10 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
     return false;
   }
 
-
   /**
-   * Checks if customer with email coming from Express checkout exists
-   *
+   * Checks if customer exists by email
+   * 
+   * @param string $customer_email
    * @return int
    */
   public function lookupCustomerId($customer_email)
@@ -90,6 +107,12 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
         ->getId();
   }
 
+  /**
+   * Declines the order
+   * 
+   * @param Mage_Sales_Model_Order $order
+   * @param string $customer_email
+   */
   public function declineOrder($order, $order_comment = null)
   {
     if($order){
@@ -101,6 +124,12 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
     }      
   }
 
+  /**
+   * Cancels the order
+   * 
+   * @param Mage_Sales_Model_Order $order
+   * @param string $customer_email
+   */
   public function cancelOrder($order, $order_comment = null)
   {
     if($order){
@@ -112,14 +141,24 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
     }      
   }
 
-  public function getTransaction($order_id){
+  /**
+   * Cancels the order
+   * 
+   * @return Mage_Sales_Model_Order_Payment_Transaction
+   */
+  public function getTransaction($order_id)
+  {
     $transaction = Mage::getModel('sales/order_payment_transaction')
                                 ->getCollection()
                                 ->addAttributeToFilter('order_id', array('eq' => $order_id));
-
     return $transaction;                          
   }
 
+  /**
+   * Retrieves the extension version.
+   * 
+   * @return string
+   */
   public function getExtensionVersion()
   {
     return (string) Mage::getConfig()->getNode()->modules->Zipmoney_ZipmoneyPayment->version;

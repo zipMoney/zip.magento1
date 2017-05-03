@@ -1,4 +1,12 @@
 <?php
+/**
+ * @category  zipMoney
+ * @package   zipmoney
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
 
 /**
@@ -57,7 +65,7 @@ class Zipmoney_ZipmoneyPayment_Test_Helper_Payload extends EcomDev_PHPUnit_Test_
 
   /**
    * @test
-   * @cover Zipmoney_ZipmoneyPayment_Model_Checkout_getQuote
+   * @cover Zipmoney_ZipmoneyPayment_Helper_Payload_getCheckoutPayload
    * @group Zipmoney_ZipmoneyPayment     
    * @loadFixture customers.yaml      
    * @loadFixture products.yaml      
@@ -71,7 +79,6 @@ class Zipmoney_ZipmoneyPayment_Test_Helper_Payload extends EcomDev_PHPUnit_Test_
   {
   
     $quote = Mage::getModel('sales/quote')->load($quoteId);
-
     $checkoutPayload = $this->_payload->getCheckoutPayload($quote);
     
   }
