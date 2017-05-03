@@ -6,7 +6,6 @@
 
 package_yaml_version: '0.0'
 
-
 ## version_ids is an array of Magento Connect package formats to create
 ## 1 = Pre-1.5.0.0
 ## 2 = 1.5.0.0 & later
