@@ -330,9 +330,12 @@ class Zipmoney_ZipmoneyPayment_Test_Model_Charge extends EcomDev_PHPUnit_Test_Ca
    * @loadFixture quote_payments.yaml      
    * @loadFixture quote_items.yaml
    * @loadFixture quote_addresses.yaml   
+   * @expectedException  Exception
+   * @expectedExceptionMessage An error occurred order while placing order.
+   The order has not been approved by zipMoney.
    * @dataProvider dataProvider
    */
-  public function testPlaceOrder($quoteId)
+  public function testPlaceOrderRaisesException($quoteId)
   {
     $quote = Mage::getModel('sales/quote')->load($quoteId);
     $this->_charge->setQuote($quote);
