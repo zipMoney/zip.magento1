@@ -71,7 +71,7 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
 	}
   
 	/**
-   * Returns the extension name.
+   * Returns the extension name if specified in the config otherwise picks up from the request
    *
    * @return string
    */
