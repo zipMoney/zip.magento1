@@ -82,7 +82,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
 
           $this->_charge->charge();
           // Redirect to success page
-          return $this->getResponse()->setRedirect(Mage::getUrl('checkout/onepage/success'));
+          return $this->getResponse()->setRedirect($this->_helper->getUrl('checkout/onepage/success'));
         } catch (Mage_Core_Exception $e) {
           
           $this->_getCheckoutSession()->addError($e->getMessage());      
@@ -152,7 +152,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
       // Set quote to the chekout model
       $this->_charge->setOrder($order)
                     ->charge();
-      return $this->getResponse()->setRedirect(Mage::getUrl('checkout/onepage/success'));
+      return $this->getResponse()->setRedirect($this->_helper->getUrl('checkout/onepage/success'));
     } catch (Mage_Core_Exception $e) {
       $this->_getCheckoutSession()->addError($e->getMessage());      
       $this->_logger->debug($e->getMessage());

@@ -433,7 +433,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
   public function getCheckoutConfiguration()
   {
     $checkout_config = new CheckoutConfiguration();
-    $redirect_url = Mage::helper("zipmoneypayment")->getUrl('zipmoneypayment/complete', array('_secure' => true));
+    $redirect_url = Mage::helper("zipmoneypayment")->getUrl('zipmoneypayment/complete');
 
     $checkout_config->setRedirectUri($redirect_url);
 
