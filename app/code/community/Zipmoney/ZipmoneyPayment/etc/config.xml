@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Zipmoney_ZipmoneyPayment>
-            <version>1.0.0-rc5</version>
+            <version>1.0.0-rc6</version>
         </Zipmoney_ZipmoneyPayment>
     </modules>
     <frontend>
