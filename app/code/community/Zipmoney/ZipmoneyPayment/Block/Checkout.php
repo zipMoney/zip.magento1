@@ -77,6 +77,18 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
    */
 	public function getExtensionName()
 	{ 
-		return  strtolower(Mage::app()->getRequest()->getControllerModule());
+    /** Check if extension name has been set explicitly in the zipmoneypayment.xml in the appropriate layout handle for the checkout page
+     * E.g. 
+     * <action method="setData">
+     *    <name>extension_name</name>
+     *     <value>Mage_Checkout</value>
+     *  </action>
+     *
+     */
+    if($extension = $this->getData('extension_name')){
+      return $extension;
+    } else {
+		  return  strtolower(Mage::app()->getRequest()->getControllerModule());
+    }
 	}
 }
