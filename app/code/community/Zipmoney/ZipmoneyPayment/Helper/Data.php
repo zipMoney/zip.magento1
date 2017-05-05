@@ -38,12 +38,12 @@ class Zipmoney_ZipmoneyPayment_Helper_Data extends Zipmoney_ZipmoneyPayment_Help
    * @param $param
    * @return string
    */
-  public function getUrl($route, $param)
+  public function getUrl($route, $param = array('_secure'=>true))
   {
     $storeId = Mage::getSingleton('zipmoneypayment/storeScope')->getStoreId();
     if ($storeId !== null) {
       $store = Mage::app()->getStore($storeId);
-      $url = $oStore->getUrl($route, $param);
+      $url = $store->getUrl($route, $param);
     } else {
       $url = Mage::getUrl($route, $param);
     }

@@ -13,7 +13,11 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
   /**  
    * @var Zipmoney_ZipmoneyPayment_Model_Config
    */ 
-  protected $_config;
+  protected $_config;  
+  /**  
+   * @var Zipmoney_ZipmoneyPayment_Helper_Data
+   */ 
+  protected $_helper;
   /**
    * @var string
    */ 
@@ -22,6 +26,7 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
 	public function __construct()
 	{
 		parent::__construct();
+    $this->_helper = Mage::helper("zipmoneypayment");
 	
 	  $this->_config = Mage::getSingleton('zipmoneypayment/config');
 	}
@@ -33,7 +38,7 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
    */
 	public function getCheckoutUrl()
 	{
-		return Mage::getUrl("zipmoneypayment/standard/",true);
+		return $this->_helper->getUrl("zipmoneypayment/standard/");
 	}
 
 	/**
@@ -43,7 +48,7 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
    */
 	public function getRedirectUrl()
 	{
-		return Mage::getUrl("zipmoneypayment/complete/",true);
+		return $this->_helper->getUrl("zipmoneypayment/complete/");
 	}
 
 	/**
