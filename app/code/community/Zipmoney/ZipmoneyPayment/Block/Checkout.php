@@ -91,4 +91,22 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
 		  return  strtolower(Mage::app()->getRequest()->getControllerModule());
     }
 	}
+
+  /**
+   * Returns the extension name if specified in the config otherwise picks up from the request
+   *
+   * @return string
+   */
+  public function getRedirectAfterPayment()
+  { 
+    /** Check if extension name has been set explicitly in the zipmoneypayment.xml in the appropriate layout handle for the checkout page
+     * E.g. 
+     * <action method="setData">
+     *    <name>redirect_after_payment</name>
+     *     <value>1</value>
+     *  </action>
+     *
+     */
+     return (int)$this->getData('redirect_after_payment');
+  }
 }
