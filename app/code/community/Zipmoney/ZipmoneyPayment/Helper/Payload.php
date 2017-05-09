@@ -516,7 +516,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
         if ($order->getState() == Mage_Sales_Model_Order::STATE_COMPLETE) {
             $orderNum++;
             $lifetimeSalesAmount += $order->getGrandTotal();
-            if ($oOrder->getGrandTotal() > $maximumSaleValue) {
+            if ($order->getGrandTotal() > $maximumSaleValue) {
                 $maximumSaleValue = $order->getGrandTotal();
             }
         } else if ($order->getState() == Mage_Sales_Model_Order::STATE_CLOSED) {
