@@ -377,7 +377,7 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
       $this->_logger->info($this->_helper->__('Successful to redirect to error page.'));
     } catch (Exception $e) {
       $this->_logger->error(json_encode($this->getRequest()->getParams()));
-      $this->_getCheckoutSession()->addError($this->__('An error occurred during redirecting to error page.'));
+      $this->_getCheckoutSession()->addError($this->_helper->__('An error occurred during redirecting to error page.'));
     }
   }
 
