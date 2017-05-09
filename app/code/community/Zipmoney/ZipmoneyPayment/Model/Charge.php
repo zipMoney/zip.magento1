@@ -204,7 +204,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
       );
     } else {
       $customer->sendNewAccountEmail();
-        //$this->getCustomerSession()->loginById($customer->getId());
+      $this->getCustomerSession()->loginById($customer->getId());
     }
     return $this;
   }
