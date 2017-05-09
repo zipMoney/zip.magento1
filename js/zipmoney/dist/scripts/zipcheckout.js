@@ -542,29 +542,14 @@ Zip_Mage_Checkout.prototype = {
      );
   },
   checkout: function(){    
-
-      console.log($$('body'));
-
-        $$('body').setStyle({
-          width: '100%',
-          height: '1213px',
-          position: 'absolute',
-          left: '0px',
-          top: '0px',
-          display: 'table-cell',
-          textAlign: 'center',
-          verticalAlign: 'middle',
-          background: 'rgba(0, 0, 0, 0.74902)',
-          zIndex: '10000'
-      });
-    // Zip.Checkout.init({
-    //   redirect: this.super.options.redirect,
-    //   checkoutUri: this.super.options.checkoutUri,
-    //   redirectUri: this.super.options.redirectUrl,
-    //   onComplete: this.onComplete.bind(this),
-    //   onError: this.onError.bind(this),
-    //   onCheckout:this.onCheckout.bind(this)
-    // });
+    Zip.Checkout.init({
+      redirect: this.super.options.redirect,
+      checkoutUri: this.super.options.checkoutUri,
+      redirectUri: this.super.options.redirectUrl,
+      onComplete: this.onComplete.bind(this),
+      onError: this.onError.bind(this),
+      onCheckout:this.onCheckout.bind(this)
+    });
   }
 }
 
