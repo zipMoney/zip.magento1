@@ -172,7 +172,7 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 	  } catch (Mage_Core_Exception $e) {
       $this->_logger->debug($e->getMessage());
     } catch (ApiException $e) {
-      $this->_logger->debug("Errors:-".json_encode($e->getResponseBody()));
+      $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
     } catch (Exception $e) {
       $this->_logger->debug($e->getMessage());
     }
