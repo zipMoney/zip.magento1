@@ -18,7 +18,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -40,7 +40,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -68,7 +68,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -99,7 +99,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -121,7 +121,7 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
-            <block type="core/text" name="jquery">
+            <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
@@ -133,7 +133,7 @@
         </reference>
 
         <reference name="content">
-            <block type="zipmoneypayment/advert_rootEl" name="root_el"></block>
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
         </reference>    
     </catalog_category_layered>
    
@@ -144,42 +144,22 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
-            </block>
-        </reference> 
-    </checkout_onepage_index>
-    
-    <checkout_onepage_paymentmethod>
-        <reference name="root">
-            <reference name="checkout.onepage.payment.methods.additional">
-                <block  type="zipmoneypayment/checkout" 
-                        name="additional" 
-                        template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml">
-                    <action method="setData">
-                        <name>extension_name</name>
-                        <value>Mage_Checkout</value>
-                    </action>
-                </block>
-            </reference>
-        </reference>
-    </checkout_onepage_paymentmethod>
-
-    <!-- <checkout_onepage_savepayment>
-        <reference name="checkout.onepage.review.info.items.before">
-            <block  type="zipmoneypayment/checkout" 
-                    name="zipmoneypayment.checkout" 
-                    template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>Mage_Checkout</value>
+            </block> 
+            <block type="core/text" name="zipmoney-widgets-js">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
-            </block>
+            </block>  
+        </reference> 
+        <reference name="content">            
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
+            <block type="zipmoneypayment/checkout" ifconfig="payment/zipmoneypayment/active" name="zipmoney.checkout" template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml"/>
         </reference>
-    </checkout_onepage_savepayment> -->
-    <!-- End Onepage Checkout -->
-        
+    </checkout_onepage_index>
+   
     <!-- Idev Onestep Checkout -->
     <onestepcheckout_index_index>
         <reference name="head">
@@ -187,20 +167,23 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
+            <block type="core/text" name="zipmoney-widgets-js">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>  
+        </reference> 
+        <reference name="content">            
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
         </reference> 
         <reference name="before_body_end"> 
-           <block type="zipmoneypayment/checkout" 
+           <block  type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.idev_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>idev_onestepcheckout</value>
-                </action>
-           </block>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </onestepcheckout_index_index>
     <!-- End Idev Onestep Checkout -->
@@ -212,23 +195,23 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
+            <block type="core/text" name="zipmoney-widgets-js">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>  
         </reference> 
-        <!-- <reference name="content">            
-            <block type="zipmoneypayment/widget_rootEl" name="root_el"></block>
-        </reference> -->
+        <reference name="content">            
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
+        </reference> 
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.iwd_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>iwd_onestepcheckout</value>
-                </action>
-           </block>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </iwd_opc_index_index>
     <!-- End IWD Onestep Checkout Version 6-->
@@ -240,23 +223,23 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
+            <block type="core/text" name="zipmoney-widgets-js">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>  
         </reference> 
-        <!-- <reference name="content">            
-            <block type="zipmoneypayment/widget_rootEl" name="root_el"></block>
-        </reference> -->
+        <reference name="content">            
+            <block type="zipmoneypayment/advert_rootEl" name="root_el"/>
+        </reference> 
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.iwd_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>iwd_onestepcheckout</value>
-                </action>
-           </block>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </opc_index_index>
     <!-- End IWD Onestep Checkout -->
@@ -267,20 +250,20 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
+            <block type="core/text" name="zipmoney-widgets-js">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>  
         </reference>
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.aitoc" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>Aitoc_Aitcheckout</value>
-                </action>
-           </block>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </aitcheckout_checkout_index>
 
@@ -291,49 +274,23 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
+            <block type="core/text" name="zipmoney-widgets-js">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>  
         </reference> 
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.aw_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>aw_onestepcheckout</value>
-                </action>
-           </block>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </aw_onestepcheckout_index_index>
-    <!-- End AW Onestep Checkout -->
-
-
-    <!-- MageStore Onestep Checkout -->
-    <magestore_onestepcheckout_index_index>
-        <reference name="head">
-            <action method="addCss">
-                <stylesheet>zipmoney/css/style.css</stylesheet>
-            </action>
-            <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
-                    <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
-                </action>
-            </block>
-        </reference> 
-        <reference name="before_body_end"> 
-           <block type="zipmoneypayment/checkout" 
-                  name="zipmoneypayment.magestore_onestepcheckout" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>magestore_onestepcheckout</value>
-                </action>
-           </block>
-        </reference>
-    </magestore_onestepcheckout_index_index>
-    <!-- End MageStore Onestep Checkout -->
+    <!-- End AW Onestep Checkout -->   
 
     <gomage_checkout_onepage_index>
         <reference name="head">
@@ -341,42 +298,22 @@
                 <stylesheet>zipmoney/css/style.css</stylesheet>
             </action>
             <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
                     <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
                 </action>
             </block>
+            <block type="core/text" name="zipmoney-widgets-js">
+                <action method="setText" ifconfig="payment/zipmoneypayment/active">
+                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                </action>
+            </block>  
         </reference> 
         <reference name="before_body_end"> 
            <block type="zipmoneypayment/checkout" 
                   name="zipmoneypayment.aitoc" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
-                <action method="setData">
-                    <name>extension_name</name>
-                    <value>GoMage_Checkout</value>
-                </action>
-           </block>
+                  template="zipmoney/zipmoneypayment/checkout/js.phtml" ifconfig="payment/zipmoneypayment/active"/>
         </reference>
     </gomage_checkout_onepage_index>
-
-    <zipmoneypayment_standard_redirect>
-        <reference name="head">
-            <action method="addCss">
-                <stylesheet>zipmoney/css/style.css</stylesheet>
-            </action>
-            <block type="core/text" name="zipmoney-checkout-js-lib">
-                <action method="setText">
-                    <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
-                </action>
-            </block>
-        </reference> 
-        <reference name="content">
-            <block type="zipmoneypayment/checkout" 
-                  name="zipmoneypayment.aitoc" 
-                  template="zipmoney/zipmoneypayment/checkout/js.phtml">
-           </block>
-        </reference>
-    </zipmoneypayment_standard_redirect>
-
 
     <zipmoneypayment_standard_referred>
         <label>zipMoney Referred</label>
