@@ -444,9 +444,7 @@ Zip_Mage_Checkout.prototype = {
   },
   setup: function(superClass){
     this.super = superClass;
-    var _this = this;
-    this.setOverlay();
-    
+    var _this = this;    
     Payment.prototype.save = Payment.prototype.save.wrap(function(paymentSave) {
       _this._payment = this;
       var validator = new Validation(this.form);
