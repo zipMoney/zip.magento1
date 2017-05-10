@@ -554,10 +554,11 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       $statistics = new ShopperStatistics;
 
       $statistics->setAccountCreated($customer->getCreatedAt())
-               ->setSalesTotalCount($lifetimeSalesAmount)
-               ->setSalesAvgAmount($averageSaleValue)
-               ->setSalesMaxAmount($maximumSaleValue)
-               ->setRefundsTotalAmount($lifetimeSalesRefundedAmount)
+               ->setSalesTotalCount((int)$orderNum)
+               ->setSalesTotalAmount((float)$lifetimeSalesAmount)
+               ->setSalesAvgAmount((float)$averageSaleValue)
+               ->setSalesMaxAmount((float)$maximumSaleValue)
+               ->setRefundsTotalAmount((float)$lifetimeSalesRefundedAmount)
                ->setPreviousChargeback($chargeBackBefore)
                ->setCurrency(Mage::app()->getStore()->getCurrentCurrencyCode());
 
