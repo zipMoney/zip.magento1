@@ -27,6 +27,7 @@ tables:
       base_subtotal: 50.00
       subtotal_with_discount: 50.00
       base_subtotal_with_discount: 50.00
+      zipmoney_token: '6df228309ea11380cb6755365cb316ec'
 
     -
       entity_id: 102
@@ -53,6 +54,7 @@ tables:
       base_subtotal: 50.00
       subtotal_with_discount: 50.00
       base_subtotal_with_discount: 50.00
+      zipmoney_token: '6df228309ea11380cb6755365cb316ec'
 
     -
       entity_id: 103
@@ -79,6 +81,7 @@ tables:
       base_subtotal: 50.00
       subtotal_with_discount: 50.00
       base_subtotal_with_discount: 50.00
+      zipmoney_token: '6df228309ea11380cb6755365cb316ec'
 
     -
       entity_id: 104
@@ -105,6 +108,7 @@ tables:
       base_subtotal: 50.00
       subtotal_with_discount: 50.00
       base_subtotal_with_discount: 50.00
+      zipmoney_token: '6df228309ea11380cb6755365cb316ec'
 
     -
       entity_id: 105
@@ -131,5 +135,6 @@ tables:
       base_subtotal: 50.00
       subtotal_with_discount: 50.00
       base_subtotal_with_discount: 50.00
+      zipmoney_token: '6df228309ea11380cb6755365cb316ec'
 
 
