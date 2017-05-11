@@ -11,10 +11,17 @@ scope:
       default_store_id: 99
       root_category_id: 2 # Default Category
   store: # Initializes store views
+    - store_id: 1
+      website_id: 99
+      group_id: 99
+      code: testing1
+      name: testing Store 1
+      is_active: 1
+      
     - store_id: 99
       website_id: 99
       group_id: 99
-      code: testing
+      code: testing99
       name: testing Store
       is_active: 1
 
