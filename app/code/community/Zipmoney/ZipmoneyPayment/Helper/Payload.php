@@ -41,6 +41,12 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
    * @var Mage_Sales_Model_Order
    */
   protected $_order;
+
+ /**
+   * @var 
+   */
+  protected $_isVirtual = true;
+
   
   /**
    * Sets the quote to the payload object
@@ -253,9 +259,15 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
   {    
     $shipping = new OrderShipping;
 
+    if($this->_isVirtual){
+      $shipping->setPickup(true);
+      return $shipping;
+    }
+
     if($this->getQuote()){
       $shipping_address = $this->getQuote()->getShippingAddress();
     } else if($this->getOrder()) {
+
       $shipping_address = $this->getOrder()->getShippingAddress();
 
       if($shipping_address){
@@ -268,8 +280,8 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
         }
       }
     }
-    
-    if($shipping_address){      
+
+    if($shipping_address){  
       if($address = $this->_getAddress($shipping_address)){     
         $shipping->setPickup(false)
                  ->setAddress($address);
@@ -280,6 +292,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
 
     return $shipping;
   }
+
 
   /**
    * Returns the prepared order details model
@@ -365,6 +378,13 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
 
     /** @var Mage_Sales_Model_Order_Item $oItem */
     foreach($items as $item) {
+      
+      if (!$item->getProduct()->getIsVirtual()) {            
+        $this->_isVirtual = false;
+      }
+      
+      $this->_logger->debug(Mage::helper("zipmoneypayment")->__("Product Id:- %s Is Virtual:- %s", $item->getProduct()->getId(), $item->getProduct()->getIsVirtual()? "Yes" : "No"));
+
       if($item->getParentItemId()) {
         continue;   // Only sends parent items to zipMoney
       }
@@ -380,7 +400,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       } else if($order){
         $qty = $item->getQtyOrdered();
       }
-    
+      
       $orderItem->setName($item->getName())
                 ->setAmount($item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0.00)
                 ->setReference((string)$item->getId())
@@ -392,6 +412,8 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
                 ->setProductCode($item->getSku());  
       $itemsArray[] = $orderItem;
     }
+    
+    $this->_logger->debug(Mage::helper("zipmoneypayment")->__("Shipping Required:- %s", !$this->_isVirtual ? "Yes" : "No"));
 
    return $itemsArray;       
   }
