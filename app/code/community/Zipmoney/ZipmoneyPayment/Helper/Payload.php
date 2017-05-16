@@ -42,10 +42,15 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
    */
   protected $_order;
 
- /**
+  /**
    * @var 
    */
   protected $_isVirtual = true;
+  
+  /**
+   * @var 
+   */
+  protected $_totalDiscount = 0;
 
   
   /**
@@ -305,13 +310,24 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     $reference = 0;
     $cart_reference = 0;
 
+    /* This should always be called before checking the $this->_isVirtual*/
+    $orderItems = $this->getOrderItems();
+
     if($quote = $this->getQuote()){
-      $shipping_address = $quote->getShippingAddress();
+    
+      $address = $quote->getShippingAddress();
+      /**
+       *  If cart has only virtual items
+       */  
+      if($this->_isVirtual){
+        $address = $quote->getBillingAddress();
+      }
+
       $reference = $quote->getReservedOrderId() ? $quote->getReservedOrderId() : '0';
       $cart_reference = $quote->getId();
-      $shipping_amount = $shipping_address ? $shipping_address->getShippingInclTax():0.00;
-      $discount_amount = $shipping_address ? $shipping_address->getDiscountAmount():0.00;
-      $tax_amount = $shipping_address ? $shipping_address->getTaxAmount():0.00;
+      $shipping_amount = $address ? $address->getShippingInclTax():0.00;
+      $discount_amount = $address ? $address->getDiscountAmount():0.00;
+      $tax_amount = $address ? $address->getTaxAmount():0.00;
       $grand_total = $quote->getGrandTotal() ? $quote->getGrandTotal() : 0.00;
       $currency = $quote->getQuoteCurrencyCode() ? $quote->getQuoteCurrencyCode() : null;
     } else if($order = $this->getOrder()){
@@ -319,10 +335,11 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       $shipping_amount = $order->getShippingAmount() ? $order->getShippingAmount()  + $order->getShippingTaxAmount() : 0;
       $discount_amount = $order->getDiscountAmount() ? $order->getDiscountAmount() : 0;
       $tax_amount = $order->getTaxAmount() ? $order->getTaxAmount() : 0;
-     }
+    }
   
-    $orderItems = $this->getOrderItems();
-    
+    $this->_logger->debug("Discount Amount From Items:-" . $this->_totalDiscount);
+    $this->_logger->debug("Discount Amount From Address:-" . $discount_amount);
+
 
     // Discount Item
     if($discount_amount <  0){
@@ -378,7 +395,8 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
 
     /** @var Mage_Sales_Model_Order_Item $oItem */
     foreach($items as $item) {
-      
+      $this->_totalDiscount += $item->getDiscountAmount();
+
       if (!$item->getProduct()->getIsVirtual()) {            
         $this->_isVirtual = false;
       }
