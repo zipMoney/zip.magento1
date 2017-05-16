@@ -1,56 +1,115 @@
 <?php
+/**
+ * @category  Zipmoney
+ * @package   Zipmoney_ZipmoneyPayment
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments Pty Ltd.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
+ 
 class Zipmoney_ZipmoneyPayment_Model_Config 
 {
-	const MODULE_VERSION = "1.0.0";
-	const MODULE_PLATFORM = "Magento";
+	/**
+	 * Method Code 
+   * @const
+   */
 	const METHOD_CODE = "zipmoneypayment";
-
+	/**
+	 * zipMoney Authorised Status
+   * @const  
+   */
 	const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
-	
+	/**
+	 * Config Path Payment Active
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_PAYMENT_ACTIVE	= 'payment/zipmoneypayment/active';
+	/**
+	 * Config Path API Environment
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_PAYMENT_ENVIRONMENT = 'payment/zipmoneypayment/environment';
+	/**
+	 * Config Path API Private Key
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_PAYMENT_KEY = 'payment/zipmoneypayment/private_key';
+	/**
+	 * Config Path API Public Key
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_PAYMENT_PUBLIC_KEY = 'payment/zipmoneypayment/public_key';
+	/**
+	 * Config Path Payment Method Title
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_PAYMENT_TITLE = 'payment/zipmoneypayment/title';
+	/**
+	 * Config Path Payment Action 
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_PAYMENT_PAYMENT_ACTION = 'payment/zipmoneypayment/payment_action';
+	/**
+	 * Config Path Product Classification 
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_PAYMENT_PRODUCT = 'payment/zipmoneypayment/product';
+	/**
+	 * Config Path In-Context Checkout 
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_INCONTEXT_CHECKOUT = 'payment/zipmoneypayment/incontext_checkout';
+	/**
+	 * Config Path Minimum Order Threshold
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_MINIMUM_TOTAL = 'payment/zipmoneypayment/minimum_total';
-	const PAYMENT_ZIPMONEY_MAXIMUM_TOTAL = 'payment/zipmoneypayment/maximum_total';
-	const PAYMENT_ZIPMONEY_ORDER_TOTAL_OUTSIDE_THRESHOLD_NOTICE = 'payment/zipmoneypayment/order_total_outside_threshold_notice';
-	const PAYMENT_ZIPMONEY_ORDER_TOTAL_OUTSIDE_THRESHOLD_ACTION = 'payment/zipmoneypayment/order_total_outside_threshold_action';
-	const PAYMENT_ZIPMONEY_DISPLAY_DETAIL_MESSAGE = 'payment/zipmoneypayment/display_detail_message';
+	/**
+	 * Config Path Detail Message
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_DETAIL_MESSAGE = 'payment/zipmoneypayment/detail_message';
+	/**
+	 * Config Path Display Payment Method Title
+   * @const 
+   */
 	const PAYMENT_ZIPMONEY_DISPLAY_TITLE = 'payment/zipmoneypayment/display_title';
-	
-	const PAYMENT_WIDGET_CONFIGURATION_PRODUCT_ACTIVE = 'payment/zipmoney_widgets_configuration/productactive';
-	const PAYMENT_WIDGET_CONFIGURATION_CART_ACTIVE = 'payment/zipmoney_widgets_configuration/cartactive';
-	const PAYMENT_WIDGET_CONFIGURATION_REP_CALC_ACTIVE_PRODUCT = 'payment/zipmoney_widgets_configuration/rep_calculator_active_product';
-	const PAYMENT_WIDGET_CONFIGURATION_REP_CALC_ACTIVE_CART = 'payment/zipmoney_widgets_configuration/rep_calculator_active_cart';
-
-	const PAYMENT_MARKETING_BANNERS_PREFIX = 'payment/zipmoney_';
-	const PAYMENT_MARKETING_BANNERS_ACTIVE = 'payment/zipmoney_marketing/banner_active';
-
-	const IFRAME_API_URL_LIVE = 'https://account.zipmoney.com.au/scripts/iframe/zipmoney-checkout.js';
-	const IFRAME_API_URL_TEST = 'https://account.sandbox.zipmoney.com.au/scripts/iframe/zipmoney-checkout.js';
-	const IFRAME_API_URL_DEVELOPMENT = 'http://account.dev1.zipmoney.com.au/scripts/iframe/zipmoney-checkout.js';
-
+	/**
+	 * Config Path Payment Method Logo
+   * @const 
+   */
 	const PAYMENT_METHOD_LOGO_ZIP = "http://d3k1w8lx8mqizo.cloudfront.net/logo/25px/";
-
+	/**
+	 * Error Codes Map for Charge Error Codes
+   * @var array
+   */
 	protected $_error_codes_map = array("account_insufficient_funds" => "MG1-0001",
 																 "account_inoperative" => "MG1-0002",
 																 "account_locked" => "MG1-0003",
 																 "amount_invalid" => "MG1-0004",
 																 "fraud_check" => "MG1-0005");
-
+	/**
+	 * Merchant Public Key
+   * @var string
+   */
 	protected $_merchantPublicKey = null;
+	/**
+	 * Merchant Private Key
+   * @var string
+   */
 	protected $_merchantPrivateKey = null;
+	/**
+	 * Api Environment
+   * @var string
+   */
 	protected $_merchantEnv = null;
 
 	/**
-	 * @param $vPath
+	 * Retrieves the config value by scope
+	 *
+	 * @param $path
 	 * @return mixed|null
-	 * @throws Mage_Core_Exception
 	 */
 	public function getConfigByCurrentScope($path)
 	{
@@ -78,49 +137,48 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 		return $value;
 	}
 
-	
-	public function getMerchantPrivateKey($forceUpdate = false)
+	/**
+	 * Returns the  merchant private key
+	 *
+	 * @return string
+	 */
+	public function getMerchantPrivateKey()
 	{
-		$path = self::PAYMENT_ZIPMONEY_PAYMENT_KEY;
-		
-		if($forceUpdate || $this->_merchantPrivateKey === null) {
-			$this->_merchantPrivateKey = trim(Mage::getStoreConfig($path));
+		if(!$this->_merchantPrivateKey) {
+			$this->_merchantPrivateKey = trim(Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_PAYMENT_KEY));
 		}
-
 		return $this->_merchantPrivateKey;
 	}
 	
-	public function getMerchantPublicKey($forceUpdate = false)
+	/**
+	 * Returns the  merchant public key
+	 *
+	 * @return string
+	 */
+	public function getMerchantPublicKey()
 	{
-		$path = self::PAYMENT_ZIPMONEY_PAYMENT_PUBLIC_KEY;
-
-		if($forceUpdate) {
-			$this->_merchantPublicKey = trim(Mage::getStoreConfig($path));
-		} else {
-			if($this->_merchantPublicKey === null) {
-				$this->_merchantPublicKey = trim(Mage::getStoreConfig($path));
-			}
+		if(!$this->_merchantPublicKey) {
+			$this->_merchantPublicKey = trim(Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_PAYMENT_PUBLIC_KEY));
 		}
-		
 		return $this->_merchantPublicKey;
 	}
 
-	public function getEnvironment($forceUpdate = false)
-	{
-		$path = self::PAYMENT_ZIPMONEY_PAYMENT_ENVIRONMENT;
-		
-		if($forceUpdate) {
-			$this->_merchantEnv = trim(Mage::getStoreConfig($path));
-		} else {
-			if($this->_merchantEnv === null) {
-				$this->_merchantEnv = trim(Mage::getStoreConfig($path));
-			}
+	/**
+	 * Returns the  merchant public key
+	 *
+	 * @return string
+	 */
+	public function getEnvironment()
+	{		
+		if(!$this->_merchantEnv) {
+			$this->_merchantEnv = trim(Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_PAYMENT_ENVIRONMENT));
 		}
 		return $this->_merchantEnv;
 	}
 
 	/**
-	 * Get store charge settings
+	 * Checks if charge is set to true
+	 *
 	 * @return bool
 	 */
 	public function isCharge()
@@ -129,8 +187,9 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	}
 
 	/**
-	 * Get store charge settings
-	 * @return bool
+	 * Returns the product classification(zipMoney|zipPay)
+	 *
+	 * @return string
 	 */
 	public function getProduct()
 	{		
@@ -140,6 +199,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 
 	/**
 	 * Check if in-context checkout is active
+	 *
 	 * @return bool
 	 */
 	public function isInContextCheckout()
@@ -148,8 +208,9 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	}
 
 	/**
-	 * Check if in-context checkout is active
-	 * @return bool
+	 * Returns the minimum order total
+	 *
+	 * @return float
 	 */
 	public function getOrderTotalMinimum()
 	{		
@@ -157,44 +218,9 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	}
 
 	/**
-	 * Check if in-context checkout is active
-	 * @return bool
-	 */
-	public function getOrderTotalMaximum()
-	{		
-		return (float)Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_MAXIMUM_TOTAL);
-	}
-
-	/**
-	 * Check if in-context checkout is active
-	 * @return bool
-	 */
-	public function getOrderTotalOutsideThresholdAction()
-	{		
-		return Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_ORDER_TOTAL_OUTSIDE_THRESHOLD_ACTION);
-	}
-
-	/**
-	 * Check if in-context checkout is active
-	 * @return bool
-	 */
-	public function getOrderTotalOutsideThresholdNotice()
-	{		
-		return (string)Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_ORDER_TOTAL_OUTSIDE_THRESHOLD_NOTICE);
-	}
-
-	/**
-	 * Check if in-context checkout is active
-	 * @return bool
-	 */
-	public function getDisplayDetailMessage()
-	{		
-		return (bool)Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_DISPLAY_DETAIL_MESSAGE);
-	}
-	
-	/**
-	 * Check if in-context checkout is active
-	 * @return bool
+	 * Returns the detail message
+	 *
+	 * @return string
 	 */
 	public function getDetailMessage()
 	{		
@@ -202,32 +228,45 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	}
 
 	/**
-	 * Check if in-context checkout is active
-	 * @return bool
+	 * Returns the method logo
+	 *
+	 * @return string
 	 */
 	public function getMethodLogo()
 	{		
 		return  self::PAYMENT_METHOD_LOGO_ZIP.strtolower($this->getProduct()).".png";
 	}
 
+	/**
+	 * Returns the Display Method Title setting
+	 *
+	 * @return boolean
+	 */
 	public function getDisplayMethodTitle()
 	{
 		return (bool)Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_DISPLAY_TITLE);
 	}
 
+	/**
+	 * Returns the method code
+	 *
+	 * @return boolean
+	 */
 	public function getMethodCode()
 	{
 		return self::METHOD_CODE;
 	}
 
+	/**
+	 * Returns the mapped error code
+	 *
+	 * @return boolean
+	 */
 	public function getMappedErrorCode($errorCode)
 	{
-		if(!in_array($errorCode, array_keys($this->_error_codes_map)))
-		{
+		if(!in_array($errorCode, array_keys($this->_error_codes_map))){
 			return false;
 		}
-
 		return $this->_error_codes_map[$errorCode];
 	}
-
 }

@@ -8,34 +8,49 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
+class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
+{
+ 
   /**
-   * @var Mage_Customer_Model_Session
+   * @var Mage_Sales_Model_Quote
    */
   protected $_quote;
-
+  /**
+   * @var object
+   */
   protected $_api;
-
+  /**
+   * @var Zipmoney_ZipmoneyPayment_Model_Config
+   */
   protected $_config;
-
+  /**
+   * @var object
+   */
   protected $_response;
-
+  /**
+   * @var Zipmoney_ZipmoneyPayment_Helper_Data
+   */
   protected $_helper;
-
+  /**
+   * @var Zipmoney_ZipmoneyPayment_Helper_Payload
+   */
   protected $_payload;
-
   /**
    * @var Mage_Customer_Model_Session
    */
   protected $_customerSession;
-
+  /**
+   * @var string
+   */
   private $_apiClass = null;
-
-
+  /**
+   * @const 
+   */
   const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
 
   /**
-   * Set quote and config instances
+   * Initializes different classes
+   *
    * @param array $params
    */
   public function __construct($params = array())
@@ -51,12 +66,16 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
 
     $this->_payload = Mage::helper('zipmoneypayment/payload');
 
-    \zipMoney\Configuration::getDefaultConfiguration()->setApiKey('Authorization', "Bearer ".$this->_config->getMerchantPrivateKey());
-    \zipMoney\Configuration::getDefaultConfiguration()->setEnvironment($this->_config->getEnvironment());
+    $apiConfig = \zipMoney\Configuration::getDefaultConfiguration();
+    
+    $apiConfig->setApiKey('Authorization', $this->_config->getMerchantPrivateKey())
+              ->setApiKeyPrefix('Authorization', 'Bearer')
+              ->setEnvironment($this->_config->getEnvironment())
+              ->setPlatform("Magento/".Mage::getVersion()." Zipmoney_ZipmoneyPayment/".$this->_helper->getExtensionVersion());
   }
 
   /**
-   * Checks if customer with email coming from Express checkout exists
+   * Checks if customer exists by email
    *
    * @return int
    */
@@ -97,32 +116,38 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
   {
     return $this->_customerSession;
   }
-
-  public function getRedirectUrl()
-  {
-    return $this->_redirectUrl;
-  }
-
-  public function getCheckoutId()
-  {
-    return $this->_checkoutId;
-  }
-
+  
+  /**
+   * Retrieves the charge object object.
+   *
+   * @return string
+   */
   public function getCharge()
   {
     return $this->_charge;
   }
 
+  /**
+   * Returns the api object.
+   *
+   * @return string
+   * @throws Mage_Core_Exception
+   */
   public function getApi()
   {
     if(null === $this->_api){
-      Mage::throwException($this->_helper->__('Api class has not been set.'));
+      Mage::exception("Mage_Core",$this->_helper->__('Api class has not been set.'));
     }
 
     return $this->_api;
   }
 
-
+  /**
+   * Sets the api object.
+   *
+   * @param string | object $api
+   * @return Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
+   */
   public function setApi($api)
   {
     if(is_object($api)) {
@@ -130,15 +155,25 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
     } else if(is_string($api)) {
       $this->_api = new $api;
     }
-
     return $this;
   }
 
+  /**
+   * Returns the quote object.
+   *
+   * @return Mage_Sales_Model_Quote
+   */
   public function getQuote()
   {
     return $this->_quote;
   }
 
+  /**
+   * Sets the quote object.
+   *
+   * @param Mage_Sales_Model_Quote $quote
+   * @return Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
+   */
   public function setQuote($quote)
   {
     if ($quote) {
@@ -147,12 +182,22 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
     return $this;
   }
 
+  /**
+   * Returns the order object.
+   *
+   * @return Mage_Sales_Model_Order
+   */
   public function getOrder()
   {
     return $this->_order;
   }
 
-
+  /**
+   * Sets the order object.
+   *
+   * @param Mage_Sales_Model_Order $order
+   * @return Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
+   */
   public function setOrder($order)
   {
     if ($order) {
@@ -161,10 +206,13 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
     return $this;
   }
 
+  /**
+   * Generates the unique id.
+   *
+   * @return string
+   */
   public function genIdempotencyKey()
   {
     return uniqid();
   }
-
-
 }

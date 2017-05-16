@@ -1,59 +1,115 @@
 <?php
 use \zipMoney\ApiException;
+/**
+ * @category  zipMoney
+ * @package   zipmoney
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
+ */
 
-class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_Abstract {
-
+class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_Abstract 
+{
+  /**
+   * Method Code
+   * @var string
+   */ 
 	protected $_code = Zipmoney_ZipmoneyPayment_Model_Config::METHOD_CODE;
+  /**
+   * Payment Option Form Block Type
+   * @var string
+   */
 	protected $_formBlockType = 'zipmoneypayment/standard_form';
-	protected $_isInitializeNeeded = true;
-	protected $_url = "";
-	protected $_dev = false;
-
+	/**   
+   * @var boolean
+   */
+  protected $_isInitializeNeeded = true;
 	/**
-	 * Availability options
+   * @var string
+   */
+  protected $_url = "";
+	/**
+   * @var boolean
+   */
+  protected $_dev = false;
+	/**
+   * @var boolean
 	 */
 	protected $_isGateway = false;
+  /**
+   * @var boolean
+   */
 	protected $_canOrder = true;
+  /**
+   * @var boolean
+   */
 	protected $_canAuthorize = true;
+  /**
+   * @var boolean
+   */
 	protected $_canCapture = true;
+  /**
+   * @var boolean
+   */
 	protected $_canCapturePartial = true;
+  /**
+   * @var boolean
+   */
 	protected $_canRefund = true;
+  /**
+   * @var boolean
+   */
 	protected $_canRefundInvoicePartial = true;
-	protected $_canVoid = true;
-	protected $_canUseInternal = false;
-	protected $_canUseCheckout = true;
-	protected $_canUseForMultishipping = false;
-	protected $_canFetchTransactionInfo = true;
-	protected $_canCreateBillingAgreement = true;
-	protected $_canReviewPayment = true;
-
 	/**
-	 * zipMoney Payment instance
-	 *
-	 * @var Zipmoney_ZipmoneyPayment_Model_Payment
+   * @var boolean
+   */
+  protected $_canVoid = true;
+	/**
+   * @var boolean
+   */
+  protected $_canUseInternal = false;
+	/**
+   * @var boolean
+   */
+  protected $_canUseCheckout = true;
+	/**
+   * @var boolean
+   */
+  protected $_canUseForMultishipping = false;
+	/**
+   * @var boolean
+   */
+  protected $_canFetchTransactionInfo = true;
+	/**
+   * @var boolean
+   */
+  protected $_canCreateBillingAgreement = true;
+	/**
+   * @var boolean
+   */
+  protected $_canReviewPayment = true;
+	/**	
+	 * @var Zipmoney_ZipmoneyPayment_Model_Logger
 	 */
 	protected $_logger = null;
-	protected $_helper = null;
-	protected $_checkout  = null;
+  /**  
+   * @var Zipmoney_ZipmoneyPayment_Helper_Data
+   */
+	protected $_helper = null;  
+  /**  
+   * @var Zipmoney_ZipmoneyPayment_Model_Config
+   */
   protected $_config = null;
+	 /**  
+   * @var Zipmoney_ZipmoneyPayment_Model_Charge
+   */
   protected $_chargeModel = 'zipmoneypayment/charge';
-  protected $_chargesApiClass  = '\zipMoney\Api\ChargesApi';
-  protected $_refundsApiClass  = '\zipMoney\Api\RefundsApi';
 
-
-	/**
-	 * Payment additional information key for payment action
-	 * @var string
-	 */
-	protected $_isOrderPaymentActionKey = 'is_order_action';
-
-	/**
-	 * Payment additional information key for number of used authorizations
-	 * @var string
-	 */
-	protected $_authorizationCountKey = 'authorization_count';
-
-	function __construct() {
+  /**  
+   * Sets the helper, logger, config classes
+   */
+	public function __construct() {
 		parent::__construct();
 
 		$this->_helper = Mage::helper("zipmoneypayment");
@@ -62,7 +118,14 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
  	}
 
-
+  /**  
+   * Captures the charge
+   *
+   * @param Varien_Object $payment
+   * @param float $amount
+   * @throws Mage_Core_Exception
+   * @return boolean
+   */
 	public function capture(Varien_Object $payment, $amount)
 	{
     if ($payment && $payment->getOrder()) {
@@ -100,6 +163,14 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     return false;
 	}
 
+  /**  
+   * Refund the charge
+   *
+   * @param Varien_Object $payment
+   * @param float $amount
+   * @throws Mage_Core_Exception
+   * @return boolean
+   */
 	public function refund(Varien_Object $payment, $amount)
 	{
 		if ($payment && $payment->getOrder()) {
@@ -147,16 +218,20 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 		return false;
 	}
 
-
+  /**  
+   * Cancels the charge
+   *
+   * @param Varien_Object $payment
+   * @throws Mage_Core_Exception
+   * @return boolean
+   */
   public function cancel(Varien_Object $payment)
   {
     $this->_logger->info($this->_helper->__("Cancelling Order"));
 
-
     if ($payment && $payment->getOrder()) {
       Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
     }
-
 
     $orderId = $payment->getOrder()->getIncrementId();
     $order = Mage::getModel('sales/order')
@@ -171,9 +246,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     $this->_charge->setOrder($order);
 
     try {
-
       $this->_charge->cancelCharge();
-
       $this->_logger->info($this->_helper->__("Cancel request Order [ %s ] was successfull",$orderId));
       return $this;
     } catch (Mage_Core_Exception $e) {
@@ -198,60 +271,84 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
       return Mage::getSingleton('checkout/session');
   }
 
-
+  /**
+   * Return quote object
+   *
+   * @return Mage_Sales_Model_Quote
+   */
   protected function _getQuote()
   {
     if (!$this->_quote) {
       $this->_quote = $this->_getCheckoutSession()->getQuote();
     }
-
     return $this->_quote;
   }
 
+  /**
+   * Returns the url to redirect after placing the order
+   *
+   * @return string
+   */
   public function getOrderPlaceRedirectUrl()
   {
-    return  Mage::getBaseUrl()."zipmoneypayment/complete/charge";
+    return $this->_helper->getUrl("zipmoneypayment/complete/charge");
   }
 
 	/**
-	 * Return zipMoney Express redirect url if current request is not savePayment (which works for oneStepCheckout)
+	 * Return zipMoney checkout redirect url by appending 'zip-in-context=true' to the url for onestepcheckout extensions
+   *
 	 * @return null|string
 	 */
 	public function getCheckoutRedirectUrl()
   {
     $action     = Mage::app()->getRequest()->getActionName();
     $controller = Mage::app()->getRequest()->getControllerName();
-    $module     = Mage::app()->getRequest()->getModuleName();
+    $module     = strtolower(Mage::app()->getRequest()->getControllerModule());
 
     $this->_logger->debug($this->_helper->__("Action: %s Controller: %s Module: %s",$action,$controller,$module));
+    
+    $url = null;
 
     if (
-        ($module == 'checkout' &&  $controller == 'onepage' &&  $action == 'savePayment')
+        ($module == 'mage_checkout' &&  $controller == 'onepage' &&  $action == 'savePayment')
       ) {
       $url = null;
     } else {
 
       if($this->_config->isInContextCheckout()){
+        
+
+        $this->_logger->info("In-Context Checkout");
 
         /* Return current url with extra param appended, so that it will refresh current page with the
          * param if the param is present, will popup zipMoney iframe checkout
          */
 
-        $this->_logger->info("In-Context Checkout");
+        if ($module == 'magestore_onestepcheckout' &&  $controller == 'index' &&  $action == 'saveOrder')
+        {        $this->_logger->info("In-Context Checkout");
 
-        if(Mage::app()->getRequest()->isAjax())
           $currentUrl = Mage::helper('checkout/url')->getCheckoutUrl();
-        else
-          $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+        }  
+        else if ($module == 'iwd_opc' &&  $controller == 'json' &&  $action == 'savePayment')
+        {      
+          $currentUrl = null;
+        } 
+         else {
+          if(Mage::app()->getRequest()->isAjax())
+            $currentUrl = Mage::helper('checkout/url')->getCheckoutUrl();
+          else
+            $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+        }
 
         //$currentUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB,true)."zipmoneypayment/standard/redirect/";
 
-        if (Mage::app()->getRequest()->getParam('zip-in-context') != 'true') {
+        if (Mage::app()->getRequest()->getParam('zip-in-context') != 'true' && isset($currentUrl)) {  
           $urlArr = parse_url($currentUrl);
           if (!isset($urlArr['zip-in-context'])) {
             $url = $currentUrl . (parse_url($currentUrl, PHP_URL_QUERY) ? '&' : '?') . 'zip-in-context=true';
           }
         }
+        $this->_logger->info($currentUrl);
 
       } else {
 
@@ -286,10 +383,10 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
    */
   public function canUseForCurrency($currencyCode)
   {
-      if (!in_array($currencyCode, array("AUD","NZD"))) {
-        return false;
-      }
-      return true;
+    if (!in_array($currencyCode, array("AUD","NZD"))) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -302,7 +399,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
   {
     $total = $quote->getBaseGrandTotal();
     $minTotal = $this->_config->getOrderTotalMinimum();
-    $maxTotal = $this->_config->getOrderTotalMaximum();
 
     if (!empty($minTotal) && $total < $minTotal ){
       return false;
@@ -326,7 +422,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
   }
 
   /**
-   * Is available method
+   * Check if method available.
    *
    * @param Mage_Sales_Model_Quote $quote
    * @return bool
@@ -337,7 +433,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
   }
 
   /**
-   * Added verification for quote (compatibility reason)
+   * Added if the payment method is available for quote.
    *
    * @param Mage_Sales_Model_Quote $quote
    * @return bool
@@ -348,34 +444,28 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
       $shipToCountry = $quote->getShippingAddress()->getCountry();
       $billToCountry = $quote->getBillingAddress()->getCountry();
-
       if (!empty($shipToCountry) && !$this->canUseForCountry($shipToCountry) && !$this->canUseForCountry($billToCountry)) {
         $this->_logger->info($this->_helper->__("%s or %s is not supported.",$shipToCountry,$billToCountry));
         return false;
       }
-
       if (!$this->canUseForCurrency($quote->getStore()->getBaseCurrencyCode())) {
         $this->_logger->info($this->_helper->__("%s is not supported.",$quote->getStore()->getBaseCurrencyCode()));
         return false;
       }
-
       if (!$this->canUseCheckout()) {
         $this->_logger->info($this->_helper->__("Cannot use for checkout"));
         return false;
       }
-
       if (!$this->canUseForQuoteThreshold($quote)) {
         $this->_logger->info($this->_helper->__("Cannot use outside the order threshold"));
         return false;
       }
-
       if (!$this->canUseForZeroTotal($quote)) {
         $this->_logger->info($this->_helper->__("Cannot use for zero total"));
         return false;
       }
 
     }
-
     return true;
   }
 

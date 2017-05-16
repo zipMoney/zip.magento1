@@ -7,6 +7,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.zipmoney.com.au/
  */
+
 abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Controller_Front_Action
 {
   /**
@@ -22,7 +23,6 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    * @var Zipmoney_ZipmoneyPayment_Model_Config
    */
   protected $_config;
-
   /**
    * @var Mage_Sales_Model_Quote
    */
@@ -35,7 +35,6 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    * @var Zipmoney_ZipmoneyPayment_Model_Charge
    */
   protected $_charge;
-
   /**
    * Common Route
    *
@@ -48,7 +47,8 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    *
    * @const
    */
-  const ZIPMONEY_ERROR_ROUTE = self::ZIPMONEY_STANDARD_ROUTE."/error";
+  const ZIPMONEY_ERROR_ROUTE = "zipmoneypayment/standard/error";
+ 
   /**
    * Instantiate config
    */
@@ -60,7 +60,6 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     $this->_config = Mage::getSingleton("zipmoneypayment/config");
 		$this->_helper = Mage::helper('zipmoneypayment');
 	}
-
 
 	/**
 	 * Return checkout session object
@@ -82,7 +81,6 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     return Mage::getSingleton('customer/session');
   }
 
-
 	/**
 	 * Return checkout quote object
 	 *
@@ -93,10 +91,8 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 		if (!$this->_quote) {
 			$this->_quote = $this->_getCheckoutSession()->getQuote();
 		}
-
 		return $this->_quote;
 	}
-
 
   /**
    * Sets checkout quote object
@@ -171,6 +167,9 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
 
   /**
    * Sets the Http Headers, Response Code and Responde Body
+   * 
+   * @param string $data 
+   * @param Mage_Api2_Model_Server $responseCode 
    */
 	protected function _sendResponse($data, $responseCode = Mage_Api2_Model_Server::HTTP_OK)
 	{
@@ -195,10 +194,10 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     return true;
   }
 
-
   /**
    * Checks if the Session Quote is valid, if not use the db quote.
-   *
+   *   
+   * @param boolean $forceRetrieveDbQuote 
    * @return boolean
    */
   protected function _retrieveQuote($forceRetrieveDbQuote=false)
@@ -231,7 +230,11 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     }
   }
 
-
+  /**
+   * Checks if the Customer is valid for the quote
+   *   
+   * @param Mage_Sales_Model_Quote $quote 
+   */
   protected function _verifyCustomerForQuote($quote)
   {
     $currentCustomer = null;
@@ -274,7 +277,11 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     // }
   }
 
-
+  /**
+   * Sets quote for the customer.
+   *   
+   * @throws Mage_Core_Exception
+   */
   public function _setCustomerQuote()
   {
     // Retrieve a valid quote
@@ -299,7 +306,6 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     }
   }
 
-
   /**
    * Redirects to the referred page.
    *
@@ -321,20 +327,31 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
       $this->_logger->error($e->getMessage());
       $this->_getCheckoutSession()->addError($this->__('An error occurred during redirecting to referred page.'));
     }
-
   }
 
-  public function _redirectToCart()
+  /**
+   * Redirects to the cart page.
+   *
+   */
+  protected function _redirectToCart()
   {
     $this->_redirect("checkout/cart");
   }
 
-  public function _redirectToError()
+  /**
+   * Redirects to the error page.
+   *
+   */
+  protected function _redirectToError()
   {
     $this->_redirect(self::ZIPMONEY_ERROR_ROUTE);
   }
 
-  public function _redirectToCartOrError()
+  /**
+   * Redirects to the cart or error page.
+   *
+   */
+  protected function _redirectToCartOrError()
   {
     if($this->_getQuote()->getIsActive()){
       $this->_redirectToCart();
@@ -343,7 +360,6 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
     }
   }
 
-  
   /**
    * Redirects to the error page.
    *
@@ -361,34 +377,34 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
       $this->_logger->info($this->_helper->__('Successful to redirect to error page.'));
     } catch (Exception $e) {
       $this->_logger->error(json_encode($this->getRequest()->getParams()));
-      $this->_getCheckoutSession()->addError($this->__('An error occurred during redirecting to error page.'));
+      $this->_getCheckoutSession()->addError($this->_helper->__('An error occurred during redirecting to error page.'));
     }
   }
 
-   /**
+  /**
    * Get one page checkout model
    *
    * @return Mage_Checkout_Model_Type_Onepage
    */
   public function getOnepage()
   {
-      return Mage::getSingleton('checkout/type_onepage');
+    return Mage::getSingleton('checkout/type_onepage');
   }
 
   /**
    * Send Ajax redirect response
    *
-   * @return Mage_Checkout_OnepageController
+   * @return Zipmoney_ZipmoneyPayment_Controller_Abstract $this
    */
   protected function _ajaxRedirectResponse()
   {
-      $this->getResponse()
-          ->setHeader('HTTP/1.1', '403 Session Expired')
-          ->setHeader('Login-Required', 'true')
-          ->sendResponse();
-      return $this;
+    $this->getResponse()
+        ->setHeader('HTTP/1.1', '403 Session Expired')
+        ->setHeader('Login-Required', 'true')
+        ->sendResponse();
+    return $this;
   }
-
+  
   /**
    * Validate ajax request and redirect on failure
    *
@@ -396,22 +412,20 @@ abstract class Zipmoney_ZipmoneyPayment_Controller_Abstract extends Mage_Core_Co
    */
   protected function _expireAjax()
   {
-      if (!$this->getOnepage()->getQuote()->hasItems()
-          || $this->getOnepage()->getQuote()->getHasError()
-          || $this->getOnepage()->getQuote()->getIsMultiShipping()
-      ) {
-          $this->_ajaxRedirectResponse();
-          return true;
-      }
-      $action = $this->getRequest()->getActionName();
-      if (Mage::getSingleton('checkout/session')->getCartWasUpdated(true)
-          && !in_array($action, array('index', 'progress'))
-      ) {
-          $this->_ajaxRedirectResponse();
-          return true;
-      }
-      return false;
+    if (!$this->getOnepage()->getQuote()->hasItems()
+        || $this->getOnepage()->getQuote()->getHasError()
+        || $this->getOnepage()->getQuote()->getIsMultiShipping()
+    ) {
+      $this->_ajaxRedirectResponse();
+      return true;
+    }
+    $action = $this->getRequest()->getActionName();
+    if (Mage::getSingleton('checkout/session')->getCartWasUpdated(true)
+        && !in_array($action, array('index', 'progress'))
+    ) {
+        $this->_ajaxRedirectResponse();
+      return true;
+    }
+    return false;
   }
-
-
 }
