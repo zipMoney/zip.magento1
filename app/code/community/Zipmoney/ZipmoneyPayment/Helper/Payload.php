@@ -330,16 +330,20 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       $tax_amount = $address ? $address->getTaxAmount():0.00;
       $grand_total = $quote->getGrandTotal() ? $quote->getGrandTotal() : 0.00;
       $currency = $quote->getQuoteCurrencyCode() ? $quote->getQuoteCurrencyCode() : null;
+      $gift_cards_amount = $quote->getGiftCardsAmount() ? $quote->getGiftCardsAmount() : 0;
     } else if($order = $this->getOrder()){
       $reference = $order->getIncrementId() ? $order->getIncrementId() : '0';
       $shipping_amount = $order->getShippingAmount() ? $order->getShippingAmount()  + $order->getShippingTaxAmount() : 0;
       $discount_amount = $order->getDiscountAmount() ? $order->getDiscountAmount() : 0;
       $tax_amount = $order->getTaxAmount() ? $order->getTaxAmount() : 0;
+      $gift_cards_amount = $order->getGiftCardsAmount() ? $order->getGiftCardsAmount() : 0;
     }
   
-    $this->_logger->debug("Discount Amount From Items:-" . $this->_totalDiscount);
-    $this->_logger->debug("Discount Amount From Address:-" . $discount_amount);
+    $this->_logger->debug("Gift Card Amount:- " . $gift_cards_amount);
 
+    if($gift_cards_amount){
+      $discount_amount -= $gift_cards_amount;
+    }
 
     // Discount Item
     if($discount_amount <  0){
