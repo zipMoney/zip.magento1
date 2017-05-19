@@ -1,4 +1,6 @@
 <?php
+use \zipMoney\ApiException;
+
 /**
  * @category  Zipmoney
  * @package   Zipmoney_ZipmoneyPayment
@@ -106,7 +108,38 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
     }
     return $this->_quote->getCheckoutMethod();
   }
+  
+  /**
+   * Handles the api exception
+   *
+   * @param  ApiException $e
+   * @return string
+   */
+  protected function _handleException($e)
+  {
+    if($e instanceof ApiException){
+      $apiError = '';
+      $message = $this->_helper->__("Could not process the payment");
+      switch($e->getCode()){
+        case 0:
+          $logMessage = "ApiError:- ".$e->getMessage();
+        break;
+        default:
+          $logMessage = "ApiError:-".$e->getCode().$e->getMessage()."-".json_encode($e->getResponseBody());
+          if($e->getCode() == 402 && 
+            $mapped_error_code = $this->_config->getMappedErrorCode($e->getResponseObject()->getError()->getCode())){
+            $message = $this->_helper->__('The payment was declined by Zip.(%s)',$mapped_error_code);
+          }
+          $apiError = $e->getResponseObject()->getError()->getMessage();
+        break;
+      }      
 
+      $this->_logger->debug($logMessage);  
+
+      return array($apiError,$message,$logMessage);             
+    }
+    return null;
+  }
   /**
    * Get customer session object
    *
@@ -215,4 +248,6 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
   {
     return uniqid();
   }
+
+ 
 }
