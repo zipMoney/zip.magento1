@@ -113,8 +113,7 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
 
       $this->_redirectUrl = $checkout->getUri();
     } catch(\zipMoney\ApiException $e){
-      $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
-      
+      $this->_handleException($e);  
       Mage::throwException($this->_helper->__('An error occurred while to requesting the redirect url.'));
     } 
 
