@@ -10,7 +10,7 @@ tables:
       lastname: "Han"
       street: "50 Bridge Street"
       city: "Sydney"
-      email: "digital@aligent.com.au"
+      email: "digital@zipmoney.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
@@ -29,7 +29,7 @@ tables:
       lastname: "Han"
       street: "50 Bridge Street"
       city: "Sydney"
-      email: "digital@aligent.com.au"
+      email: "digital@zipmoney.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
@@ -45,7 +45,7 @@ tables:
       lastname: "Han"
       street: "50 Bridge Street"
       city: "Sydney"
-      email: "digital@aligent.com.au"
+      email: "digital@zipmoney.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
@@ -64,7 +64,7 @@ tables:
       lastname: "Han"
       street: "50 Bridge Street"
       city: "Sydney"
-      email: "digital@aligent.com.au"
+      email: "digital@zipmoney.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
@@ -80,7 +80,7 @@ tables:
       lastname: "Han"
       street: "50 Bridge Street"
       city: "Sydney"
-      email: "digital@aligent.com.au"
+      email: "digital@zipmoney.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
@@ -99,7 +99,7 @@ tables:
       lastname: "Han"
       street: "50 Bridge Street"
       city: "Sydney"
-      email: "digital@aligent.com.au"
+      email: "digital@zipmoney.com.au"
       telephone: 0884619343
       country_id: "AU"
       region_id: 489
