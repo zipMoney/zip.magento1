@@ -105,6 +105,14 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
    * @var Zipmoney_ZipmoneyPayment_Model_Charge
    */
   protected $_chargeModel = 'zipmoneypayment/charge';
+  /**  
+   * @var \zipMoney\Api\ChargesApi
+   */
+  protected $_chargesApiClass  = '\zipMoney\Api\ChargesApi';
+   /**  
+   * @var \zipMoney\Api\RefundsApi
+   */
+  protected $_refundsApiClass  = '\zipMoney\Api\RefundsApi';
 
   /**  
    * Sets the helper, logger, config classes
