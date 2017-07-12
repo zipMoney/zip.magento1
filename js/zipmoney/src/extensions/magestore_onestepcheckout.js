@@ -38,9 +38,9 @@ Zip_MageStore_OnestepCheckout.prototype = {
       this.enablePlaceOrderButton();
     }
   },
-  onError: function(response){        
+  onError: function(args){        
     this.enablePlaceOrderButton();
-    alert("An error occurred while getting the redirect url from zipMoney");
+    this.super.showError(args);
   },
   disablePlaceOrderButton:function(){        
     this.super._zipBtn.removeClassName('onestepcheckout-btn-checkout').addClassName('place-order-loader');

@@ -33,12 +33,15 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
       return;
     }
 
+    $exception_message = null;
+
     try {
 
       if (!$this->getRequest()->isPost()) {
         $this->_ajaxRedirectResponse();
         return;
-      }
+      }          
+
 
       if($data = $this->getRequest()->getPost('payment', array()))
       {
@@ -81,12 +84,21 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
       $result['error'] = $e->getMessage();
     } catch (Mage_Core_Exception $e) {
       $this->_logger->debug($e->getMessage());
+      $exception_message = $e->getMessage();
+    } catch(\InvalidArgumentException $e){
+      $this->_logger->debug($e->getMessage());      
+      $result['error'] = "Invalid arguments provided.\n\nError Detail:- ".$e->getMessage();
     } catch (Exception $e) {
       $this->_logger->debug($e->getMessage());
+      $exception_message = $e->getMessage();
     }
 
     if(empty($result['error'])){
-      $result['error'] = $this->_helper->__('Can not get the redirect url from zipMoney.');
+      $result['error'] = $this->_helper->__('An error occurred while trying to checkout with zipMoney.');
+    }
+
+    if(!is_null($exception_message)){
+      $result['exception_message'] = $exception_message;
     }
 
     $this->_sendResponse($result, Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR);

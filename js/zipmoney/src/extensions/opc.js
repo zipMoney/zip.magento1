@@ -87,8 +87,16 @@ Zip_Mage_Checkout.prototype = {
     myDiv.addClassName("zipmoneypayment-overlay");
     $(document.body).insert(myDiv);
   },
-  onError: function(response){       
-    alert("An error occurred while getting the redirect url from zipMoney");
+  onError: function(args){       
+    var error = "An error occurred while trying to checkout with zip.";
+    
+    // Check if the response object has the error text
+    if(args.detail.responseJSON.error){
+      error = args.detail.responseJSON.error;
+    }
+
+    alert(error);    
+
     this._payment.resetLoadWaiting(this._transport);
   },
   onCheckout: function(resolve, reject, args){
@@ -102,7 +110,7 @@ Zip_Mage_Checkout.prototype = {
         },
         onFailure: function(response){
           checkout.ajaxFailure.bind(checkout);
-          reject();
+          reject(response);
         },
         parameters: Form.serialize(this._payment.form) + "&review=true"
       }

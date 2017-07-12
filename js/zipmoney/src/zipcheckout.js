@@ -61,8 +61,19 @@ zipCheckout.prototype = {
       location.href = this.options.redirectUrl + "?result=" + response.state + "&checkoutId=" + response.checkoutId;
     }
   },
-  onError: function(response){       
-    alert("An error occurred while getting the redirect url from zipMoney");
+  showError:function(args) {
+    var error = "An error occurred while trying to checkout with zip.";
+    var response = args.detail.response.evalJSON();
+
+    // Check if the response object has the error text
+    if(response.error){
+      error = response.error;
+    }
+
+    alert(error);    
+  },
+  onError: function(args){       
+   this.showError(args);
   },
   checkout: function(){
     Zip.Checkout.init({

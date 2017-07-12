@@ -89,14 +89,14 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
     if (!$this->_quote->getGrandTotal() && !$this->_quote->hasNominalItems()) {
       Mage::throwException($this->_helper->__('Cannot process the order due to zero amount.'));
     }
+   
+    try { 
+      $this->_quote->reserveOrderId()->save();
 
-    $this->_quote->reserveOrderId()->save();
+      $request = $this->_payload->getCheckoutPayload($this->_quote);
 
-    $request = $this->_payload->getCheckoutPayload($this->_quote);
+      $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request));
 
-    $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request));
-
-    try {
 
       $checkout = $this->getApi()->checkoutsCreate($request);
 

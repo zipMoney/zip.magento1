@@ -61,8 +61,19 @@ zipCheckout.prototype = {
       location.href = this.options.redirectUrl + "?result=" + response.state + "&checkoutId=" + response.checkoutId;
     }
   },
-  onError: function(response){       
-    alert("An error occurred while getting the redirect url from zipMoney");
+  showError:function(args) {
+    var error = "An error occurred while trying to checkout with zip.";
+    var response = args.detail.response.evalJSON();
+
+    // Check if the response object has the error text
+    if(response.error){
+      error = response.error;
+    }
+
+    alert(error);    
+  },
+  onError: function(args){       
+   this.showError(args);
   },
   checkout: function(){
     Zip.Checkout.init({
@@ -230,10 +241,11 @@ Zip_Idev_OnestepCheckout.prototype = {
       this.enablePlaceOrderButton();
     }
   },
-  onError: function(response){        
+  onError: function(args){        
     this.removeLoader();
     this.enablePlaceOrderButton();
-    alert("An error occurred while getting the redirect url from zipMoney");
+    this.super.showError(args);
+
   },
   idevCheckout:function(e){
     var form = new VarienForm('onestepcheckout-form');
@@ -331,7 +343,7 @@ Zip_IWD_OPC.prototype = {
       }
     }
   },
-  onError: function(response){ 
+  onError: function(args){ 
     
     if(this._isV6){
       Singleton.get(OnePage).hideLoader(Singleton.get(OnePage).sectionContainer);
@@ -340,8 +352,8 @@ Zip_IWD_OPC.prototype = {
       IWD.OPC.Checkout.unlockPlaceOrder();
       IWD.OPC.saveOrderStatus = false;
     }
-
-    alert("An error occurred while getting the redirect url from zipMoney");
+    
+    this.super.showError(args);
   }
 }
 
@@ -389,9 +401,9 @@ Zip_MageStore_OnestepCheckout.prototype = {
       this.enablePlaceOrderButton();
     }
   },
-  onError: function(response){        
+  onError: function(args){        
     this.enablePlaceOrderButton();
-    alert("An error occurred while getting the redirect url from zipMoney");
+    this.super.showError(args);
   },
   disablePlaceOrderButton:function(){        
     this.super._zipBtn.removeClassName('onestepcheckout-btn-checkout').addClassName('place-order-loader');
@@ -520,8 +532,16 @@ Zip_Mage_Checkout.prototype = {
     myDiv.addClassName("zipmoneypayment-overlay");
     $(document.body).insert(myDiv);
   },
-  onError: function(response){       
-    alert("An error occurred while getting the redirect url from zipMoney");
+  onError: function(args){       
+    var error = "An error occurred while trying to checkout with zip.";
+    
+    // Check if the response object has the error text
+    if(args.detail.responseJSON.error){
+      error = args.detail.responseJSON.error;
+    }
+
+    alert(error);    
+
     this._payment.resetLoadWaiting(this._transport);
   },
   onCheckout: function(resolve, reject, args){
@@ -535,7 +555,7 @@ Zip_Mage_Checkout.prototype = {
         },
         onFailure: function(response){
           checkout.ajaxFailure.bind(checkout);
-          reject();
+          reject(response);
         },
         parameters: Form.serialize(this._payment.form) + "&review=true"
       }

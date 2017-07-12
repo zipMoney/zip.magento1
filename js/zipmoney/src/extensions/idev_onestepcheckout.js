@@ -57,10 +57,11 @@ Zip_Idev_OnestepCheckout.prototype = {
       this.enablePlaceOrderButton();
     }
   },
-  onError: function(response){        
+  onError: function(args){        
     this.removeLoader();
     this.enablePlaceOrderButton();
-    alert("An error occurred while getting the redirect url from zipMoney");
+    this.super.showError(args);
+
   },
   idevCheckout:function(e){
     var form = new VarienForm('onestepcheckout-form');
