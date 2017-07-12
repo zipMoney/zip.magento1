@@ -83,18 +83,22 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
       }
       $result['error'] = $e->getMessage();
     } catch (Mage_Core_Exception $e) {
-      $this->_logger->debug($e->getMessage());
+      
       $exception_message = $e->getMessage();
+
+      if($e->getCode() != 1000){
+        $this->_logger->debug($e->getMessage());      
+      }
+
     } catch(\InvalidArgumentException $e){
-      $this->_logger->debug($e->getMessage());      
+      $this->_logger->debug("InvalidArgumentException:-".$e->getMessage());      
       $result['error'] = "Invalid arguments provided.\n\nError Detail:- ".$e->getMessage();
     } catch (Exception $e) {
       $this->_logger->debug($e->getMessage());
-      $exception_message = $e->getMessage();
     }
 
     if(empty($result['error'])){
-      $result['error'] = $this->_helper->__('An error occurred while trying to checkout with zipMoney.');
+      $result['error'] = $this->_helper->__('An error occurred while trying to checkout with zip.');
     }
 
     if(!is_null($exception_message)){

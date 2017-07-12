@@ -122,16 +122,33 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
       $message = $this->_helper->__("Could not process the payment");
       switch($e->getCode()){
         case 0:
-          $logMessage = "ApiError:- ".$e->getMessage();
-        break;
-        default:
-          $logMessage = "ApiError:-".$e->getCode().$e->getMessage()."-".json_encode($e->getResponseBody());
+          $logMessage = "Connection Error:- ".$e->getCode() . "-" . $e->getMessage();
+          break;
+        case 201:
+        case 400:
+        case 401:
+        case 402:
+        case 403:
+        case 409:
+          $logMessage = "ApiError:- ".$e->getMessage()."-".json_encode($e->getResponseBody());
+          $resObj = $e->getResponseObject();
+          $apiErrorCode = null;
+        
+          if($resObj && $resObj->getError()){
+            $apiError = $resObj->getError()->getMessage();
+            $apiErrorCode = $resObj->getError()->getCode();      
+          }
+
           if($e->getCode() == 402 && 
-            $mapped_error_code = $this->_config->getMappedErrorCode($e->getResponseObject()->getError()->getCode())){
+            $mapped_error_code = $this->_config->getMappedErrorCode($apiErrorCode)){
             $message = $this->_helper->__('The payment was declined by Zip.(%s)',$mapped_error_code);
           }
-          $apiError = $e->getResponseObject()->getError()->getMessage();
-        break;
+          
+          break;
+        default:
+          $resObj = $e->getResponseObject();
+          $logMessage = "Error:- ".$e->getMessage()."-".json_encode($e->getResponseBody());
+          break;
       }      
 
       $this->_logger->debug($logMessage);  

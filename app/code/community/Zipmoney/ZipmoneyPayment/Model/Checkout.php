@@ -97,7 +97,6 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
 
       $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request));
 
-
       $checkout = $this->getApi()->checkoutsCreate($request);
 
       $this->_logger->debug("Checkout Response:- ".$this->_helper->json_encode($checkout));
@@ -111,13 +110,14 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
       $this->_quote->setZipmoneyCid($this->_checkoutId)
                    ->save();
 
-      $this->_redirectUrl = $checkout->getUri();
-    } catch(\zipMoney\ApiException $e){
-      $this->_handleException($e);  
-      Mage::throwException($this->_helper->__('An error occurred while to requesting the redirect url.'));
-    } 
+      $this->_redirectUrl = $checkout->getUri();    
 
-    return $checkout;
+      return $checkout;
+
+    } catch(\zipMoney\ApiException $e){
+      list($apiError, $message, $logMessage) = $this->_handleException($e);  
+      throw Mage::exception('Mage_Core',$logMessage,1000);
+    } 
   }
 
   /**
