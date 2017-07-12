@@ -1,122 +1,108 @@
 <?php
-
 /**
- * Class Zipmoney_ZipmoneyPayment_Model_StoreScope
- *
- * @method int getMerchantId()
- * @method Zipmoney_ZipmoneyPayment_Model_StoreScope setMerchantId()
- * @method string getMerchantKey()
- * @method Zipmoney_ZipmoneyPayment_Model_StoreScope setMerchantKey()
- * @method string getScope()
- * @method Zipmoney_ZipmoneyPayment_Model_StoreScope setScope()
- * @method int getScopeId()
- * @method Zipmoney_ZipmoneyPayment_Model_StoreScope setScopeId()
- * @method int getStoreId()
- * @method Zipmoney_ZipmoneyPayment_Model_StoreScope setStoreId()
+ * @category  zipMoney
+ * @package   zipmoney
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
  */
+
 class Zipmoney_ZipmoneyPayment_Model_StoreScope extends Varien_Object
 {
-    /**
-     * merchant_id
-     * merchant_key
-     * scope    - default/websites/stores
-     * scope_id
-     * store_id - from quote/order
-     * matched_scopes
-     */
+  /**
+   * @var string
+   */
+  protected $_matchedScopes = null;
 
-    protected $_aMatchedScopes = null;
+  /**
+   * Returns the matched scopes by merchant_id
+   *
+   * @param null $merchantId
+   * @return array|null
+   */
+  public function getMatchedScopes($merchantId = null)
+  {
+    if (!$this->_matchedScopes) {
+      if ($merchantId === null) {
+          $merchantId = $this->getMerchantId();
+      }
+      $this->_matchedScopes = $this->_getScopesByMerchantId($merchantId);
+    }
+    return $this->_matchedScopes;
+  }
 
-    /**
-     * get matched scopes by merchant_id
-     *
-     * @param null $iMerchantId
-     * @return array|null
-     */
-    public function getMatchedScopes($iMerchantId = null)
-    {
-        if (!$this->_aMatchedScopes) {
-            if ($iMerchantId === null) {
-                $iMerchantId = $this->getMerchantId();
-            }
-            $this->_aMatchedScopes = $this->_getScopesByMerchantId($iMerchantId);
-        }
-        return $this->_aMatchedScopes;
+  /**
+   * Returns Scopes (scope/scope_id) on websites level
+   *
+   * @param $merchantId
+   * @return array|null
+   */
+  protected function _getScopesByMerchantId($merchantId)
+  {
+    if (!$merchantId) {
+      return null;
     }
 
-    /**
-     * get Scopes (scope/scope_id) on websites level
-     *
-     * @param $iMerchantId
-     * @return array|null
-     */
-    protected function _getScopesByMerchantId($iMerchantId)
-    {
-        if (!$iMerchantId) {
-            return null;
-        }
+    $matched = array();
+    $websites = Mage::app()->getWebsites();
+    foreach ($websites as $website) {
+      $path = Zipmoney_ZipmoneyPayment_Model_Config::PAYMENT_ZIPMONEY_PAYMENT_ID;
+      $webMid = Mage::app()->getWebsite($website->getId())->getConfig($path);
 
-        $aMatched = array();
-        $cWebsites = Mage::app()->getWebsites();
-        foreach ($cWebsites as $oWebsite) {
-            $vPath = Zipmoney_ZipmoneyPayment_Model_Config::PAYMENT_ZIPMONEY_PAYMENT_ID;
-            $iWebMId = Mage::app()->getWebsite($oWebsite->getId())->getConfig($vPath);
-
-            if ($iMerchantId != $iWebMId) {
-                continue;
-            }
-
-            /**
-             * todo: will need to check if zipMoney is enabled on this website
-             */
-
-            $aScope = array(
-                'scope' => 'websites',
-                'scope_id' => $oWebsite->getId(),
-            );
-            $aMatched[] = $aScope;
-        }
-
-        $this->_aMatchedScopes = $aMatched;
-        return $this->_aMatchedScopes;
+      if ($merchantId != $webMid) {
+          continue;
+      }
+      /**
+       * todo: will need to check if zipMoney is enabled on this website
+       */
+      $scope = array(
+          'scope' => 'websites',
+          'scope_id' => $website->getId(),
+      );
+      $matched[] = $scope;
     }
 
-    /**
-     * get current scope
-     *
-     * @return array
-     */
-    public function getCurrentScope()
-    {
-        if (!$this->getScope()) {
-            $vWebsiteCode = Mage::app()->getRequest()->getParam('website');
-            if ($vWebsiteCode) {
-                // from magento admin
-                $oWebsite = Mage::getModel('core/website')->load($vWebsiteCode);
-                $this->setScope('websites');
-                $this->setScopeId($oWebsite->getId());
-            } else {
-                // get scope based on current merchant_id (when 'configuration_updated' notification comes)
-                $aMatched = $this->_getScopesByMerchantId($this->getMerchantId());
-                if ($aMatched && is_array($aMatched) && count($aMatched)) {
-                    foreach ($aMatched as $aItem) {
-                        // get/return the first matched scope
-                        $this->setScope($aItem['scope']);
-                        $this->setScopeId($aItem['scope_id']);
-                        break;
-                    }
-                } else {
-                    // from frontend
-                    $oWebsite = Mage::app()->getWebsite();
-                    $this->setScope('websites');
-                    $this->setScopeId($oWebsite->getId());
-                }
-            }
+    $this->_matchedScopes = $matched;
+    return $this->_matchedScopes;
+  }
+
+  /**
+   * Get current scope
+   *
+   * @return array
+   */
+  public function getCurrentScope()
+  {
+    if (!$this->getScope()) {
+      $websiteCode = Mage::app()->getRequest()->getParam('website');
+      if ($websiteCode) {
+        // from magento admin
+        $website = Mage::getModel('core/website')->load($websiteCode);
+        $this->setScope('websites');
+        $this->setScopeId($website->getId());
+      } else {
+        // get scope based on current merchant_id (when 'configuration_updated' notification comes)
+        $matched = $this->_getScopesByMerchantId($this->getMerchantId());
+        if ($matched && is_array($matched) && count($matched)) {
+          foreach ($matched as $item) {
+            // get/return the first matched scope
+            $this->setScope($item['scope']);
+            $this->setScopeId($item['scope_id']);
+            break;
+          }
+        } else {
+          // from frontend
+          $website = Mage::app()->getWebsite();
+          $this->setScope('websites');
+          $this->setScopeId($website->getId());
         }
-        $aScope = array(
-            'scope' => $this->getScope(),
-            'scope_id' => $this->getScopeId(),
-        );
-        return $aScope;
+      }
     }
+    $scope = array(
+      'scope' => $this->getScope(),
+      'scope_id' => $this->getScopeId(),
+    );
+    return $scope;
+  }
 }

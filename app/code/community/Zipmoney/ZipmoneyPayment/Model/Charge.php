@@ -12,28 +12,32 @@ use \zipMoney\ApiException;
 class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
 
   /**
-   * State helper variables
    * @var string
    */
-  protected $_chargeResult = '';
-
   protected $_apiClass = '\zipMoney\Api\ChargesApi';
-
+  /**
+   * @var string
+   */
   protected $_response = null;
 
   /**
    * Set quote and config instances
+   *
    * @param array $params
    */
   public function __construct($params = array())
-  {
+  {   
+    parent::__construct($params);
+
     if (isset($params['order'])) {
       if($params['order'] instanceof Mage_Sales_Model_Order){
         $this->_order = $params['order'];
       } else {
         Mage::throwException('Order instance is required.');
       }
-    }
+    }    
+
+    $this->setApi($this->_apiClass);
 
     if (isset($params['api_class'])) {
       if(class_exists($params['api_class'])){
@@ -43,11 +47,6 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
         Mage::throwException("Invalid Api Class [ ".$params['api_class']." ]");
       }
     }
-
-
-    $this->setApi($this->_apiClass);
-
-    parent::__construct($params);
 
   }
 
@@ -66,13 +65,11 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     return $this;
   }
 
-
-
   /**
    * Prepare quote for customer registration and customer order submit
    * and restore magento customer data from quote
    *
-   * @return Mage_Paypal_Model_Express_Checkout
+   * @return Zipmoney_ZipmoneyPayment_Model_Charge
    */
   protected function _prepareNewCustomerQuote()
   {
@@ -144,7 +141,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   /**
    * Prepare quote for customer order submit
    *
-   * @return Mage_Paypal_Model_Express_Checkout
+   * @return Zipmoney_ZipmoneyPayment_Model_Charge
    */
   protected function _prepareCustomerQuote()
   {
@@ -192,26 +189,25 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   }
 
   /**
-   * Involve new customer to system
+   * Involves new customer to system
    *
-   * @return Zipmoney_ZipmoneyPayment_Model_Express_Checkout
+   * @return Zipmoney_ZipmoneyPayment_Model_Charge
    */
   protected function _involveNewCustomer()
   {
-      $customer = $this->_quote->getCustomer();
-      if ($customer->isConfirmationRequired()) {
-        $customer->sendNewAccountEmail('confirmation');
-        $url = Mage::helper('customer')->getEmailConfirmationUrl($customer->getEmail());
-        $this->getCustomerSession()->addSuccess(
-            Mage::helper('customer')->__('Account confirmation is required. Please, check your e-mail for confirmation link. To resend confirmation email please <a href="%s">click here</a>.', $url)
-        );
-      } else {
-        $customer->sendNewAccountEmail();
-          //$this->getCustomerSession()->loginById($customer->getId());
-      }
-      return $this;
+    $customer = $this->_quote->getCustomer();
+    if ($customer->isConfirmationRequired()) {
+      $customer->sendNewAccountEmail('confirmation');
+      $url = Mage::helper('customer')->getEmailConfirmationUrl($customer->getEmail());
+      $this->getCustomerSession()->addSuccess(
+          Mage::helper('customer')->__('Account confirmation is required. Please, check your e-mail for confirmation link. To resend confirmation email please <a href="%s">click here</a>.', $url)
+      );
+    } else {
+      $customer->sendNewAccountEmail();
+      $this->getCustomerSession()->loginById($customer->getId());
+    }
+    return $this;
   }
-
 
   /**
    * Make sure addresses will be saved without validation errors
@@ -227,6 +223,11 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     }
   }
 
+  /**
+   * Make sure addresses will be saved without validation errors
+   *
+   * @throws Mage_Core_Exception
+   */
   protected function _verifyOrderState()
   {
     $currentState = $this->_order->getState();
@@ -234,10 +235,13 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     if ($currentState != Mage_Sales_Model_Order::STATE_NEW) {
       Mage::throwException($this->_helper->__('Invalid order state.'));
     }
-
   }
 
-
+  /**
+   * Checks if transaction exists 
+   *
+   * @throws Mage_Core_Exception
+   */
   protected function _checkTransactionExists($txnId)
   {
     $payment = $this->_order->getPayment();
@@ -249,8 +253,13 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
       }
     }
   }
-
-
+  
+  /**
+   * Checks if transaction exists 
+   *
+   * @param string $txnId
+   * @throws Mage_Core_Exception
+   */
   protected function _authorise($txnId)
   {
     // Check if order has valid state
@@ -275,9 +284,15 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     if (!$this->_order->getEmailSent()) {
       $this->_order->sendNewOrderEmail();
     }
-
   }
 
+  /**
+   * Captures the charge
+   *
+   * @param string $txnId
+   * @param boolean $isAuthAndCapture
+   * @throws Mage_Core_Exception
+   */
   protected function _capture($txnId, $isAuthAndCapture = false)
   {
     /* If the capture has a corresponding authorisation before
@@ -356,7 +371,14 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     }
   }
 
-
+  /**
+   * Handles the charge response and captures/authorises the charge based on state
+   *
+   * @param zipMoney\Model\Charge $charge
+   * @param boolean $isAuthAndCapture
+   * @return zipMoney\Model\Charge 
+   * @throws Mage_Core_Exception
+   */
   protected function _chargeResponse($charge, $isAuthAndCapture)
   {
     switch ($charge->getState()) {
@@ -382,12 +404,10 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     return $charge;
   }
 
-
   /**
-   * Create quote in Zip side if not existed, and request for redirect url
+   * Charges the customer against the order
    *
-   * @param $quote
-   * @return null
+   * @return zipMoney\Model\Charge 
    * @throws Mage_Core_Exception
    */
   public function charge()
@@ -423,32 +443,22 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
       }
 
       $this->_chargeResponse($charge,false);
-
-    } catch(ApiException $e){
-      $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
-
-      $message = $this->_helper->__("Could not process the payment");
-
-      if($e->getCode() == 402 && 
-        $mapped_error_code = $this->_config->getMappedErrorCode($e->getResponseObject()->getError()->getCode())){
-        $message = $this->_helper->__('The payment was declined by Zip.(%s)',$mapped_error_code);
-      }
-
+      
+     } catch(ApiException $e){
+      list($apiError, $message, $logMessage) = $this->_handleException($e);  
       // Cancel the order
-      $this->_helper->cancelOrder($this->_order,$e->getResponseObject()->getError()->getMessage());
+      $this->_helper->cancelOrder($this->_order,$apiError);
       Mage::throwException($message);
-
     } 
-
     return $charge;
   }
 
-
   /**
-   * Create quote in Zip side if not existed, and request for redirect url
+   * Refunds the charge.
    *
-   * @param $quote
-   * @return null
+   * @param float $amount
+   * @param string $reason
+   * @return zipMoney\Model\Refund 
    * @throws Mage_Core_Exception
    */
   public function refundCharge($amount, $reason)
@@ -466,42 +476,32 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     $this->_logger->debug("Refund Payload:- " . $this->_helper->json_encode($payload));
     
     try {
-        $refund = $this->getApi()
-                       ->refundsCreate($payload,$this->genIdempotencyKey());
+      $refund = $this->getApi()
+                     ->refundsCreate($payload,$this->genIdempotencyKey());
 
-        $this->_logger->debug("Refund Response:- ".$this->_helper->json_encode($refund));
+      $this->_logger->debug("Refund Response:- ".$this->_helper->json_encode($refund));
 
-        if(isset($response->error)){
-          Mage::throwException($this->_helper->__('Could not create the refund'));
-        }
-
-        if(!$refund->getId()){
-          Mage::throwException($this->_helper->__('Invalid Refund'));
-        }
-    } catch(ApiException $e){
-      $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
-
-      $message = $this->_helper->__("Could not process the payment");
-
-      if($e->getCode() == 402 && 
-        $mapped_error_code = $this->_config->getMappedErrorCode($e->getResponseObject()->getError()->getCode())){
-        $message = $this->_helper->__('The payment was declined by Zip.(%s)',$mapped_error_code);
+      if(isset($response->error)){
+        Mage::throwException($this->_helper->__('Could not create the refund'));
       }
 
-      $order->addStatusHistoryComment($e->getResponseObject()->getError()->getMessage())
-            ->save();
-      // Cancel the order
+      if(!$refund->getId()){
+        Mage::throwException($this->_helper->__('Invalid Refund'));
+      }    
+      return $refund;
+    } catch(ApiException $e){
+      list($apiError, $message, $logMessage) = $this->_handleException($e);  
+      $this->_order->addStatusHistoryComment($logMessage)
+                   ->save(); 
       Mage::throwException($message);
     } 
-
-    return $refund;
   }
 
   /**
-   * Create quote in Zip side if not existed, and request for redirect url
+   * Captures the charge.
    *
-   * @param $quote
-   * @return null
+   * @param float $amount
+   * @return zipMoney\Model\Charge 
    * @throws Mage_Core_Exception
    */
   public function captureCharge($amount)
@@ -517,48 +517,34 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
    
     try {
 
-        $charge = $this->getApi()
-                       ->chargesCapture($this->_order->getPayment()->getZipmoneyChargeId(),$payload,$this->genIdempotencyKey());
+      $charge = $this->getApi()
+                     ->chargesCapture($this->_order->getPayment()->getZipmoneyChargeId(),$payload,$this->genIdempotencyKey());
 
-        $this->_logger->debug("Capture Charge Response:- ".$this->_helper->json_encode($charge));
+      $this->_logger->debug("Capture Charge Response:- ".$this->_helper->json_encode($charge));
 
-        if(isset($response->error)){
-          Mage::throwException($this->_helper->__('Could not capture the charge'));
-        }
-
-        if(!$charge->getState()){
-          Mage::throwException($this->_helper->__('Invalid Charge'));
-        }
-
-        $this->_logger->debug($this->_helper->__("Charge State:- %s",$charge->getState()));
-    } catch(ApiException $e){
-      $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
-
-      $message = $this->_helper->__("Could not process the payment");
-
-      if($e->getCode() == 402 && 
-        $mapped_error_code = $this->_config->getMappedErrorCode($e->getResponseObject()->getError()->getCode())){
-        $message = $this->_helper->__('The payment was declined by Zip.(%s)',$mapped_error_code);
+      if(isset($response->error)){
+        Mage::throwException($this->_helper->__('Could not capture the charge'));
       }
-      
-      // Cancel the order
-      $order->addStatusHistoryComment($e->getResponseObject()->getError()->getMessage())
-            ->save();   
 
-      // Cancel the order
+      if(!$charge->getState()){
+        Mage::throwException($this->_helper->__('Invalid Charge'));
+      }
+
+      $this->_logger->debug($this->_helper->__("Charge State:- %s",$charge->getState()));    
+      return $charge;
+    } catch(ApiException $e){
+      list($apiError, $message, $logMessage) = $this->_handleException($e);  
+      $this->_order->addStatusHistoryComment($logMessage)
+                   ->save(); 
       Mage::throwException($message);
     } 
 
-
-    return $charge;
   }
 
-
   /**
-   * Create quote in Zip side if not existed, and request for redirect url
+   * Cancels the charge.
    *
-   * @param $quote
-   * @return null
+   * @return zipMoney\Model\Charge 
    * @throws Mage_Core_Exception
    */
   public function cancelCharge()
@@ -584,44 +570,29 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
       }
 
       $this->_logger->debug($this->_helper->__("Charge State:- %s",$charge->getState()));
+
+      return $charge;
     } catch(ApiException $e){
-      $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
-
-      $message = $this->_helper->__("Could not process the payment");
-
-      if($e->getCode() == 402 && 
-        $mapped_error_code = $this->_config->getMappedErrorCode($e->getResponseObject()->getError()->getCode())){
-        $message = $this->_helper->__('The payment was declined by Zip.(%s)',$mapped_error_code);
-      }
-
-      $order->addStatusHistoryComment($e->getResponseObject()->getError()->getMessage())
-            ->save();
-      // Cancel the order
+      list($apiError, $message, $logMessage) = $this->_handleException($e);  
+      $this->_order->addStatusHistoryComment($logMessage)
+                   ->save(); 
       Mage::throwException($message);
     } 
-
-
-    return $charge;
   }
 
   /**
-   * Place the order and recurring payment profiles when customer returned from paypal
-   * Until this moment all quote data must be valid
+   * Places the order.
    *
-   * @param string $token
-   * @param string $shippingMethodCode
+   * @return zipMoney\Model\Charge 
+   * @throws Mage_Sales_Model_Order
    */
   public function placeOrder()
   {
-    // $order = Mage::getSingleton("sales/order")->loadByIncrementId("145000246");
-    // $this->_order = $order;
-    // return $order;
     $checkoutMethod = $this->getCheckoutMethod();
 
     $this->_logger->debug(
       $this->_helper->__('Quote Grand Total:- %s Quote Customer Id:- %s Checkout Method:- %s', $this->_quote->getGrandTotal(),$this->_quote->getCustomerId(),$checkoutMethod)
     );
-
 
     $isNewCustomer = false;
     switch ($checkoutMethod) {
@@ -682,5 +653,4 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   
     return $order;
   }
-
 }

@@ -1,9 +1,11 @@
 <?php
 /**
- * @category  Aligent
- * @author    Andi Han <andi@aligent.com.au>
- * @copyright 2015 Aligent Consulting.
- * @link      http://www.aligent.com.au/
+ * @category  zipMoney
+ * @package   zipmoney
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2017 zipMoney Payments.
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.zipmoney.com.au/
  */
 
 

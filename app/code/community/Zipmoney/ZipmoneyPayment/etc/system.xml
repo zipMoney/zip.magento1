@@ -96,7 +96,7 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
                                 </incontext_checkout>
-                                <sort_order translate="label">
+                             <!--    <sort_order translate="label">
                                     <label>Sort Order</label>
                                     <tooltip>The order which zipMoney appears as a payment method at checkout. zipMoney recommends 0 to increase sales and conversions</tooltip>
                                     <frontend_type>text</frontend_type>
@@ -105,7 +105,7 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
                                     <frontend_class>validate-number</frontend_class>
-                                </sort_order>
+                                </sort_order> -->
                                 <log_setting translate="label">
                                     <label>Log Setting</label>
                                     <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>

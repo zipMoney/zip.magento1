@@ -6,7 +6,6 @@
 
 package_yaml_version: '0.0'
 
-
 ## version_ids is an array of Magento Connect package formats to create
 ## 1 = Pre-1.5.0.0
 ## 2 = 1.5.0.0 & later
@@ -55,7 +54,7 @@ authors:
 ##################
 
 depends_php_min: 5.3.0
-depends_php_max: 7.1.0
+depends_php_max: 5.6.30
 
 depends:
   package:
@@ -100,13 +99,13 @@ contents:
   ## @see \Mage_Connect_Package_Target::_getTargetMap
   path:
     - Zipmoney/ZipmoneyPayment
-    - modules/Zipmoney_Payment.xml
+    - modules/Zipmoney_ZipmoneyPayment.xml
     - adminhtml/default/default/layout/zipmoneypayment.xml
     - frontend/base/default/layout/zipmoney
     - frontend/base/default/template/zipmoney
     - frontend/base/default/zipmoney
     - Zipmoney
-    - js/zipmoney
+    - js/zipmoney/dist
 
   ## type can either be 'file' or 'dir'. Directories are added recursively.
   type:

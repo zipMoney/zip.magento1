@@ -8,27 +8,33 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract{
+class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
+{
 
   /**
-   * State helper variables
    * @var string
    */
   protected $_redirectUrl = '';
+  /**
+   * @var string
+   */
   protected $_checkoutId = '';
-
   /**
    * zipMoney Checkouts Api Class
    *
    * @var string
    */
   protected $_apiClass = '\zipMoney\Api\CheckoutsApi';
-
+  /**
+   * @const string
+   */
   const STATUS_MAGENTO_AUTHORIZED = "zip_authorised";
 
   /**
-   * Set quote and config instances
+   * Sets the quote and api class. Calls parent constructor
+   *
    * @param array $params
+   * @throws Mage_Core_Exception
    */
   public function __construct($params = array())
   {
@@ -41,23 +47,19 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
       }
     }
 
-    $this->setApi($this->_apiClass);
-
     parent::__construct($params);
-
+    
+    $this->setApi($this->_apiClass);
   }
 
-
   /**
-   * Create quote in Zip side if not existed, and request for redirect url
+   * Starts the checkout process by making checkout api call to the zipMoney API endpoint.
    *
-   * @param $quote
-   * @return null
    * @throws Mage_Core_Exception
+   * @return \zipMoney\Model\Checkout
    */
   public function start()
   {
-
     if (!$this->_quote || !$this->_quote->getId()) {
       Mage::throwException(Mage::helper('zipmoneypayment')->__('The quote does not exist.'));
     }
@@ -87,14 +89,13 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
     if (!$this->_quote->getGrandTotal() && !$this->_quote->hasNominalItems()) {
       Mage::throwException($this->_helper->__('Cannot process the order due to zero amount.'));
     }
+   
+    try { 
+      $this->_quote->reserveOrderId()->save();
 
-    $this->_quote->reserveOrderId()->save();
+      $request = $this->_payload->getCheckoutPayload($this->_quote);
 
-    $request = $this->_payload->getCheckoutPayload($this->_quote);
-
-    $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request));
-
-    try {
+      $this->_logger->debug("Checkout Request:- ".$this->_helper->json_encode($request));
 
       $checkout = $this->getApi()->checkoutsCreate($request);
 
@@ -109,24 +110,33 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
       $this->_quote->setZipmoneyCid($this->_checkoutId)
                    ->save();
 
-      $this->_redirectUrl = $checkout->getUri();
-    } catch(\zipMoney\ApiException $e){
-      $this->_logger->debug("Errors:- ".json_encode($e->getResponseBody()));      
-      Mage::throwException($this->_helper->__('An error occurred while to requesting the redirect url.'));
-    } 
+      $this->_redirectUrl = $checkout->getUri();    
 
-    return $checkout;
+      return $checkout;
+
+    } catch(\zipMoney\ApiException $e){
+      list($apiError, $message, $logMessage) = $this->_handleException($e);  
+      throw Mage::exception('Mage_Core',$logMessage,1000);
+    } 
   }
 
-
+  /**
+   * Returns the zipMoney Redirect Url
+   *
+   * @return string
+   */
   public function getRedirectUrl()
   {
     return $this->_redirectUrl;
   }
 
+  /**
+   * Returns the zipMoney Checkout Id
+   *
+   * @return string
+   */
   public function getCheckoutId()
   {
     return $this->_checkoutId;
   }
-
 }
