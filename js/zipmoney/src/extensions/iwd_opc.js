@@ -62,7 +62,7 @@ Zip_IWD_OPC.prototype = {
       }
     }
   },
-  onError: function(response){ 
+  onError: function(args){ 
     
     if(this._isV6){
       Singleton.get(OnePage).hideLoader(Singleton.get(OnePage).sectionContainer);
@@ -71,8 +71,8 @@ Zip_IWD_OPC.prototype = {
       IWD.OPC.Checkout.unlockPlaceOrder();
       IWD.OPC.saveOrderStatus = false;
     }
-
-    alert("An error occurred while getting the redirect url from zipMoney");
+    
+    this.super.showError(args);
   }
 }
 
