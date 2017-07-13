@@ -51,14 +51,14 @@
             </zipmoneypayment>
         </models>
         <resources>
-            <zipmoneypayment_setup>
+            <zipmoney_setup>
                 <setup>
                     <module>Zipmoney_ZipmoneyPayment</module>
                 </setup>
                 <connection>
                     <use>core_setup</use>
                 </connection>
-            </zipmoneypayment_setup>
+            </zipmoney_setup>
             <zipmoneypayment_write>
                 <connection>
                     <use>core_write</use>
@@ -105,7 +105,7 @@
                         <method>validateOrder</method>
                     </zipmoney_checkzipMoneycid>
                 </observers>
-            </checkout_type_onepage_save_order> 
+            </checkout_type_onepage_save_order>
             <sales_order_save_before>
                 <observers>
                     <zipmoney_set_order_invoice_action_flag_observer>
@@ -219,7 +219,7 @@
             </zipmoney_messages>
         </payment>
     </default>
-	
+
     <phpunit>
         <suite>
             <modules>
