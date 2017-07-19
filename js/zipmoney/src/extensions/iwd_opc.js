@@ -20,9 +20,12 @@ Zip_IWD_OPC.prototype = {
       if(typeof IWD.OPC != 'undefined'){
         this._isV6 = false;
         IWD.OPC.Plugin.event('saveOrder',function(){
-          IWD.OPC.Checkout.saveOrderUrl = null;
-          _this.super.checkout();
-          return true;
+          if(window.payment.currentMethod == "zipmoneypayment"){
+            IWD.OPC.Checkout.saveOrderUrl = null;
+            _this.super.checkout();
+            Event.stop(e);
+            return true;
+          }
         });
       }
     }
