@@ -2,18 +2,17 @@
 abstract class Zipmoney_ZipmoneyPayment_Helper_Abstract extends Mage_Core_Helper_Abstract {
 
   /**
-   * @var Mage_Customer_Model_Session
+   * @var Zipmoney_ZipmoneyPayment_Model_Logger
    */
   protected $_logger;
   
   /**
-   * @var Mage_Customer_Model_Session
+   * @var Zipmoney_ZipmoneyPayment_Model_Config
    */
   protected $_config;
   
   /**
    * Set quote and config instances
-   * @param array $params
    */
   public function __construct()
   {   

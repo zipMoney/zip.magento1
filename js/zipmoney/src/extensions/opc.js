@@ -11,7 +11,7 @@ Zip_Mage_Checkout.prototype = {
   },
   setup: function(superClass){
     this.super = superClass;
-    var _this = this;
+    var _this = this;    
     Payment.prototype.save = Payment.prototype.save.wrap(function(paymentSave) {
       _this._payment = this;
       var validator = new Validation(this.form);
@@ -19,24 +19,14 @@ Zip_Mage_Checkout.prototype = {
       if (this.validate() && validator.validate()) {
         if (this.currentMethod=='zipmoneypayment'){
           checkout.setLoadWaiting('payment');
-           // _this.checkout();
-
-          var request = new Ajax.Request(
-                this.saveUrl,
-                {
-                  method:'post',
-                  onSuccess: _this.onSuccess.bind(_this),
-                  onFailure: checkout.ajaxFailure.bind(checkout),
-                  parameters: Form.serialize(this.form)
-                }
-             );
+          _this.checkout();
         } else{
-          save(); //return default method
+          paymentSave(); //return default method
         }
       }
     });
   },
-  onSuccess: function(transport) {
+  onSuccess: function(transport,resolve,reject) {
 
     if (transport && transport.responseText){
       try{
@@ -55,7 +45,7 @@ Zip_Mage_Checkout.prototype = {
             for (var i=0;i<fields.length;i++) {
                 var field = null;
                 if (field = $(fields[i])) {
-                    Validation.ajaxError(field, response.error);
+                  Validation.ajaxError(field, response.error);
                 }
             }
             return;
@@ -66,37 +56,65 @@ Zip_Mage_Checkout.prototype = {
             alert(response.error);
         }
         return;
+    } else if(response.redirect_uri){    
+      resolve({
+        data: {redirect_uri: response.redirect_uri}
+      });
+    } else {
+      reject();
     }
 
     this._transport = transport;
-    this.checkout(transport);
   },
   onComplete: function(response){    
     this._payment.resetLoadWaiting(this._transport);
     if(response.state == "approved"){
-      this._payment.nextStep(this._transport);
-    } else if(response.state == "referred"){
-      location.href = this.options.redirectUrl + "?result=referred&checkoutId=" + response.checkoutId;
+      if(this.super.options.redirectAfterPayment == 1)
+      {
+        this.setOverlay();
+        location.href = this.super.options.redirectUrl + "?result=approved&checkoutId=" + response.checkoutId;
+      } else {
+        this._payment.nextStep(this._transport);
+      }
+    } else if(response.state == "referred"){        
+      this.setOverlay();
+      location.href = this.super.options.redirectUrl + "?result=referred&checkoutId=" + response.checkoutId;
     }
   },
-  onError: function(response){       
-    alert("An error occurred while getting the redirect url from zipMoney");
+  setOverlay:function(){
+    var myDiv = new Element('div');
+    myDiv.update("<br/>Please wait. You are being redirected...")
+    myDiv.addClassName("zipmoneypayment-overlay");
+    $(document.body).insert(myDiv);
+  },
+  onError: function(args){       
+    var error = "An error occurred while trying to checkout with zip.";
+    
+    // Check if the response object has the error text
+    if(args.detail.responseJSON.error){
+      error = args.detail.responseJSON.error;
+    }
+
+    alert(error);    
+
     this._payment.resetLoadWaiting(this._transport);
   },
   onCheckout: function(resolve, reject, args){
-    // xr.post(this.checkoutUri).then(function(response){
-    //   console.log(response);
-    // }).catch(reject);
-
+    var _this = this;
     new Ajax.Request(
-            this.checkoutUri,
-            {
-              method:'post',
-              onSuccess: _this.onSuccess.bind(_this),
-              onFailure: checkout.ajaxFailure.bind(checkout),
-              parameters: Form.serialize(this.form)
-            }
-         );
+      this.super.options.checkoutUri,
+      {
+        method:'post',
+        onSuccess: function(response){
+          _this.onSuccess(response,resolve,reject).bind(_this);
+        },
+        onFailure: function(response){
+          checkout.ajaxFailure.bind(checkout);
+          reject(response);
+        },
+        parameters: Form.serialize(this._payment.form) + "&review=true"
+      }
+     );
   },
   checkout: function(){    
     Zip.Checkout.init({
@@ -104,8 +122,8 @@ Zip_Mage_Checkout.prototype = {
       checkoutUri: this.super.options.checkoutUri,
       redirectUri: this.super.options.redirectUrl,
       onComplete: this.onComplete.bind(this),
-      onError: this.onError.bind(this)
-      //onCheckout:this.onCheckout.bind(this)
+      onError: this.onError.bind(this),
+      onCheckout:this.onCheckout.bind(this)
     });
   }
 }

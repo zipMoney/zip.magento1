@@ -7,12 +7,11 @@
   <property name="global.vendor.dir" value="~/.composer/vendor/"/>
   <property name="vendor.dir" value="${project.basedir}/vendor/"/>
 
-
   <property name="bin.composer" value="composer --working-dir=${phing.dir}" />
   <property name="bin.phpunit"  value="${global.vendor.dir}bin/phpunit" />
   
   <property name="bin.mage-ci"  value="${vendor.dir}/bin/mage-ci" />
-  <property name="bin.magerun"  value="${vendor.dir}/bin/n98-magerun --root-dir=${magento.base_dir}" />  
+  <property name="bin.magerun"  value="${global.vendor.dir}/bin/n98-magerun --root-dir=${magento.base_dir}" />  
 
   <!-- A database name that's guaranteed to be safe -->
   <property name="db.name.safe" refid="db.name">
@@ -130,13 +129,14 @@
   </target>
 
   <target name="create_package" description="Package module into a magento connect package">
-    <exec dir="${magento.base_dir}" command="mkdir -p var/connect" />
-    <exec dir="${extension.base_dir}" command="sed -ri 's/\{version\}/${build}/gm' zipmoney.package.yaml" />
-    <exec dir="${extension.base_dir}" command="${bin.magerun} extension:create -f zipmoney.package.yaml" />
+    <exec dir="${extension.base_dir}" command="${bin.composer} install --no-dev" passthru="true" checkreturn="true" />
+    <exec dir="${magento.base_dir}"   command="mkdir -p var/connect" passthru="true" checkreturn="true" />
+    <exec dir="${extension.base_dir}" command="sed -ri 's/\{version\}/${env.branch}/gm' zipmoney.package.yaml" passthru="true" checkreturn="true" />
+    <exec dir="${extension.base_dir}" command="${bin.magerun} extension:create -f zipmoney.package.yaml" passthru="true" checkreturn="true" />
   </target>
 
   <target name="publish_to_s3">
-      <exec dir="${magento.base_dir}/var/connect" command="aws s3 cp Zipmoney_ZipmoneyPayment-v${env.branch}.tgz s3://zm-software-assets/Plugins/Magento1/Zipmoney_ZipmoneyPayment-v${env.branch}.tgz  --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers" passthru="true" checkreturn="true" />
+      <exec dir="${magento.base_dir}/var/connect" command="aws s3 cp Zipmoney_ZipmoneyPayment-${env.branch}.tgz s3://zm-software-assets/Plugins-Libraries/Plugins/Magento1/Zipmoney_ZipmoneyPayment-${env.branch}.tgz  --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers" passthru="true" checkreturn="true" />
   </target>
 
   <target name="package" description="Create">

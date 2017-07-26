@@ -1,0 +1,18 @@
+#payment_form_zipmoneypayment #zipmoney-learn-more{
+  display: inline !important;
+}
+
+.zipmoneypayment-overlay{
+  color: #fff;
+  width: 100%;
+  padding-top:20px;
+  height: 1213px;
+  position:absolute;
+  left: 0px;
+  top: 0px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  background:rgba(0, 0, 0, 0.74902);
+  z-index: 10000;
+}
