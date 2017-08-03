@@ -32,7 +32,8 @@ Zip_MageStore_OnestepCheckout.prototype = {
     });
   },
   onComplete: function(response){       
-    if(response.state == "approved" || response.state == "referred"){
+    if(response.state == "approved" || response.state == "referred"){      
+      this.super.setOverlay();
       location.href = this.super.options.redirectUrl + "?result=" + response.state + "&checkoutId=" + response.checkoutId;
     } else {    
       this.enablePlaceOrderButton();
@@ -44,11 +45,14 @@ Zip_MageStore_OnestepCheckout.prototype = {
   },
   disablePlaceOrderButton:function(){        
     this.super._zipBtn.removeClassName('onestepcheckout-btn-checkout').addClassName('place-order-loader');
-    this.super._zipBtn.disabled = true;
+    this.super._zipBtn.disabled = true;    
+    $('onestepcheckout-place-order-loading').show();
+
   }, 
   enablePlaceOrderButton:function(){
     this.super._zipBtn.removeClassName('place-order-loader').addClassName('onestepcheckout-btn-checkout');
-    this.super._zipBtn.disabled = false;
+    this.super._zipBtn.disabled = false;    
+    $('onestepcheckout-place-order-loading').hide();
   },
   magestoreCheckout: function(){    
     var payment_method = $RF(form, 'payment[method]');
@@ -60,7 +64,30 @@ Zip_MageStore_OnestepCheckout.prototype = {
     if(!already_placing_order && validator.validate() && checkpayment()) {
       already_placing_order = true;       
       this.disablePlaceOrderButton();
-      this.super.checkout();
+
+      try{
+        if (typeof save_address_url != 'undefined') {
+          var shipping_method = $RF(form, 'shipping_method');
+          var parameters = {shipping_method: shipping_method};
+
+          get_billing_data(parameters);
+          get_shipping_data(parameters);
+        
+          var request = new Ajax.Request(save_address_url, {
+            parameters: parameters,
+            onSuccess: function (transport) {
+              if (transport.status == 200) {
+                _this.super.checkout();
+              }
+            },
+            onFailure: function(transport){
+              alert("An error occurred while saving the address information");    
+            }
+          });
+        } 
+      } catch (e){
+        console.log(e);
+      }
     }
   },
   methodChange: function(){
