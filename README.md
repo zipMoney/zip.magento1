@@ -8,7 +8,7 @@
 #### To install using from a package (Magento Connect Manager):
 
 1. Click here to download the latest package release (.tgz): https://github.com/zipMoney/magento/releases/latest
-2. Visit System > Magento Conenct > Magento Connect Manager
+2. Visit System > Magento Connect > Magento Connect Manager
 3. Upload the zipMoney Magento package
 
 
