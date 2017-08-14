@@ -35,7 +35,6 @@ gulp.task('jshint', function() {
     .pipe(jshint.reporter('default'))
 });
 
-
 // Clean
 gulp.task('clean', function() {
   return del('js/zipmoney/dist/scripts');
