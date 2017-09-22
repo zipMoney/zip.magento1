@@ -19,12 +19,21 @@
                             <show_in_store>1</show_in_store>
                             <sort_order>10</sort_order>
                             <fields>
+                                <version translate="label">
+                                    <label>Version</label>
+                                    <frontend_type>label</frontend_type>                                    
+                                    <frontend_model>zipmoneypayment/version</frontend_model>
+                                    <sort_order>10</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                </version> 
                                 <active translate="label">
                                     <label>Enabled</label>
                                     <tooltip>Set to 'Yes' to enable zipMoney as a secure payment method on your website</tooltip>
                                     <frontend_type>select</frontend_type>
                                     <source_model>adminhtml/system_config_source_yesno</source_model>
-                                    <sort_order>10</sort_order>
+                                    <sort_order>20</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>1</show_in_store>
@@ -33,7 +42,7 @@
                                     <label>Title</label>
                                     <tooltip>Payment Method Title</tooltip>
                                     <frontend_type>text</frontend_type>
-                                    <sort_order>10</sort_order>
+                                    <sort_order>30</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
@@ -42,7 +51,7 @@
                                     <label>Private Key</label>
                                     <tooltip>Enter the zipMoney Merchant Private provided to you on setup of your Merchant Account. Note: may be different for 'Test' or 'Live' environment</tooltip>
                                     <frontend_type>text</frontend_type>
-                                    <sort_order>20</sort_order>
+                                    <sort_order>40</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
@@ -51,7 +60,7 @@
                                     <label>Public Key</label>
                                     <tooltip>Enter the zipMoney Merchant Public  Key provided to you on setup of your Merchant Account. Note: may be different for 'Sandbox' or 'Live' environment</tooltip>
                                     <frontend_type>text</frontend_type>
-                                    <sort_order>30</sort_order>
+                                    <sort_order>50</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
@@ -61,7 +70,7 @@
                                     <tooltip>Set to 'Live' to start accepting zipMoney payments on your website. Ensure your zipMoney ID and zipMoney Key are your 'Live' credentials if not in 'Test' mode</tooltip>
                                     <frontend_type>select</frontend_type>
                                     <source_model>zipmoneypayment/source_environment</source_model>
-                                    <sort_order>40</sort_order>
+                                    <sort_order>60</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
@@ -71,7 +80,7 @@
                                     <tooltip>zipPay/zipMoney</tooltip>
                                     <frontend_type>select</frontend_type>
                                     <source_model>zipmoneypayment/source_product</source_model>
-                                    <sort_order>40</sort_order>
+                                    <sort_order>70</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
@@ -81,7 +90,7 @@
                                     <tooltip></tooltip>
                                     <frontend_type>select</frontend_type>
                                     <source_model>zipmoneypayment/source_paymentAction</source_model>
-                                    <sort_order>50</sort_order>
+                                    <sort_order>80</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
@@ -91,7 +100,7 @@
                                     <tooltip> Enable Iframe checkout without redirecting to zipMoney </tooltip>
                                     <frontend_type>select</frontend_type>
                                     <source_model>adminhtml/system_config_source_yesno</source_model>
-                                    <sort_order>60</sort_order>
+                                    <sort_order>90</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
@@ -111,7 +120,7 @@
                                     <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>
                                     <source_model>zipmoneypayment/source_logSetting</source_model>
                                     <frontend_type>select</frontend_type>
-                                    <sort_order>80</sort_order>
+                                    <sort_order>100</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
@@ -120,7 +129,7 @@
                                     <label>Minimum Order Total</label>
                                     <tooltip>The minimum order total amount required to checkout</tooltip>
                                     <frontend_type>text</frontend_type>
-                                    <sort_order>80</sort_order>
+                                    <sort_order>110</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
