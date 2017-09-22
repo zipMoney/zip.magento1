@@ -224,7 +224,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   }
 
   /**
-   * Make sure addresses will be saved without validation errors
+   * Verify order states
    *
    * @throws Mage_Core_Exception
    */
@@ -232,7 +232,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
   {
     $currentState = $this->_order->getState();
 
-    if ($currentState != Mage_Sales_Model_Order::STATE_NEW) {
+    if (!in_array($currentState, array( Mage_Sales_Model_Order::STATE_NEW, Mage_Sales_Model_Order::STATE_PENDING_PAYMENT) ) ){
       Mage::throwException($this->_helper->__('Invalid order state.'));
     }
   }
@@ -426,7 +426,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
       $this->_logger->debug("Charge Response:- ".$this->_helper->json_encode($charge));
 
-      if(isset($response->error)){
+      if(isset($charge->error)){
         Mage::throwException($this->_helper->__('Could not create the charge'));
       }
 
@@ -481,7 +481,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
       $this->_logger->debug("Refund Response:- ".$this->_helper->json_encode($refund));
 
-      if(isset($response->error)){
+      if(isset($charge->error)){
         Mage::throwException($this->_helper->__('Could not create the refund'));
       }
 
@@ -522,7 +522,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
       $this->_logger->debug("Capture Charge Response:- ".$this->_helper->json_encode($charge));
 
-      if(isset($response->error)){
+      if(isset($charge->error)){
         Mage::throwException($this->_helper->__('Could not capture the charge'));
       }
 
@@ -561,7 +561,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
       $this->_logger->debug("Cancel Charge Response:- ".$this->_helper->json_encode($charge));
 
-      if(isset($response->error)){
+      if(isset($charge->error)){
         Mage::throwException($this->_helper->__('Could not cancel the charge'));
       }
 
