@@ -305,11 +305,9 @@ Zip_Idev_OnestepCheckout.prototype = {
 
     already_placing_order = false;
   
-    var url_save_billing = this.super.options.baseUrl + '/onestepcheckout/ajax/save_billing';
-    var url_set_methods = this.super.options.baseUrl + '/onestepcheckout/ajax/set_methods_separate';
-    console.log(url_save_billing);
-    console.log(url_set_methods);
-    
+    var url_save_billing = this.super.options.baseUrl + 'onestepcheckout/ajax/save_billing';
+    var url_set_methods = this.super.options.baseUrl + 'onestepcheckout/ajax/set_methods_separate';
+
     if(!form.validator.validate())  {
       Event.stop(e);
     } else if(!already_placing_order && $$('.loading-ajax').length <= 0 ) {
