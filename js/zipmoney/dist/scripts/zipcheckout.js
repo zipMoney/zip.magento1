@@ -464,7 +464,7 @@ Zip_Mage_Checkout.prototype = {
       _this._payment = this;
       var validator = new Validation(this.form);
 
-      if (this.validate() && validator.validate()) {
+      if (validator.validate()) {
         if (this.currentMethod=='zipmoneypayment'){
           checkout.setLoadWaiting('payment');
           _this.checkout();
@@ -560,7 +560,7 @@ Zip_Mage_Checkout.prototype = {
           checkout.ajaxFailure.bind(checkout);
           reject(response);
         },
-        parameters: Form.serialize(this._payment.form) + "&review=true"
+        parameters: Form.serialize(this._payment.form)
       }
      );
   },

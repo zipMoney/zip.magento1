@@ -1,0 +1,24 @@
+<layout version="0.1.0">
+  <checkout_cart_index>
+    <reference name="head">
+      <block type="core/text" name="zipmoney-checkout-js-lib">
+        <action method="setText" ifconfig="payment/zipmoneypayment/active">
+          <text helper="zipmoneypayment/getCheckoutJsLibUrl"/>
+        </action>
+      </block>
+    </reference>
+    <reference name="content">
+        <block type="zipmoneypayment/checkout" ifconfig="payment/zipmoneypayment/active" name="zipmoney.checkout" template="zipmoney/zipmoneypayment/checkout/onepage/opc.phtml">
+          <action method="setData">
+            <name>extension_name</name>
+            <value>Mage_Checkout</value>
+          </action>
+          <action method="setData">
+            <name>redirect_after_payment</name>
+            <value>1</value>
+          </action>
+        </block>
+      </reference>
+    <checkout_cart_index>
+</layout>
+
