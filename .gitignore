@@ -1,9 +1,0 @@
-/magento/
-/vendor/
-.DS_Store
-*.lock
-node_modules
-build.properties
-Capfile
-/config/
-/log/
