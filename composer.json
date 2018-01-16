@@ -19,15 +19,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/aligent/mageqa.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/aligent/n98-magerun.git"
         },
         {
             "type": "vcs",
-            "url": "git@github.com:gruenspar/MageCI.git"
+            "url": "https://github.com/firegento/MageCI.git"
         }
     ],
     "extra": {
