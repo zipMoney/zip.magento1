@@ -1,0 +1,15 @@
+<script>
+//<![CDATA[
+Event.observe(window,'load', function() {    
+  if(window.$zipCheckout!=undefined){
+    window.$zipCheckout.setup({
+      checkoutExtension:'idev_onestepcheckout',
+      methodCode: 'zipmoneypayment',
+      redirect: <?php echo $this->isRedirect(); ?>,    
+      loaderImageUrl:'<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif'); ?>',
+      checkoutUri:'<?php echo $this->getCheckoutUrl(); ?>',
+      redirectUrl:'<?php echo $this->getRedirectUrl(); ?>',
+    });
+  }
+});
+</script>
