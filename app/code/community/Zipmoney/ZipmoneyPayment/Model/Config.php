@@ -75,6 +75,10 @@ class Zipmoney_ZipmoneyPayment_Model_Config
    * @const 
    */
 	const PAYMENT_ZIPMONEY_DISPLAY_TITLE = 'payment/zipmoneypayment/display_title';
+    /**
+     * config Path Display Payment Order Status
+     */
+    const PAYMENT_ZIPMONEY_ORDER_SETTING = 'payment/zipmoneypayment/order_setting';
 	/**
 	 * Config Path Payment Method Logo
    * @const 
@@ -105,6 +109,11 @@ class Zipmoney_ZipmoneyPayment_Model_Config
    */
 	protected $_merchantEnv = null;
 
+    /**
+     * Order Status
+     * @var array
+     */
+	protected $_orderStatus = null;
 	/**
 	 * Retrieves the config value by scope
 	 *
@@ -149,7 +158,16 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 		}
 		return $this->_merchantPrivateKey;
 	}
-	
+    /**
+     *
+     */
+    public function getOrderState()
+    {
+        if(!$this->_orderStatus) {
+            $this->_orderStatus = trim(Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_ORDER_SETTING));
+        }
+        return $this->_orderStatus;
+    }
 	/**
 	 * Returns the  merchant public key
 	 *
