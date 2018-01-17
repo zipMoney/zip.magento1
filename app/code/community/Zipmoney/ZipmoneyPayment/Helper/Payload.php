@@ -276,7 +276,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       $shipping_address = $this->getOrder()->getShippingAddress();
 
       if($shipping_address){
-        if( $shipping_method = $$this->getOrder()->getShippingMethod()){    
+        if( $shipping_method = $this->getOrder()->getShippingMethod()){    
           $tracking = new OrderShippingTracking;
           $tracking->setNumber($this->getOrder()->getTrackingNumbers())
                    ->setCarrier($shipping_method);
