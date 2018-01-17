@@ -272,18 +272,23 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
     if($this->getQuote()){
       $shipping_address = $this->getQuote()->getShippingAddress();
     } else if($this->getOrder()) {
-
       $shipping_address = $this->getOrder()->getShippingAddress();
 
-      if($shipping_address){
-        if( $shipping_method = $$this->getOrder()->getShippingMethod()){    
-          $tracking = new OrderShippingTracking;
-          $tracking->setNumber($this->getOrder()->getTrackingNumbers())
-                   ->setCarrier($shipping_method);
+      /* Tracking Info Optional */
+      // if($shipping_address){
+      //   if( $shipping_method = $this->getOrder()->getShippingMethod()){    
+      //     $tracking = new OrderShippingTracking;
 
-          $shipping->setTracking($tracking);         
-        }
-      }
+      //     $tracking->setCarrier($shipping_method);
+
+      //     if(count($this->getOrder()->getTrackingNumbers())){
+      //       $tracking->setNumber(implode(",",$this->getOrder()->getTrackingNumbers()));
+      //     }
+
+
+      //     $shipping->setTracking($tracking);         
+      //   }
+      // }
     }
 
     if($shipping_address){  
