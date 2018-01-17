@@ -90,7 +90,7 @@ class Zipmoney_ZipmoneyPayment_CompleteController extends Zipmoney_ZipmoneyPayme
        
         } catch (Exception $e) {
           
-          $this->_getCheckoutSession()->addError($this->_helper->__('An error occurred while to completing the checkout.'));
+          $this->_getCheckoutSession()->addError($this->_helper->__('An error occurred during the checkout.'));
           $this->_logger->debug($e->getMessage());          
         }
 
