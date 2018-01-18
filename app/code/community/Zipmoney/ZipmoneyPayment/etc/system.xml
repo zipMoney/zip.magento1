@@ -125,6 +125,16 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
                                 </log_setting>
+                                <order_setting translate="label">
+                                    <label>Order Status</label>
+                                    <tooltip>Select Order Status</tooltip>
+                                    <source_model>zipmoneypayment/source_statusSetting</source_model>
+                                    <frontend_type>multiselect</frontend_type>
+                                    <sort_order>101</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                </order_setting>
                                 <minimum_total translate="label">
                                     <label>Minimum Order Total</label>
                                     <tooltip>The minimum order total amount required to checkout</tooltip>
