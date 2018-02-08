@@ -452,6 +452,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
             if ($charge->getId()) {
                 $this->_order->getPayment()
+                    ->setAdditionalInformation(array("receipt_number"=>$charge->getReceiptNumber()))
                     ->setZipmoneyChargeId($charge->getId())
                     ->save();
             }
