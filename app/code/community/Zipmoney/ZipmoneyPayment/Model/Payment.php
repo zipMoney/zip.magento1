@@ -21,6 +21,9 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
    * @var string
    */
 	protected $_formBlockType = 'zipmoneypayment/standard_form';
+
+  protected $_infoBlockType = 'zipmoneypayment/standard_info';
+
 	/**   
    * @var boolean
    */
