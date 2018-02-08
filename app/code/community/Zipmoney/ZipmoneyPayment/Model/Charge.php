@@ -35,8 +35,10 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     {
         parent::__construct($params);
 
-        $orderStateString = Mage::getSingleton('zipmoneypayment/config')->getOrderState();
+        $orderStateString  = Mage::getSingleton('zipmoneypayment/config')->getOrderState();        
+
         $this->_orderState = explode(',',$orderStateString);
+
         if (isset($params['order'])) {
             if ($params['order'] instanceof Mage_Sales_Model_Order) {
                 $this->_order = $params['order'];
@@ -239,13 +241,9 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     protected function _verifyOrderState()
     {
         $currentState = $this->_order->getState();
+       
         if (is_array($this->_orderState)){
             if(!in_array($currentState,$this->_orderState)) {
-                Mage::throwException($this->_helper->__('Invalid order state.'));
-            }
-        }
-        else {
-            if (!in_array($currentState, array(Mage_Sales_Model_Order::STATE_NEW, Mage_Sales_Model_Order::STATE_PENDING_PAYMENT))) {
                 Mage::throwException($this->_helper->__('Invalid order state.'));
             }
         }
@@ -452,6 +450,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
             if ($charge->getId()) {
                 $this->_order->getPayment()
+                    ->setAdditionalInformation(array("receipt_number"=>$charge->getReceiptNumber()))
                     ->setZipmoneyChargeId($charge->getId())
                     ->save();
             }

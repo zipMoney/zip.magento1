@@ -78,7 +78,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
     /**
      * config Path Display Payment Order Status
      */
-    const PAYMENT_ZIPMONEY_ORDER_SETTING = 'payment/zipmoneypayment/order_setting';
+    const PAYMENT_ZIPMONEY_ORDER_SETTING = 'payment/zipmoneypayment/validation_order_state';
 	/**
 	 * Config Path Payment Method Logo
    * @const 
