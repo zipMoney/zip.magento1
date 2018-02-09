@@ -74,7 +74,7 @@
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </environment>
+                                </environment> 
                                 <product translate="label">
                                     <label>Product</label>
                                     <tooltip>zipPay/zipMoney</tooltip>
@@ -104,37 +104,61 @@
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </incontext_checkout>
-                             <!--    <sort_order translate="label">
-                                    <label>Sort Order</label>
-                                    <tooltip>The order which zipMoney appears as a payment method at checkout. zipMoney recommends 0 to increase sales and conversions</tooltip>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>70</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                    <frontend_class>validate-number</frontend_class>
-                                </sort_order> -->
-                                <log_setting translate="label">
-                                    <label>Log Setting</label>
-                                    <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>
-                                    <source_model>zipmoneypayment/source_logSetting</source_model>
-                                    <frontend_type>select</frontend_type>
-                                    <sort_order>100</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                </log_setting>
+                                </incontext_checkout>   
                                 <minimum_total translate="label">
                                     <label>Minimum Order Total</label>
                                     <tooltip>The minimum order total amount required to checkout</tooltip>
                                     <frontend_type>text</frontend_type>
-                                    <sort_order>110</sort_order>
+                                    <sort_order>100</sort_order>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
                                     <frontend_class>validate-number</frontend_class>
-                                </minimum_total>
+                                </minimum_total>                                   
+                                <zipmoneypaymentadvanced  type="group" translate="label">
+                                    <label>Advanced Settings</label>                                        
+                                    <frontend_class>config-advanced</frontend_class>
+                                    <frontend_type>text</frontend_type>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>1</show_in_store>
+                                    <sort_order>110</sort_order>
+                                    <fields>
+                                     <!--    <sort_order translate="label">
+                                            <label>Sort Order</label>
+                                            <tooltip>The order which zipMoney appears as a payment method at checkout. zipMoney recommends 0 to increase sales and conversions</tooltip>
+                                            <frontend_type>text</frontend_type>
+                                            <sort_order>70</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>0</show_in_store>
+                                            <frontend_class>validate-number</frontend_class>
+                                        </sort_order> -->
+                                        <log_setting translate="label">
+                                            <label>Log Setting</label>
+                                            <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>
+                                            <source_model>zipmoneypayment/source_logSetting</source_model>
+                                            <frontend_type>select</frontend_type>
+                                            <sort_order>10</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>0</show_in_store>                                                
+                                            <config_path>payment/zipmoneypayment/log_setting</config_path>
+                                        </log_setting>
+                                        <validation_order_state translate="label">
+                                            <label>Validation Order State</label>
+                                            <tooltip>The order state magento assigns while creating an order. Used to validate against when an order is authorised/captured after being created.</tooltip>
+                                            <source_model>zipmoneypayment/source_statusSetting</source_model>
+                                            <frontend_type>select</frontend_type>
+                                            <sort_order>20</sort_order>
+                                            <show_in_default>1</show_in_default>
+                                            <show_in_website>1</show_in_website>
+                                            <show_in_store>0</show_in_store>                                            
+                                            <config_path>payment/zipmoneypayment/validation_order_state</config_path>
+                                        </validation_order_state>
+                                        
+                                    </fields>
+                                </zipmoneypaymentadvanced>
                             </fields>
                         </zipmoneypayment>
 
