@@ -58,6 +58,7 @@ zipCheckout.prototype = {
   },
   onComplete: function(response){    
     if(response.state == "approved" || response.state == "referred"){
+      this.setOverlay();
       location.href = this.options.redirectUrl + "?result=" + response.state + "&checkoutId=" + response.checkoutId;
     }
   },
@@ -95,6 +96,12 @@ zipCheckout.prototype = {
     });
 
     return extObj;
+  },  
+  setOverlay:function(){
+    var myDiv = new Element('div');
+    myDiv.update("<br/>Please wait. You are being redirected...")
+    myDiv.addClassName("zipmoneypayment-overlay");
+    $(document.body).insert(myDiv);
   },
   setup:function(config){
     var $this = this, ext, queryParams;
