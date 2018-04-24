@@ -301,20 +301,78 @@ Zip_Idev_OnestepCheckout.prototype = {
     this.super.showError(args);
 
   },
+  saveBilling: function(url, set_methods_url, update_payments){
+        var form = $('onestepcheckout-form');
+        var items = exclude_unchecked_checkboxes($$('input[name^=billing]').concat($$('select[name^=billing]')));
+        var names = items.pluck('name');
+        var values = items.pluck('value');
+        var parameters = {
+            shipping_method: $RF(form, 'shipping_method')
+        };
+
+
+        var street_count = 0;
+        for(var x=0; x < names.length; x++)    {
+            if(names[x] != 'payment[method]')    {
+
+                var current_name = names[x];
+
+                if(names[x] == 'billing[street][]')    {
+                    current_name = 'billing[street][' + street_count + ']';
+                    street_count = street_count + 1;
+                }
+
+                parameters[current_name] = values[x];
+            }
+        }
+
+        var use_for_shipping = $('billing:use_for_shipping_yes');
+
+        if(use_for_shipping && use_for_shipping.getValue() != '1')    {
+            var items = $$('input[name^=shipping]').concat($$('select[name^=shipping]'));
+            var shipping_names = items.pluck('name');
+            var shipping_values = items.pluck('value');
+            var shipping_parameters = {};
+            var street_count = 0;
+
+            for(var x=0; x < shipping_names.length; x++)    {
+                if(shipping_names[x] != 'shipping_method')    {
+                    var current_name = shipping_names[x];
+                    if(shipping_names[x] == 'shipping[street][]')    {
+                        current_name = 'shipping[street][' + street_count + ']';
+                        street_count = street_count + 1;
+                    }
+
+                    parameters[current_name] = shipping_values[x];
+                }
+            }
+        }
+
+
+      return new Ajax.Request(url, {
+        method: 'post',
+        parameters: parameters
+      });
+  },
   idevCheckout:function(e){
     var form = new VarienForm('onestepcheckout-form');
-    
+
     already_placing_order = false;
-    review = false;
-    reviewmodal = false;
+  
+    var url_save_billing = this.super.options.baseUrl + 'onestepcheckout/ajax/save_billing';
+    var url_set_methods = this.super.options.baseUrl + 'onestepcheckout/ajax/set_methods_separate';
 
     if(!form.validator.validate())  {
       Event.stop(e);
     } else if(!already_placing_order && $$('.loading-ajax').length <= 0 ) {
       already_placing_order = true;       
       this.showLoader();
-      this.disablePlaceOrderButton();
-      this.super.checkout();
+      this.disablePlaceOrderButton();    
+      var xhr = this.saveBilling(url_save_billing, url_set_methods, false);
+      var self = this;
+      xhr.options.onSuccess = function(){      
+        self.super.checkout();
+      }
     }
   }, 
   methodChange: function(){
