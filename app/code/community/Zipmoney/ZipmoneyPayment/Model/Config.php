@@ -49,7 +49,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	 * Config Path Payment Action 
    * @const 
    */
-	const PAYMENT_ZIPMONEY_PAYMENT_PAYMENT_ACTION = 'payment/zipmoneypayment/payment_action';
+	const PAYMENT_ZIPMONEY_PAYMENT_PAYMENT_MODE = 'payment/zipmoneypayment/payment_mode';
 	/**
 	 * Config Path Product Classification 
    * @const 

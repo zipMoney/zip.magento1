@@ -8,7 +8,7 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class Zipmoney_ZipmoneyPayment_Model_Source_PaymentAction 
+class Zipmoney_ZipmoneyPayment_Model_Source_PaymentMode
 {
   /**
    * Returns the payment action option array.
