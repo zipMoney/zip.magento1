@@ -453,7 +453,7 @@ Zip_IWD_OPC.prototype = {
     }
   },
   onComplete: function(response){     
-    if(response.state == "approved" || response.state == "referred"){      
+    if(response.state == "approved" || response.state == "referred"){
       location.href = this.super.options.redirectUrl + "?result=" + response.state + "&checkoutId=" + response.checkoutId;
     } else {
       if(this._isV6){
