@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Zipmoney_ZipmoneyPayment>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </Zipmoney_ZipmoneyPayment>
     </modules>
     <frontend>
@@ -176,7 +176,7 @@
                 <title>zipMoney - Buy Now, Pay Later</title>
                 <sort_order>0</sort_order>
                 <environment>sandbox</environment>
-                <payment_action>capture</payment_action>
+                <payment_mode>capture</payment_mode>
                 <incontext_checkout>1</incontext_checkout>
                 <minimum_total>1</minimum_total>
                 <detail_message>Interest Free and Flexible - get a decision in seconds!</detail_message>
