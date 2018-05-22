@@ -170,7 +170,6 @@
     <default>
         <payment>
             <zipmoneypayment>
-                <product>zipMoney</product>
                 <active>0</active>
                 <model>zipmoneypayment/payment</model>
                 <title>zipMoney - Buy Now, Pay Later</title>

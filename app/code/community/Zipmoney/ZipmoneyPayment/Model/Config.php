@@ -51,11 +51,6 @@ class Zipmoney_ZipmoneyPayment_Model_Config
    */
 	const PAYMENT_ZIPMONEY_PAYMENT_PAYMENT_MODE = 'payment/zipmoneypayment/payment_mode';
 	/**
-	 * Config Path Product Classification 
-   * @const 
-   */
-	const PAYMENT_ZIPMONEY_PAYMENT_PRODUCT = 'payment/zipmoneypayment/product';
-	/**
 	 * Config Path In-Context Checkout 
    * @const 
    */
@@ -78,12 +73,12 @@ class Zipmoney_ZipmoneyPayment_Model_Config
     /**
      * config Path Display Payment Order Status
      */
-    const PAYMENT_ZIPMONEY_ORDER_SETTING = 'payment/zipmoneypayment/validation_order_state';
+  const PAYMENT_ZIPMONEY_ORDER_SETTING = 'payment/zipmoneypayment/validation_order_state';
 	/**
 	 * Config Path Payment Method Logo
    * @const 
    */
-	const PAYMENT_METHOD_LOGO_ZIP = "https://d3k1w8lx8mqizo.cloudfront.net/logo/25px/";
+	const PAYMENT_METHOD_LOGO_ZIP = "https://d3k1w8lx8mqizo.cloudfront.net/logo/25px/zipmoney.png";
 	/**
 	 * Error Codes Map for Charge Error Codes
    * @var array
@@ -158,16 +153,16 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 		}
 		return $this->_merchantPrivateKey;
 	}
-    /**
-     *
-     */
-    public function getOrderState()
-    {
-        if(!$this->_orderStatus) {
-            $this->_orderStatus = trim(Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_ORDER_SETTING));
-        }
-        return $this->_orderStatus;
-    }
+  /**
+   *
+   */
+  public function getOrderState()
+  {
+      if(!$this->_orderStatus) {
+          $this->_orderStatus = trim(Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_ORDER_SETTING));
+      }
+      return $this->_orderStatus;
+  }
 	/**
 	 * Returns the  merchant public key
 	 *
@@ -204,16 +199,6 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 		return trim(Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_PAYMENT_PAYMENT_MODE)) === "capture";
 	}
 
-	/**
-	 * Returns the product classification(zipMoney|zipPay)
-	 *
-	 * @return string
-	 */
-	public function getProduct()
-	{		
-		$product = Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_PAYMENT_PRODUCT);
-		return $product ? $product : "zipmoney";
-	}
 
 	/**
 	 * Check if in-context checkout is active
@@ -252,7 +237,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	 */
 	public function getMethodLogo()
 	{		
-		return  self::PAYMENT_METHOD_LOGO_ZIP.strtolower($this->getProduct()).".png";
+		return  self::PAYMENT_METHOD_LOGO_ZIP;
 	}
 
 	/**
