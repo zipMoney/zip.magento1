@@ -54,7 +54,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	 * Config Path Product Classification 
    * @const 
    */
-	const PAYMENT_ZIPMONEY_PAYMENT_PRODUCT = 'payment/zipmoneypayment/product';
+//	const PAYMENT_ZIPMONEY_PAYMENT_PRODUCT = 'payment/zipmoneypayment/product';
 	/**
 	 * Config Path In-Context Checkout 
    * @const 
@@ -211,8 +211,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	 */
 	public function getProduct()
 	{		
-		$product = Mage::getStoreConfig(self::PAYMENT_ZIPMONEY_PAYMENT_PRODUCT);
-		return $product ? $product : "zipmoney";
+		return "zippay";
 	}
 
 	/**
