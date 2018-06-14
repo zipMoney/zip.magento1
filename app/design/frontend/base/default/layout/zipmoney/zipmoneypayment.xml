@@ -20,7 +20,7 @@
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>    
         </reference>
@@ -42,7 +42,7 @@
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>    
         </reference>
@@ -70,7 +70,7 @@
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>    
         </reference>
@@ -101,7 +101,7 @@
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>    
         </reference>
@@ -123,7 +123,7 @@
             <action method="addLinkRel"><rel>stylesheet</rel><href>//fonts.googleapis.com/css?family=Noto+Sans</href></action>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>    
         </reference>
@@ -150,7 +150,7 @@
             </block> 
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>  
         </reference> 
@@ -173,7 +173,7 @@
             </block>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>  
         </reference> 
@@ -201,7 +201,7 @@
             </block>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>  
         </reference> 
@@ -229,7 +229,7 @@
             </block>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>  
         </reference> 
@@ -256,7 +256,7 @@
             </block>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>  
         </reference>
@@ -280,7 +280,7 @@
             </block>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>  
         </reference> 
@@ -304,7 +304,7 @@
             </block>
             <block type="core/text" name="zipmoney-widgets-js">
                 <action method="setText" ifconfig="payment/zipmoneypayment/active">
-                    <text><![CDATA[<script src="//d3k1w8lx8mqizo.cloudfront.net/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
+                    <text><![CDATA[<script src="//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zipmoney-widgets-v1.min.js"></script>]]></text>
                 </action>
             </block>  
         </reference> 
