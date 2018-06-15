@@ -173,7 +173,7 @@
                 <product>zipMoney</product>
                 <active>0</active>
                 <model>zipmoneypayment/payment</model>
-                <title>zipMoney - Buy Now, Pay Later</title>
+                <title>Own it now , pay later</title>
                 <sort_order>0</sort_order>
                 <environment>sandbox</environment>
                 <payment_mode>capture</payment_mode>
