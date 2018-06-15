@@ -35,7 +35,6 @@ class Zipmoney_ZipmoneyPayment_Block_Standard_Form extends Mage_Payment_Block_Fo
 		$message = '';
 		
 		$order_total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
-		$product = Mage::getStoreConfig('payment/zipmoneypayment/product');
 
 		//$detail_message = Mage::helper('zipmoneypayment')->__($this->_config->getDetailMessage());
 
