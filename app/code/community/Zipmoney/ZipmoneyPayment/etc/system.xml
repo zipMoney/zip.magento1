@@ -4,7 +4,7 @@
         <payment>
             <groups>
                 <zipmoney translate="label" module="zipmoneypayment">
-                    <label>zipMoney - Buy now, Pay later</label>
+                    <label>Zip - Own it now , pay later</label>
                     <sort_order>670</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -74,19 +74,9 @@
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
-                                </environment> 
-                                <product translate="label">
-                                    <label>Product</label>
-                                    <tooltip>zipPay/zipMoney</tooltip>
-                                    <frontend_type>select</frontend_type>
-                                    <source_model>zipmoneypayment/source_product</source_model>
-                                    <sort_order>70</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                </product>
+                                </environment>
                                 <payment_mode translate="label">
-                                    <label>Payment Mode</label>
+                                    <label>Capture Mode</label>
                                     <tooltip></tooltip>
                                     <frontend_type>select</frontend_type>
                                     <source_model>zipmoneypayment/source_paymentMode</source_model>
@@ -106,8 +96,8 @@
                                     <show_in_store>0</show_in_store>
                                 </incontext_checkout>   
                                 <minimum_total translate="label">
-                                    <label>Minimum Order Total</label>
-                                    <tooltip>The minimum order total amount required to checkout</tooltip>
+                                    <label>Minimum Order Value</label>
+                                    <tooltip>The minimum order value amount required to checkout</tooltip>
                                     <frontend_type>text</frontend_type>
                                     <sort_order>100</sort_order>
                                     <show_in_default>1</show_in_default>
@@ -124,16 +114,6 @@
                                     <show_in_store>1</show_in_store>
                                     <sort_order>110</sort_order>
                                     <fields>
-                                     <!--    <sort_order translate="label">
-                                            <label>Sort Order</label>
-                                            <tooltip>The order which zipMoney appears as a payment method at checkout. zipMoney recommends 0 to increase sales and conversions</tooltip>
-                                            <frontend_type>text</frontend_type>
-                                            <sort_order>70</sort_order>
-                                            <show_in_default>1</show_in_default>
-                                            <show_in_website>1</show_in_website>
-                                            <show_in_store>0</show_in_store>
-                                            <frontend_class>validate-number</frontend_class>
-                                        </sort_order> -->
                                         <log_setting translate="label">
                                             <label>Log Setting</label>
                                             <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>
