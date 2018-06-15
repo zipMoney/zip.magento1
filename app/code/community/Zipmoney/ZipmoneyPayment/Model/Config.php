@@ -83,7 +83,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	 * Config Path Payment Method Logo
    * @const 
    */
-	const PAYMENT_METHOD_LOGO_ZIP = "https://static.zipmoney.com.au/logo/25px/";
+	const PAYMENT_METHOD_LOGO_ZIP = "https://static.zipmoney.com.au/logo/25px/zip.png";
 	/**
 	 * Error Codes Map for Charge Error Codes
    * @var array
@@ -252,7 +252,7 @@ class Zipmoney_ZipmoneyPayment_Model_Config
 	 */
 	public function getMethodLogo()
 	{		
-		return  self::PAYMENT_METHOD_LOGO_ZIP.strtolower($this->getProduct()).".png";
+		return  self::PAYMENT_METHOD_LOGO_ZIP;
 	}
 
 	/**

@@ -173,7 +173,7 @@
                 <product>zipMoney</product>
                 <active>0</active>
                 <model>zipmoneypayment/payment</model>
-                <title>Own it now , pay later</title>
+                <title>Zip - Own it now , pay later</title>
                 <sort_order>0</sort_order>
                 <environment>sandbox</environment>
                 <payment_mode>capture</payment_mode>
@@ -213,7 +213,7 @@
 
             <zipmoney_messages>
                 <service_unavailable_heading>The service is unavailable</service_unavailable_heading>
-                <service_unavailable_body>Unfortunately the zipMoney - Buy now, Pay later service is currently unavailable. We will be right back and apologies for the inconvenience.</service_unavailable_body>
+                <service_unavailable_body>Unfortunately the - Zip - Own it now , pay later service is currently unavailable. We will be right back and apologies for the inconvenience.</service_unavailable_body>
                 <customer_error>Error</customer_error>
                 <referred_header>Your application has been referred</referred_header>
                 <referred_body>Your application is currently under review by zipMoney and will be processed very shortly.You can contact the customer care at customercare@zipmoney.com.au for any enquiries.</referred_body>

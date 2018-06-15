@@ -4,7 +4,7 @@
         <payment>
             <groups>
                 <zipmoney translate="label" module="zipmoneypayment">
-                    <label>Own it now , pay later</label>
+                    <label>Zip - Own it now , pay later</label>
                     <sort_order>670</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
