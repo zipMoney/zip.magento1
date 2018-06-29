@@ -432,7 +432,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
                 ->setAmount($item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0.00)
                 ->setReference((string)$item->getId())
                 ->setDescription($description)
-                ->setQuantity(round($qty))
+                ->setQuantity($qty)
                 ->setType("sku")
                 ->setImageUri($this->_getProductImage($item))
                 ->setItemUri($item->getProduct()->getProductUrl())
