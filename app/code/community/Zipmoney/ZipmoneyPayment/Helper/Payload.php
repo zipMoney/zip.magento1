@@ -320,6 +320,7 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
 
     if($quote = $this->getQuote()){
     
+      $gift_cards_amount = 0;
       $address = $quote->getShippingAddress();
       /**
        *  If cart has only virtual items
@@ -335,13 +336,17 @@ class Zipmoney_ZipmoneyPayment_Helper_Payload extends Zipmoney_ZipmoneyPayment_H
       $tax_amount = $address ? $address->getTaxAmount():0.00;
       $grand_total = $quote->getGrandTotal() ? $quote->getGrandTotal() : 0.00;
       $currency = $quote->getQuoteCurrencyCode() ? $quote->getQuoteCurrencyCode() : null;
-      $gift_cards_amount = $quote->getGiftCardsAmount() ? $quote->getGiftCardsAmount() : 0;
+      foreach($quote->getAllAddresses() as $address) {
+        if($address->getGiftcertAmount()) {
+            $gift_cards_amount = $address->getGiftcertAmount();
+        }
+      }
     } else if($order = $this->getOrder()){
       $reference = $order->getIncrementId() ? $order->getIncrementId() : '0';
       $shipping_amount = $order->getShippingAmount() ? $order->getShippingAmount()  + $order->getShippingTaxAmount() : 0;
       $discount_amount = $order->getDiscountAmount() ? $order->getDiscountAmount() : 0;
       $tax_amount = $order->getTaxAmount() ? $order->getTaxAmount() : 0;
-      $gift_cards_amount = $order->getGiftCardsAmount() ? $order->getGiftCardsAmount() : 0;
+      $gift_cards_amount = $order->getGiftcertAmount() ? $order->getGiftcertAmount() : 0;
     }
   
     $this->_logger->debug("Gift Card Amount:- " . $gift_cards_amount);
