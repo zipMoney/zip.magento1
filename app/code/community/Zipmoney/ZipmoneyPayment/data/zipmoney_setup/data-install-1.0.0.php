@@ -2,7 +2,7 @@
 /**
  * @category  zipMoney
  * @package   zipmoney
- * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @author    Integration Team
  * @copyright 2017 zipMoney Payments.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.zipmoney.com.au/
