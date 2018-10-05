@@ -1,8 +1,10 @@
 <?php
 /**
- * @author    roger.bi@zipmoney.com.au
  * genaral update script for define update array for normal use and modify file name as well
+ * BUG no need this code
  */
+
+/*
 $installer = new Mage_Sales_Model_Resource_Setup('core_setup');
 $installer->startSetup();
 
@@ -17,44 +19,25 @@ try {
 
     );
 
-    foreach($updates as $update) {
+    foreach ($updates as $update) {
         $cond = array();
 
-        foreach($update['cond'] as $field => $value) {
+        foreach ($update['cond'] as $field => $value) {
             $cond[] = $this->getConnection()->quoteInto($field . '=?', $value);
         }
+
         try {
             $this->getConnection()->update($table, $update['data'], implode(' AND ', $cond));
         }
         catch (Exception $e) {
-            Mage::log($e->getMessage(),null,"Zipmoney_update_title_error",true);
+            Mage::log($e->getMessage(), null, "Zipmoney_update_title_error", true);
         }
     }
 }
 catch (Exception $e) {
-    Mage::log($e->getMessage(),null,"Zipmoney_update_title_error",true);
+    Mage::log($e->getMessage(), null, "Zipmoney_update_title_error", true);
     throw $e;
 }
+
 $installer->endSetup();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/

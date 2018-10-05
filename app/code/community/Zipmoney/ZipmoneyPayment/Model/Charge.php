@@ -5,7 +5,7 @@ use \zipMoney\ApiException;
 /**
  * @category  Zipmoney
  * @package   Zipmoney_ZipmoneyPayment
- * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @author    Integration Team
  * @copyright 2017 zipMoney Payments Pty Ltd.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.zipmoney.com.au/
@@ -35,9 +35,9 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     {
         parent::__construct($params);
 
-        $orderStateString  = Mage::getSingleton('zipmoneypayment/config')->getOrderState();        
+        $orderStateString = Mage::getSingleton('zipmoneypayment/config')->getOrderState();
 
-        $this->_orderState = explode(',',$orderStateString);
+        $this->_orderState = explode(',', $orderStateString);
 
         if (isset($params['order'])) {
             if ($params['order'] instanceof Mage_Sales_Model_Order) {
@@ -110,6 +110,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
         } elseif ($shipping) {
             $customerBilling->setIsDefaultShipping(true);
         }
+
         /**
          * @todo integration with dynamica attributes customer_dob, customer_taxvat, customer_gender
          */
@@ -159,7 +160,6 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
         $billing = $quote->getBillingAddress();
         $shipping = $quote->isVirtual() ? null : $quote->getShippingAddress();
 
-
         if ($this->getCustomerSession()->isLoggedIn()) {
             $this->_logger->debug($this->_helper->__('Load customer from session.'));
             $customer = $this->getCustomerSession()->getCustomer();
@@ -177,7 +177,8 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
         }
 
         if ($shipping && ((!$shipping->getCustomerId() && !$shipping->getSameAsBilling())
-                || (!$shipping->getSameAsBilling() && $shipping->getSaveInAddressBook()))) {
+            || (!$shipping->getSameAsBilling() && $shipping->getSaveInAddressBook()))
+        ) {
             $customerShipping = $shipping->exportCustomerAddress();
             $customer->addAddress($customerShipping);
             $shipping->setCustomerAddress($customerShipping);
@@ -216,6 +217,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
             $customer->sendNewAccountEmail();
             $this->getCustomerSession()->loginById($customer->getId());
         }
+
         return $this;
     }
 
@@ -241,9 +243,8 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
     protected function _verifyOrderState()
     {
         $currentState = $this->_order->getState();
-       
-        if (is_array($this->_orderState)){
-            if(!in_array($currentState,$this->_orderState)) {
+        if (is_array($this->_orderState)) {
+            if (!in_array($currentState, $this->_orderState)) {
                 Mage::throwException($this->_helper->__('Invalid order state.'));
             }
         }
@@ -311,17 +312,16 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
          * authorise -> capture
          */
         if ($isAuthAndCapture) {
-
             // Check if order has valid state and status
             $orderStatus = $this->_order->getStatus();
             $orderState = $this->_order->getState();
 
-            if (($orderState != Mage_Sales_Model_Order::STATE_PROCESSING &&
-                    $orderState != Mage_Sales_Model_Order::STATE_PENDING_PAYMENT) ||
-                ($orderStatus != self::STATUS_MAGENTO_AUTHORIZED)) {
+            if (($orderState != Mage_Sales_Model_Order::STATE_PROCESSING
+                && $orderState != Mage_Sales_Model_Order::STATE_PENDING_PAYMENT)
+                || ($orderStatus != self::STATUS_MAGENTO_AUTHORIZED)
+            ) {
                 Mage::throwException($this->_helper->__('Invalid order state or status.'));
             }
-
         } else {
             // Check if order has valid state and status
             $this->_verifyOrderState();
@@ -338,7 +338,6 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
          * authorise -> capture
          */
         if ($isAuthAndCapture) {
-
             $authorizationTransaction = $payment->getAuthorizationTransaction();
 
             if (!$authorizationTransaction || !$authorizationTransaction->getId()) {
@@ -348,6 +347,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
             if ($authorizationTransaction->getTxnType() != Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH) {
                 Mage::throwException($this->_helper->__('Incorrect payment transaction type.'));
             }
+
             $parentTxnId = $authorizationTransaction->getTxnId();
         }
 
@@ -369,8 +369,11 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
             ->registerCaptureNotification($amount);
 
         $this->_logger->info($this->_helper->__("Payment Captured"));
-
-        $this->_order->save();
+        try {
+            $this->_order->save();
+        } catch (Exception $e) {
+            Mage::log($e->getMessage(), null, 'test.log');
+        }
 
         // Invoice
         $invoice = $payment->getCreatedInvoice();
@@ -450,19 +453,19 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
             if ($charge->getId()) {
                 $this->_order->getPayment()
-                    ->setAdditionalInformation(array("receipt_number"=>$charge->getReceiptNumber()))
+                    ->setAdditionalInformation(array("receipt_number" => $charge->getReceiptNumber()))
                     ->setZipmoneyChargeId($charge->getId())
                     ->save();
             }
 
             $this->_chargeResponse($charge, false);
-
         } catch (ApiException $e) {
             list($apiError, $message, $logMessage) = $this->_handleException($e);
             // Cancel the order
             $this->_helper->cancelOrder($this->_order, $apiError);
             Mage::throwException($message);
         }
+
         return $charge;
     }
 
@@ -501,6 +504,7 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
             if (!$refund->getId()) {
                 Mage::throwException($this->_helper->__('Invalid Refund'));
             }
+
             return $refund;
         } catch (ApiException $e) {
             list($apiError, $message, $logMessage) = $this->_handleException($e);
@@ -519,7 +523,6 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
      */
     public function captureCharge($amount)
     {
-
         if (!$this->_order || !$this->_order->getId()) {
             Mage::throwException($this->_helper->__('The order does not exist.'));
         }
@@ -529,7 +532,6 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
         $this->_logger->debug("Capture Charge Payload:- " . $this->_helper->json_encode($payload));
 
         try {
-
             $charge = $this->getApi()
                 ->chargesCapture($this->_order->getPayment()->getZipmoneyChargeId(), $payload, $this->genIdempotencyKey());
 
@@ -568,7 +570,6 @@ class Zipmoney_ZipmoneyPayment_Model_Charge extends Zipmoney_ZipmoneyPayment_Mod
 
         $this->_logger->debug("Cancel Charge For Order:- " . $this->_order->getId());
         try {
-
             $charge = $this->getApi()
                 ->chargesCancel($this->_order->getPayment()->getZipmoneyChargeId(), $this->genIdempotencyKey());
 
