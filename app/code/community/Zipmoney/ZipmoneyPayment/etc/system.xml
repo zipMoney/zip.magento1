@@ -4,7 +4,7 @@
         <payment>
             <groups>
                 <zipmoney translate="label" module="zipmoneypayment">
-                    <label>Zip - Own it now , pay later</label>
+                    <label>Zip - Own it now, pay later</label>
                     <sort_order>670</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -85,6 +85,17 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
                                 </payment_mode>
+                                <log_setting translate="label">
+                                    <label>Log Setting</label>
+                                    <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>
+                                    <source_model>zipmoneypayment/source_logSetting</source_model>
+                                    <frontend_type>select</frontend_type>
+                                    <sort_order>85</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>                                                
+                                    <config_path>payment/zipmoneypayment/log_setting</config_path>
+                                </log_setting>
                                 <incontext_checkout translate="label">
                                     <label>In-Context Checkout</label>
                                     <tooltip> Enable Iframe checkout without redirecting to zipMoney </tooltip>
@@ -104,41 +115,26 @@
                                     <show_in_website>1</show_in_website>
                                     <show_in_store>0</show_in_store>
                                     <frontend_class>validate-number</frontend_class>
-                                </minimum_total>                                   
-                                <zipmoneypaymentadvanced  type="group" translate="label">
-                                    <label>Advanced Settings</label>                                        
-                                    <frontend_class>config-advanced</frontend_class>
-                                    <frontend_type>text</frontend_type>
+                                </minimum_total>
+                                <allowspecific translate="label">
+                                    <label>Payment from Applicable Countries</label>
+                                    <frontend_type>allowspecific</frontend_type>
+                                    <sort_order>120</sort_order>
+                                    <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
                                     <show_in_default>1</show_in_default>
                                     <show_in_website>1</show_in_website>
-                                    <show_in_store>1</show_in_store>
-                                    <sort_order>110</sort_order>
-                                    <fields>
-                                        <log_setting translate="label">
-                                            <label>Log Setting</label>
-                                            <tooltip>Select 'All' to log everything, 'Default' to log info and 'None' to disabled loggin</tooltip>
-                                            <source_model>zipmoneypayment/source_logSetting</source_model>
-                                            <frontend_type>select</frontend_type>
-                                            <sort_order>10</sort_order>
-                                            <show_in_default>1</show_in_default>
-                                            <show_in_website>1</show_in_website>
-                                            <show_in_store>0</show_in_store>                                                
-                                            <config_path>payment/zipmoneypayment/log_setting</config_path>
-                                        </log_setting>
-                                        <validation_order_state translate="label">
-                                            <label>Validation Order State</label>
-                                            <tooltip>The order state magento assigns while creating an order. Used to validate against when an order is authorised/captured after being created.</tooltip>
-                                            <source_model>zipmoneypayment/source_statusSetting</source_model>
-                                            <frontend_type>select</frontend_type>
-                                            <sort_order>20</sort_order>
-                                            <show_in_default>1</show_in_default>
-                                            <show_in_website>1</show_in_website>
-                                            <show_in_store>0</show_in_store>                                            
-                                            <config_path>payment/zipmoneypayment/validation_order_state</config_path>
-                                        </validation_order_state>
-                                        
-                                    </fields>
-                                </zipmoneypaymentadvanced>
+                                    <show_in_store>0</show_in_store>
+                                </allowspecific>
+                                <specificcountry translate="label">
+                                    <label>Payment from Specific Countries</label>
+                                    <frontend_type>multiselect</frontend_type>
+                                    <sort_order>122</sort_order>
+                                    <source_model>adminhtml/system_config_source_country</source_model>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                    <can_be_empty>1</can_be_empty>
+                                </specificcountry>
                             </fields>
                         </zipmoneypayment>
 

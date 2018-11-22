@@ -38,10 +38,12 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
      */
     public static function init()
     {
-        // Add our vendor folder to our include path
-        set_include_path(get_include_path() . PATH_SEPARATOR . Mage::getBaseDir('lib') . DS . 'Zipmoney' . DS . 'vendor');
-        // Include the autoloader for composer
-        include_once Mage::getBaseDir('lib') . DS . 'Zipmoney' . DS . 'vendor' . DS . 'autoload.php';
+        // Add our SDK folder to our include path
+
+        if (!class_exists('\zipMoney\ApiClient')) {
+            include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
+        }
+
     }
 
     /**
@@ -170,13 +172,13 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
         try {
             $this->_charge = Mage::getModel(
                 "zipmoneypayment/charge",
-                array('api_class' => "\zipMoney\Client\Api\ChargesApi",  'order' => $order)
+                array('api_class' => "\zipMoney\Client\Api\ChargesApi", 'order' => $order)
             );
             $this->_charge->cancelCharge();
         } catch (Mage_Core_Exception $e) {
             $this->_logger->debug($e->getMessage());
         } catch (ApiException $e) {
-            $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
+            $this->_logger->debug("Error:-" . $e->getCode() . "-" . json_encode($e->getResponseBody()));
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

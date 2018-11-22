@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Zipmoney_ZipmoneyPayment>
-            <version>1.0.5</version>
+            <version>1.2.0</version>
         </Zipmoney_ZipmoneyPayment>
     </modules>
     <frontend>
@@ -34,42 +34,12 @@
     </frontend>
 
     <global>
-        <fieldsets>
-            <sales_convert_quote_payment>
-                <check_no>
-                    <to_order_payment>*</to_order_payment>
-                </check_no>
-                <check_date>
-                    <to_order_payment>*</to_order_payment>
-                </check_date>
-            </sales_convert_quote_payment>
-        </fieldsets>
         <models>
             <zipmoneypayment>
                 <class>Zipmoney_ZipmoneyPayment_Model</class>
                 <resourceModel>pay_mysql4</resourceModel>
             </zipmoneypayment>
         </models>
-        <resources>
-            <zipmoney_setup>
-                <setup>
-                    <module>Zipmoney_ZipmoneyPayment</module>
-                </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
-            </zipmoney_setup>
-            <zipmoneypayment_write>
-                <connection>
-                    <use>core_write</use>
-                </connection>
-            </zipmoneypayment_write>
-            <zipmoneypayment_read>
-                <connection>
-                    <use>core_read</use>
-                </connection>
-            </zipmoneypayment_read>
-        </resources>
         <blocks>
             <zipmoneypayment>
                 <class>Zipmoney_ZipmoneyPayment_Block</class>
@@ -80,23 +50,6 @@
                 <class>Zipmoney_ZipmoneyPayment_Helper</class>
             </zipmoneypayment>
         </helpers>
-        <sales>
-            <order>
-                <statuses>
-                    <zip_authorised translate="label">
-                        <label>zipMoney Authorised</label>
-                    </zip_authorised>
-                </statuses>
-                <states>
-                    <pending_payment>
-                        <statuses>
-                            <zip_authorised/>
-                        </statuses>
-                        <visible_on_front/>
-                    </pending_payment>
-                </states>
-            </order>
-        </sales>
         <events>
             <checkout_type_onepage_save_order>
                 <observers>
@@ -125,18 +78,6 @@
             </controller_front_init_before>
         </events>
     </global>
-
-    <admin>
-        <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <zipmoneypayment after="Mage_Adminhtml">Zipmoney_ZipmoneyPayment_Adminhtml</zipmoneypayment>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers>
-    </admin>
 
     <adminhtml>
         <acl>
@@ -173,7 +114,7 @@
                 <product>zipMoney</product>
                 <active>0</active>
                 <model>zipmoneypayment/payment</model>
-                <title>Zip - Own it now , pay later</title>
+                <title>Zip - Own it now, pay later</title>
                 <sort_order>0</sort_order>
                 <environment>sandbox</environment>
                 <payment_mode>capture</payment_mode>
@@ -182,15 +123,14 @@
                 <detail_message>Interest Free and Flexible - get a decision in seconds!</detail_message>
                 <display_title>0</display_title>
                 <log_setting>7</log_setting>
-                <validation_order_state>new,pending</validation_order_state>
+                <allowspecific>1</allowspecific>
+                <specificcountry>AU</specificcountry>
             </zipmoneypayment>
-
 
             <zipmoney_developer_settings>
                 <timeout>60</timeout>
                 <log_file>zipMoney-payment.log</log_file>
             </zipmoney_developer_settings>
-
 
             <zipmoney_advert>
                 <home_page>
