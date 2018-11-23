@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config>
+
+    <modules>
+        <Zip_Payment>
+            <version>1.2.0</version>
+        </Zip_Payment>
+    </modules>
+
+    <global>
+        <models>
+            <zip_payment>
+                <class>Zip_Payment_Model</class>
+                <resourceModel>pay_mysql4</resourceModel>
+            </zip_payment>
+        </models>
+        <resources>
+            <zip_payment_setup>
+                <setup>
+                    <module>Zip_Payment</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </zip_payment_setup>
+            <zip_payment_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </zip_payment_write>
+            <zip_payment_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </zip_payment_read>
+        </resources>
+        <blocks>
+            <zip_payment>
+                <class>Zip_Payment_Block</class>
+            </zip_payment>
+        </blocks>
+        <helpers>
+            <zip_payment>
+                <class>Zip_Payment_Helper</class>
+            </zip_payment>
+        </helpers>
+    </global>
+
+    <adminhtml>
+        <events>
+            <adminhtml_init_system_config>
+                <observers>
+                    <zip_payment_system_config_load>
+                        <class>zip_payment/adminhtml_observer</class>
+                        <method>loadConfig</method>
+                    </zip_payment_system_config_load>
+                </observers>
+            </adminhtml_init_system_config>
+        </events>
+
+    </adminhtml>
+
+</config>
