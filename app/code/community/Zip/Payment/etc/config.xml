@@ -60,4 +60,15 @@
 
     </adminhtml>
 
+    <default>
+        <payment>
+            <zip_payment>
+                <standard>
+                    <active>0</active>
+                </standard>
+            </zip_payment>
+
+        </payment>
+    </default>
+
 </config>

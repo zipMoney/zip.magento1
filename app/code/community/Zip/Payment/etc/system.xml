@@ -4,7 +4,7 @@
         <payment>
             <groups>
                 <zip_payment_group translate="label comment" module="zip_payment">
-                    <label><![CDATA[Zip - <i>Own it now, pay later</i>]]></label>
+                    <label><![CDATA[Zip Payment - <i>Own it now, pay later</i>]]></label>
                     <sort_order>700</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -12,15 +12,12 @@
                     <expanded>1</expanded>
                     <frontend_class>complex</frontend_class>
                     <frontend_model>zip_payment/adminhtml_system_config_fieldset_group</frontend_model>
-                    <comment>Add another payment method to your existing solution or as a stand-alone option.</comment>
-                    <paypal_title>Select a Payment Solution</paypal_title>
-                    <help_url>https://merchant.paypal.com/cgi-bin/marketingweb?cmd=_render-content&amp;content_ID=merchant/express_checkout</help_url>
                     <fields/>
                 </zip_payment_group>
 
                 <zip_payment>
                     <standard type="group" translate="label comment">
-                        <label><![CDATA[Zip - <i>Own it now, pay later</i>]]></label>
+                        <label><![CDATA[Zip Payment Solution]]></label>
                         <frontend_type>text</frontend_type>
                         <show_in_default>1</show_in_default>
                         <show_in_website>1</show_in_website>
@@ -28,10 +25,10 @@
                         <sort_order>50</sort_order>
                         <group>zip_payment_group</group>
                         <include>1</include>
-                        <frontend_class>pp-method-general</frontend_class>
-                        <frontend_model>zip_payment/adminhtml_system_config_fieldset_deprecated</frontend_model>
-                        <was_enabled_path>payment/paypal_standard/was_active</was_enabled_path>
-                        <activity_path>payment/paypal_standard/active</activity_path>
+                        <frontend_class>zip-payment</frontend_class>
+                        <frontend_model>zip_payment/adminhtml_system_config_fieldset_wizard</frontend_model>
+                        <active_path>payment/zip_payment/standard/active</active_path>
+                        <logo>https://zip.co/assets/zip/logos/zip/primary.svg</logo>
                         <comment>Add another payment soltuion to give your customers the power to pay later, interest free</comment>
                         <learn_more_link>https://zip.co/im-a-business</learn_more_link>
    
@@ -57,6 +54,7 @@
                                     <active translate="label">
                                         <label>Enabled</label>
                                         <tooltip>Set to 'Yes' to enable zipMoney as a secure payment method on your website</tooltip>
+                                        <config_path>payment/zip_payment/standard/active</config_path>
                                         <frontend_type>select</frontend_type>
                                         <source_model>adminhtml/system_config_source_yesno</source_model>
                                         <sort_order>20</sort_order>

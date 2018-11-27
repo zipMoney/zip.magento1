@@ -7,13 +7,13 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     {
         $groupConfig = $this->getGroup($element)->asArray();
 
-        if (empty($groupConfig['help_url']) || !$element->getComment()) {
+        if (empty($groupConfig['learn_more_link']) || !$element->getComment()) {
             return parent::_getHeaderCommentHtml($element);
         }
 
         $html = '<div class="comment">' . $element->getComment()
-            . ' <a target="_blank" href="' . $groupConfig['help_url'] . '">'
-            . Mage::helper('zip_payment')->__('Help') . '</a></div>';
+            . ' <a target="_blank" href="' . $groupConfig['learn_more_link'] . '">'
+            . Mage::helper('zip_payment')->__('Learn More') . '</a></div>';
 
         return $html;
     }
