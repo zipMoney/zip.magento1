@@ -5,20 +5,19 @@
 
 <div class="config-heading">
     <div class="heading">
-        <strong>
+        <span class="heading-title">
             <?php if(!empty($groupConfig['logo'])): ?>
                 <img class="logo" alt="<?= $element->getLegend() ?>" title="<?= $element->getLegend() ?>" src="<?= $groupConfig['logo'] ?>"/>
             <?php endif; ?>
             <?php if(!empty($element->getLegend())): ?>
-                <span class="legend"><?= $element->getLegend() ?></span>
+                <strong>
+                    <span class="legend"><?= $element->getLegend() ?></span>
+                </strong>
             <?php endif; ?>
-        </strong>
+        </span>
         <span class="heading-intro">
             <?php if (!empty($element->getComment())): ?>
                 <?= $element->getComment() ?>
-            <?php endif; ?>
-            <?php if (!empty($groupConfig['learn_more_link'])): ?>
-                <a class="link-more" href="<?= $groupConfig['learn_more_link'] ?>" target="_blank" title="<?= $this->__('Learn More') ?>"><?= $this->__('Learn More') ?></a>
             <?php endif; ?>
         </span>
     </div>
@@ -34,17 +33,35 @@
 </div>
 
 <style type="text/css">
-.config-heading .heading .logo {
+.zip-payment.enabled .config-heading {
+    background-image: none;
+}
+.zip-payment.enabled .config-heading .heading .heading-title {
+    background: url(/skin/adminhtml/default/default/images/icon-enabled.png) no-repeat right center;
+    background-position: right center;
+    padding: 10px 25px 10px 0;
+}
+.zip-payment .config-heading .heading a {
+    font-size: 12px;
+    margin-left: 0;
+    color: #4f4f4f;
+}
+.zip-payment .config-heading .heading .logo {
     height: 25px;
     line-height: 40px;
     vertical-align: middle;
     margin: 6px 0px;
 }
 
-.config-heading .heading .legend {
+.zip-payment .config-heading .heading .legend {
     line-height: 40px;
     vertical-align: middle;
     padding-left: 10px;
+    font-size: 14px;
+}
+.zip-payment .config-heading .heading .heading-intro {
+    font-size: 12px;
+    line-height: 2em;
 }
 </style>
 

@@ -2,7 +2,7 @@
 
 class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
-    protected $header_title_template = 'zip/payment/system/config/fieldset/wizard.phtml';
+    protected $headerTitleTemplate = 'zip/payment/system/config/fieldset/wizard/header_title.phtml';
 
     /**
      * Add custom css class
@@ -54,7 +54,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     protected function _getHeaderTitleHtml($element)
     {
         $block = Mage::app()->getLayout()->createBlock('core/template');
-        $block->setTemplate($this->header_title_template);
+        $block->setTemplate($this->headerTitleTemplate);
         $block->setData(array(
             'element' => $element,
             'config' => $this->getGroup($element)->asArray()

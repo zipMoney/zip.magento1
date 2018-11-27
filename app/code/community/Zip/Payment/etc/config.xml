@@ -63,11 +63,29 @@
     <default>
         <payment>
             <zip_payment>
-                <standard>
-                    <active>0</active>
-                </standard>
+                <active>0</active>
+                <title>Zip - Own it now, pay later</title>
+                <environment>sandbox</environment>
+                <payment_mode>capture</payment_mode>
+                <minimum_total>1</minimum_total>
+                <log_setting>7</log_setting>
+                <home_page>
+                    <banner>1</banner>
+                </home_page>
+                <product_page>
+                    <banner>0</banner>
+                    <tagline>1</tagline>
+                    <widget>0</widget>
+                </product_page>
+                <category_page>
+                    <banner>1</banner>
+                </category_page>
+                <cart_page>
+                    <banner>0</banner>
+                    <tagline>1</tagline>
+                    <widget>0</widget>
+                </cart_page>
             </zip_payment>
-
         </payment>
     </default>
 
