@@ -1,13 +1,15 @@
 <?php
 
 /**
- * @category  zipMoney
- * @package   zipmoney
- * @copyright 2017 zipMoney Payments.
+ * @category  Zip.co
+ * @package   Zip.co
+ * @author    Zip.co Integration Team <integrations@zip.co>
+ * @copyright 2018 zip Payments.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link      http://www.zipmoney.com.au/
+ * @link      http://www.zip.co/
  */
-class Zipmoney_ZipmoneyPayment_Model_Logger extends Mage_Core_Helper_Abstract
+
+class Zipmoney_ZipmoneyPayment_Model_Logger
 {
 
     /**
@@ -36,13 +38,26 @@ class Zipmoney_ZipmoneyPayment_Model_Logger extends Mage_Core_Helper_Abstract
      */
     public function isLogEnabled($storeId = null)
     {
-        if ($storeId !== null) {
+        $enabled = -1;
+        //base on Mage::log so if Mage::log disabled log is disabled
+        $mageLogEnabled = $this->isMageLogEnable();
+        if ($mageLogEnabled) {
             $enabled = Mage::getStoreConfig(self::LOG_SETTING, $storeId);
-        } else {
-            $enabled = Mage::getModel('zipmoneypayment/config')->getConfigByCurrentScope(self::LOG_SETTING);
         }
 
-        return $enabled > 0 ? true : false;
+        //emergency is 0
+        return $enabled >= 0 ? true : false;
+    }
+
+    /**
+     * Check dependance function
+     *
+     * @return boolean
+     */
+    public function isMageLogEnable()
+    {
+        $enabled = Mage::getStoreConfig('dev/log/active');
+        return (bool) $enabled;
     }
 
     /**
@@ -53,17 +68,13 @@ class Zipmoney_ZipmoneyPayment_Model_Logger extends Mage_Core_Helper_Abstract
      */
     public function getConfigLogLevel($storeId = null)
     {
-        if ($storeId !== null) {
-            $configLevel = Mage::app()->getStore($storeId)->getConfig(self::LOG_SETTING);
-        } else {
-            $configLevel = Mage::getModel('zipmoneypayment/config')->getConfigByCurrentScope(self::LOG_SETTING);
+        $logLevel = Mage::getStoreConfig(self::LOG_SETTING, $storeId);
+
+        if ($logLevel === null || $logLevel < 0) {
+            $logLevel = Zend_Log::INFO;
         }
 
-        if ($configLevel === null || $configLevel < 0) {
-            $configLevel = Zend_Log::INFO;
-        }
-
-        return $configLevel;
+        return $logLevel;
     }
 
     /**
@@ -74,17 +85,13 @@ class Zipmoney_ZipmoneyPayment_Model_Logger extends Mage_Core_Helper_Abstract
      */
     public function getLogFile($storeId = null)
     {
-        if ($storeId !== null) {
-            $fileName = Mage::app()->getStore($storeId)->getConfig(self::LOG_FILE_PATH);
-        } else {
-            $fileName = Mage::getModel('zipmoneypayment/config')->getConfigByCurrentScope(self::LOG_FILE_PATH);
+        $logFileName = Mage::getStoreConfig(self::LOG_FILE_PATH, $storeId);
+
+        if (!$logFileName) {
+            $logFileName = self::DEFAULT_LOG_FILE_NAME;
         }
 
-        if (!$fileName) {
-            $fileName = self::DEFAULT_LOG_FILE_NAME;
-        }
-
-        return $fileName;
+        return $logFileName;
     }
 
     /**
@@ -94,18 +101,13 @@ class Zipmoney_ZipmoneyPayment_Model_Logger extends Mage_Core_Helper_Abstract
      * @param int $level
      * @param null $storeId
      */
-    public function log($message, $level = Zend_Log::INFO, $storeId = null)
+    public function log($message, $level = Zend_Log::DEBUG, $storeId = null)
     {
         if (!$this->isLogEnabled($storeId)) {
             return;
         }
 
         $configLevel = $this->getConfigLogLevel($storeId);
-        // errors are always logged.
-        if ($configLevel < 3) {
-            $configLevel = Zend_Log::DEBUG; // default log level
-        }
-
         $file = $this->getLogFile($storeId);
         if ($level > $configLevel) {
             return;
