@@ -140,10 +140,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      */
     public function capture(Varien_Object $payment, $amount)
     {
-        if ($payment && $payment->getOrder()) {
-            Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
-        }
-
         $orderId = $payment->getOrder()->getIncrementId();
         $order = Mage::getModel('sales/order')
                             ->loadByIncrementId($orderId);
@@ -184,10 +180,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      */
     public function refund(Varien_Object $payment, $amount)
     {
-        if ($payment && $payment->getOrder()) {
-            Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
-        }
-
         $param = Mage::app()->getRequest()->getParam('creditmemo');
         $reason = $param['comment_text'];
 
@@ -238,10 +230,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     public function cancel(Varien_Object $payment)
     {
         $this->_logger->info($this->_helper->__("Cancelling Order"));
-
-        if ($payment && $payment->getOrder()) {
-            Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
-        }
 
         $orderId = $payment->getOrder()->getIncrementId();
         $order = Mage::getModel('sales/order')

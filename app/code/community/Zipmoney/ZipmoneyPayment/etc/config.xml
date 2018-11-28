@@ -37,7 +37,6 @@
         <models>
             <zipmoneypayment>
                 <class>Zipmoney_ZipmoneyPayment_Model</class>
-                <resourceModel>pay_mysql4</resourceModel>
             </zipmoneypayment>
         </models>
         <blocks>

@@ -38,9 +38,8 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
      */
     public static function init()
     {
-        // Add our SDK folder to our include path
-
-        if (!class_exists('\zipMoney\ApiClient')) {
+        // Add our SDK folder to our include path and do not use __autoload old methods
+        if (!class_exists('\zipMoney\ApiClient', false)) {
             include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
         }
 
@@ -149,11 +148,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
         /** @var Mage_Sales_Model_Order $order */
         $event = $observer->getEvent();
         $order = $event->getOrder();
-
-        // set scope
-        if ($order) {
-            Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($order->getStoreId());
-        }
 
         if (!$this->_isZipMoneyOrder($order)) {
             $this->_logger->debug($this->_helper->__('Order %s was not created by zipMoney. Will not notify zipMoney to cancel order.', $order->getIncrementId()));

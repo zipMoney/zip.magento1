@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @category  Zipmoney
- * @package   Zipmoney_ZipmoneyPayment
- * @author    Integration Team
- * @copyright 2017 zipMoney Payments Pty Ltd.
+ * @category  Zip.co Payment
+ * @package   Zip.co Payment Magento1.x Extension
+ * @author    Zip.co Integration Team <integrations@zip.co>
+ * @copyright 2018 zip Payments.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link      http://www.zipmoney.com.au/
+ * @link      http://www.zip.co/
  */
 
 class Zipmoney_ZipmoneyPayment_Model_Config
@@ -124,30 +124,13 @@ class Zipmoney_ZipmoneyPayment_Model_Config
      * @param $path
      * @return mixed|null
      */
-    public function getConfigByCurrentScope($path)
+    public function getConfigByCurrentScope($path, $storeId = null)
     {
         if (!$path) {
             return null;
         }
 
-        $value = null;
-        $storeId = Mage::getSingleton('zipmoneypayment/storeScope')->getStoreId();
-        if ($storeId === null) {
-            $scopeArr = Mage::getSingleton('zipmoneypayment/storeScope')->getCurrentScope();
-            if (is_array($scopeArr)) {
-                $scope = isset($scopeArr['scope']) ? $scopeArr['scope'] : 'default';
-                $scopeId = isset($scopeArr['scope_id']) ? $scopeArr['scope_id'] : 0;
-                if ($scope == 'default') {     // default scope
-                    $value = Mage::getStoreConfig($scope);
-                } else {                        // websites scope
-                    $value = Mage::app()->getWebsite($scopeId)->getConfig($path);
-                }
-            }
-        } else {
-            // stores scope
-            $value = Mage::getStoreConfig($path, $storeId);
-        }
-
+        $value = Mage::getStoreConfig($path, $storeId);
         return $value;
     }
 

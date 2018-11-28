@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @category  Zip.co
- * @package   Zip.co
+ * @category  Zip.co Payment
+ * @package   Zip.co Payment Magento1.x Extension
  * @author    Zip.co Integration Team <integrations@zip.co>
  * @copyright 2018 zip Payments.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
