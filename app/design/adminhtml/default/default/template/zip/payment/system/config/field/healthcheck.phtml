@@ -1,0 +1,51 @@
+<div id="zip-payment-healthcheck">
+
+    <span class="<?= $this->getStatus() ?>"><?= $this->getStatus() ?></span>
+
+    <?php if(count($this->getItems()) > 0): ?>
+        <ul>
+            <?php foreach($this->getItems() as $item): ?>
+                <li class="<?= $item['status'] ?>"><?= $item['label'] ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+
+</div>
+
+<style type="text/css">
+#zip-payment-healthcheck span {
+    padding: 5px 10px;
+    text-transform: uppercase;
+    display: inline-block;
+    color: white !important;
+}
+#zip-payment-healthcheck span.success {
+    background-color: #28a745;
+}
+#zip-payment-healthcheck span.warning {
+    background-color: #ffc107;
+}
+#zip-payment-healthcheck span.error {
+    background-color: #dc3545;
+}
+#zip-payment-healthcheck li {
+    line-height: 1.2em;
+    border: 1px solid transparent;
+    padding: 5px 10px;
+}
+#zip-payment-healthcheck li.success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+#zip-payment-healthcheck li.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+#zip-payment-healthcheck li.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+</style>

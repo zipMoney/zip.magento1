@@ -44,8 +44,9 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends M
 
         $this->addData(
             array(
-                'button_label' => Mage::helper('zip_payment')->__($originalData['button_label']),
+                'production_text' => Mage::helper('zip_payment')->__($originalData['production_text']),
                 'production_url' => $originalData['production_url'],
+                'sandbox_text' => Mage::helper('zip_payment')->__($originalData['sandbox_text']),
                 'sandbox_url' => $originalData['sandbox_url'],
                 'html_id' => $elementHtmlId,
             )

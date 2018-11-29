@@ -69,22 +69,28 @@
                 <payment_mode>capture</payment_mode>
                 <minimum_total>1</minimum_total>
                 <log_setting>7</log_setting>
-                <home_page>
-                    <banner>1</banner>
-                </home_page>
-                <product_page>
-                    <banner>0</banner>
-                    <tagline>1</tagline>
-                    <widget>0</widget>
-                </product_page>
-                <category_page>
-                    <banner>1</banner>
-                </category_page>
-                <cart_page>
-                    <banner>0</banner>
-                    <tagline>1</tagline>
-                    <widget>0</widget>
-                </cart_page>
+                <config>
+                    <api_url></api_url>
+                    <checkout_js>https://static.zipmoney.com.au/checkout/checkout-v1.min.js</checkout_js>
+                </config>    
+                <widgets>
+                    <home_page>
+                        <banner>1</banner>
+                    </home_page>
+                    <product_page>
+                        <banner>0</banner>
+                        <tagline>1</tagline>
+                        <widget>0</widget>
+                    </product_page>
+                    <category_page>
+                        <banner>1</banner>
+                    </category_page>
+                    <cart_page>
+                        <banner>0</banner>
+                        <tagline>1</tagline>
+                        <widget>0</widget>
+                    </cart_page>
+                </widgets>
             </zip_payment>
         </payment>
     </default>
