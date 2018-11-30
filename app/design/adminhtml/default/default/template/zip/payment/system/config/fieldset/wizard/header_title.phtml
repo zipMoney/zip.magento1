@@ -1,6 +1,8 @@
 <?php 
-    $element = $this->getData('element');
-    $groupConfig = $this->getData('config');
+    $version = $this->getVersion();
+    $element = $this->getElement();
+    $groupConfig = $this->getConfig();
+    $notification = $this->getData('notification');
 ?>
 
 <div class="config-heading">
@@ -11,7 +13,7 @@
             <?php endif; ?>
             <?php if(!empty($element->getLegend())): ?>
                 <strong>
-                    <span class="legend"><?= $element->getLegend() ?></span>
+                    <span class="legend"><?= $element->getLegend() ?> <?= $this->getData('version') ?></span>
                 </strong>
             <?php endif; ?>
         </span>

@@ -48,6 +48,14 @@
 
     <adminhtml>
         <events>
+            <controller_action_predispatch_adminhtml>
+                <observers>
+                    <zip_payment_notification>
+                        <class>zip_payment/adminhtml_observer</class>
+                        <method>checkNotifications</method>
+                    </zip_payment_notification>
+                </observers>
+            </controller_action_predispatch_adminhtml>
             <adminhtml_init_system_config>
                 <observers>
                     <zip_payment_system_config_load>
@@ -57,8 +65,8 @@
                 </observers>
             </adminhtml_init_system_config>
         </events>
-
     </adminhtml>
+
 
     <default>
         <payment>
@@ -69,10 +77,13 @@
                 <payment_mode>capture</payment_mode>
                 <minimum_total>1</minimum_total>
                 <log_setting>7</log_setting>
-                <config>
-                    <api_url></api_url>
-                    <checkout_js>https://static.zipmoney.com.au/checkout/checkout-v1.min.js</checkout_js>
-                </config>    
+                <admin_notification>
+                    <enabled>1</enabled>
+                    <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
+                    <version>
+                        <title></title>
+                    </version>
+                </admin_notification>
                 <widgets>
                     <home_page>
                         <banner>1</banner>

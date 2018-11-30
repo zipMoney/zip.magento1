@@ -2,7 +2,16 @@
 
 class Zip_Payment_Model_Adminhtml_Observer
 {
+    const XML_NOTIFICATION_ENABLED_PATH = 'payment/zip_payment/admin_notification/enabled';
 
+    public function checkNotifications(Varien_Event_Observer $observer) {
+        
+        if(Mage::getStoreConfigFlag(self::XML_NOTIFICATION_ENABLED_PATH)) {
+            Mage::getSingleton('zip_payment/adminhtml_notification_feed')->checkUpdate();
+        }
+    }
+
+    
     public function loadConfig(Varien_Event_Observer $observer)
     {
         $paymentGroups = $observer->getEvent()->getConfig()->getNode('sections/payment/groups');
@@ -17,5 +26,7 @@ class Zip_Payment_Model_Adminhtml_Observer
             }
         }
     }
+
+
 
 }

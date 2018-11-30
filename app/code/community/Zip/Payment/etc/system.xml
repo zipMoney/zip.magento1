@@ -3,15 +3,6 @@
     <sections>
         <payment>
             <groups>
-                <zip_payment_notice translate="label" module="zip_payment">
-                    <frontend_model>zip_payment/adminhtml_system_config_fieldset_notice</frontend_model>
-                    <api_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</api_url>
-                    <sort_order>0</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                </zip_payment_notice>
-
                 <zip_payment_group translate="label comment" module="zip_payment">
                     <label><![CDATA[Zip Payment - <i>Own it now, pay later</i>]]></label>
                     <sort_order>600</sort_order>
@@ -38,7 +29,7 @@
                         <frontend_model>zip_payment/adminhtml_system_config_fieldset_wizard</frontend_model>
                         <active_path>payment/zip_payment/active</active_path>
                         <logo>https://zip.co/assets/zip/logos/zip/primary.svg</logo>
-                        <comment><![CDATA[Enable Zip to give your customers the power to pay later, interest free &nbsp;&nbsp;<a href="https://zip.co/im-a-business" target="_blank">learn more</a><br/>Don't have an account? Click <a href="https://zippay.com.au/partner-sign-up/" target="_blank">here</a> to apply for a <strong>Zip Business Account</strong>]]></comment>
+                        <comment><![CDATA[Zip Payment gives your customers the power to pay later, interest free &nbsp;&nbsp;<a href="https://zip.co/im-a-business" target="_blank">learn more</a><br/>Don't have an account? Click <a href="https://zippay.com.au/partner-sign-up/" target="_blank">here</a> to apply for a <strong>Zip Business Account</strong>]]></comment>
                         <fields>
                             <info type="group" translate="label">
                                 <label>Information</label>
@@ -81,7 +72,7 @@
                                 <fields>
                                     <active translate="label">
                                         <label>Enabled</label>
-                                        <tooltip>Set to 'Yes' to enable zipMoney as a secure payment method on your website</tooltip>
+                                        <tooltip>Set to 'Yes' to enable Zip Payment as a secure payment method on your website</tooltip>
                                         <config_path>payment/zip_payment/active</config_path>
                                         <frontend_type>select</frontend_type>
                                         <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -185,6 +176,28 @@
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>0</show_in_store>
                                             </log_setting>
+
+                                            <admin_notification type="group" translate="label">
+                                                <label>Admin Notification</label>
+                                                <frontend_type>text</frontend_type>
+                                                <show_in_default>1</show_in_default>
+                                                <show_in_website>1</show_in_website>
+                                                <show_in_store>1</show_in_store>
+                                                <sort_order>40</sort_order>
+                                                <fields>
+                                                     <enabled translate="label">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Set to 'Yes' to show Zip notifications on the Admin and Configuration page</tooltip>
+                                                        <config_path>payment/zip_payment/admin_notification/enabled</config_path>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <sort_order>10</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                </fields>
+                                            </admin_notification>
                                         </fields>
                                     </advanced>
                                 </fields>

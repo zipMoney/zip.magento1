@@ -3,6 +3,15 @@
 class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
     protected $headerTitleTemplate = 'zip/payment/system/config/fieldset/wizard/header_title.phtml';
+    protected $noticeTemplate = 'zip/payment/system/config/fieldset/wizard/notice.phtml';
+
+    protected $pluginCurrentVersion = '';
+
+    protected function _construct()
+    {
+        $this->pluginCurrentVersion = Mage::helper("zip_payment")->getCurrentVersion();
+        parent::_construct();
+    }
 
     /**
      * Add custom css class
@@ -56,6 +65,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
         $block = Mage::app()->getLayout()->createBlock('core/template');
         $block->setTemplate($this->headerTitleTemplate);
         $block->setData(array(
+            'version' => $this->pluginCurrentVersion,
             'element' => $element,
             'config' => $this->getGroup($element)->asArray()
         ));
@@ -71,7 +81,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
      */
     protected function _getHeaderCommentHtml($element)
     {
-        return '';
+        return "";
     }
 
     /**
@@ -84,4 +94,5 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     {
         return false;
     }
+
 }

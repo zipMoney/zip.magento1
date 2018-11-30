@@ -2,20 +2,48 @@
 
 class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
-    protected $headerCommentTemplate = 'zip/payment/system/config/fieldset/group/header_comment.phtml';
+    protected $noticeTemplate = 'zip/payment/system/config/fieldset/group/notice.phtml';
 
-    protected function _getHeaderCommentHtml($element)
+    protected $notificationFeedModel = null;
+    protected $currentVersion = '';
+    protected $notificationData = array();
+
+    protected function _construct() 
     {
-        $groupConfig = $this->getGroup($element)->asArray();
+        $this->notificationFeedModel = Mage::getSingleton('zip_payment/adminhtml_notification_feed');
+        $this->currentVersion = Mage::helper("zip_payment")->getCurrentVersion();
+        $this->notificationData = $this->notificationFeedModel->getFeedData();
 
+        parent::_construct();
+    }
+
+    protected function _getHeaderCommentHtml($element) 
+    {
+        
         $block = Mage::app()->getLayout()->createBlock('core/template');
-        $block->setTemplate($this->headerCommentTemplate);
+        $block->setTemplate($this->noticeTemplate);
         $block->setData(array(
-            'comment' => $element->getComment(),
-            'learn_more' =>  $groupConfig['learn_more_link']
+            'version_notification' => $this->notificationFeedModel->getVersionUpgradeNotification(),
+            'latest_news' => $this->getLatestNews()
         ));
 
         return $block->toHtml();
+    }
+
+    protected function getLatestNews() 
+    {
+
+        $notificationField = Zip_Payment_Model_Adminhtml_Notification_Feed::NOTIFICATION_FIELD;
+
+        if(isset($this->notificationData[$notificationField])) {
+            $feedData = $this->notificationData[$notificationField];
+
+            if(!empty($feedData)) {
+                return array_reverse($feedData)[0];
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -37,4 +65,5 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
 
         return false;
     }
+
 }
