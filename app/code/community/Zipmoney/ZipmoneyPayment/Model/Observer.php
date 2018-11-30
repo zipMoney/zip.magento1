@@ -12,7 +12,6 @@ use \zipMoney\ApiException;
 class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 {
 
-
     /**
      * Sets the logger and helper models
      *
@@ -42,7 +41,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
         if (!class_exists('\zipMoney\ApiClient', false)) {
             include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
         }
-
     }
 
     /**
