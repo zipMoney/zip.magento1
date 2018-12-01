@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @category  Zipmoney
  * @package   Zipmoney_ZipmoneyPayment
@@ -17,16 +18,15 @@ class Zipmoney_ZipmoneyPayment_Block_Advert_Abstract extends Mage_Core_Block_Tem
     const PAYMENT_ADVERT_PREFIX = 'payment/zipmoney_advert_';
 
     /**
-   * Check if Zipmoney is enabled from config
-   *
-   * @return bool
-   */
+     * Check if Zipmoney is enabled from config
+     *
+     * @return bool
+     */
     protected function _isActive()
     {
         // If API keys are empty, should regard the module as disabled.
         $active = Mage::getStoreConfig(Zipmoney_ZipmoneyPayment_Model_Config::PAYMENT_ZIPMONEY_PAYMENT_ACTIVE);
         if ($active) {
-            $private_key = Mage::getStoreConfig(Zipmoney_ZipmoneyPayment_Model_Config::PAYMENT_ZIPMONEY_PAYMENT_KEY);
             $public_key = Mage::getStoreConfig(Zipmoney_ZipmoneyPayment_Model_Config::PAYMENT_ZIPMONEY_PAYMENT_PUBLIC_KEY);
             if ($public_key) {
                 return true;
@@ -46,22 +46,22 @@ class Zipmoney_ZipmoneyPayment_Block_Advert_Abstract extends Mage_Core_Block_Tem
         $oRequest = Mage::app()->getRequest();
         $vModule = $oRequest->getModuleName();
         if ($vModule == 'cms') {
-                $vId = Mage::getSingleton('cms/page')->getIdentifier();
-                $iPos = strpos($vId, 'home');
+            $vId = Mage::getSingleton('cms/page')->getIdentifier();
+            $iPos = strpos($vId, 'home');
             if ($iPos === 0) {
-                    return 'home';
+                return 'home';
             }
         } else if ($vModule == 'catalog') {
-                $vController = $oRequest->getControllerName();
+            $vController = $oRequest->getControllerName();
             if ($vController == 'product') {
-                    return 'product';
+                return 'product';
             } else if ($vController == 'category') {
-                    return 'category';
+                return 'category';
             }
         } else if ($vModule == 'checkout') {
-                $vController = $oRequest->getControllerName();
+            $vController = $oRequest->getControllerName();
             if ($vController == 'cart') {
-                    return 'cart';
+                return 'cart';
             }
         }
 

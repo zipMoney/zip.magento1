@@ -39,7 +39,7 @@ class Zipmoney_ZipmoneyPayment_Block_Checkout extends Mage_Core_Block_Template
      */
     public function getCheckoutUrl()
     {
-        return $this->_helper->getUrl("zipmoneypayment/standard/");
+        return $this->_helper->getUrl("zipmoneypayment/checkout/");
     }
 
     /**

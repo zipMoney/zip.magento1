@@ -17,27 +17,27 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      */
     protected $_code = Zipmoney_ZipmoneyPayment_Model_Config::METHOD_CODE;
     /**
-     * Payment Option Form Block Type
+     * Payment Form Block Type
+     * Payment Info Block Type
      * @var string
      */
     protected $_formBlockType = 'zipmoneypayment/standard_form';
-
     protected $_infoBlockType = 'zipmoneypayment/standard_info';
 
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_isInitializeNeeded = true;
     /**
-   * @var string
-   */
+     * @var string
+     */
     protected $_url = "";
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_dev = false;
     /**
-   * @var boolean
+     * @var boolean
      */
     protected $_isGateway = false;
     /**
@@ -65,32 +65,32 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      */
     protected $_canRefundInvoicePartial = true;
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_canVoid = true;
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_canUseInternal = false;
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_canUseCheckout = true;
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_canUseForMultishipping = false;
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_canFetchTransactionInfo = true;
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_canCreateBillingAgreement = true;
     /**
-   * @var boolean
-   */
+     * @var boolean
+     */
     protected $_canReviewPayment = true;
     /**
      * @var Zipmoney_ZipmoneyPayment_Model_Logger
@@ -104,18 +104,18 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      * @var Zipmoney_ZipmoneyPayment_Model_Config
      */
     protected $_config = null;
-     /**
-   * @var Zipmoney_ZipmoneyPayment_Model_Charge
-   */
+    /**
+     * @var Zipmoney_ZipmoneyPayment_Model_Charge
+     */
     protected $_chargeModel = 'zipmoneypayment/charge';
     /**
      * @var \zipMoney\Api\ChargesApi
      */
-    protected $_chargesApiClass  = '\zipMoney\Api\ChargesApi';
+    protected $_chargesApiClass = '\zipMoney\Api\ChargesApi';
     /**
-    * @var \zipMoney\Api\RefundsApi
-    */
-    protected $_refundsApiClass  = '\zipMoney\Api\RefundsApi';
+     * @var \zipMoney\Api\RefundsApi
+     */
+    protected $_refundsApiClass = '\zipMoney\Api\RefundsApi';
 
     /**
      * Sets the helper, logger, config classes
@@ -140,20 +140,16 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      */
     public function capture(Varien_Object $payment, $amount)
     {
-        if ($payment && $payment->getOrder()) {
-            Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
-        }
-
         $orderId = $payment->getOrder()->getIncrementId();
         $order = Mage::getModel('sales/order')
-                            ->loadByIncrementId($orderId);
+            ->loadByIncrementId($orderId);
 
         $this->_charge = Mage::getModel($this->_chargeModel);
         $this->_charge->setOrder($order);
 
         try {
             if (!$amount) {
-                  Mage::throwException($this->_helper->__("Please provide the capture amount"));
+                Mage::throwException($this->_helper->__("Please provide the capture amount"));
             }
 
             $this->_charge->captureCharge($amount);
@@ -164,7 +160,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
         } catch (Mage_Core_Exception $e) {
             $this->_logger->debug($e->getMessage());
         } catch (ApiException $e) {
-            $this->_logger->debug("Errors:-".json_encode($e->getResponseBody()));
+            $this->_logger->debug("Errors:-" . json_encode($e->getResponseBody()));
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -184,10 +180,6 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      */
     public function refund(Varien_Object $payment, $amount)
     {
-        if ($payment && $payment->getOrder()) {
-            Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
-        }
-
         $param = Mage::app()->getRequest()->getParam('creditmemo');
         $reason = $param['comment_text'];
 
@@ -197,14 +189,14 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
         $orderId = $payment->getOrder()->getIncrementId();
         $order = Mage::getModel('sales/order')
-                            ->loadByIncrementId($orderId);
+            ->loadByIncrementId($orderId);
 
         $this->_charge = Mage::getModel($this->_chargeModel, array('api_class' => $this->_refundsApiClass));
         $this->_charge->setOrder($order);
 
         try {
             if (!$amount) {
-                  Mage::throwException($this->_helper->__("Please provide the capture amount"));
+                Mage::throwException($this->_helper->__("Please provide the capture amount"));
             }
 
             $refund = $this->_charge->refundCharge($amount, $reason);
@@ -218,7 +210,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
         } catch (Mage_Core_Exception $e) {
             $this->_logger->debug($e->getMessage());
         } catch (ApiException $e) {
-            $this->_logger->debug("Errors:-".json_encode($e->getResponseBody()));
+            $this->_logger->debug("Errors:-" . json_encode($e->getResponseBody()));
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -239,13 +231,9 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
     {
         $this->_logger->info($this->_helper->__("Cancelling Order"));
 
-        if ($payment && $payment->getOrder()) {
-            Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($payment->getOrder()->getStoreId());
-        }
-
         $orderId = $payment->getOrder()->getIncrementId();
         $order = Mage::getModel('sales/order')
-                    ->loadByIncrementId($orderId);
+            ->loadByIncrementId($orderId);
 
         if ($order->getPayment()->getMethod() != "zipmoneypayment") {
             return;
@@ -261,7 +249,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
         } catch (Mage_Core_Exception $e) {
             $this->_logger->debug($e->getMessage());
         } catch (ApiException $e) {
-            $this->_logger->debug("Errors:-".json_encode($e->getResponseBody()));
+            $this->_logger->debug("Errors:-" . json_encode($e->getResponseBody()));
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -312,24 +300,23 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      */
     public function getCheckoutRedirectUrl()
     {
-        $action     = Mage::app()->getRequest()->getActionName();
+        $action = Mage::app()->getRequest()->getActionName();
         $controller = Mage::app()->getRequest()->getControllerName();
-        $module     = strtolower(Mage::app()->getRequest()->getControllerModule());
+        $module = strtolower(Mage::app()->getRequest()->getControllerModule());
 
         $this->_logger->debug($this->_helper->__("Action: %s Controller: %s Module: %s", $action, $controller, $module));
 
         $url = null;
 
-        if (($module == 'mage_checkout' && $controller == 'onepage' && $action == 'savePayment')
-        ) {
+        if (($module == 'mage_checkout' && $controller == 'onepage' && $action == 'savePayment')) {
             $url = null;
         } else {
             if ($this->_config->isInContextCheckout()) {
-                 $this->_logger->info("In-Context Checkout");
+                $this->_logger->info("In-Context Checkout");
 
                  /* Return current url with extra param appended, so that it will refresh current page with the
-                  * param if the param is present, will popup zipMoney iframe checkout
-                  */
+                 * param if the param is present, will popup zipMoney iframe checkout
+                 */
 
                 if ($module == 'magestore_onestepcheckout' && $controller == 'index' && $action == 'saveOrder') {
                     $this->_logger->info("In-Context Checkout");
@@ -355,15 +342,15 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
 
                 $this->_logger->info($currentUrl);
             } else {
-                 $quote = $this->_getQuote();
+                $quote = $this->_getQuote();
 
                  // Check if the quote has items and errors
                 if (!$quote->hasItems() || $quote->getHasError()) {
                     Mage::throwException($this->_helper->__('Unable to initialize the Checkout.'));
                 }
 
-                 $checkout = Mage::getModel('zipmoneypayment/checkout', array('quote' => $quote));
-                 $checkout->start();
+                $checkout = Mage::getModel('zipmoneypayment/checkout', array('quote' => $quote));
+                $checkout->start();
 
                 if ($url = $checkout->getRedirectUrl()) {
                     $this->_logger->info($this->_helper->__('Successful to get redirect url [ %s ] ', $redirectUrl));
@@ -373,7 +360,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
             }
         }
 
-        $this->_logger->info("Payment Redirect Url:- ".$url);
+        $this->_logger->info("Payment Redirect Url:- " . $url);
 
         return $url;
     }
@@ -386,7 +373,7 @@ class Zipmoney_ZipmoneyPayment_Model_Payment extends Mage_Payment_Model_Method_A
      */
     public function canUseForCurrency($currencyCode)
     {
-        if (!in_array($currencyCode, array("AUD","NZD"))) {
+        if (!in_array($currencyCode, array("AUD", "NZD"))) {
             return false;
         }
 

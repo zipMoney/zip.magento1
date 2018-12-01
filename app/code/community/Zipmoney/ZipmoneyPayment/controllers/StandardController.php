@@ -1,5 +1,4 @@
 <?php
-use \zipMoney\ApiException;
 /**
  * @category  Zipmoney
  * @package   Zipmoney_ZipmoneyPayment
@@ -9,16 +8,8 @@ use \zipMoney\ApiException;
  * @link      http://www.zipmoney.com.au/
  */
 
-class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayment_Controller_Abstract
+class Zipmoney_ZipmoneyPayment_StandardController extends Mage_Checkout_OnepageController
 {
-
-    /**
-     * Checkout Model
-     *
-     * @var string
-     */
-    protected $_checkoutModel = 'zipmoneypayment/checkout';
-
 
     /**
      * Start the checkout by requesting the redirect url and checkout id
@@ -33,13 +24,11 @@ class Zipmoney_ZipmoneyPayment_StandardController extends Zipmoney_ZipmoneyPayme
         }
 
         $exception_message = null;
-
         try {
             if (!$this->getRequest()->isPost()) {
                 $this->_ajaxRedirectResponse();
                 return;
             }
-
             if ($data = $this->getRequest()->getPost('payment', array())) {
                 $result = $this->getOnepage()->savePayment($data);
 

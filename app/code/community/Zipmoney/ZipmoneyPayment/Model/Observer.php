@@ -12,7 +12,6 @@ use \zipMoney\ApiException;
 class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
 {
 
-
     /**
      * Sets the logger and helper models
      *
@@ -38,10 +37,10 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
      */
     public static function init()
     {
-        // Add our vendor folder to our include path
-        set_include_path(get_include_path() . PATH_SEPARATOR . Mage::getBaseDir('lib') . DS . 'Zipmoney' . DS . 'vendor');
-        // Include the autoloader for composer
-        include_once Mage::getBaseDir('lib') . DS . 'Zipmoney' . DS . 'vendor' . DS . 'autoload.php';
+        // Add our SDK folder to our include path and do not use __autoload old methods
+        if (!class_exists('\zipMoney\ApiClient', false)) {
+            include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
+        }
     }
 
     /**
@@ -148,11 +147,6 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
         $event = $observer->getEvent();
         $order = $event->getOrder();
 
-        // set scope
-        if ($order) {
-            Mage::getSingleton('zipmoneypayment/storeScope')->setStoreId($order->getStoreId());
-        }
-
         if (!$this->_isZipMoneyOrder($order)) {
             $this->_logger->debug($this->_helper->__('Order %s was not created by zipMoney. Will not notify zipMoney to cancel order.', $order->getIncrementId()));
             return;
@@ -170,13 +164,13 @@ class Zipmoney_ZipmoneyPayment_Model_Observer extends Mage_Core_Model_Abstract
         try {
             $this->_charge = Mage::getModel(
                 "zipmoneypayment/charge",
-                array('api_class' => "\zipMoney\Client\Api\ChargesApi",  'order' => $order)
+                array('api_class' => "\zipMoney\Client\Api\ChargesApi", 'order' => $order)
             );
             $this->_charge->cancelCharge();
         } catch (Mage_Core_Exception $e) {
             $this->_logger->debug($e->getMessage());
         } catch (ApiException $e) {
-            $this->_logger->debug("Error:-".$e->getCode()."-".json_encode($e->getResponseBody()));
+            $this->_logger->debug("Error:-" . $e->getCode() . "-" . json_encode($e->getResponseBody()));
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

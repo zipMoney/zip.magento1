@@ -7,18 +7,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.zipmoney.com.au/
  */
-class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_Model_Checkout_Abstract
+class Zipmoney_ZipmoneyPayment_Model_Checkout
 {
-
-    /**
-     * @var string
-     */
-    protected $_redirectUrl = '';
-
-    /**
-     * @var string
-     */
-    protected $_checkoutId = '';
+    protected $api = null;
+    protected $logger;
 
     /**
      * zipMoney Checkouts Api Class
@@ -38,19 +30,18 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
      * @param array $params
      * @throws Mage_Core_Exception
      */
-    public function __construct($params = array())
+    public function __construct()
     {
-        if (isset($params['quote'])) {
-            if ($params['quote'] instanceof Mage_Sales_Model_Quote) {
-                $this->_quote = $params['quote'];
-            } else {
-                Mage::throwException('Quote instance is required.');
-            }
+        $this->logger = Mage::getSingleton('zipmoneypayment/logger');
+    }
+
+    public function getApi()
+    {
+        if ($this->api === null) {
+            $this->api = Mage::getSingleton('zipmoneypayment/api');
         }
 
-        parent::__construct($params);
-
-        $this->setApi($this->_apiClass);
+        return $this->api;
     }
 
     /**
@@ -65,32 +56,9 @@ class Zipmoney_ZipmoneyPayment_Model_Checkout extends Zipmoney_ZipmoneyPayment_M
             Mage::throwException(Mage::helper('zipmoneypayment')->__('The quote does not exist.'));
         }
 
-        if ($this->_quote->getIsMultiShipping()) {
-            $this->_quote->setIsMultiShipping(false);
-            $this->_quote->removeAllAddresses();
-        }
-
         $checkoutMethod = $this->getCheckoutMethod();
         $isAllowedGuestCheckout = Mage::helper('checkout')->isAllowedGuestCheckout($this->_quote, $this->_quote->getStoreId());
         $isCustomerLoggedIn = $this->getCustomerSession()->isLoggedIn();
-
-        $this->_logger->debug("Checkout Method:- " . $checkoutMethod);
-        $this->_logger->debug("Is Allowed Guest Checkout :- " . $isAllowedGuestCheckout);
-        $this->_logger->debug("Is Customer Logged In :- " . $isCustomerLoggedIn);
-
-        if ((!$checkoutMethod || $checkoutMethod != Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER)
-            && !$isAllowedGuestCheckout
-            && !$isCustomerLoggedIn
-        ) {
-            Mage::throwException(Mage::helper('zipmoneypayment')->__('Please log in to proceed to checkout.'));
-        }
-
-        // Calculate Totals
-        $this->_quote->collectTotals();
-
-        if (!$this->_quote->getGrandTotal() && !$this->_quote->hasNominalItems()) {
-            Mage::throwException($this->_helper->__('Cannot process the order due to zero amount.'));
-        }
 
         try {
             $this->_quote->reserveOrderId()->save();
