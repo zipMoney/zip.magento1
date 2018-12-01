@@ -46,6 +46,34 @@
         </helpers>
     </global>
 
+     <frontend>
+        <routers>
+            <zip_payment>
+                <use>standard</use>
+                <args>
+                    <module>Zip_Payment</module>
+                    <frontName>zip_payment</frontName>
+                </args>
+            </zip_payment>
+        </routers>
+        <layout>
+            <updates>
+                <zip_payment>
+                    <file>zip/payment.xml</file>
+                </zip_payment>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <translations>
+                    <files>
+                        <default>zip_payment.csv</default>
+                    </files>
+                </translations>
+            </modules>
+        </translate>
+    </frontend>
+
     <adminhtml>
         <events>
             <controller_action_predispatch_adminhtml>
@@ -80,11 +108,13 @@
                 <admin_notification>
                     <enabled>1</enabled>
                     <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
-                    <version>
-                        <title></title>
-                    </version>
                 </admin_notification>
+                <checkout>
+                    <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
+                </checkout>
                 <widgets>
+                    <enabled>1</enabled>
+                    <js_lib>//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js</js_lib>
                     <home_page>
                         <banner>1</banner>
                     </home_page>

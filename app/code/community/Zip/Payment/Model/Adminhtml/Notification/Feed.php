@@ -2,8 +2,7 @@
 
 class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotification_Model_Feed
 {
-    const XML_ENABLED_PATH = 'payment/zip_payment/admin_notification/enabled';
-    const XML_FEED_URL_PATH = 'payment/zip_payment/admin_notification/feed_url';
+    const CONFIG_FEED_URL_PATH = 'payment/zip_payment/admin_notification/feed_url';
 
     const RELEASE_FIELD = 'release';
     const VERSION_FIELD = 'version';
@@ -18,41 +17,39 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
      */
     public function checkUpdate()
     {
-        if(Mage::getStoreConfigFlag(self::XML_ENABLED_PATH)) {
 
-            if (($this->getFrequency() + $this->getLastUpdate()) > time()) {
-                return $this;
-            }
-    
-            $data = array();
-            $this->feedData = $this->getFeedData();
-    
-            if(!empty($this->feedData) && isset($this->feedData[self::NOTIFICATION_FIELD])) {
-    
-                foreach($this->feedData[self::NOTIFICATION_FIELD] as $item) {
-    
-                    $data[] = array(
-                        'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_NOTICE,
-                        'date_added'    => isset($item['date']) ? gmdate('Y-m-d H:i:s', strtotime($item['date'])) : date('Y-m-d H:i:s'),
-                        'title'         => isset($item['title']) ? $item['title'] : self::DEFAULT_NOTIFICATION_TITLE,
-                        'description'   => isset($item['description']) ? $item['description'] : '',
-                        'url'           => isset($item['url']) ? $item['url'] : ''
-                    );
-                }
-
-                $versionUpgradeNotification = $this->getVersionUpgradeNotification();
-                if(!empty($versionUpgradeNotification)) {
-                    $data[] = $versionUpgradeNotification;
-                }
-
-                if (!empty($data)) {
-                    Mage::getModel('adminnotification/inbox')->parse(array_reverse($data));
-                }
-            }
-    
-            $this->setLastUpdate();
-            
+        if (($this->getFrequency() + $this->getLastUpdate()) > time()) {
+            return $this;
         }
+
+        $data = array();
+        $this->feedData = $this->getFeedData();
+
+        if(!empty($this->feedData) && isset($this->feedData[self::NOTIFICATION_FIELD])) {
+
+            foreach($this->feedData[self::NOTIFICATION_FIELD] as $item) {
+
+                $data[] = array(
+                    'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_NOTICE,
+                    'date_added'    => isset($item['date']) ? gmdate('Y-m-d H:i:s', strtotime($item['date'])) : date('Y-m-d H:i:s'),
+                    'title'         => isset($item['title']) ? $item['title'] : self::DEFAULT_NOTIFICATION_TITLE,
+                    'description'   => isset($item['description']) ? $item['description'] : '',
+                    'url'           => isset($item['url']) ? $item['url'] : ''
+                );
+            }
+
+            $versionUpgradeNotification = $this->getVersionUpgradeNotification();
+            if(!empty($versionUpgradeNotification)) {
+                $data[] = $versionUpgradeNotification;
+            }
+
+            if (!empty($data)) {
+                Mage::getModel('adminnotification/inbox')->parse(array_reverse($data));
+            }
+        }
+
+        $this->setLastUpdate();
+            
 
         return $this;
     }
@@ -88,7 +85,7 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
     public function getFeedUrl()
     {
         if (is_null($this->_feedUrl)) {
-            $this->_feedUrl = Mage::getStoreConfig(self::XML_FEED_URL_PATH);
+            $this->_feedUrl = Mage::getStoreConfig(self::CONFIG_FEED_URL_PATH);
         }
         return $this->_feedUrl;
     }

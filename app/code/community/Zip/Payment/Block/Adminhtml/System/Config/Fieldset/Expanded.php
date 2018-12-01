@@ -11,10 +11,11 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Expanded extends Mage_A
     protected function _getCollapseState($element)
     {
         $extra = Mage::getSingleton('admin/session')->getUser()->getExtra();
+
         if (isset($extra['configState'][$element->getId()])) {
             return $extra['configState'][$element->getId()];
         }
 
-        return true;
+        return false;
     }
 }
