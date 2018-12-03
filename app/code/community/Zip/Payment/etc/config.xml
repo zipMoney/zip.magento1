@@ -101,17 +101,30 @@
             <zip_payment>
                 <active>0</active>
                 <title>Zip - Own it now, pay later</title>
+                <logo>https://zip.co/assets/zip/logos/zip/primary.svg</logo>
+                <model>zip_payment/payment</model>
                 <environment>sandbox</environment>
                 <payment_mode>capture</payment_mode>
                 <minimum_total>1</minimum_total>
-                <log_setting>7</log_setting>
                 <admin_notification>
                     <enabled>1</enabled>
                     <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
                 </admin_notification>
                 <checkout>
+                    <sort_order>3</sort_order>
                     <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
                 </checkout>
+                <country_currency>
+                    <allowspecific>1</allowspecific>
+                    <specificcountry>AU</specificcountry>
+                    <allowed_currencies>AUD</allowed_currencies>
+                    <supported_countries>AU</supported_countries>
+                    <supported_currencies>AUD</supported_currencies>
+                </country_currency>
+                <debug>
+                    <enabled>0</enabled>
+                    <log>6</log>
+                </debug>
                 <widgets>
                     <enabled>1</enabled>
                     <js_lib>//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js</js_lib>
@@ -131,6 +144,9 @@
                         <tagline>1</tagline>
                         <widget>0</widget>
                     </cart_page>
+                    <checkout_page>
+                        <widget>1</widget>
+                    </checkout_page>
                 </widgets>
             </zip_payment>
         </payment>

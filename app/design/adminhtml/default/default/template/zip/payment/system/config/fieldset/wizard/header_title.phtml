@@ -1,5 +1,6 @@
 <?php 
     $version = $this->getVersion();
+    $logo = $this->getLogo();
     $element = $this->getElement();
     $groupConfig = $this->getConfig();
     $notification = $this->getData('notification');
@@ -8,8 +9,8 @@
 <div class="config-heading">
     <div class="heading">
         <span class="heading-title">
-            <?php if(!empty($groupConfig['logo'])): ?>
-                <img class="logo" alt="<?= $element->getLegend() ?>" title="<?= $element->getLegend() ?>" src="<?= $groupConfig['logo'] ?>"/>
+            <?php if(!empty($logo)): ?>
+                <img class="logo" alt="<?= $element->getLegend() ?>" title="<?= $element->getLegend() ?>" src="<?= $logo ?>"/>
             <?php endif; ?>
             <?php if(!empty($element->getLegend())): ?>
                 <strong>

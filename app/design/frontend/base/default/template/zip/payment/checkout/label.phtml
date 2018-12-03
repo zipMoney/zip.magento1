@@ -1,0 +1,42 @@
+<?php
+    $logo = $this->getLogo();
+    $title = $this->getTitle();
+    $methodCode = $this->getMethodCode();
+?>
+
+<?php if(!empty($logo)): ?>
+<img src="<?= $logo ?>" alt="<?= $title ?>"/>
+<?php endif; ?>
+
+<?php if(!empty($title)): ?>
+&nbsp;&nbsp;<span data-zm-asset="checkouttitle" data-zm-widget="inline"><?= $title ?></span>
+<?php endif; ?>
+
+
+<style type="text/css">
+#dt_method_<?= $methodCode ?> input {
+    height: 30px;
+}
+#dt_method_<?= $methodCode ?> img {
+    height: 34px;
+    vertical-align: middle;
+    padding: 5px 0;
+    display: inline-block;
+    line-height: 26px;
+}
+#dt_method_<?= $methodCode ?> label > span {
+    display: inline-block;
+    line-height: 26px;
+    padding: 5px 0;
+}
+</style>
+
+<script type="text/javascript">
+//<![CDATA[
+
+if(window.$zmJs!=undefined) {
+    window.$zmJs.setup();
+}
+
+//]]>
+</script>

@@ -16,7 +16,12 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
     const CURL_SSL_VERIFICATION_DISABLED_MESSAGE = 'CURL SSL Verification has been disabled';
     const API_CERTIFICATE_INVALID_MESSAGE = 'SSL Certificate is not valid for the API';
     const API_INACCESSIBLE_MESSAGE = 'Failed to access Zip Payment API';
+    const API_PRIVATE_KEY_INVALID_MESSAGE = 'Please enter a valid private key';
+    const API_PUBLIC_KEY_INVALID_MESSAGE = 'Please enter a valid public key';
     const API_CREDENTIAL_INVALID_MESSAGE = 'API credential keys are invalid';
+
+    const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
+    const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
 
     const HEALTH_CHECK_CACHE_ID = 'zip_payment_health_check';
 
@@ -67,6 +72,8 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
 
         $sslEnabled = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
         $curlEnabled = function_exists('curl_version');
+        $privateKey = Mage::getStoreConfig(self::CONFIG_PRIVATE_KEY_PATH);
+        $publicKey = Mage::getStoreConfig(self::CONFIG_PUBLIC_KEY_PATH);
 
         if(!$sslEnabled) {
             $this->addFailedItem(self::STATUS_WARNING, self::SSL_DISABLED_MESSAGE);
@@ -109,6 +116,14 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
 
                 if(!$isAccessible) {
                     $this->addFailedItem(self::STATUS_ERROR, self::API_INACCESSIBLE_MESSAGE);
+                }
+
+                if(empty($privateKey)) {
+                    $this->addFailedItem(self::STATUS_ERROR, self::API_PRIVATE_KEY_INVALID_MESSAGE);
+                }
+
+                if(empty($publicKey)) {
+                    $this->addFailedItem(self::STATUS_ERROR, self::API_PUBLIC_KEY_INVALID_MESSAGE);
                 }
 
                 if($httpCode == '401') {

@@ -3,48 +3,54 @@
 class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
 {
 
-    /**
-     * @const string
-     */
     const CONFIG_WIDGET_PATH_PREFIX = 'payment/zip_payment/widgets/';
     const CONFIG_WIDGETS_ENABLED_PATH = 'payment/zip_payment/widgets/enabled';
     const CONFIG_WIDGETS_LIB_SCRIPT_PATH = 'payment/zip_payment/widgets/js_lib';
     
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
     const CONFIG_ENVIRONMENT_PATH = 'payment/zip_payment/environment';
+    const CONFIG_HOME_PAGE_PATH = 'web/default/cms_home_page';
     
     const ROOT_WIDGET_TYPES = array('head', 'root', 'popup');
-    const PAGE_WIDGET_TYPES = array('widget', 'banner', 'tagline');
+    const SUPPORTED_WIDGET_TYPES = array('widget', 'banner', 'tagline');
 
     protected function isActive($widgetType) 
     {
 
         if(Mage::helper("zip_payment")->isActive() && (bool)Mage::getStoreConfig(self::CONFIG_WIDGETS_ENABLED_PATH)) {
 
-            $pageType = $this->getCurrentPageType();
+            $pageType = $this->getWidgetPageType();
+   
+            if(!empty($pageType)) {
 
-            if(in_array($widgetType, self::ROOT_WIDGET_TYPES)) {
+                if(in_array($widgetType, self::ROOT_WIDGET_TYPES)) {
 
-                foreach(self::PAGE_WIDGET_TYPES as $supportedWidgetType) {
-                    $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $supportedWidgetType;
-                    $enabled = Mage::getStoreConfig($path);
-                    
-                    if(!is_null($enabled) && $enabled == 0) {
-                        return false;
+                    foreach(self::SUPPORTED_WIDGET_TYPES as $supportedWidgetType) {
+                        $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $supportedWidgetType;
+                        $enabled = Mage::getStoreConfig($path);
+                        
+                        /**
+                         * Make sure there one widget type is enable for current page type
+                         */
+                        if(!is_null($enabled) && $enabled == 1) {
+                            return true;
+                        }
                     }
+    
+                    return false;
+    
+                }
+                elseif(in_array($widgetType, self::SUPPORTED_WIDGET_TYPES)) {
+    
+                    if(!empty($widgetType)) {
+                        $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType;
+                        return Mage::getStoreConfig($path) == 1;
+                    }
+    
                 }
 
-                return true;
-
             }
-            elseif(in_array($widgetType, self::PAGE_WIDGET_TYPES)) {
 
-                if(!empty($pageType) && !empty($widgetType)) {
-                    $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType;
-                    return Mage::getStoreConfig($path) == 1;
-                }
-
-            }
         }
 
         return false;
@@ -58,39 +64,29 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         return Mage::getStoreConfig(self::CONFIG_ENVIRONMENT_PATH);
     }
 
+    public function getLibScript() {
+        return Mage::getStoreConfig(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
+    }
+
     /**
      * Returns the current page type.
      *
      * @return string
      */
-    protected function getCurrentPageType()
+    protected function getWidgetPageType()
     {
-        $oRequest = Mage::app()->getRequest();
-        $vModule = $oRequest->getModuleName();
-        if ($vModule == 'cms') {
-                $vId = Mage::getSingleton('cms/page')->getIdentifier();
-                $iPos = strpos($vId, 'home');
-            if ($iPos === 0) {
-                    return 'home';
-            }
-        } else if ($vModule == 'catalog') {
-                $vController = $oRequest->getControllerName();
-            if ($vController == 'product') {
-                    return 'product';
-            } else if ($vController == 'category') {
-                    return 'category';
-            }
-        } else if ($vModule == 'checkout') {
-                $vController = $oRequest->getControllerName();
-            if ($vController == 'cart') {
-                    return 'cart';
-            }
+        $pageIdentifier = Mage::app()->getFrontController()->getAction()->getFullActionName();
+
+        switch($pageIdentifier){
+            case 'cms_index_index': return 'home';
+            case 'catalog_product_view': return 'product'; 
+            case 'catalog_category_view': return 'category'; 
+            case 'checkout_cart_index': return 'cart';
+            case 'checkout_onepage_index': return 'checkout';
         }
 
-        return '';
+        return null;
     }
 
-    public function getLibScript() {
-        return Mage::getStoreConfig(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
-    }
+    
 }
