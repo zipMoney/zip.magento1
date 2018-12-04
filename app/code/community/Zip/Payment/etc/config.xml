@@ -95,23 +95,19 @@
         </events>
     </adminhtml>
 
-
     <default>
         <payment>
             <zip_payment>
                 <active>0</active>
                 <title>Zip - Own it now, pay later</title>
                 <logo>https://zip.co/assets/zip/logos/zip/primary.svg</logo>
-                <model>zip_payment/payment</model>
+                <model>zip_payment/method</model>
                 <environment>sandbox</environment>
-                <payment_mode>capture</payment_mode>
-                <minimum_total>1</minimum_total>
-                <admin_notification>
-                    <enabled>1</enabled>
-                    <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
-                </admin_notification>
+                <payment_action>authorize_capture</payment_action>
+                <order_status>processing</order_status>
+                <min_order_total>1</min_order_total>
+                <sort_order>3</sort_order>
                 <checkout>
-                    <sort_order>3</sort_order>
                     <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
                 </checkout>
                 <country_currency>
@@ -122,9 +118,15 @@
                     <supported_currencies>AUD</supported_currencies>
                 </country_currency>
                 <debug>
-                    <enabled>0</enabled>
-                    <log>6</log>
+                    <enabled>1</enabled>
+                    <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
+                    <log_level>6</log_level>
+                    <log_file>zip_payment.log</log_file>
                 </debug>
+                <admin_notification>
+                    <enabled>1</enabled>
+                    <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
+                </admin_notification>
                 <widgets>
                     <enabled>1</enabled>
                     <js_lib>//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js</js_lib>

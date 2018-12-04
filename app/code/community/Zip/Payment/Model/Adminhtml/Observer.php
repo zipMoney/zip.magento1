@@ -5,8 +5,10 @@ class Zip_Payment_Model_Adminhtml_Observer
     const CONFIG_NOTIFICATION_ENABLED_PATH = 'payment/zip_payment/admin_notification/enabled';
 
     public function checkNotifications(Varien_Event_Observer $observer) {
+
+        $enabled = Mage::getSingleton('zip_payment/config')->getFlag(self::CONFIG_NOTIFICATION_ENABLED_PATH);
         
-        if(Mage::getStoreConfigFlag(self::CONFIG_NOTIFICATION_ENABLED_PATH)) {
+        if($enabled) {
             Mage::getSingleton('zip_payment/adminhtml_notification_feed')->checkUpdate();
         }
     }

@@ -16,7 +16,7 @@
                 </zip_payment_group>
 
                 <zip_payment>
-                    <standard type="group" translate="label comment">
+                    <method type="group" translate="label comment">
                         <label><![CDATA[Zip Payment Solution]]></label>
                         <frontend_type>text</frontend_type>
                         <show_in_default>1</show_in_default>
@@ -81,17 +81,6 @@
                                         <show_in_website>1</show_in_website>
                                         <show_in_store>1</show_in_store>
                                     </active>
-                                    <title translate="label">
-                                        <label>Title</label>
-                                        <tooltip>The title as Payment Method Title which is used to display as payment method option</tooltip>
-                                        <comment>It is recommended to set this value to "Zip - Own it now, pay later"</comment>
-                                        <config_path>payment/zip_payment/title</config_path>
-                                        <frontend_type>text</frontend_type>
-                                        <sort_order>30</sort_order>
-                                        <show_in_default>1</show_in_default>
-                                        <show_in_website>1</show_in_website>
-                                        <show_in_store>0</show_in_store>
-                                    </title>
                                     <environment translate="label">
                                         <label>Environment</label>
                                         <tooltip>Set to 'Live' to start accepting zipMoney payments on your website. Ensure your zipMoney ID and zipMoney Key are your 'Live' credentials if not in 'Test' mode</tooltip>
@@ -146,18 +135,60 @@
                                         <sort_order>100</sort_order>
                                         <fields>
                                             <checkout type="group" translate="label">
-                                                <label>Zip Payment Checkout</label>
+                                                <label>Checkout</label>
                                                 <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
                                                 <sort_order>10</sort_order>
                                                 <fields>
+                                                    <title translate="label">
+                                                        <label>Title</label>
+                                                        <tooltip>The title as Payment Method Title which is used to display as payment method option</tooltip>
+                                                        <comment>It is recommended to set this value to "Zip - Own it now, pay later"</comment>
+                                                        <config_path>payment/zip_payment/title</config_path>
+                                                        <frontend_type>text</frontend_type>
+                                                        <sort_order>10</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>0</show_in_store>
+                                                    </title>
+                                                    <payment_action translate="label">
+                                                        <label>Payment Action</label>
+                                                        <tooltip>Capture Mode to handle zip payment</tooltip>
+                                                        <config_path>payment/zip_payment/payment_action</config_path>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>zip_payment/adminhtml_system_config_source_paymentAction</source_model>
+                                                        <sort_order>20</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>0</show_in_store>
+                                                    </payment_action>
+                                                    <order_status translate="label">
+                                                        <label>New Order Status</label>
+                                                        <frontend_type>select</frontend_type>
+                                                        <config_path>payment/zip_payment/order_status</config_path>
+                                                        <source_model>adminhtml/system_config_source_order_status_processing</source_model>
+                                                        <sort_order>30</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>0</show_in_store>
+                                                    </order_status>
+                                                    <min_order_total translate="label">
+                                                        <label>Minimum Order Total</label>
+                                                        <tooltip>The minimum order value amount required to checkout</tooltip>
+                                                        <config_path>payment/zip_payment/min_order_total</config_path>
+                                                        <frontend_type>text</frontend_type>
+                                                        <sort_order>40</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>0</show_in_store>
+                                                    </min_order_total>
                                                     <sort_order translate="label">
                                                         <label>Sort Order</label>
-                                                        <config_path>payment/zip_payment/checkout/sort_order</config_path>
+                                                        <config_path>payment/zip_payment/sort_order</config_path>
                                                         <frontend_type>text</frontend_type>
-                                                        <sort_order>20</sort_order>
+                                                        <sort_order>50</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
@@ -177,7 +208,7 @@
                                                     <allowspecific translate="label">
                                                         <label>Payment from applicable countries</label>
                                                         <frontend_type>allowspecific</frontend_type>
-                                                        <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                                                        <source_model>zip_payment/adminhtml_system_config_source_payment_allspecificcountries</source_model>
                                                         <config_path>payment/zip_payment/allow_specific_countries</config_path>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
@@ -231,20 +262,34 @@
                                                         <sort_order>10</sort_order>
                                                     </enabled>
 
-                                                    <log translate="label">
-                                                        <label>Log Setting</label>
+                                                    <log_level translate="label">
+                                                        <label>Log Level</label>
                                                         <tooltip>Select 'All' to log everything, 'Default' to log payment information and 'None' to disabled logging</tooltip>
-                                                        <config_path>payment/zip_payment/debug/log</config_path>
-                                                        <source_model>zip_payment/adminhtml_system_config_source_log</source_model>
+                                                        <config_path>payment/zip_payment/debug/log_level</config_path>
+                                                        <source_model>zip_payment/adminhtml_system_config_source_logLevel</source_model>
                                                         <frontend_type>select</frontend_type>
-                                                        <sort_order>60</sort_order>
+                                                        <sort_order>20</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                         <depends>
                                                             <enabled>1</enabled>
                                                         </depends>
-                                                    </log>
+                                                    </log_level>
+
+                                                    <log_file translate="label">
+                                                        <label>Log File Name</label>
+                                                        <tooltip>Identify file name for Zip Debug Logs in system log folder</tooltip>
+                                                        <config_path>payment/zip_payment/debug/log_file</config_path>
+                                                        <frontend_type>text</frontend_type>
+                                                        <sort_order>30</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                        <depends>
+                                                            <enabled>1</enabled>
+                                                        </depends>
+                                                    </log_file>
                                                 </fields>
                                             </debug>
 
@@ -269,61 +314,6 @@
                                                     </enabled>
                                                 </fields>
                                             </admin_notification>
-
-                                            <others type="group" translate="label">
-                                                <label>Others</label>
-                                                <frontend_type>text</frontend_type>
-                                                <show_in_default>1</show_in_default>
-                                                <show_in_website>1</show_in_website>
-                                                <show_in_store>1</show_in_store>
-                                                <sort_order>100</sort_order>
-                                                <fields>
-                                                    <order_status translate="label">
-                                                        <label>New order status</label>
-                                                        <frontend_type>select</frontend_type>
-                                                        <source_model>adminhtml/system_config_source_order_status</source_model>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>0</show_in_store>
-                                                        <sort_order>15</sort_order>
-                                                    </order_status>
-                                                    
-                                                    
-                                                    <ssl_verification translate="label">
-                                                        <label>Enable SSL verification</label>
-                                                        <config_path>payment/zip_payment/ssl_verification</config_path>
-                                                        <frontend_type>select</frontend_type>
-                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
-                                                        <sort_order>35</sort_order>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                    </ssl_verification>
-                                                    <payment_mode translate="label">
-                                                        <label>Capture Mode</label>
-                                                        <tooltip>Capture Mode to handle zip payment</tooltip>
-                                                        <config_path>payment/zip_payment/payment_mode</config_path>
-                                                        <frontend_type>select</frontend_type>
-                                                        <source_model>zip_payment/adminhtml_system_config_source_mode</source_model>
-                                                        <sort_order>40</sort_order>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>0</show_in_store>
-                                                    </payment_mode>
-                                                    <minimum_total translate="label">
-                                                        <label>Minimum Order Value</label>
-                                                        <tooltip>The minimum order value amount required to checkout</tooltip>
-                                                        <config_path>payment/zip_payment/minimum_total</config_path>
-                                                        <frontend_type>text</frontend_type>
-                                                        <sort_order>50</sort_order>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>0</show_in_store>
-                                                        <frontend_class>validate-number</frontend_class>
-                                                    </minimum_total>
-                                                </fields>
-                                            </others>
-
-                                            
                                         </fields>
                                     </advanced>
                                 </fields>
@@ -484,7 +474,7 @@
                                 </fields>
                             </widgets>
                         </fields>
-                    </standard>
+                    </method>
                 </zip_payment>
             </groups>
         </payment>

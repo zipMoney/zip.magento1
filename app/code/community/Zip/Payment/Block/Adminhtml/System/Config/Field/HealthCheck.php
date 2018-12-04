@@ -56,7 +56,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
 
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $this->checkSystemHealth();
+        $this->checkHealth();
 
         usort($this->result['items'], function($a, $b) {
             return $b['status'] - $a['status'];
@@ -68,12 +68,12 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
         return $this->_toHtml();
     }
 
-    protected function checkSystemHealth() {
+    protected function checkHealth() {
 
         $sslEnabled = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
         $curlEnabled = function_exists('curl_version');
-        $privateKey = Mage::getStoreConfig(self::CONFIG_PRIVATE_KEY_PATH);
-        $publicKey = Mage::getStoreConfig(self::CONFIG_PUBLIC_KEY_PATH);
+        $privateKey = Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_PRIVATE_KEY_PATH);
+        $publicKey = Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_PUBLIC_KEY_PATH);
 
         if(!$sslEnabled) {
             $this->addFailedItem(self::STATUS_WARNING, self::SSL_DISABLED_MESSAGE);

@@ -7,7 +7,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_Currency extends Mage_Adm
     public function toOptionArray($isMultiselect)
     {
         $options = array();
-        $supportedCurrencies = Mage::getStoreConfig(self::CONFIG_SUPPORTED_CURRENCIES_PATH);
+        $supportedCurrencies = Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_SUPPORTED_CURRENCIES_PATH);
 
         if(!empty($supportedCurrencies)) {
 

@@ -85,7 +85,7 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
     public function getFeedUrl()
     {
         if (is_null($this->_feedUrl)) {
-            $this->_feedUrl = Mage::getStoreConfig(self::CONFIG_FEED_URL_PATH);
+            $this->_feedUrl = Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_FEED_URL_PATH);
         }
         return $this->_feedUrl;
     }

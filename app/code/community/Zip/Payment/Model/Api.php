@@ -1,19 +1,22 @@
 <?php
-use \zipMoney\Model\CreateCheckoutRequest as CheckoutRequest;
-use \zipMoney\Model\CreateChargeRequest as ChargeRequest;
-use \zipMoney\Model\CreateRefundRequest as RefundRequest;
-use \zipMoney\Model\CaptureChargeRequest;
-use \zipMoney\Model\Shopper;
-use \zipMoney\Model\CheckoutOrder;
-use \zipMoney\Model\ChargeOrder;
-use \zipMoney\Model\Authority;
-use \zipMoney\Model\OrderShipping;
-use \zipMoney\Model\OrderShippingTracking;
-use \zipMoney\Model\Address;
-use \zipMoney\Model\OrderItem;
-use \zipMoney\Model\Metadata;
-use \zipMoney\Model\CheckoutConfiguration;
-use \zipMoney\ApiException;
+
+use Zip\Model\CreateCheckoutRequest as CheckoutRequest;
+use Zip\Model\CreateChargeRequest as ChargeRequest;
+use Zip\Model\CreateRefundRequest as RefundRequest;
+use Zip\Model\CaptureChargeRequest;
+use Zip\Model\Shopper;
+use Zip\Model\CheckoutOrder;
+use Zip\Model\ChargeOrder;
+use Zip\Model\Authority;
+use Zip\Model\OrderShipping;
+use Zip\Model\OrderShippingTracking;
+use Zip\Model\Address;
+use Zip\Model\OrderItem;
+use Zip\Model\Metadata;
+use Zip\Model\CheckoutConfiguration;
+use Zip\ApiException;
+use Zip\Api\CheckoutsApi;
+use Zip\Api\ChargesApi;
 
 class Zip_Payment_Model_Api
 {
@@ -28,17 +31,28 @@ class Zip_Payment_Model_Api
     public function __construct()
     {
         //initial the API SDK here only
-        if (!class_exists('\zipMoney\ApiClient', false)) {
-            include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
+        if (!class_exists('Zip\ApiClient', false)) {
+            Mage::helper('zip_payment')->autoLoad();
         }
-
-        $this->logger = new Zip_Payment_Model_Logger();
     }
+
+    /**
+     * Get logger object
+     * @return Zip_Payment_Model_Logger
+     */
+    public function getLogger()
+    {
+        if ($this->logger == null) {
+            $this->logger = Mage::getModel('zip_payment/logger');
+        }
+        return $this->logger;
+    }
+
 
     public function getCheckoutApi()
     {
         if ($this->checkoutApi === null) {
-            $this->checkoutApi = new \zipMoney\Api\CheckoutsApi();
+            $this->checkoutApi = new CheckoutsApi();
         }
 
         return $this->checkoutApi;
@@ -47,7 +61,7 @@ class Zip_Payment_Model_Api
     public function getChargeApi()
     {
         if ($this->chargeApi === null) {
-            $this->chargeApi = new \zipMoney\Api\ChargesApi();
+            $this->chargeApi = new ChargesApi();
         }
 
         return $this->chargeApi;
@@ -56,7 +70,7 @@ class Zip_Payment_Model_Api
     /**
      * Returns the prepared metadata model
      * Dummy data as normal merchant don't need this
-     * @return \zipMoney\Model\Metadata
+     * @return Zip\Model\Metadata
      */
     public function getMetadata()
     {
@@ -72,7 +86,7 @@ class Zip_Payment_Model_Api
     /**
      * Returns the prepared authority model
      *
-     * @return \zipMoney\Model\Authority
+     * @return Zip\Model\Authority
      */
     public function getAuthority($value, $type = self::AUTHORITY_TYPE_CHECKOUT)
     {
@@ -87,9 +101,9 @@ class Zip_Payment_Model_Api
      *
      * @param Mage_Sales_Model_Order $order
      * @param float $amount
-     * @param \zipMoney\Model\Authority $authority
+     * @param Zip\Model\Authority $authority
      * @param boolean $isCharge
-     * @return \zipMoney\Model\CreateChargeRequest $chargeReq
+     * @return Zip\Model\CreateChargeRequest $chargeReq
      */
     public function prepareChargeData($order, $amount, $authority, $isCharge = true)
     {

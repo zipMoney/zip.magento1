@@ -68,7 +68,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
         $block->setTemplate($this->headerTitleTemplate);
         $block->setData(array(
             'version' => $this->pluginCurrentVersion,
-            'logo' => Mage::getStoreConfig(self::CONFIG_LOGO_PATH),
+            'logo' => Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_LOGO_PATH),
             'element' => $element,
             'config' => $this->getGroup($element)->asArray()
         ));

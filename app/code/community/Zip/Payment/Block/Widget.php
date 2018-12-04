@@ -14,10 +14,21 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     const ROOT_WIDGET_TYPES = array('head', 'root', 'popup');
     const SUPPORTED_WIDGET_TYPES = array('widget', 'banner', 'tagline');
 
+    /**
+     * @var Zip_Payment_Model_Config
+     */
+    protected $config = null;
+
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->config = Mage::getSingleton('zip_payment/config');
+    }
+
     protected function isActive($widgetType) 
     {
 
-        if(Mage::helper("zip_payment")->isActive() && (bool)Mage::getStoreConfig(self::CONFIG_WIDGETS_ENABLED_PATH)) {
+        if(Mage::helper("zip_payment")->isActive() && $this->config->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
 
             $pageType = $this->getWidgetPageType();
    
@@ -27,7 +38,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
 
                     foreach(self::SUPPORTED_WIDGET_TYPES as $supportedWidgetType) {
                         $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $supportedWidgetType;
-                        $enabled = Mage::getStoreConfig($path);
+                        $enabled = $this->config->getValue($path);
                         
                         /**
                          * Make sure there one widget type is enable for current page type
@@ -44,7 +55,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     
                     if(!empty($widgetType)) {
                         $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType;
-                        return Mage::getStoreConfig($path) == 1;
+                        return $this->config->getFlag($path);
                     }
     
                 }
@@ -57,15 +68,15 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     }
 
     public function getMerchantId() {
-        return Mage::getStoreConfig(self::CONFIG_PUBLIC_KEY_PATH);
+        return $this->config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
     }
 
     public function getEnvironment() {
-        return Mage::getStoreConfig(self::CONFIG_ENVIRONMENT_PATH);
+        return $this->config->getValue(self::CONFIG_ENVIRONMENT_PATH);
     }
 
     public function getLibScript() {
-        return Mage::getStoreConfig(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
+        return $this->config->getValue(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
     }
 
     /**
