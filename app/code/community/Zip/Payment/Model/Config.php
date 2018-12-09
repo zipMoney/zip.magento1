@@ -1,15 +1,44 @@
 <?php
 
+use Zip\Configuration;
 
 class Zip_Payment_Model_Config
 {
     const METHOD_CODE = 'zip_payment';
 
+    const CONFIG_LOGO_PATH = 'payment/zip_payment/logo';
+    const CONFIG_TITLE_PATH = 'payment/zip_payment/title';
+
+    /**
+     * country and currency
+     */
     const CONFIG_MERCHANT_COUNTRY_PATH = 'payment/account/merchant_country';
     const CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH = 'payment/zip_payment/allow_specific_countries';
     const CONFIG_SPECIFIC_COUNTRIES_PATH = 'payment/zip_payment/specific_countries';
     const CONFIG_ALLOWED_CURRENCIES_PATH = 'payment/zip_payment/allowed_currencies';
+
+    /**
+     * debug config
+     */
+    const CONFIG_DEVELOPER_LOG_ACTIVE_PATH = 'dev/log/active';
     const CONFIG_DEBUG_ENABLED_PATH = 'payment/zip_payment/debug/enabled';
+    const CONFIG_DEBUG_LOG_LEVEL_PATH = 'payment/zip_payment/debug/log_level';
+    const CONFIG_DEBUG_LOG_FILE_PATH = 'payment/zip_payment/debug/log_file';
+    const DEFAULT_LOG_FILE_NAME = 'zip_payment.log';
+
+    /**
+     * api config
+     */
+    const CONFIG_ENVIRONMENT_PATH = 'payment/zip_payment/environment';
+    const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
+    const CONFIG_API_TIMEOUT_PATH = 'payment/zip_payment/api/timeout';
+
+    /**
+     * checkout urls
+     */
+    const CHECKOUT_RESPONSE_URL_ROUTE = 'zip_payment/checkout/response';
+    const CHECKOUT_REDIRECT_URL_ROUTE = 'zip_payment/checkout/redirect';
+    const CHECKOUT_ERROR_URL_ROUTE = 'zip_payment/checkout/error';
 
     /**
      * Current store id
@@ -18,7 +47,13 @@ class Zip_Payment_Model_Config
      */
     protected $storeId = null;
     protected $methodCode = self::METHOD_CODE;
-    protected $debug = null;
+
+    protected $debugEnabled = null;
+    protected $logEnabled = null;
+    protected $logLevel = null;
+    protected $logFile = null;
+
+    protected $apiConfig = null;
 
     /**
      * Set store id, if specified
@@ -70,36 +105,71 @@ class Zip_Payment_Model_Config
         return $this->methodCode;
     }
 
+    /*************************** DEBUG & LOG **********************************/
+
     public function isDebugEnabled() {
 
-        if($this->debug === null) {
-            $this->debug = $this->getFlag(self::CONFIG_DEBUG_ENABLED_PATH);
+        if($this->debugEnabled === null) {
+            $this->debugEnabled = $this->getFlag(self::CONFIG_DEBUG_ENABLED_PATH);
         }
-        return $this->debug;
-    }
-
-    public function getValue($path) {
-        return Mage::getStoreConfig($path, $this->storeId);
-    }
-
-    public function getFlag($path) {
-        return Mage::getStoreConfigFlag($path, $this->storeId);
+        return $this->debugEnabled;
     }
 
     /**
-     * Check whether method active in configuration
+     * Returns the log level
      *
-     * @param string $method Method code
-     * @return bool
+     * @return int
      */
-    public function isMethodAvailable($methodCode = null)
+    public function getLogLevel()
     {
-        if ($methodCode === null) {
-            $methodCode = $this->getMethodCode();
+        if ($this->logLevel === null) {
+            $this->logLevel = (int)$this->getValue(self::CONFIG_DEBUG_LOG_LEVEL_PATH);
         }
         
-        return $this->getFlag("payment/{$methodCode}/active") && $this->isMerchantCountrySupported();
+        return $this->logLevel;
     }
+
+    public function isLogEnabled() {
+
+        if($this->logEnabled === null) {
+
+            $this->logEnabled = false;
+            
+            if($this->isDebugEnabled()) {
+
+                $isDeveloperLogActive = $this->getFlag(self::CONFIG_DEVELOPER_LOG_ACTIVE_PATH);       
+                $logLevel = $this->getLogLevel();
+
+                $this->logEnabled = ($isDeveloperLogActive && $logLevel >= 0);
+
+            }
+        }
+
+        return $this->logEnabled;
+    }
+
+    /**
+     * Returns the log file
+     *
+     * @return string
+     */
+    public function getLogFile()
+    {
+        if ($this->logFile === null) {
+
+            $logFile = $this->getValue(self::CONFIG_DEBUG_LOG_FILE_PATH);
+
+            if (empty($logFile)) {
+                $logFileName = self::DEFAULT_LOG_FILE_NAME;
+            }
+
+            $this->logFile = $logFile;
+        }
+
+        return $this->logFile;
+    }
+
+    /*************************** COUNTRY AND CURRENCY **********************************/
 
     /**
      * Check whether method supported for specified country or not
@@ -144,5 +214,65 @@ class Zip_Payment_Model_Config
         $supportedCurrencies = (string)$this->getValue(self::CONFIG_ALLOWED_CURRENCIES_PATH);
         return in_array($currencyCode, explode(',', $supportedCurrencies));
     }
+
+
+    /*************************** GET VALUE **********************************/
+
+    public function getValue($path) {
+        return Mage::getStoreConfig($path, $this->storeId);
+    }
+
+    public function getFlag($path) {
+        return Mage::getStoreConfigFlag($path, $this->storeId);
+    }
+
+    /**
+     * Check whether method active in configuration
+     *
+     * @param string $method Method code
+     * @return bool
+     */
+    public function isMethodAvailable($methodCode = null)
+    {
+        if ($methodCode === null) {
+            $methodCode = $this->getMethodCode();
+        }
+        
+        return $this->getFlag("payment/{$methodCode}/active") && $this->isMerchantCountrySupported();
+    }
+
+    
+    public function getApiConfiguration() {
+
+        if($this->apiConfig === null) {
+
+            Mage::helper('zip_payment')->autoLoad();
+
+            $apiConfig = Configuration::getDefaultConfiguration();
+            $magentoVersion = Mage::getVersion();
+            $extensionVersion = Mage::helper('zip_payment')->getCurrentVersion();
+            
+            $apiConfig
+            ->setApiKey('Authorization', Mage::helper('core')->decrypt($this->getValue(self::CONFIG_PRIVATE_KEY_PATH)))
+            ->setEnvironment($this->getValue(self::CONFIG_ENVIRONMENT_PATH))
+            ->setApiKeyPrefix('Authorization', 'Bearer')
+            ->setPlatform("Magento/{$magentoVersion} Zip_Payment/{$extensionVersio}")
+            ->setCurlTimeout((int)$this->getValue(self::CONFIG_API_TIMEOUT_PATH));
+
+            if($this->isDebugEnabled() && $this->isLogEnabled() && $this->getLogLevel() >= Zend_Log::DEBUG) {
+
+                $apiConfig
+                ->setDebug($this->getValue(self::CONFIG_API_TIMEOUT_PATH))
+                ->setDebugFile(Mage::getBaseDir('log') . DS .$this->getLogFile());
+            }
+            
+            $apiConfig->setDefaultHeaders();
+            $this->apiConfig = $apiConfig;
+        }
+
+        return $this->apiConfig;
+    }
+
+    
 
 }

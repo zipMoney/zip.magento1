@@ -327,9 +327,8 @@ class OrderItem implements ArrayAccess
      */
     public function setQuantity($quantity)
     {
-
         if (!is_null($quantity) && ($quantity <= 0)) {
-            throw new \InvalidArgumentException('invalid value for $quantity when calling OrderItem., must be bigger than 0.');
+            throw new \InvalidArgumentException('invalid value for quantity when calling OrderItem., must be bigger than 0.');
         }
 
         $this->container['quantity'] = $quantity;

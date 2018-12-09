@@ -3,6 +3,8 @@
 
 class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 {
+    const ACTION_IMMEDIATE_CAPTURE = 'immediate_capture';
+
     protected $_code = Zip_Payment_Model_Config::METHOD_CODE;
     
     protected $_formBlockType = 'zip_payment/method_form';
@@ -46,6 +48,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     protected $_canCancelInvoice            = false;
 
+
     /**
      * lazy load API class once when needed
      *
@@ -54,7 +57,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     public function getApi()
     {
         if ($this->api === null) {
-            $this->api = Mage::getSingleton('zip_payment/api');
+            $this->api = Mage::getSingleton('zip_payment/api', $this->getConfig()->getApiConfiguration());
         }
 
         return $this->api;
@@ -74,6 +77,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         return $this->config;
     }
 
+    public function getApiConfig() {
+        return $this->getConfig()->getApiConfiguration();
+    }
+
     /**
      * Get logger object
      * @return Zip_Payment_Model_Logger
@@ -81,7 +88,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     public function getLogger()
     {
         if ($this->logger == null) {
-            $this->logger = Mage::getModel('zip_payment/logger');
+            $this->logger = Mage::getSingleton('zip_payment/logger');
         }
         return $this->logger;
     }
@@ -153,6 +160,42 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         return $this->getConfig()->getValue("payment/{$this->getCode()}/{$field}");
     }
 
+    /**
+     * Get session namespace
+     *
+     * @return Zip_Payment_Model_Session
+     */
+    public function getSession()
+    {
+        return Mage::getSingleton('zip_payment/session');
+    }
+
+     /**
+     * Return checkout session object
+     *
+     * @return Mage_Checkout_Model_Session
+     */
+    protected function getCheckoutSession()
+    {
+        return Mage::getSingleton('checkout/session');
+    }
+
+
+    /******************* Redirect Url *****************/
+
+    /**
+     * Returns the url to redirect after placing the order
+     *
+     * @return string
+     */
+    public function getOrderPlaceRedirectUrl()
+    {
+        return $this->getHelper()->getUrl('zip_payment/checkout/start');
+    }
+
+     /******************* Payment Actions *****************/
+
+
     public function order(Varien_Object $payment, $amount)
     {
         if (!$this->canOrder()) {
@@ -160,11 +203,6 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
         return $this;
     }
-
-    /******************************************************************************************* */
-
-
-   
 
     public function authorize(Varien_Object $payment, $amount)
     {
@@ -183,52 +221,32 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 
         $authorizationTransaction = $payment->getAuthorizationTransaction();
         $authId = $authorizationTransaction->getTransactionId();
+        $checkoutId = $this->getSession()->getZipCheckoutId();
 
         if ($authId) {
-            $resp = $this->getApi()->captureCharge($authId, $amount);
-            $chargeId = $resp->id;
-            $receipt = $resp->receipt_number;
-            $payment->setTransactionId($chargeId)
+
+            try {
+
+                $charge = Mage::getModel('zip_payment/api_charge')
+                ->setApiConfig($this->getApiConfig())
+                ->setOrder($payment->getOrder())
+                ->setPaymentAction($this->getConfigPaymentAction())
+                ->create()
+                ->capture($amount)
+                ->getResponse();
+
+                $payment
+                ->setTransactionId($charge->getId())
                 ->setIsTransactionApproved(true)
                 ->setParentTransactionID($authId)
                 ->setIsTransactionClosed(0)
-                ->setAdditionalInformation("receipt_number", $receipt);
+                ->setAdditionalInformation("receipt_number", $charge->getReceiptNumber());
 
-            return $this;
+            } catch (Exception $e) {
+                Mage::throwException($this->_getHelper()->__('Could not capture the payment - ' . $e->getMessage()));
+            }
+
         }
-
-        $order = $payment->getOrder();
-        //get checkout id from magento core session
-        $checkout_id = Mage::getSingleton('core/session')->getZipCheckoutId();
-        
-        try {
-            //potentially allowed token charge and in store using getAuthority($value, $type)
-            $authority = $this->getApi()->getAuthority($checkout_id);
-            $payload = $this->getApi()->prepareChargeData($order, $amount, $authority, true);
-            $resp = $this->getApi()->createCharge($payload);
-            $chargeId = $resp->id;
-            $receipt = $resp->receipt_number;
-            $payment->setTransactionId($chargeId)
-                ->setIsTransactionApproved(true)
-                ->setIsTransactionClosed(0)
-                ->setAdditionalInformation("receipt_number", $receipt);
-        } catch (Exception $e) {
-            Mage::throwException($this->_getHelper()->__('Could not capture the payment - ' . $e->getMessage()));
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set capture transaction ID to invoice for informational purposes
-     * @param Mage_Sales_Model_Order_Invoice $invoice
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @return Mage_Payment_Model_Method_Abstract
-     */
-    public function processInvoice($invoice, $payment)
-    {
-        $invoice->setTransactionId($payment->getLastTransId());
-        return $this;
     }
 
     public function refund(Varien_Object $payment, $amount)
@@ -238,49 +256,6 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         return $this;
-    }
-
-    public function createCheckout()
-    {
-        $quote = $this->getOnepage()->getQuote();
-        try {
-            $payload = $this->getApi()->prepareCheckoutData($quote);
-            $resp = $this->getApi()->createCharge($payload);
-            return $resp;
-        } catch (Exception $e) {
-            Mage::throwException($this->_getHelper()->__('Could not authorize the payment - ' . $e->getMessage()));
-        }
-
-        return $reponse;
-    }
-
-    protected function getOnepage()
-    {
-        return Mage::getSingleton('checkout/type_onepage');
-    }
-
-    public function getCheckoutRedirectUrl()
-    {
-        $checkout_id = Mage::getSingleton('core/session')->getZipCheckoutId();
-        if (empty($checkout_id)) {
-            $onepage = $this->getOnepage();
-            $quote = $onepage->getQuote();
-            //reserve the order id to prevent changes
-            if (!$quote->getReservedOrderId()) {
-                $quote->reserveOrderId()->save();
-            }
-
-            $resp = $this->createCheckout();
-            if ($resp->id && $resp->uri) {
-                Mage::getSingleton('core/session')->setZipCheckoutId($resp->id);
-                return $resp->uri;
-            } else {
-                //error
-                throw new Mage_Payment_Exception("Could not redirect to zip checkout page");
-            }
-        }
-
-        return null;
     }
 
     public function cancel(Varien_Object $payment)
@@ -296,5 +271,17 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 
         return $this;
     }
+
+     /**
+     * Set capture transaction ID to invoice for informational purposes
+     * @param Mage_Sales_Model_Order_Invoice $invoice
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @return Mage_Payment_Model_Method_Abstract
+     */
+    public function processInvoice($invoice, $payment)
+    {
+        $invoice->setTransactionId($payment->getLastTransId());
+        return $this;
+    }    
 
 }

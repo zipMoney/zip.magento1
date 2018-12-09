@@ -12,15 +12,15 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_LogLevel
         return array(
             array(
                 'value' => Zend_Log::DEBUG,
-                'label' => Mage::helper('core')->__('All')
+                'label' => Mage::helper('zip_payment')->__('All')
             ),
             array(
                 'value' => Zend_Log::INFO,
-                'label' => Mage::helper('core')->__('Default')
+                'label' => Mage::helper('zip_payment')->__('Default')
             ),
             array(
                 'value' => -1,
-                'label' => Mage::helper('core')->__('None')
+                'label' => Mage::helper('zip_payment')->__('None')
             )
         );
     }

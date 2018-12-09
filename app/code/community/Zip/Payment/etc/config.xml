@@ -100,23 +100,29 @@
             <zip_payment>
                 <active>0</active>
                 <title>Zip - Own it now, pay later</title>
-                <logo>https://zip.co/assets/zip/logos/zip/primary.svg</logo>
+                <logo>http://d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
                 <model>zip_payment/method</model>
                 <environment>sandbox</environment>
                 <payment_action>authorize_capture</payment_action>
                 <order_status>processing</order_status>
+                <display_mode>redirect</display_mode>
                 <min_order_total>1</min_order_total>
                 <sort_order>3</sort_order>
                 <checkout>
                     <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
+                    <loader_image>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
                 </checkout>
                 <country_currency>
                     <allowspecific>1</allowspecific>
                     <specificcountry>AU</specificcountry>
-                    <allowed_currencies>AUD</allowed_currencies>
+                    <allowed_currencies>AUD,NZD</allowed_currencies>
                     <supported_countries>AU</supported_countries>
-                    <supported_currencies>AUD</supported_currencies>
+                    <supported_currencies>AUD,NZD</supported_currencies>
                 </country_currency>
+                <api>
+                    <timeout>20</timeout>
+                    <tokenisation>0</tokenisation>
+                </api>
                 <debug>
                     <enabled>1</enabled>
                     <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
@@ -129,7 +135,7 @@
                 </admin_notification>
                 <widgets>
                     <enabled>1</enabled>
-                    <js_lib>//static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js</js_lib>
+                    <js_lib>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/plugin/widget/zip-widget.min.js</js_lib>
                     <home_page>
                         <banner>1</banner>
                     </home_page>

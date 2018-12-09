@@ -9,6 +9,8 @@
  * @link     https://github.com/zipMoney/merchantapi-php
  */
 
+use Zip\ObjectSerializer;
+
 namespace Zip;
 
 class ApiClient
@@ -130,7 +132,7 @@ class ApiClient
         if ($postData and in_array('Content-Type: application/x-www-form-urlencoded', $headers, true)) {
             $postData = http_build_query($postData);
         } elseif ((is_object($postData) or is_array($postData)) and !in_array('Content-Type: multipart/form-data', $headers, true)) { // json model
-            $postData = json_encode(Zip\ObjectSerializer::sanitizeForSerialization($postData));
+            $postData = json_encode(ObjectSerializer::sanitizeForSerialization($postData));
         }
 
         $url = $this->config->getHost() . $resourcePath;
@@ -270,7 +272,7 @@ class ApiClient
             }
 
             throw new ApiException(
-                "[" . $response_info['http_code'] . "] Error connecting to the API ($url)",
+                "[" . $response_info['http_code'] . "] Error connecting to the API ($url)" . $response_info['http_code'],
                 $response_info['http_code'],
                 $http_header,
                 $data

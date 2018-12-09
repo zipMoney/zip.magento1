@@ -11,12 +11,12 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_PaymentAction
     {
         return array(
             array(
-                'value' => Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE,
-                'label' => Mage::helper('core')->__('Authorize Only')
+                'value' => Zip_Payment_Model_Method::ACTION_AUTHORIZE,
+                'label' => Mage::helper('zip_payment')->__('Authorize Only')
             ),
             array(
-                'value' => Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE,
-                'label' => Mage::helper('core')->__('Authorize and Capture')
+                'value' => Zip_Payment_Model_Method::ACTION_AUTHORIZE_CAPTURE,
+                'label' => Mage::helper('zip_payment')->__('Authorize and Capture')
             )
         );
     }

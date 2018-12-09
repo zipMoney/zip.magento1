@@ -3,10 +3,8 @@
 
 class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
 {
-
-    protected $formTemplate = 'zip/payment/method/form.phtml';
-    protected $methodLabelTemplate = 'zip/payment/method/label.phtml';
-
+    protected $template = 'zip/payment/method/form/default.phtml';
+    protected $labelTemplate = 'zip/payment/method/form/label.phtml';
 
     /**
      * Config model instance
@@ -15,27 +13,30 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
      */
     protected $config = null;
 
-    const CONFIG_LOGO_PATH = 'payment/zip_payment/logo';
-    const CONFIG_TITLE_PATH = 'payment/zip_payment/title';
-
     protected function _construct()
     {
         parent::_construct();
 
-        $this->setTemplate($this->formTemplate);
+        $this->setTemplate($this->template);
         $this->setMethodLabelAfterHtml($this->getMethodLabelHtml());
         $this->setMethodTitle("");     
     }
 
+    protected function getConfig() {
+        if($this->config == null) {
+            $this->config = Mage::getSingleton('zip_payment/config');
+        }
+        return $this->config;
+    }
+
     protected function getMethodLabelHtml() {
-        $config = Mage::getSingleton('zip_payment/config');
 
         $block = Mage::app()->getLayout()->createBlock('core/template');
-        $block->setTemplate($this->methodLabelTemplate);
+        $block->setTemplate($this->labelTemplate);
         $block->setData(array(
-            'logo' => $config->getValue(self::CONFIG_LOGO_PATH),
-            'title' => $config->getValue(self::CONFIG_TITLE_PATH),
-            'method_code' => $config->getMethodCode()
+            'logo' => $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_LOGO_PATH),
+            'title' => $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_TITLE_PATH),
+            'method_code' => $this->getConfig()->getMethodCode()
         ));
 
         return $block->toHtml();

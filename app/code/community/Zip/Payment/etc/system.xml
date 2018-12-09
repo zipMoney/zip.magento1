@@ -53,7 +53,8 @@
                                         <label>Health Check</label>
                                         <frontend_type>label</frontend_type>
                                         <frontend_model>zip_payment/adminhtml_system_config_field_healthCheck</frontend_model>
-                                        <sort_order>15</sort_order>
+                                        <backend_model>zip_payment/adminhtml_system_config_backend_healthCheck</backend_model>
+                                        <sort_order>20</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
                                         <show_in_store>1</show_in_store>
@@ -83,7 +84,7 @@
                                     </active>
                                     <environment translate="label">
                                         <label>Environment</label>
-                                        <tooltip>Set to 'Live' to start accepting zipMoney payments on your website. Ensure your zipMoney ID and zipMoney Key are your 'Live' credentials if not in 'Test' mode</tooltip>
+                                        <tooltip>Set to 'Production' to start accepting Zip Payment payments on your website. Ensure your Zip Payment ID and Zip Payment Key are your 'Production' credentials if not in 'Test' mode</tooltip>
                                         <config_path>payment/zip_payment/environment</config_path>
                                         <frontend_type>select</frontend_type>
                                         <source_model>zip_payment/adminhtml_system_config_source_environment</source_model>
@@ -94,10 +95,10 @@
                                     </environment>
                                     <credential_button translate="button_label">
                                         <lable></lable>
-                                        <production_text>Find your Live keys</production_text>
-                                        <production_url><![CDATA[https://merchant.zipmoney.com.au/]]></production_url>
+                                        <production_text>Find your Production keys</production_text>
+                                        <production_url><![CDATA[https://merchant.Zip Payment.com.au/]]></production_url>
                                         <sandbox_text>Find your Sandbox keys</sandbox_text>
-                                        <sandbox_url><![CDATA[https://merchant.sandbox.zipmoney.com.au/]]></sandbox_url>
+                                        <sandbox_url><![CDATA[https://merchant.sandbox.Zip Payment.com.au/]]></sandbox_url>
                                         <frontend_model>zip_payment/adminhtml_system_config_field_credentialButton</frontend_model>
                                         <comment><![CDATA[Switch keys by changing the above <strong>Environment</strong> field]]></comment>
                                         <sort_order>45</sort_order>
@@ -106,7 +107,7 @@
                                     </credential_button>
                                     <private_key translate="label">
                                         <label>Private Key</label>
-                                        <tooltip>Enter the Zip Merchant Private key which is provided to you on setup of your Merchant Account. Note: may be different for 'Sandbox' or 'Live' environment</tooltip>
+                                        <tooltip>Enter the Zip Merchant Private key which is provided to you on setup of your Merchant Account. Note: may be different for 'Sandbox' or 'Production' environment</tooltip>
                                         <config_path>payment/zip_payment/private_key</config_path>
                                         <frontend_type>obscure</frontend_type>
                                         <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
@@ -117,7 +118,7 @@
                                     </private_key>
                                     <public_key>
                                         <label>Public Key</label>
-                                        <tooltip>Enter the Zip Merchant Public Key provided to you on setup of your Merchant Account. Note: may be different for 'Sandbox' or 'Live' environment</tooltip>
+                                        <tooltip>Enter the Zip Merchant Public Key provided to you on setup of your Merchant Account. Note: may be different for 'Sandbox' or 'Production' environment</tooltip>
                                         <config_path>payment/zip_payment/public_key</config_path>
                                         <frontend_type>text</frontend_type>
                                         <sort_order>60</sort_order>
@@ -144,7 +145,7 @@
                                                 <fields>
                                                     <title translate="label">
                                                         <label>Title</label>
-                                                        <tooltip>The title as Payment Method Title which is used to display as payment method option</tooltip>
+                                                        <tooltip>This payment method title is used to display as payment method option</tooltip>
                                                         <comment>It is recommended to set this value to "Zip - Own it now, pay later"</comment>
                                                         <config_path>payment/zip_payment/title</config_path>
                                                         <frontend_type>text</frontend_type>
@@ -174,12 +175,25 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
                                                     </order_status>
+                                                    <display_mode translate="label">
+                                                        <label>Display Mode</label>
+                                                        <tooltip>Select display mode for Zip Checkout, popup or redirect</tooltip>
+                                                        <comment>This setting is used to identify how can we handle checkout authneitcation and confirmation from Zip</comment>
+                                                        <config_path>payment/zip_payment/display_mode</config_path>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>zip_payment/adminhtml_system_config_source_displayMode</source_model>
+                                                        <sort_order>40</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>0</show_in_store>
+                                                    </display_mode>
                                                     <min_order_total translate="label">
                                                         <label>Minimum Order Total</label>
                                                         <tooltip>The minimum order value amount required to checkout</tooltip>
                                                         <config_path>payment/zip_payment/min_order_total</config_path>
                                                         <frontend_type>text</frontend_type>
-                                                        <sort_order>40</sort_order>
+                                                        <frontend_class>validate-number</frontend_class>
+                                                        <sort_order>50</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
@@ -188,11 +202,11 @@
                                                         <label>Sort Order</label>
                                                         <config_path>payment/zip_payment/sort_order</config_path>
                                                         <frontend_type>text</frontend_type>
-                                                        <sort_order>50</sort_order>
+                                                        <frontend_class>validate-number</frontend_class>
+                                                        <sort_order>60</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
-                                                        <frontend_class>validate-number</frontend_class>
                                                     </sort_order>
                                                 </fields>
                                             </checkout>
@@ -241,13 +255,70 @@
                                                 </fields>
                                             </country_currency>
 
+                                            <landing_page type="group" translate="label">
+                                                <label>Landing Page</label>
+                                                <frontend_type>text</frontend_type>
+                                                <show_in_default>1</show_in_default>
+                                                <show_in_website>1</show_in_website>
+                                                <show_in_store>1</show_in_store>
+                                                <sort_order>30</sort_order>
+                                                <fields>
+                                                    <enabled translate="label">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Select 'Yes' to enable landing page</tooltip>
+                                                        <config_path>payment/zip_payment/landing_page/enabled</config_path>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <sort_order>30</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                        <sort_order>10</sort_order>
+                                                    </enabled>
+                                                </fields>
+                                            </landing_page>
+
+                                            <api type="group" translate="label">
+                                                <label>API</label>
+                                                <frontend_type>text</frontend_type>
+                                                <show_in_default>1</show_in_default>
+                                                <show_in_website>1</show_in_website>
+                                                <show_in_store>1</show_in_store>
+                                                <sort_order>40</sort_order>
+                                                <fields>
+                                                    <timeout translate="label">
+                                                        <label>Timeout</label>
+                                                        <tooltip>Identify timeout (seconds) for API calls</tooltip>
+                                                        <comment>The default value is 30 secounds, will disable timeout if 0 been set</comment>
+                                                        <config_path>payment/zip_payment/api/timeout</config_path>
+                                                        <frontend_type>text</frontend_type>
+                                                        <frontend_class>validate-number</frontend_class>
+                                                        <sort_order>10</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>0</show_in_store>
+                                                    </timeout>
+                                                    <tokenisation translate="label">
+                                                        <label>Enabled Tokenisation</label>
+                                                        <tooltip>Select 'Yes' to enable tokenisation</tooltip>
+                                                        <config_path>payment/zip_payment/api/tokenisation</config_path>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <sort_order>20</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store></show_in_store>
+                                                    </tokenisation>
+                                                </fields>
+                                            </api>
+
                                             <debug type="group" translate="label">
                                                 <label>Debug Mode</label>
                                                 <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                                <sort_order>30</sort_order>
+                                                <sort_order>50</sort_order>
                                                 <fields>
                                                     <enabled translate="label">
                                                         <label>Enabled</label>
@@ -299,7 +370,7 @@
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                                <sort_order>70</sort_order>
+                                                <sort_order>60</sort_order>
                                                 <fields>
                                                      <enabled translate="label">
                                                         <label>Enabled</label>
@@ -350,7 +421,7 @@
                                         <fields>
                                             <banner translate="label comment">
                                                 <label>Display Strip Banner</label>
-                                                <tooltip>Display zipMoney marketing banner and popup on home page to give customers more information and increase conversions</tooltip>
+                                                <tooltip>Display Zip Payment marketing banner and popup on home page to give customers more information and increase conversions</tooltip>
                                                 <config_path>payment/zip_payment/widgets/home_page/banner</config_path>
                                                 <sort_order>11</sort_order>
                                                 <frontend_type>select</frontend_type>
@@ -372,7 +443,7 @@
                                         <fields>
                                             <widget translate="label comment">
                                                 <label>Display Widget</label>
-                                                <tooltip>Display zipMoney marketing widget and popup on product pages to give customers more information and increase conversions</tooltip>
+                                                <tooltip>Display Zip Payment marketing widget and popup on product pages to give customers more information and increase conversions</tooltip>
                                                 <config_path>payment/zip_payment/widgets/product_page/widget</config_path>
                                                 <sort_order>12</sort_order>
                                                 <frontend_type>select</frontend_type>
@@ -383,7 +454,7 @@
                                             </widget>
                                             <banner translate="label comment">
                                                 <label>Display Strip Banner</label>
-                                                <tooltip>Display zipMoney marketing banner and popup on product pages to give customers more information and increase conversions</tooltip>
+                                                <tooltip>Display Zip Payment marketing banner and popup on product pages to give customers more information and increase conversions</tooltip>
                                                 <config_path>payment/zip_payment/widgets/product_page/banner</config_path>
                                                 <sort_order>10</sort_order>
                                                 <frontend_type>select</frontend_type>
@@ -416,7 +487,7 @@
                                         <fields>
                                             <banner translate="label comment">
                                                 <label>Display Strip Banner</label>
-                                                <tooltip>Display zipMoney marketing banner and popup on category pages to give customers more information and increase conversions</tooltip>
+                                                <tooltip>Display Zip Payment marketing banner and popup on category pages to give customers more information and increase conversions</tooltip>
                                                 <config_path>payment/zip_payment/widgets/category_page/banner</config_path>
                                                 <sort_order>10</sort_order>
                                                 <frontend_type>select</frontend_type>
@@ -438,7 +509,7 @@
                                         <fields>
                                             <widget translate="label comment">
                                                 <label>Display Widget</label>
-                                                <tooltip>Display zipMoney marketing widget and popup on the cart page to give customers more information and increase conversions</tooltip>
+                                                <tooltip>Display Zip Payment marketing widget and popup on the cart page to give customers more information and increase conversions</tooltip>
                                                 <config_path>payment/zip_payment/widgets/cart_page/widget</config_path>
                                                 <sort_order>11</sort_order>
                                                 <frontend_type>select</frontend_type>
@@ -449,7 +520,7 @@
                                             </widget>
                                             <banner translate="label comment">
                                                 <label>Display Strip Banner</label>
-                                                <tooltip>Display zipMoney marketing banner and popup on cart pages to give customers more information and increase conversions</tooltip>
+                                                <tooltip>Display Zip Payment marketing banner and popup on cart pages to give customers more information and increase conversions</tooltip>
                                                 <config_path>payment/zip_payment/widgets/cart_page/banner</config_path>
                                                 <sort_order>10</sort_order>
                                                 <frontend_type>select</frontend_type>
