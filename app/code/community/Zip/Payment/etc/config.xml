@@ -14,26 +14,6 @@
                 <resourceModel>pay_mysql4</resourceModel>
             </zip_payment>
         </models>
-        <resources>
-            <zip_payment_setup>
-                <setup>
-                    <module>Zip_Payment</module>
-                </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
-            </zip_payment_setup>
-            <zip_payment_write>
-                <connection>
-                    <use>core_write</use>
-                </connection>
-            </zip_payment_write>
-            <zip_payment_read>
-                <connection>
-                    <use>core_read</use>
-                </connection>
-            </zip_payment_read>
-        </resources>
         <blocks>
             <zip_payment>
                 <class>Zip_Payment_Block</class>
@@ -100,7 +80,6 @@
             <zip_payment>
                 <active>0</active>
                 <title>Zip - Own it now, pay later</title>
-                <logo>http://d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
                 <model>zip_payment/method</model>
                 <environment>sandbox</environment>
                 <payment_action>authorize_capture</payment_action>
@@ -108,14 +87,7 @@
                 <display_mode>redirect</display_mode>
                 <min_order_total>1</min_order_total>
                 <sort_order>3</sort_order>
-                <checkout>
-                    <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
-                    <loader_image>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
-                </checkout>
                 <country_currency>
-                    <allowspecific>1</allowspecific>
-                    <specificcountry>AU</specificcountry>
-                    <allowed_currencies>AUD,NZD</allowed_currencies>
                     <supported_countries>AU</supported_countries>
                     <supported_currencies>AUD,NZD</supported_currencies>
                 </country_currency>
@@ -125,32 +97,29 @@
                 </api>
                 <debug>
                     <enabled>1</enabled>
-                    <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
                     <log_level>6</log_level>
                     <log_file>zip_payment.log</log_file>
                 </debug>
                 <admin_notification>
                     <enabled>1</enabled>
-                    <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
                 </admin_notification>
                 <widgets>
                     <enabled>1</enabled>
-                    <js_lib>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/plugin/widget/zip-widget.min.js</js_lib>
                     <home_page>
                         <banner>1</banner>
                     </home_page>
                     <product_page>
                         <banner>0</banner>
-                        <tagline>1</tagline>
-                        <widget>0</widget>
+                        <tagline>0</tagline>
+                        <widget>1</widget>
                     </product_page>
                     <category_page>
                         <banner>1</banner>
                     </category_page>
                     <cart_page>
                         <banner>0</banner>
-                        <tagline>1</tagline>
-                        <widget>0</widget>
+                        <tagline>0</tagline>
+                        <widget>1</widget>
                     </cart_page>
                     <checkout_page>
                         <widget>1</widget>
@@ -159,5 +128,34 @@
             </zip_payment>
         </payment>
     </default>
+
+    <custom>
+        <payment>
+            <zip_payment>
+                <logo>http://d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
+                <portal>
+                    <sandbox>https://merchant.sandbox.zipmoney.com.au/</sandbox>
+                    <production>https://merchant2.zipmoney.com.au/</production>
+                </portal>
+                <checkout>
+                    <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
+                    <loader_image>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
+                </checkout>
+                <country_currency>
+                    <supported_countries>AU</supported_countries>
+                    <supported_currencies>AUD,NZD</supported_currencies>
+                </country_currency>
+                <debug>
+                    <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
+                </debug>
+                <admin_notification>
+                    <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
+                </admin_notification>
+                <widgets>
+                    <js_lib>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/plugin/widget/zip-widget.min.js</js_lib>    
+                </widgets>
+            </zip_payment>
+        </payment>
+    </custom>
 
 </config>

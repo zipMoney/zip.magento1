@@ -7,8 +7,6 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
 
     protected $pluginCurrentVersion = '';
 
-    const CONFIG_LOGO_PATH = 'payment/zip_payment/logo';
-
     protected function _construct()
     {
         $this->pluginCurrentVersion = Mage::helper("zip_payment")->getCurrentVersion();
@@ -68,7 +66,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
         $block->setTemplate($this->headerTitleTemplate);
         $block->setData(array(
             'version' => $this->pluginCurrentVersion,
-            'logo' => Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_LOGO_PATH),
+            'logo' => Mage::getSingleton('zip_payment/config')->getValue(Zip_Payment_Model_Config::CONFIG_LOGO_PATH),
             'element' => $element,
             'config' => $this->getGroup($element)->asArray()
         ));

@@ -6,6 +6,7 @@ class Zip_Payment_Model_Config
 {
     const METHOD_CODE = 'zip_payment';
 
+    const CONFIG_CUSTOM_NODE_NAME = 'custom';
     const CONFIG_LOGO_PATH = 'payment/zip_payment/logo';
     const CONFIG_TITLE_PATH = 'payment/zip_payment/title';
 
@@ -218,12 +219,32 @@ class Zip_Payment_Model_Config
 
     /*************************** GET VALUE **********************************/
 
+    /**
+     * Get configuration value
+     * @param string $path
+     * @return string
+     */
     public function getValue($path) {
-        return Mage::getStoreConfig($path, $this->storeId);
+
+        $value = Mage::getStoreConfig($path, $this->storeId);
+
+        if(is_null($value)) {
+            $value = (string) Mage::getConfig()->getNode(self::CONFIG_CUSTOM_NODE_NAME . '/' . $path);
+        }
+
+        return $value;
     }
 
+    /**
+     * Get configuration flag value
+     * @param string $path
+     * @return bool
+     */
     public function getFlag($path) {
-        return Mage::getStoreConfigFlag($path, $this->storeId);
+
+        $value = $this->getValue($path);
+        return !empty($flag) && 'false' !== $flag;
+
     }
 
     /**

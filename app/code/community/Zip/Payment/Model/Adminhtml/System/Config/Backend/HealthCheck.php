@@ -14,6 +14,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const API_INACCESSIBLE_MESSAGE = 'Failed to access Zip Payment API';
     const API_PRIVATE_KEY_INVALID_MESSAGE = 'Your API private key is empty or invalid';
     const API_PUBLIC_KEY_INVALID_MESSAGE = 'Your API public key is empty or invalid';
+    const API_CREDENTIAL_INVALID_MESSAGE = 'Your API credential is invalid';
 
     const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';

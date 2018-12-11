@@ -28,7 +28,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     protected function isActive($widgetType) 
     {
 
-        if(Mage::helper("zip_payment")->isActive() && $this->config->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
+        if(Mage::helper('zip_payment')->isActive() && $this->config->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
 
             $pageType = $this->getWidgetPageType();
    

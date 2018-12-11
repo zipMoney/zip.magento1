@@ -25,6 +25,7 @@
                         <sort_order>50</sort_order>
                         <group>zip_payment_group</group>
                         <include>1</include>
+                        <expanded>1</expanded>
                         <frontend_class>zip-payment</frontend_class>
                         <frontend_model>zip_payment/adminhtml_system_config_fieldset_wizard</frontend_model>
                         <active_path>payment/zip_payment/active</active_path>
@@ -95,10 +96,6 @@
                                     </environment>
                                     <credential_button translate="button_label">
                                         <lable></lable>
-                                        <production_text>Find your Production keys</production_text>
-                                        <production_url><![CDATA[https://merchant.Zip Payment.com.au/]]></production_url>
-                                        <sandbox_text>Find your Sandbox keys</sandbox_text>
-                                        <sandbox_url><![CDATA[https://merchant.sandbox.Zip Payment.com.au/]]></sandbox_url>
                                         <frontend_model>zip_payment/adminhtml_system_config_field_credentialButton</frontend_model>
                                         <comment><![CDATA[Switch keys by changing the above <strong>Environment</strong> field]]></comment>
                                         <sort_order>45</sort_order>
