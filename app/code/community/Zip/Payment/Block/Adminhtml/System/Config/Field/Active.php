@@ -12,13 +12,9 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_Active extends Mage_Adminh
 
         if ($healthCheckResult == Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_ERROR) {
             $element->setValue(self::INACTIVE_VALUE);
-            $element->setDisabled('disabled');
             Mage::getModel('core/config')->saveConfig(self::CONFIG_ACTIVE_PATH, self::INACTIVE_VALUE);
         }
-        else {
-            $element->setDisabled(false);
-        }
-
+        
         return parent::_getElementHtml($element);
 
     }
