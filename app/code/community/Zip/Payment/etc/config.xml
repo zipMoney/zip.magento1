@@ -24,9 +24,23 @@
                 <class>Zip_Payment_Helper</class>
             </zip_payment>
         </helpers>
+
+        <events>
+            <sales_order_payment_place_start>
+                <observers>
+                    <zip_payment_start_place_payment>
+                        <class>zip_payment/observer</class>
+                        <method>startPlacePayment</method>
+                    </zip_payment_start_place_payment>
+                </observers>
+            </sales_order_payment_place_start>
+        </events>
     </global>
 
      <frontend>
+        <secure_url>
+            <zip_payment_checkout>/zip_payment/checkout</zip_payment_checkout>
+        </secure_url>
         <routers>
             <zip_payment>
                 <use>standard</use>
@@ -88,8 +102,9 @@
                 <min_order_total>1</min_order_total>
                 <sort_order>3</sort_order>
                 <country_currency>
-                    <supported_countries>AU</supported_countries>
-                    <supported_currencies>AUD,NZD</supported_currencies>
+                    <allowspecific>1</allowspecific>
+                    <specificcountry>AU</specificcountry>
+                    <allowed_currencies>AUD,NZD</allowed_currencies>
                 </country_currency>
                 <api>
                     <timeout>20</timeout>

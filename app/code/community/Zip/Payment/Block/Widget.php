@@ -43,7 +43,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
                         /**
                          * Make sure there one widget type is enable for current page type
                          */
-                        if(!is_null($enabled) && $enabled == 1) {
+                        if(!is_null($enabled) && boolval($enabled)) {
                             return true;
                         }
                     }

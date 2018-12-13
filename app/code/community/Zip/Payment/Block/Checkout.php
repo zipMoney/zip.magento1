@@ -69,7 +69,6 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
      */
     public function isRedirect()
     {
-        Mage::getSingleton('zip_payment/logger')->log('test');
         return (int)$this->getConfig()->getValue(self::CONFIG_DISPLAY_MODE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
     }
 

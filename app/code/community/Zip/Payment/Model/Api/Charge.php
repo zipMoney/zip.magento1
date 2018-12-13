@@ -3,6 +3,7 @@
 
 use Zip\Model\CreateChargeRequest as ChargeRequest;
 use Zip\Model\CaptureChargeRequest;
+use Zip\Model\ChargeOrder;
 use Zip\Model\Authority;
 use Zip\Api\ChargesApi;
 
@@ -14,12 +15,18 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     const AUTHORITY_TYPE_STORECODE = "store_code";
 
     protected $chargeId = null;
+    protected $receiptNumber = null;
+
     protected $order = null;
     protected $paymentAction = null;
 
     public function setOrder($order) {
         $this->order = $order;
         return $this;
+    }
+
+    protected function getOrder() {
+        return $this->order;
     }
 
     public function setPaymentAction($paymentAction) {
@@ -48,9 +55,10 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         try {
             $this->getLogger()->log("create charge request:" . json_encode($payload));
 
-            $charge = $this->getApi()->chargesCreate($payload, $this->genIdempotencyKey());
+            $charge = $this->getApi()
+            ->chargesCreate($payload, $this->getIdempotencyKey());
 
-            $this->getLogger()->log("create charge response:" . json_encode($response));
+            $this->getLogger()->log("create charge response:" . json_encode($charge));
 
             if (isset($charge->error)) {
                 Mage::throwException($this->getHelper()->__('Could not create the charge'));
@@ -60,9 +68,9 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
                 Mage::throwException($this->getHelper()->__('Invalid Charge'));
             }
 
-            $this->getLogger()->log($this->getHelper()->__("Charge State:- %s", $charge->getState()));
+            $this->getLogger()->log($this->getHelper()->__("Charge State: %s", $charge->getState()));
 
-            $this->chargeId = $charge->getId();
+            $this->response = $charge;
 
         } catch (ApiException $e) {
             $this->logException($e);
@@ -79,15 +87,30 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
      * @param float $amount
      * @return jsonObject
      */
-    public function capture($amount)
+    public function capture($chargeId, $amount)
     {
         try {
             $captureChargeReq = new CaptureChargeRequest();
             $captureChargeReq->setAmount((float)$amount);
 
             $this->getLogger()->debug("capture charge request:" . json_encode($captureChargeReq));
-            $this->response = $this->getApi()->chargesCapture($this->getChargeId(), $captureChargeReq, $this->getIdempotencyKey());
-            $this->getLogger()->debug("capture charge response:" . json_encode($response));
+
+            $charge = $this->getApi()
+            ->chargesCapture($chargeId, $captureChargeReq, $this->getIdempotencyKey());
+
+            $this->getLogger()->debug("capture charge response:" . json_encode($charge));
+
+            if (isset($charge->error)) {
+                Mage::throwException($this->getHelper()->__('Could not capture the charge'));
+            }
+
+            if (!$charge->getState()) {
+                Mage::throwException($this->getHelper()->__('Invalid Charge'));
+            }
+
+            $this->getLogger()->debug($this->getHelper()->__("Charge State: %s", $charge->getState()));
+
+            $this->response = $charge;
 
         } catch (ApiException $e) {
             $this->logException($e);
@@ -109,17 +132,31 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     public function preparePayload()
     {
         $chargeReq = new ChargeRequest();
-        $checkoutId = Mage::getSingleton('core/session')->getZipCheckoutId();
 
-        $chargeReq->setReference($this->order->getIncrementId())
-            ->setAmount((float)$this->order->getGrandTotal())
-            ->setCurrency($this->order->getOrderCurrencyCode())
-            ->setOrder($this->getOrderDetails($this->order))
-            ->setMetadata($this->getMetadata())
-            ->setCapture($this->isImmediateCapture())
-            ->setAuthority($this->getAuthority($checkoutId));
+        $chargeReq
+        ->setReference($this->getOrder()->getIncrementId())
+        ->setAmount((float)$this->getOrder()->getGrandTotal())
+        ->setCurrency($this->getOrder()->getOrderCurrencyCode())
+        ->setOrder($this->getChargeOrder())
+        ->setMetadata($this->getMetadata())
+        ->setCapture($this->isImmediateCapture())
+        ->setAuthority($this->getAuthority());
 
         return $chargeReq;
+    }
+
+    protected function getChargeOrder()
+    {
+        $chargeOrder = new ChargeOrder();
+
+        $chargeOrder
+        ->setReference($this->getOrder()->getIncrementId())
+        ->setShipping($this->getOrderShipping())
+        ->setItems($this->getOrderItems())
+        ->setCartReference($this->getOrder()->getId());
+
+        return $chargeOrder;
+
     }
 
 
@@ -128,10 +165,14 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
      *
      * @return Zip\Model\Authority
      */
-    protected function getAuthority($value, $type = self::AUTHORITY_TYPE_CHECKOUT)
+    protected function getAuthority($type = self::AUTHORITY_TYPE_CHECKOUT)
     {
         $authority = new Authority();
-        $authority->setType($type)->setValue($value);
+
+        $authority
+        ->setType($type)
+        ->setValue($this->getHelper()->getCheckoutSessionId());
+
         return $authority;
     }
 
@@ -145,7 +186,11 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         return $this->paymentAction == Zip_Payment_Model_Method::ACTION_AUTHORIZE_CAPTURE;
     }
 
-    protected function getChargeId() {
-        return $this->chargeId;
+    public function getChargeId() {
+       return $this->getResponse() ? $this->getResponse()->getId() : null;
+    }
+
+    public function getReceiptNumber() {
+        return $this->getResponse() ? $this->getResponse()->getReceiptNumber() : null;
     }
 }

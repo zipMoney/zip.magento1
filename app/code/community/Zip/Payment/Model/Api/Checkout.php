@@ -5,18 +5,10 @@ use Zip\Api\CheckoutsApi;
 use Zip\Model\CheckoutOrder;
 use Zip\Model\Shopper;
 use Zip\Model\Address;
-use Zip\Model\OrderItem;
-use Zip\Model\OrderShipping;
 use Zip\Model\CheckoutConfiguration;
 
 class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 {
-    protected $quote = null;
-
-    public function setQuote($quote) {
-        $this->quote = $quote;
-        return $this;
-    }
 
     protected function getApi()
     {
@@ -34,20 +26,22 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         try {
 
             $this->getLogger()->log("create checkout request:" . json_encode($payload));
-            $response = $this->getApi()->checkoutsCreate($payload);
-            $this->getLogger()->log("create checkout response:" . json_encode($response));
 
-            if (isset($response->error)) {
+            $checkout = $this->getApi()->checkoutsCreate($payload);
+            
+            $this->getLogger()->log("create checkout response:" . json_encode($checkout));
+
+            if (isset($checkout->error)) {
                 Mage::throwException($this->getHelper()->__('Something wrong when checkout been created'));
             }
 
-            if (isset($response['id']) && isset($response['uri'])) {
-                $this->getSession()->setZipCheckoutId($response['id']);
+            if (isset($checkout['id']) && isset($checkout['uri'])) {
+                $this->getHelper()->setCheckoutSessionId($checkout['id']);
             } else {
                 throw new Mage_Payment_Exception("Could not redirect to zip checkout page");
             }
 
-            $this->response = $response;
+            $this->response = $checkout;
 
         } catch (ApiException $e) {
             $this->logException($e);
@@ -61,11 +55,12 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     {
         $checkoutReq = new CheckoutRequest();
 
-        $checkoutReq->setType("standard")
-            ->setShopper($this->getShopper())
-            ->setOrder($this->getCartDetail())
-            ->setMetadata($this->getMetadata())
-            ->setConfig($this->getCheckoutConfiguration());
+        $checkoutReq
+        ->setType('standard')
+        ->setShopper($this->getShopper())
+        ->setOrder($this->getCheckoutOrder())
+        ->setMetadata($this->getMetadata())
+        ->setConfig($this->getCheckoutConfiguration());
 
         return $checkoutReq;
     }
@@ -74,8 +69,8 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     {
         $shopper = new Shopper();
 
-        $billing = $this->quote->getBillingAddress();
-        $shipping = $this->quote->getShippingAddress();
+        $billing = $this->getQuote()->getBillingAddress();
+        $shipping = $this->getQuote()->getShippingAddress();
 
         $firstName = !empty($billing->getFirstname()) ? $billing->getFirstname() : $shipping->getFirstname();
         $lastName = !empty($billing->getLastname()) ? $billing->getLastname() : $shipping->getLastname();
@@ -99,79 +94,20 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         return $shopper;
     }
 
-    protected function getCartDetail()
+    protected function getCheckoutOrder()
     {
         $order = new CheckoutOrder();
-        $reference = $this->quote->getReservedOrderId();
-        $currency = $this->quote->getQuoteCurrencyCode() ? $this->quote->getQuoteCurrencyCode() : null;
-        $items = $this->quote->getAllVisibleItems();
-        $orderItems = array();
-        $totalItemPrice = 0.0;
 
-        foreach ($items as $item) {
-            $orderItem = new OrderItem();
-            $orderItem->setName($item->getName());
-            $orderItem->setReference($item->getSku());
-            $orderItem->setQuantity((int) $item->getQty());
+        $reference = $this->getQuote()->getReservedOrderId();
+        $currency = $this->getQuote()->getQuoteCurrencyCode() ? $this->getQuote()->getQuoteCurrencyCode() : null;
+        $grandTotal = $this->getQuote()->getGrandTotal() ? $this->getQuote()->getGrandTotal() : 0.00;
 
-            $price = (float) $item->getPriceInclTax();
-            $totalItemPrice += $price;
-
-            $orderItem->setAmount($price);
-            $orderItem->setType("sku");
-
-            $orderItems[] = $orderItem;
-        }
-
-        //discount and other promotion to balance out
-        $shippingAmount = (float) $this->quote->getShippingAddress()->getShippingAmount();
-        if ($shipping_amount > 0) {
-            $shippingItem = new OrderItem;
-            $shippingItem->setName("Shipping");
-            $shippingItem->setAmount((float) $shipping_amount);
-            $shippingItem->setType("shipping");
-            $shippingItem->setQuantity(1);
-            $orderItems[] = $shippingItem;
-        }
-
-        $grandTotal = $this->quote->getGrandTotal() ? $this->quote->getGrandTotal() : 0.00;
-        //no matter discount or reward point or store credit
-        $remaining = $totalItemPrice + $shippingAmount - $grandTotal;
-        if ($remaining < 0) {
-            $discountItem = new OrderItem();
-            $discountItem->setName("Discount");
-            $discountItem->setAmount((float) $remaining);
-            $discountItem->setQuantity(1);
-            $discountItem->setType("discount");
-            $orderItems[] = $discountItem;
-        }
-
-        $shippingDetail = new OrderShipping();
-        if ($this->quote->isVirtual()) {
-            $shippingDetail->setPickup = true;
-        } else {
-            $shippingDetail->setPickup = false;
-
-            $shippingAddress = new Address();
-            $address = $this->quote->getShippingAddress();
-
-            $shippingAddress->setFirstName($address->getFirstName());
-            $shippingAddress->setLastName($address->getLastName());
-            $shippingAddress->setLine1($address->getStreet1());
-            $shippingAddress->setLine2($address->getStreet2());
-            $shippingAddress->setCountry($address->getCountryId());
-            $shippingAddress->setPostalCode($address->getPostcode());
-            $shippingAddress->setState(empty($address->getRegion()) ? $address->getCity() : $address->getRegion());
-            $shippingAddress->setCity($address->getCity());
-
-            $shippingDetail->setAddress($shippingAddress);
-        }
-
-        $order->setReference($reference);
-        $order->setShipping($shippingDetail);
-        $order->setCurrency($currency);
-        $order->setAmount($grandTotal);
-        $order->setItems($orderItems);
+        $order
+        ->setReference($reference)
+        ->setShipping($this->getOrderShipping())
+        ->setCurrency($currency)
+        ->setAmount($grandTotal)
+        ->setItems($this->getOrderItems());
 
         return $order;
     }
@@ -191,12 +127,6 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     }
 
     public function getRedirectUrl() {
-
-        if($this->getResponse()) {
-            return $this->getResponse()->getUri();
-        }
-
-        return null;
-        
+        return $this->getResponse() ? $this->getResponse()->getUri() : null;
     }
 }

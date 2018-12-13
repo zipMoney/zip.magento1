@@ -17,6 +17,8 @@ class Zip_Payment_Model_Config
     const CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH = 'payment/zip_payment/allow_specific_countries';
     const CONFIG_SPECIFIC_COUNTRIES_PATH = 'payment/zip_payment/specific_countries';
     const CONFIG_ALLOWED_CURRENCIES_PATH = 'payment/zip_payment/allowed_currencies';
+    const CONFIG_SUPPORTED_COUNTRIES_PATH = 'payment/zip_payment/country_currency/supported_countries';
+    const CONFIG_SUPPORTED_CURRENCIES_PATH = 'payment/zip_payment/country_currency/supported_currencies';
 
     /**
      * debug config
@@ -32,6 +34,7 @@ class Zip_Payment_Model_Config
      */
     const CONFIG_ENVIRONMENT_PATH = 'payment/zip_payment/environment';
     const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
+    const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
     const CONFIG_API_TIMEOUT_PATH = 'payment/zip_payment/api/timeout';
 
     /**
@@ -40,6 +43,8 @@ class Zip_Payment_Model_Config
     const CHECKOUT_RESPONSE_URL_ROUTE = 'zip_payment/checkout/response';
     const CHECKOUT_REDIRECT_URL_ROUTE = 'zip_payment/checkout/redirect';
     const CHECKOUT_ERROR_URL_ROUTE = 'zip_payment/checkout/error';
+
+    const CHECKOUT_SESSION_ID = 'zip_payment_checkout_id';
 
     /**
      * Current store id
@@ -178,7 +183,7 @@ class Zip_Payment_Model_Config
      *
      * @return bool
      */
-    protected function isMerchantCountrySupported()
+    public function isMerchantCountrySupported()
     {
         if($this->getFlag(self::CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH)){
 
@@ -243,7 +248,7 @@ class Zip_Payment_Model_Config
     public function getFlag($path) {
 
         $value = $this->getValue($path);
-        return !empty($flag) && 'false' !== $flag;
+        return !empty($value) && 'false' !== $value;
 
     }
 
