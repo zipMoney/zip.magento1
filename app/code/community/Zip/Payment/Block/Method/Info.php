@@ -3,6 +3,8 @@
 
 class Zip_Payment_Block_Method_Info extends Mage_Payment_Block_Info
 {
+    const RECEIPT_NUMBER_LABEL = 'Receipt Number';
+
     protected $template = 'zip/payment/method/info/default.phtml';
 
     /**
@@ -18,7 +20,7 @@ class Zip_Payment_Block_Method_Info extends Mage_Payment_Block_Info
         $this->setTemplate($this->template);
     }
 
-    protected function prepareSpecificInformation($transport = null)
+    protected function _prepareSpecificInformation($transport = null)
     {
         $transport = parent::_prepareSpecificInformation($transport);
         $payment = $this->getInfo();
@@ -26,8 +28,8 @@ class Zip_Payment_Block_Method_Info extends Mage_Payment_Block_Info
 
         $info = array();
 
-        if (isset($additionalInformation['receipt_number'])) {
-            $info['Receipt Id'] = $additionalInformation['receipt_number'];
+        if (isset($additionalInformation[Zip_Payment_Model_Config::PAYMENT_RECEIPT_NUMBER_KEY])) {
+            $info[self::RECEIPT_NUMBER_LABEL] = $additionalInformation[Zip_Payment_Model_Config::PAYMENT_RECEIPT_NUMBER_KEY];
         }
 
         return $transport->addData($info);

@@ -1,10 +1,5 @@
 <?php
 
-
-
-//use Zip\ApiClient;
-//use Zip\Configuration;
-
 class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
 {
     const CONFIG_ACTIVE_PATH = 'payment/zip_payment/active';

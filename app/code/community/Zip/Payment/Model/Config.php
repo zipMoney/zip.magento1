@@ -47,6 +47,11 @@ class Zip_Payment_Model_Config
     const CHECKOUT_SESSION_ID = 'zip_payment_checkout_id';
 
     /**
+     * Charge
+     */
+    const PAYMENT_RECEIPT_NUMBER_KEY = 'receipt_number';
+
+    /**
      * Current store id
      *
      * @var int
@@ -268,9 +273,11 @@ class Zip_Payment_Model_Config
     }
 
     
-    public function getApiConfiguration() {
+    public function getApiConfiguration($storeId = null) {
 
-        if($this->apiConfig === null) {
+        if($this->apiConfig === null || ($storeId ? $this->storeId !== $storeId : true)) {
+
+            $this->setStoreId($storeId);
 
             Mage::helper('zip_payment')->autoLoad();
 

@@ -14,20 +14,14 @@ abstract class Zip_Payment_Model_Api_Abstract
     protected $response = null;
     protected $quote = null;
 
-    public function __construct()
+    public function __construct($apiConfig)
     {
+        $this->apiConfig = $apiConfig;
         Mage::helper('zip_payment')->autoload();
     }
 
-    public function setApiConfig($apiConfig) {
-        $this->apiConfig = $apiConfig;
-        return $this;
-    }
-
-    public function setQuote($quote) {
-        $this->quote = $quote;
-        return $this;
-    }
+    abstract protected function getApi();
+    abstract protected function prepareCreatePayload();
 
     /**
      * Get logger object
@@ -89,6 +83,11 @@ abstract class Zip_Payment_Model_Api_Abstract
     {
         $metadata = new Metadata();
         return $metadata;
+    }
+
+    protected function getIdempotencyKey()
+    {
+        return uniqid();
     }
 
     protected function getResponse() {
@@ -192,11 +191,5 @@ abstract class Zip_Payment_Model_Api_Abstract
 
 
     }
-
-    abstract protected function getApi();
-
-    abstract public function create();
-
-    abstract protected function preparePayload();
     
 }

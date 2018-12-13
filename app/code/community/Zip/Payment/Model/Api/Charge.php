@@ -1,11 +1,12 @@
 <?php
 
 
-use Zip\Model\CreateChargeRequest as ChargeRequest;
+use Zip\Model\CreateChargeRequest;
 use Zip\Model\CaptureChargeRequest;
 use Zip\Model\ChargeOrder;
 use Zip\Model\Authority;
-use Zip\Api\ChargesApi;
+use Zip\Api\ChargeApi;
+use Zip\ApiException;
 
 class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract 
 {
@@ -20,24 +21,14 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     protected $order = null;
     protected $paymentAction = null;
 
-    public function setOrder($order) {
-        $this->order = $order;
-        return $this;
-    }
-
     protected function getOrder() {
         return $this->order;
-    }
-
-    public function setPaymentAction($paymentAction) {
-        $this->paymentAction = $paymentAction;
-        return $this;
     }
 
     public function getApi()
     {
         if ($this->api === null) {
-            $this->api = new ChargesApi();
+            $this->api = new ChargeApi();
         }
         return $this->api;
     }
@@ -45,20 +36,23 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     /**
      * create charge api
      *
-     * @param chargeRequest $payload
+     * @param CreateChargeRequest $payload
      * @return jsonObject
      */
-    public function create()
+    public function create($order, $paymentAction)
     {
-        $payload = $this->preparePayload();
+        $this->order = $order;
+        $this->paymentAction = $paymentAction;
+
+        $payload = $this->prepareCreatePayload();
 
         try {
-            $this->getLogger()->log("create charge request:" . json_encode($payload));
+            $this->getLogger()->debug("create charge request:" . json_encode($payload));
 
             $charge = $this->getApi()
             ->chargesCreate($payload, $this->getIdempotencyKey());
 
-            $this->getLogger()->log("create charge response:" . json_encode($charge));
+            $this->getLogger()->debug("create charge response:" . json_encode($charge));
 
             if (isset($charge->error)) {
                 Mage::throwException($this->getHelper()->__('Could not create the charge'));
@@ -120,6 +114,38 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         return $this;
     }
 
+    public function cancel($chargeId)
+    {
+        try {
+
+            $this->getLogger()->debug("cancel charge request: " . $chargeId);
+
+            $charge = $this->getApi()
+            ->chargesCancel($chargeId, $this->getIdempotencyKey());
+
+            $this->getLogger()->debug("cancel charge response:" . json_encode($charge));
+
+            if (isset($charge->error)) {
+                Mage::throwException($this->getHelper()->__('Could not capture the charge'));
+            }
+
+            if (!$charge->getState()) {
+                Mage::throwException($this->getHelper()->__('Invalid Charge Cancel'));
+            }
+
+            $this->getLogger()->debug($this->getHelper()->__("Charge State: %s", $charge->getState()));
+
+            $this->response = $charge;
+
+        } catch (ApiException $e) {
+            $this->logException($e);
+            throw $e;
+        }
+
+        return $this;
+    }
+
+
     /**
      * charge and authorized are the same payload
      *
@@ -129,9 +155,9 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
      * @param boolean $isCharge
      * @return Zip\Model\CreateChargeRequest $chargeReq
      */
-    public function preparePayload()
+    public function prepareCreatePayload()
     {
-        $chargeReq = new ChargeRequest();
+        $chargeReq = new CreateChargeRequest();
 
         $chargeReq
         ->setReference($this->getOrder()->getIncrementId())
@@ -174,11 +200,6 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         ->setValue($this->getHelper()->getCheckoutSessionId());
 
         return $authority;
-    }
-
-    protected function getIdempotencyKey()
-    {
-        return uniqid();
     }
 
     protected function isImmediateCapture() 

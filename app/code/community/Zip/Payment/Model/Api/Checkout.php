@@ -1,11 +1,12 @@
 <?php
 
-use Zip\Model\CreateCheckoutRequest as CheckoutRequest;
-use Zip\Api\CheckoutsApi;
+use Zip\Model\CreateCheckoutRequest;
+use Zip\Api\CheckoutApi;
 use Zip\Model\CheckoutOrder;
 use Zip\Model\Shopper;
 use Zip\Model\Address;
 use Zip\Model\CheckoutConfiguration;
+use Zip\ApiException;
 
 class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 {
@@ -13,7 +14,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     protected function getApi()
     {
         if ($this->api === null) {
-            $this->api = new CheckoutsApi();
+            $this->api = new CheckoutApi();
         }
 
         return $this->api;
@@ -21,15 +22,15 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 
     public function create()
     {
-        $payload = $this->preparePayload();
+        $payload = $this->prepareCreatePayload();
 
         try {
 
-            $this->getLogger()->log("create checkout request:" . json_encode($payload));
+            $this->getLogger()->debug("create checkout request:" . json_encode($payload));
 
             $checkout = $this->getApi()->checkoutsCreate($payload);
             
-            $this->getLogger()->log("create checkout response:" . json_encode($checkout));
+            $this->getLogger()->debug("create checkout response:" . json_encode($checkout));
 
             if (isset($checkout->error)) {
                 Mage::throwException($this->getHelper()->__('Something wrong when checkout been created'));
@@ -51,9 +52,9 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         return $this;
     }
 
-    protected function preparePayload()
+    protected function prepareCreatePayload()
     {
-        $checkoutReq = new CheckoutRequest();
+        $checkoutReq = new CreateCheckoutRequest();
 
         $checkoutReq
         ->setType('standard')
