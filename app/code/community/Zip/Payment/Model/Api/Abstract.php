@@ -129,7 +129,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         $items = $this->getQuote()->getAllVisibleItems();
 
         $orderItems = array();
-        $totalItemPrice = 0.0;
+        $totalItemAmount = 0.0;
 
         foreach($items as $item) {
 
@@ -137,19 +137,21 @@ abstract class Zip_Payment_Model_Api_Abstract
             $orderItem = new OrderItem();
 
             $price = (float) $item->getPriceInclTax();
-            $totalItemPrice += $price;
-            $thumbnail = (string) Mage::helper('catalog/image')->init($product, 'thumbnail');
+            $quantity = (int) $item->getQty();
+            $amount = (float) ($price * $quantity);
+            $totalItemAmount += $amount;
+            $thumbnailUrl = (string) Mage::helper('catalog/image')->init($product, 'thumbnail');
 
             $orderItem
             ->setReference((string) $item->getId())
-            ->setProductCode($item->getSku())
-            ->setName($item->getName())
-            ->setDescription($item->getDescription())
+            ->setProductCode((string) $item->getSku())
+            ->setName((string) $item->getName())
+            ->setDescription((string) $item->getDescription())
             ->setAmount($price)
-            ->setQuantity((int) $item->getQty())
+            ->setQuantity($quantity)
             ->setType('sku')
-            ->setItemUri($product->getProductUrl())
-            ->setImageUri($thumbnail);
+            ->setItemUri((string) $product->getProductUrl())
+            ->setImageUri($thumbnailUrl);
 
             $orderItems[] = $orderItem;
         }
@@ -172,7 +174,7 @@ abstract class Zip_Payment_Model_Api_Abstract
  
          $grandTotal = $this->getQuote()->getGrandTotal() ? $this->getQuote()->getGrandTotal() : 0.00;
          //no matter discount or reward point or store credit
-         $remaining = $totalItemPrice + $shippingAmount - $grandTotal;
+         $remaining = $totalItemAmount + $shippingAmount - $grandTotal;
  
          if ($remaining < 0) {
  

@@ -4,6 +4,8 @@
 class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 {
 
+    const AUTHORIZE_TRANSACTION_ID_PREFIX = 'AUTH_';
+
     protected $_code = Zip_Payment_Model_Config::METHOD_CODE;
     
     protected $_formBlockType = 'zip_payment/method_form';
@@ -26,7 +28,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     protected $_canAuthorize                = true;
     protected $_canCapture                  = true;
     protected $_canCapturePartial           = true;
-    protected $_canCaptureOnce              = false;
+    protected $_canCaptureOnce              = true;
     protected $_canRefund                   = true;
     protected $_canRefundInvoicePartial     = true;
     protected $_canVoid                     = true;
@@ -222,7 +224,20 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             Mage::throwException($this->_getHelper()->__('Could not authorize the payment - ' . $e->getMessage()));
         }
 
-        $this->getQuote()->delete();
+        // update payment
+        if($charge->getId()) {
+
+            $payment
+            ->setTransactionId(self::AUTHORIZE_TRANSACTION_ID_PREFIX . $charge->getId())
+            ->setIsTransactionClosed(0)
+            ->setAdditionalInformation(
+                array(
+                    Zip_Payment_Model_Config::PAYMENT_RECEIPT_NUMBER_KEY => $charge->getReceiptNumber()
+                )
+            );
+            
+            $this->getQuote()->delete();
+        }
 
         return $this;
     }
@@ -234,6 +249,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         $authorizationTransaction = $payment->getAuthorizationTransaction();
+        $authId = null;
 
         try {
 
@@ -255,7 +271,8 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 
                 if($authId) {
                     // Capture Charge
-                    $charge = $charge->capture($authId, $amount);
+                    $chargeId = preg_replace('/^' . self::AUTHORIZE_TRANSACTION_ID_PREFIX . '/i', '', $authId);
+                    $charge = $charge->capture($chargeId, $amount);
                 }
 
             } 
@@ -277,10 +294,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         // update payment
-        if($charge->getChargeId()) {
+        if($charge->getId()) {
 
             $payment
-            ->setTransactionId($charge->getChargeId())
+            ->setTransactionId($charge->getId())
             ->setIsTransactionApproved(true)
             ->setIsTransactionClosed(0)
             ->setAdditionalInformation(

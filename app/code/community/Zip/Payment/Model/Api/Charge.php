@@ -160,9 +160,9 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         $chargeReq = new CreateChargeRequest();
 
         $chargeReq
-        ->setReference($this->getOrder()->getIncrementId())
+        ->setReference((string)$this->getOrder()->getIncrementId())
         ->setAmount((float)$this->getOrder()->getGrandTotal())
-        ->setCurrency($this->getOrder()->getOrderCurrencyCode())
+        ->setCurrency((string)$this->getOrder()->getOrderCurrencyCode())
         ->setOrder($this->getChargeOrder())
         ->setMetadata($this->getMetadata())
         ->setCapture($this->isImmediateCapture())
@@ -176,10 +176,10 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         $chargeOrder = new ChargeOrder();
 
         $chargeOrder
-        ->setReference($this->getOrder()->getIncrementId())
+        ->setReference((string)$this->getOrder()->getIncrementId())
         ->setShipping($this->getOrderShipping())
         ->setItems($this->getOrderItems())
-        ->setCartReference($this->getOrder()->getId());
+        ->setCartReference((string)$this->getOrder()->getId());
 
         return $chargeOrder;
 
@@ -207,7 +207,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         return $this->paymentAction == Zip_Payment_Model_Method::ACTION_AUTHORIZE_CAPTURE;
     }
 
-    public function getChargeId() {
+    public function getId() {
        return $this->getResponse() ? $this->getResponse()->getId() : null;
     }
 

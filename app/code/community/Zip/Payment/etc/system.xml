@@ -286,7 +286,7 @@
                                                     <timeout translate="label">
                                                         <label>Timeout</label>
                                                         <tooltip>Identify timeout (seconds) for API calls</tooltip>
-                                                        <comment>The default value is 30 secounds, will disable timeout if 0 been set</comment>
+                                                        <comment>The default value is 20 secounds, will disable timeout if 0 been set</comment>
                                                         <config_path>payment/zip_payment/api/timeout</config_path>
                                                         <frontend_type>text</frontend_type>
                                                         <frontend_class>validate-number</frontend_class>
@@ -295,7 +295,7 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
                                                     </timeout>
-                                                    <tokenisation translate="label">
+                                                    <!-- <tokenisation translate="label">
                                                         <label>Enabled Tokenisation</label>
                                                         <tooltip>Select 'Yes' to enable tokenisation</tooltip>
                                                         <config_path>payment/zip_payment/api/tokenisation</config_path>
@@ -305,7 +305,7 @@
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store></show_in_store>
-                                                    </tokenisation>
+                                                    </tokenisation> -->
                                                 </fields>
                                             </api>
 

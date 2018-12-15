@@ -1,6 +1,6 @@
 <?php
 /**
- * CheckoutsApi
+ * CheckoutApi
  *
  * @category Class
  * @package  zipMoney
@@ -15,7 +15,7 @@ use Zip\ApiException;
 use Zip\Configuration;
 use Zip\ObjectSerializer;
 
-class CheckoutsApi
+class CheckoutApi
 {
     /**
      * API Client
@@ -52,7 +52,7 @@ class CheckoutsApi
      *
      * @param Zip\ApiClient $apiClient set the API client
      *
-     * @return CheckoutsApi
+     * @return CheckoutApi
      */
     public function setApiClient(Zip\ApiClient $apiClient)
     {

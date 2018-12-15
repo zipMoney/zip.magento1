@@ -26,6 +26,14 @@
         </helpers>
 
         <events>
+            <controller_action_predispatch>
+                <observers>
+                    <zip_payment_controller_predispath>
+                        <class>zip_payment/observer</class>
+                        <method>processControllerPreDispatch</method>
+                    </zip_payment_controller_predispath>
+                </observers>
+            </controller_action_predispatch>
             <sales_order_payment_place_start>
                 <observers>
                     <zip_payment_start_place_payment>
@@ -167,7 +175,7 @@
                     <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
                 </admin_notification>
                 <widgets>
-                    <js_lib>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/plugin/widget/zip-widget.min.js</js_lib>    
+                    <js_lib>https://static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js</js_lib>    
                 </widgets>
             </zip_payment>
         </payment>

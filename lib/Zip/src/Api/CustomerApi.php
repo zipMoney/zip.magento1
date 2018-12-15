@@ -1,6 +1,6 @@
 <?php
 /**
- * SettlementsApi
+ * CustomerApi
  *
  * @category Class
  * @package  zipMoney
@@ -15,7 +15,7 @@ use Zip\ApiException;
 use Zip\Configuration;
 use Zip\ObjectSerializer;
 
-class SettlementsApi
+class CustomerApi
 {
     /**
      * API Client
@@ -52,7 +52,7 @@ class SettlementsApi
      *
      * @param Zip\ApiClient $apiClient set the API client
      *
-     * @return SettlementsApi
+     * @return CustomerApi
      */
     public function setApiClient(Zip\ApiClient $apiClient)
     {
@@ -61,37 +61,37 @@ class SettlementsApi
     }
 
     /**
-     * Operation settlementsGet
+     * Operation customersGet
      *
-     * Retrieve a settlement
+     * Retrieve customer
      *
-     * @param string $id The settlement id (required)
+     * @param string $id  (required)
      * @throws Zip\ApiException on non-2xx response
-     * @return Zip\Model\Settlement
+     * @return void
      */
-    public function settlementsGet($id)
+    public function customersGet($id)
     {
-        list($response) = $this->settlementsGetWithHttpInfo($id);
+        list($response) = $this->customersGetWithHttpInfo($id);
         return $response;
     }
 
     /**
-     * Operation settlementsGetWithHttpInfo
+     * Operation customersGetWithHttpInfo
      *
-     * Retrieve a settlement
+     * Retrieve customer
      *
-     * @param string $id The settlement id (required)
+     * @param string $id  (required)
      * @throws Zip\ApiException on non-2xx response
-     * @return array of Zip\Model\Settlement, HTTP status code, HTTP response headers (array of strings)
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function settlementsGetWithHttpInfo($id)
+    public function customersGetWithHttpInfo($id)
     {
         // verify the required parameter 'id' is set
         if ($id === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling settlementsGet');
+            throw new \InvalidArgumentException('Missing the required parameter $id when calling customersGet');
         }
         // parse inputs
-        $resourcePath = "/settlements/{id}";
+        $resourcePath = "/customers/{id}";
         $httpBody = '';
         $queryParams = array();
         $headerParams = array();
@@ -128,25 +128,13 @@ class SettlementsApi
                 $queryParams,
                 $httpBody,
                 $headerParams,
-                'Zip\Model\Settlement',
-                '/settlements/{id}'
+                null,
+                '/customers/{id}'
             );
 
-            return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Settlement', $httpHeader), $statusCode, $httpHeader);
+            return array(null, $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Settlement', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
             }
 
             throw $e;
@@ -154,31 +142,31 @@ class SettlementsApi
     }
 
     /**
-     * Operation settlementsList
+     * Operation customersList
      *
-     * List settlements
+     * List customers
      *
      * @throws Zip\ApiException on non-2xx response
      * @return void
      */
-    public function settlementsList()
+    public function customersList()
     {
-        list($response) = $this->settlementsListWithHttpInfo();
+        list($response) = $this->customersListWithHttpInfo();
         return $response;
     }
 
     /**
-     * Operation settlementsListWithHttpInfo
+     * Operation customersListWithHttpInfo
      *
-     * List settlements
+     * List customers
      *
      * @throws Zip\ApiException on non-2xx response
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function settlementsListWithHttpInfo()
+    public function customersListWithHttpInfo()
     {
         // parse inputs
-        $resourcePath = "/settlements";
+        $resourcePath = "/customers";
         $httpBody = '';
         $queryParams = array();
         $headerParams = array();
@@ -208,7 +196,7 @@ class SettlementsApi
                 $httpBody,
                 $headerParams,
                 null,
-                '/settlements'
+                '/customers'
             );
 
             return array(null, $statusCode, $httpHeader);

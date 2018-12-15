@@ -11,6 +11,8 @@ use Zip\ApiException;
 class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 {
 
+    const CHECKOUT_TYPE = 'standard';
+
     protected function getApi()
     {
         if ($this->api === null) {
@@ -57,7 +59,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         $checkoutReq = new CreateCheckoutRequest();
 
         $checkoutReq
-        ->setType('standard')
+        ->setType(self::CHECKOUT_TYPE)
         ->setShopper($this->getShopper())
         ->setOrder($this->getCheckoutOrder())
         ->setMetadata($this->getMetadata())

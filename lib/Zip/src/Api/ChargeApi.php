@@ -1,6 +1,6 @@
 <?php
 /**
- * ChargesApi
+ * ChargeApi
  *
  * @category Class
  * @package  zipMoney
@@ -15,7 +15,7 @@ use Zip\ApiException;
 use Zip\Configuration;
 use Zip\ObjectSerializer;
 
-class ChargesApi
+class ChargeApi
 {
     /**
      * API Client
@@ -52,7 +52,7 @@ class ChargesApi
      *
      * @param Zip\ApiClient $apiClient set the API client
      *
-     * @return ChargesApi
+     * @return ChargeApi
      */
     public function setApiClient(Zip\ApiClient $apiClient)
     {

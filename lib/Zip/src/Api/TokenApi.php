@@ -1,6 +1,6 @@
 <?php
 /**
- * TokensApi
+ * TokenApi
  *
  * @category Class
  * @package  zipMoney
@@ -15,7 +15,7 @@ use Zip\ApiException;
 use Zip\Configuration;
 use Zip\ObjectSerializer;
 
-class TokensApi
+class TokenApi
 {
     /**
      * API Client
@@ -52,7 +52,7 @@ class TokensApi
      *
      * @param Zip\ApiClient $apiClient set the API client
      *
-     * @return TokensApi
+     * @return TokenApi
      */
     public function setApiClient(Zip\ApiClient $apiClient)
     {
