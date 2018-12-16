@@ -78,4 +78,14 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getSingleton('checkout/type_onepage');
     }
 
+    /**
+     * Retrieve shopping cart model object
+     *
+     * @return Mage_Checkout_Model_Cart
+     */
+    public function getCart()
+    {
+        return Mage::getSingleton('checkout/cart');
+    }
+
 }

@@ -81,11 +81,13 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
      * @param float $amount
      * @return jsonObject
      */
-    public function capture($chargeId, $amount)
+    public function capture($chargeId, $amount, $isPartialCapture = null)
     {
         try {
-            $captureChargeReq = new CaptureChargeRequest();
-            $captureChargeReq->setAmount((float)$amount);
+            $captureChargeReq = new CaptureChargeRequest(array(
+                'amount' => (float)$amount,
+                'is_partial_capture' => $isPartialCapture
+            ));
 
             $this->getLogger()->debug("capture charge request:" . json_encode($captureChargeReq));
 

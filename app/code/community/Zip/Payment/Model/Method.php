@@ -27,7 +27,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     protected $_canOrder                    = false;
     protected $_canAuthorize                = true;
     protected $_canCapture                  = true;
-    protected $_canCapturePartial           = true;
+    protected $_canCapturePartial           = false;
     protected $_canCaptureOnce              = true;
     protected $_canRefund                   = true;
     protected $_canRefundInvoicePartial     = true;
@@ -160,6 +160,21 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         return $this->getConfig()->getValue("payment/{$this->getCode()}/{$field}");
     }
 
+    /**
+     * Empty customer's shopping cart
+     */
+    protected function emptyShoppingCart()
+    {
+        try {
+            $this->_getHelper()->getCart()->truncate()->save();
+            $this->_getHelper()->getCheckoutSession()->setCartWasUpdated(true);
+        } catch (Mage_Core_Exception $exception) {
+            $this->_getHelper()->getCheckoutSession()->addError($exception->getMessage());
+        } catch (Exception $exception) {
+            $this->_getHelper()->getCheckoutSession()->addException($exception, $this->__('Cannot empty shopping cart.'));
+        }
+    }
+
 
     /******************* Redirect Url *****************/
 
@@ -198,7 +213,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     }
 
 
-     /******************* Payment Actions *****************/
+    /******************* Payment Actions *****************/
 
 
     public function authorize(Varien_Object $payment, $amount)
@@ -236,7 +251,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                 )
             );
             
-            $this->getQuote()->delete();
+            $this->emptyShoppingCart();
         }
 
         return $this;
@@ -296,13 +311,15 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         // update payment
         if($charge->getId()) {
 
+            $receiptNumber = $charge->getReceiptNumber();
+
             $payment
-            ->setTransactionId($charge->getId())
+            ->setTransactionId($charge->getId() . '_' . $receiptNumber)
             ->setIsTransactionApproved(true)
             ->setIsTransactionClosed(0)
             ->setAdditionalInformation(
                 array(
-                    Zip_Payment_Model_Config::PAYMENT_RECEIPT_NUMBER_KEY => $charge->getReceiptNumber()
+                    Zip_Payment_Model_Config::PAYMENT_RECEIPT_NUMBER_KEY => $receiptNumber
                 )
             );
             
@@ -310,8 +327,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                 $payment->setParentTransactionID($authId);
             }
 
-            $this->getQuote()->delete();
-
+            $this->emptyShoppingCart();
         }
 
         return $this;

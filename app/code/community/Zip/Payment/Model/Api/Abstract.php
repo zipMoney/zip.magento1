@@ -146,7 +146,7 @@ abstract class Zip_Payment_Model_Api_Abstract
             ->setReference((string) $item->getId())
             ->setProductCode((string) $item->getSku())
             ->setName((string) $item->getName())
-            ->setDescription((string) $item->getDescription())
+            ->setDescription((string) strip_tags($item->getDescription()))
             ->setAmount($price)
             ->setQuantity($quantity)
             ->setType('sku')
