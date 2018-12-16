@@ -1,5 +1,6 @@
 <?php if(!$this->isRedirect()): ?>
 
+    <!-- Zip Payment Checkout Plugin -->
     <script type="text/javascript" src="<?= $this->getLibScript() ?>"></script>
 
     <script type="text/javascript">
@@ -10,8 +11,8 @@
             window.$zipCheckout.setup({
                 checkoutExtension: '<?= $this->getExtensionName() ?>',
                 redirectAfterPayment: <?= $this->getRedirectAfterPayment() ?>,
-                methodCode: <?= $this->getMethodCode() ?>,
-                redirect: <?= $this->isRedirect() ?>,
+                methodCode: '<?= $this->getMethodCode() ?>'',
+                redirect: '<?= $this->isRedirect() ?>'',
                 loaderImageUrl: '<?= $this->getLoaderImageUrl() ?>',
                 checkoutUri: '<?= $this->getCheckoutUrl(); ?>',
                 redirectUrl: '<?= $this->getRedirectUrl(); ?>'
