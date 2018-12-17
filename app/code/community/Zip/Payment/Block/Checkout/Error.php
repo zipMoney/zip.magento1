@@ -8,10 +8,6 @@ class Zip_Payment_Block_Checkout_Error extends Mage_Core_Block_Template
 
     public function __construct()
     {
-        Mage::helper('zip_payment')->getCheckoutSession()->addError(Mage::helper('zip_payment')->__('Checkout has been rejected'));
-Mage::helper('zip_payment')->getCheckoutSession()->addError(Mage::helper('zip_payment')->__('Your application is currently under review by zipMoney and will be processed very shortly.You can contact the customer care at customercare@zipmoney.com.au for any enquiries'));
-
-
         $this->messageItems = $this->getHelper()->getCheckoutSession()->getMessages()->getItems();
     }
 
@@ -61,5 +57,11 @@ Mage::helper('zip_payment')->getCheckoutSession()->addError(Mage::helper('zip_pa
         }
 
         return null;
+    }
+
+
+    public function getContactText()
+    {
+        return $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ERROR_CONTACT_PATH));
     }
 }

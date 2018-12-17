@@ -100,7 +100,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
                     'link'  => Mage::getBaseUrl()
                 ));
 
-                $isLandingPageEnabled = Mage::getSingleton('zip_payment/config')->getFlag(Mage_Adminhtml_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
+                $isLandingPageEnabled = Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
 
                 if($isLandingPageEnabled) {
                     $breadcrumbs->addCrumb('zip_payment', array(
