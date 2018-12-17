@@ -14,11 +14,6 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
     protected $config;
 
     /**
-     * @var string
-     */
-    protected $buttonSelector = 'button[type=submit][class~="btn-checkout"]';
-
-    /**
      * Config instance getter
      * @return Zip_Payment_Model_Config
      */
@@ -43,26 +38,6 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
     }
 
     /**
-     * Returns the checkout url.
-     *
-     * @return string
-     */
-    public function getCheckoutUrl()
-    {
-        return Mage::helper('zip_payment')->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE);
-    }
-
-    /**
-     * Returns the redirect url.
-     *
-     * @return string
-     */
-    public function getRedirectUrl()
-    {
-        return Mage::helper('zip_payment')->getUrl(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL_ROUTE);
-    }
-
-    /**
      * Whether to use redirect or not.
      *
      * @return bool
@@ -70,16 +45,6 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
     public function isRedirect()
     {
         return $this->getConfig()->getValue(self::CONFIG_DISPLAY_MODE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
-    }
-
-    /**
-     * Returns the place order button selector
-     *
-     * @return string
-     */
-    public function getPlaceOrderButtonSelector()
-    {
-        return $this->buttonSelector;
     }
 
     /**

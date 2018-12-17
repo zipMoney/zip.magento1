@@ -5,7 +5,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode
 {
 
     const DISPLAY_MODE_REDIRECT = 'redirect';
-    const DISPLAY_MODE_POPUP = 'popup';
+    const DISPLAY_MODE_LIGHTBOX = 'lightbox';
 
     /**
      * Returns the display mode option array.
@@ -20,8 +20,8 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode
                 'label' => Mage::helper('zip_payment')->__('Redirect')
             ),
             array(
-                'value' => self::DISPLAY_MODE_POPUP,
-                'label' => Mage::helper('zip_payment')->__('Popup')
+                'value' => self::DISPLAY_MODE_LIGHTBOX,
+                'label' => Mage::helper('zip_payment')->__('Lightbox')
             )
         );
     }

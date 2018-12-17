@@ -12,7 +12,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     const CONFIG_HOME_PAGE_PATH = 'web/default/cms_home_page';
     
     const ROOT_WIDGET_TYPES = array('head', 'root', 'popup');
-    const SUPPORTED_WIDGET_TYPES = array('widget', 'banner', 'tagline');
+    const SUPPORTED_WIDGET_TYPES = array('widget', 'banner', 'tagline', 'inline');
 
     /**
      * @var Zip_Payment_Model_Config
@@ -67,18 +67,6 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         return false;
     }
 
-    public function getMerchantId() {
-        return $this->config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
-    }
-
-    public function getEnvironment() {
-        return $this->config->getValue(self::CONFIG_ENVIRONMENT_PATH);
-    }
-
-    public function getLibScript() {
-        return $this->config->getValue(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
-    }
-
     /**
      * Returns the current page type.
      *
@@ -94,10 +82,24 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
             case 'catalog_category_view': return 'category'; 
             case 'checkout_cart_index': return 'cart';
             case 'checkout_onepage_index': return 'checkout';
+            case 'zip_payment_index_index': return 'landing';
         }
 
         return null;
     }
+
+    public function getMerchantId() {
+        return $this->config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
+    }
+
+    public function getEnvironment() {
+        return $this->config->getValue(self::CONFIG_ENVIRONMENT_PATH);
+    }
+
+    public function getLibScript() {
+        return $this->config->getValue(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
+    }
+
 
     
 }

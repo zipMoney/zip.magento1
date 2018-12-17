@@ -38,13 +38,20 @@ class Zip_Payment_Model_Config
     const CONFIG_API_TIMEOUT_PATH = 'payment/zip_payment/api/timeout';
 
     /**
-     * checkout urls
+     * landing page
+     */
+    const CONFIG_LANDING_PAGE_ENABLED_PATH = 'payment/zip_payment/pages/landing_page';
+    const LANDING_PAGE_URL_ROUTE = 'zip_payment';
+
+    /**
+     * checkout
      */
     const CHECKOUT_RESPONSE_URL_ROUTE = 'zip_payment/checkout/response';
-    const CHECKOUT_REDIRECT_URL_ROUTE = 'zip_payment/checkout/redirect';
     const CHECKOUT_ERROR_URL_ROUTE = 'zip_payment/checkout/error';
-
     const CHECKOUT_SESSION_ID = 'zip_payment_checkout_id';
+
+    const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
+    const CONFIG_CHECKOUT_ERROR_PATH_PREFIX = 'payment/zip_payment/checkout/error/';
 
     /**
      * Charge

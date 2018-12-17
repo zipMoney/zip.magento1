@@ -3,7 +3,7 @@
 
     <modules>
         <Zip_Payment>
-            <version>1.2.0</version>
+            <version>2.0.0</version>
         </Zip_Payment>
     </modules>
 
@@ -112,8 +112,11 @@
                 <country_currency>
                     <allowspecific>1</allowspecific>
                     <specificcountry>AU</specificcountry>
-                    <allowed_currencies>AUD,NZD</allowed_currencies>
+                    <allowed_currencies>AUD</allowed_currencies>
                 </country_currency>
+                <pages>
+                    <landing_page>1</landing_page>
+                </pages>
                 <api>
                     <timeout>20</timeout>
                     <tokenisation>0</tokenisation>
@@ -147,6 +150,9 @@
                     <checkout_page>
                         <widget>1</widget>
                     </checkout_page>
+                    <landing_page>
+                        <inline>1</inline>
+                    </landing_page>
                 </widgets>
             </zip_payment>
         </payment>
@@ -163,10 +169,14 @@
                 <checkout>
                     <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
                     <loader_image>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
+                    <error>
+                        <general>An error occurred during the checkout process</general>
+                        <referred>Your application is currently under review by Zip and will be processed very shortly. You can contact the customer care at customercare@zipmoney.com.au for any enquiries.</referred>
+                    </error>
                 </checkout>
                 <country_currency>
                     <supported_countries>AU</supported_countries>
-                    <supported_currencies>AUD,NZD</supported_currencies>
+                    <supported_currencies>AUD</supported_currencies>
                 </country_currency>
                 <debug>
                     <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
@@ -175,7 +185,7 @@
                     <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
                 </admin_notification>
                 <widgets>
-                    <js_lib>https://static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget.min.js</js_lib>    
+                    <js_lib>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/plugin/widget/zip-widget.min.js</js_lib>    
                 </widgets>
             </zip_payment>
         </payment>

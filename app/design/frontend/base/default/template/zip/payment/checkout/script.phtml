@@ -7,7 +7,7 @@
     //<![CDATA[
     Event.observe(window,'load', function() {   
 
-        if(window.$zipCheckout!=undefined){  
+        if(window.$zipCheckout != undefined){  
             window.$zipCheckout.setup({
                 checkoutExtension: '<?= $this->getExtensionName() ?>',
                 redirectAfterPayment: <?= $this->getRedirectAfterPayment() ?>,

@@ -1,0 +1,43 @@
+<?php
+    $heading = $this->getHeadingText();
+    $messageItems = $this->getMessageItems();
+?>
+
+<div class="page-title">
+    <img src="<?= $this->getLogo(); ?>" title="<?= $this->getTitle() ?>" alt="<?= $this->getTitle() ?>"/>
+    <h1><?= $this->getTitle() ?></h1>
+</div>
+
+<h2 class="sub-title"><?= $heading ?></h2>
+<div> 
+    <?php if(!empty($messageItems)): ?>
+        <ul>
+            <?php foreach($messageItems as $item): ?>
+                <li>
+                    <?= $item->getText() ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>                   
+</div>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'">
+        <span><span><?php echo $this->__('Continue Shopping') ?></span></span>
+    </button>
+</div>
+
+
+<style>
+.page-title {
+    text-align: center;
+    margin: 20px 20px 60px 20px;
+}
+.page-title img {
+    display: inline-block;
+    max-width: 100%;
+}
+.buttons-set {
+    margin: 20px 0;
+}
+</style>
