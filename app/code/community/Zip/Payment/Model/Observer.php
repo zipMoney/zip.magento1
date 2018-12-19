@@ -19,21 +19,35 @@ class Zip_Payment_Model_Observer
 
     }
 
+    /**
+     * handle additional payment actions before order been placed
+     */
     public function startPlacePayment(Varien_Event_Observer $observer) {
 
         $payment = $observer->getEvent()->getPayment();
         $method = $payment->getMethodInstance();
 
+        /**
+         * call checkout creation for zip payment
+         */
         if($method->getCode() == Zip_Payment_Model_Config::METHOD_CODE) {
 
-            $redirectUrl = $method->getOrderPlaceRedirectUrl();
+            $checkout = $method->createCheckout(); 
 
-            if(!empty($redirectUrl)) {
+            if(!empty($checkout)) {
 
                 $controller = $observer->getEvent()->getData('controller_action');
+                $helper = Mage::helper('zip_payment');
+                $redirectUrl = $checkout->getUri();
 
                 $response = array(
-                    'redirect' => $redirectUrl
+                    'method_code' => Zip_Payment_Model_Config::METHOD_CODE,
+                    'redirect' => $redirectUrl,
+                    'data' => array(
+                        'id' => $helper->getCheckoutSessionId(),
+                        'uri' => $redirectUrl,
+                        'redirect_uri' => $redirectUrl
+                    )
                 );
     
                 echo Mage::helper('core')->jsonEncode($response);

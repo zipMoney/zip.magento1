@@ -37,6 +37,26 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
         return $this->getConfig()->getValue(self::CONFIG_CHECKOUT_LOADER_IMAGE_PATH);
     }
 
+     /**
+     * Returns the checkout url.
+     *
+     * @return string
+     */
+    public function getCheckoutUrl()
+    {
+        return Mage::helper('zip_payment')->getUrl(Zip_Payment_Model_Config::CHECKOUT_URL_ROUTE);
+    }
+
+    /**
+     * Returns the response url.
+     *
+     * @return string
+     */
+    public function getResponseUrl()
+    {
+        return Mage::helper('zip_payment')->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) . '?' . Zip_Payment_Controller_Checkout::URL_PARAM_RESULT . '=';
+    }
+
     /**
      * Whether to use redirect or not.
      *
@@ -87,5 +107,24 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
         return (int)$this->getData('redirect_after_payment');
     }
 
+    public function getLogLevel() {
+
+        if($this->getConfig()->isDebugEnabled() && $this->getConfig()->isLogEnabled()) {
+            
+            $logLevel = $this->getConfig()->getLogLevel();
+
+            if($logLevel > Zend_Log::ERR) {
+                return 'Information';
+            }
+            else if($logLevel > Zend_Log::DEBUG) {
+                return 'Error';
+            }
+            else {
+                return 'Debug';
+            }
+        }
+
+        return '';
+    }
     
 }

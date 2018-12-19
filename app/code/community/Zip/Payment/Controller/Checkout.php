@@ -84,6 +84,8 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         } else {
             $this->_redirect(Zip_Payment_Model_Config::CHECKOUT_ERROR_URL_ROUTE);
         }
+
+        return;
     }
 
     /**
@@ -92,6 +94,12 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
     protected function redirectToSuccess()
     {
         $this->_redirect(self::SUCCESS_URL_ROUTE, array('_secure' => true));
+        return;
+    }
+
+    protected function returnJsonResponse($response) {
+        echo Mage::helper('core')->jsonEncode($response);
+        exit;
     }
 
 }

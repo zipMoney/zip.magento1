@@ -129,6 +129,10 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         return $checkoutConfig;
     }
 
+    public function getUri() {
+        return $this->getResponse() ? $this->getResponse()->getUri() : null;
+    }
+
     public function getRedirectUrl() {
         return $this->getResponse() ? $this->getResponse()->getUri() : null;
     }

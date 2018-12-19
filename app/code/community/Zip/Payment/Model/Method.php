@@ -176,14 +176,14 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     }
 
 
-    /******************* Redirect Url *****************/
+    /******************* Payment Actions *****************/
 
     /**
-     * Returns the url to redirect after placing the order
+     * Returns checkout object after checkout been created
      *
-     * @return string
+     * @return Zip_Payment_Model_Api_Checkout
      */
-    public function getOrderPlaceRedirectUrl()
+    public function createCheckout()
     {
         $checkoutId = $this->_getHelper()->getCheckoutSessionId();
 
@@ -201,7 +201,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                 $checkout = Mage::getModel('zip_payment/api_checkout', $this->getApiConfig())
                 ->create($quote);
 
-                return $checkout->getRedirectUrl();
+                return $checkout;
 
             } catch (Exception $e) {
                 Mage::throwException($this->_getHelper()->__('Failed to process checkout - ' . $e->getMessage()));
@@ -212,8 +212,6 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         return null;
     }
 
-
-    /******************* Payment Actions *****************/
 
 
     public function authorize(Varien_Object $payment, $amount)

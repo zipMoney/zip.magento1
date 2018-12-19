@@ -1,3 +1,4 @@
+
 <?php if(!$this->isRedirect()): ?>
 
     <!-- Zip Payment Checkout Plugin -->
@@ -5,23 +6,92 @@
 
     <script type="text/javascript">
     //<![CDATA[
-    Event.observe(window,'load', function() {   
+    
+    Review.prototype.nextStep = function(transport) {
 
-        if(window.$zipCheckout != undefined){  
-            window.$zipCheckout.setup({
-                checkoutExtension: '<?= $this->getExtensionName() ?>',
-                redirectAfterPayment: <?= $this->getRedirectAfterPayment() ?>,
-                methodCode: '<?= $this->getMethodCode() ?>'',
-                redirect: '<?= $this->isRedirect() ?>'',
-                loaderImageUrl: '<?= $this->getLoaderImageUrl() ?>',
-                checkoutUri: '<?= $this->getCheckoutUrl(); ?>',
-                redirectUrl: '<?= $this->getRedirectUrl(); ?>'
-            });
+        if (transport) {
+
+            var response = transport.responseJSON || transport.responseText.evalJSON(true) || {};
+
+            if (response.redirect) {
+
+                if(response.method_code && response.method_code == '<?= $this->getMethodCode() ?>') {
+
+                    Zip.Checkout.init({
+                        request: 'standard',
+                        redirect: <?= $this->isRedirect() ? 'true' : 'false' ?>,
+                        checkoutUri: '<?= $this->getCheckoutUrl() ?>?response=' + encodeURIComponent(JSON.stringify(response.data)),
+                        redirectUri: response.redirect,
+                        onComplete: function (data) {
+
+                            var url = '<?= $this->getResponseUrl() ?>' + data.state;
+                            
+                            if(data.state == 'approved') {
+                                location.href = url;
+                                return;
+                            }
+                            else {
+
+                                $j.ajax({
+                                    url: url,
+                                    type: 'GET',
+                                    success: function(resp) {
+                                        resp = JSON.parse(resp);
+
+                                        if(resp.error_message) {
+                                            alert(resp.error_message);
+                                        }
+                                        
+                                        return;
+                                    }
+                                });
+
+                            }
+                        },
+                        onError: function (data) {
+                            alert('Something wrong while processing your checkout. Checkout has been' + data.state);
+                            return;
+                        },
+                        logLevel: '<?= $this->getLogLevel() ?>'
+                    });
+
+
+                }
+                else {
+
+                    this.isSuccess = true;
+                    location.href = encodeURI(response.redirect);
+                    return;
+
+                }
+                
+            }
+
+            if (response.success) {
+                this.isSuccess = true;
+                location.href = encodeURI(this.successUrl);
+            }
+            else{
+                var msg = response.error_messages;
+                if (Object.isArray(msg)) {
+                    msg = msg.join("\n").stripTags().toString();
+                }
+                if (msg) {
+                    alert(msg);
+                }
+            }
+
+            if (response.update_section) {
+                $('checkout-' + response.update_section.name + '-load').update(response.update_section.html);
+            }
+
+            if (response.goto_section) {
+                checkout.gotoSection(response.goto_section, true);
+            }
         }
-
-    });
+    };
     //]]>
-    </script>
+</script>
 
 <?php endif; ?>
 

@@ -5,6 +5,28 @@ use Zip\ApiException;
 
 class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
 {   
+
+    /**
+     * 
+     */
+    public function indexAction() {
+
+        // handle ajax call
+        if ($this->getRequest()->isAjax()) {
+            
+            $response = $this->getRequest()->getParam('response');
+
+            if(!empty($response)){
+                $response = json_decode(urldecode($response));
+            }
+
+            echo Mage::helper('core')->jsonEncode($response);
+            exit;
+
+        }
+        
+    }
+
     /**
      * Handling response from API response
      *
@@ -12,8 +34,8 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function responseAction()
     {
-
         $this->getLogger()->debug($this->getHelper()->__('Checkout Controller - responseAction'));
+        $errorMessage = '';
 
         try {
             
@@ -25,12 +47,15 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             if (empty($checkoutId)) {
                 Mage::throwException($this->getHelper()->__('The checkoutId does not exist'));
             }
+            else {
+                $this->getHelper()->unsetCheckoutSessionId();
+            }
 
         } catch (Exception $e) {
-            $this->getHelper()->getCheckoutSession()->addError($this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH)));
+            $errorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH));
+            $this->getHelper()->getCheckoutSession()->addError($errorMessage);
             $this->getLogger()->error($e->getMessage());
             $this->redirectToCartOrError();
-            return;
         }
 
         /* Handle the checkout result */
@@ -41,16 +66,15 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
                     $onepage->getQuote()->collectTotals();
                     $onepage->saveOrder();
                     
-                    $this->getHelper()->unsetCheckoutSessionId();
                     $this->getLogger()->log('Order is been saved and redirecting to success page');
                     $this->redirectToSuccess();
-                    return;
+
                 } catch (Exception $e) {
                     $this->getHelper()->getCheckoutSession()->addError($this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH)));
                     $this->getLogger()->error($e->getMessage());
+                    $this->redirectToCartOrError();
                 }
 
-                $this->redirectToCartOrError();
                 break;
             case Zip_Payment_Model_Api_CheckoutResponseResult::DECLINED:
             case Zip_Payment_Model_Api_CheckoutResponseResult::CANCELLED:
@@ -61,21 +85,27 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
 
                 $additionalErrorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ERROR_PATH_PREFIX . $result));
                 if($additionalErrorMessage) {
-                    $this->getHelper()->getCheckoutSession()->addError($errorMessage);
+                    $this->getHelper()->getCheckoutSession()->addError($additionalErrorMessage);
                 }
 
                 $this->getLogger()->debug($errorMessage);
-                $this->getHelper()->unsetCheckoutSessionId();
-                $this->redirectToCartOrError();
                 break;
                 
             default:
                 $errorMessage = $this->getHelper()->__('Something wrong while processing checkout');
                 $this->getHelper()->getCheckoutSession()->addError($errorMessage);
                 $this->getLogger()->debug($errorMessage);
-                $this->getHelper()->unsetCheckoutSessionId();
-                $this->redirectToCartOrError();
                 break;
+        }
+
+
+        if($this->getRequest()->isAjax()) {
+            $this->returnJsonResponse(array(
+                'error_message' => $result == Zip_Payment_Model_Api_CheckoutResponseResult::CANCELLED ? null : $errorMessage
+            ));
+        }
+        else {
+            $this->redirectToCartOrError();
         }
     }
 
