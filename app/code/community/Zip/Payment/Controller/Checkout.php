@@ -7,7 +7,6 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
 
     const SUCCESS_URL_ROUTE = 'checkout/onepage/success';
     const CART_URL_ROUTE = 'checkout/cart';
-    const CHECKOUT_ERROR_URL_ROUTE = 'zip_payment/checkout/error';
 
     /**
      * @var Zip_Payment_Model_Logger
@@ -82,10 +81,8 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         if ($this->getQuote()->getIsActive()) {
             $this->_redirect(self::CART_URL_ROUTE);
         } else {
-            $this->_redirect(Zip_Payment_Model_Config::CHECKOUT_ERROR_URL_ROUTE);
+            $this->_redirect(Zip_Payment_Model_Config::CHECKOUT_FAILURE_URL_ROUTE);
         }
-
-        return;
     }
 
     /**
@@ -93,13 +90,58 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
      */
     protected function redirectToSuccess()
     {
+        $this->getHelper()->emptyShoppingCart();
         $this->_redirect(self::SUCCESS_URL_ROUTE, array('_secure' => true));
-        return;
     }
 
-    protected function returnJsonResponse($response) {
-        echo Mage::helper('core')->jsonEncode($response);
-        exit;
+    /**
+     * Send Ajax redirect response
+     *
+     * @return Mage_Checkout_OnepageController
+     */
+    protected function ajaxRedirectResponse()
+    {
+        $this->getResponse()
+            ->setHeader('HTTP/1.1', '403 Session Expired')
+            ->setHeader('Login-Required', 'true')
+            ->sendResponse();
+        return $this;
+    }
+
+    /**
+     * Validate ajax request and redirect on failure
+     *
+     * @return bool
+     */
+    protected function expireAjax()
+    {
+        if (!$this->getOnepage()->getQuote()->hasItems()
+            || $this->getOnepage()->getQuote()->getHasError()
+            || $this->getOnepage()->getQuote()->getIsMultiShipping()
+        ) {
+            $this->ajaxRedirectResponse();
+            return true;
+        }
+        $action = strtolower($this->getRequest()->getActionName());
+        if (Mage::getSingleton('checkout/session')->getCartWasUpdated(true)
+            && !in_array($action, array('index', 'progress'))
+        ) {
+            $this->ajaxRedirectResponse();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Prepare JSON formatted data for response to client
+     *
+     * @param $response
+     * @return Zend_Controller_Response_Abstract
+     */
+    protected function returnJsonResponse($response)
+    {
+        $this->getResponse()->setHeader('Content-type', 'application/json', true);
+        return $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
     }
 
 }

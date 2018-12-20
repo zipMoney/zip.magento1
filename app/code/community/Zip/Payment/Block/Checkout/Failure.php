@@ -1,6 +1,6 @@
 <?php
 
-class Zip_Payment_Block_Checkout_Error extends Mage_Core_Block_Template
+class Zip_Payment_Block_Checkout_Failure extends Mage_Core_Block_Template
 {  
 
     protected $config = null;

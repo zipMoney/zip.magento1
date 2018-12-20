@@ -34,14 +34,15 @@
                     </zip_payment_controller_predispath>
                 </observers>
             </controller_action_predispatch>
-            <sales_order_payment_place_start>
+            <controller_action_postdispatch_checkout_onepage_savepayment>
                 <observers>
-                    <zip_payment_start_place_payment>
+                    <zip_payment_checkout_onepage_savepayment>
                         <class>zip_payment/observer</class>
-                        <method>startPlacePayment</method>
-                    </zip_payment_start_place_payment>
+                        <method>setResponseAfterSavePayment</method>
+                    </zip_payment_checkout_onepage_savepayment>
                 </observers>
-            </sales_order_payment_place_start>
+            </controller_action_postdispatch_checkout_onepage_savepayment>
+            
         </events>
     </global>
 

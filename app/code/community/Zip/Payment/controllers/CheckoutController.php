@@ -1,31 +1,7 @@
 <?php
 
-use Zip\ApiException;
-
-
 class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
-{   
-
-    /**
-     * 
-     */
-    public function indexAction() {
-
-        // handle ajax call
-        if ($this->getRequest()->isAjax()) {
-            
-            $response = $this->getRequest()->getParam('response');
-
-            if(!empty($response)){
-                $response = json_decode(urldecode($response));
-            }
-
-            echo Mage::helper('core')->jsonEncode($response);
-            exit;
-
-        }
-        
-    }
+{
 
     /**
      * Handling response from API response
@@ -34,7 +10,8 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function responseAction()
     {
-        $this->getLogger()->debug($this->getHelper()->__('Checkout Controller - responseAction'));
+
+        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - responseAction'));
         $errorMessage = '';
 
         try {
@@ -47,74 +24,59 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             if (empty($checkoutId)) {
                 Mage::throwException($this->getHelper()->__('The checkoutId does not exist'));
             }
-            else {
-                $this->getHelper()->unsetCheckoutSessionId();
-            }
 
         } catch (Exception $e) {
             $errorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH));
             $this->getHelper()->getCheckoutSession()->addError($errorMessage);
             $this->getLogger()->error($e->getMessage());
             $this->redirectToCartOrError();
+            return;
         }
 
-        /* Handle the checkout result */
-        switch ($result) {
-            case Zip_Payment_Model_Api_CheckoutResponseResult::APPROVED:
-                try {
-                    $onepage = $this->getHelper()->getOnepage();
-                    $onepage->getQuote()->collectTotals();
-                    $onepage->saveOrder();
-                    
-                    $this->getLogger()->log('Order is been saved and redirecting to success page');
-                    $this->redirectToSuccess();
-
-                } catch (Exception $e) {
-                    $this->getHelper()->getCheckoutSession()->addError($this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH)));
-                    $this->getLogger()->error($e->getMessage());
-                    $this->redirectToCartOrError();
-                }
-
-                break;
-            case Zip_Payment_Model_Api_CheckoutResponseResult::DECLINED:
-            case Zip_Payment_Model_Api_CheckoutResponseResult::CANCELLED:
-            case Zip_Payment_Model_Api_CheckoutResponseResult::REFERRED:
-
-                $errorMessage = $this->getHelper()->__('Checkout has been ' . $result);
-                $this->getHelper()->getCheckoutSession()->addError($errorMessage);
-
-                $additionalErrorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ERROR_PATH_PREFIX . $result));
-                if($additionalErrorMessage) {
-                    $this->getHelper()->getCheckoutSession()->addError($additionalErrorMessage);
-                }
-
-                $this->getLogger()->debug($errorMessage);
-                break;
-                
-            default:
-                $errorMessage = $this->getHelper()->__('Something wrong while processing checkout');
-                $this->getHelper()->getCheckoutSession()->addError($errorMessage);
-                $this->getLogger()->debug($errorMessage);
-                break;
-        }
-
+        $response = Mage::getSingleton('zip_payment/checkout')->processResponseResult($result);
+        $this->getHelper()->unsetCheckoutSessionId();
 
         if($this->getRequest()->isAjax()) {
-            $this->returnJsonResponse(array(
-                'error_message' => $result == Zip_Payment_Model_Api_CheckoutResponseResult::CANCELLED ? null : $errorMessage
-            ));
+            $this->returnJsonResponse($response);
         }
         else {
-            $this->redirectToCartOrError();
+
+            if($response['success']) {
+                $this->redirectToSuccess();
+            }
+            else {
+                $this->redirectToCartOrError();
+            }
+            
         }
+    }
+
+    /**
+     * handle redirect url from checkout js
+     */
+    public function redirectAction() {
+
+        if(!$this->getHelper()->isActive()) {
+            return;
+        }
+
+        $redirectUrl = urldecode($this->getRequest()->getParam('redirect_url'));
+
+        $response = array(
+            'id' => Mage::helper('zip_payment')->getCheckoutSessionId(),
+            'uri' => $redirectUrl,
+            'redirect_uri' => $redirectUrl
+        );
+
+        $this->returnJsonResponse($response);
     }
 
     /**
      * Action to handle checkout errors
      */
-    public function errorAction() {
+    public function failureAction() {
         
-        $this->getLogger()->debug($this->getHelper()->__('Checkout Controller - errorAction'));
+        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - failureAction'));
 
         try {
 
@@ -148,13 +110,15 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             }
 
             $this->renderLayout();
-            $this->getLogger()->debug($this->getHelper()->__('Successfully redirect to error page.'));
+            $this->getLogger()->debug($this->getHelper()->__('Successfully redirect to the failure page.'));
 
         } catch (Exception $e) {
             $this->getLogger()->error(json_encode($this->getRequest()->getParams()));
-            Mage::getSingleton('checkout/session')->addError($this->getHelper()->__('An error occurred during redirecting to error page.'));
+            Mage::getSingleton('checkout/session')->addError($this->getHelper()->__('An error occurred during redirecting to failure page.'));
         }
 
     }
+
+
 
 }

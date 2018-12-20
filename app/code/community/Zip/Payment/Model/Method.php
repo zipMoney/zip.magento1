@@ -160,19 +160,31 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         return $this->getConfig()->getValue("payment/{$this->getCode()}/{$field}");
     }
 
+    
+
     /**
-     * Empty customer's shopping cart
+     * Create Checkout and get Checkout redirect URL
+     *
+     * @see Mage_Checkout_OnepageController::savePaymentAction()
+     * @see Mage_Sales_Model_Quote_Payment::getCheckoutRedirectUrl()
+     * @return string
      */
-    protected function emptyShoppingCart()
+    public function getCheckoutRedirectUrl()
     {
-        try {
-            $this->_getHelper()->getCart()->truncate()->save();
-            $this->_getHelper()->getCheckoutSession()->setCartWasUpdated(true);
-        } catch (Mage_Core_Exception $exception) {
-            $this->_getHelper()->getCheckoutSession()->addError($exception->getMessage());
-        } catch (Exception $exception) {
-            $this->_getHelper()->getCheckoutSession()->addException($exception, $this->__('Cannot empty shopping cart.'));
+        $checkout = $this->createCheckout(); 
+
+        $checkoutId = $this->_getHelper()->getCheckoutSessionId();
+        $redirectUrl = Mage::helper('core/url')->getCurrentUrl();
+
+        if(!empty($checkout)) {
+            $redirectUrl = $checkout->getRedirectUrl();
         }
+        else if(!empty($checkoutId)) {
+            $redirectUrl = $this->_getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) . '?' . Zip_Payment_Controller_Checkout::URL_PARAM_RESULT . '=' . Zip_Payment_Model_Api_CheckoutResponseResult::APPROVED;
+        }
+
+        return $redirectUrl;
+        
     }
 
 
@@ -183,8 +195,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      *
      * @return Zip_Payment_Model_Api_Checkout
      */
-    public function createCheckout()
+    protected function createCheckout()
     {
+        $this->getLogger()->debug($this->_getHelper()->__("Zip_Payment_Model_Method - Create Checkout"));
+
         $checkoutId = $this->_getHelper()->getCheckoutSessionId();
 
         if (empty($checkoutId)) {
@@ -213,9 +227,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     }
 
 
-
     public function authorize(Varien_Object $payment, $amount)
     {
+        $this->getLogger()->debug($this->_getHelper()->__("Zip_Payment_Model_Method - Authorize"));
+
         if (!$this->canAuthorize()) {
             Mage::throwException($this->_getHelper()->__('Authorize action is not available.'));
         }
@@ -249,7 +264,6 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                 )
             );
             
-            $this->emptyShoppingCart();
         }
 
         return $this;
@@ -257,6 +271,8 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 
     public function capture(Varien_Object $payment, $amount)
     {
+        $this->getLogger()->debug($this->_getHelper()->__("Zip_Payment_Model_Method - Capture"));
+
         if (!$payment->canCapture()) {
             Mage::throwException($this->_getHelper()->__('Capture action is not available.'));
         }
@@ -324,8 +340,6 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             if($authId) {
                 $payment->setParentTransactionID($authId);
             }
-
-            $this->emptyShoppingCart();
         }
 
         return $this;
@@ -334,6 +348,8 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 
     public function refund(Varien_Object $payment, $amount)
     {
+        $this->getLogger()->debug($this->_getHelper()->__("Zip_Payment_Model_Method - Refund"));
+
         if (!$this->canRefund()) {
             Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
         }

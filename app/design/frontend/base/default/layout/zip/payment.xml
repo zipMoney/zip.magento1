@@ -25,9 +25,9 @@
         </reference>
     </zip_payment_index_index>
 
-    <zip_payment_checkout_error>
+    <zip_payment_checkout_failure>
 
-        <label>Zip Payment - Checkout - Error Page</label>
+        <label>Zip Payment - Checkout - Failure Page</label>
 
         <reference name="root">
             <action method="setTemplate">
@@ -37,15 +37,15 @@
 
         <reference name="head">
             <action method="setTitle">
-                <title>Zip Payment - Checkout - Error Page</title>
+                <title>Zip Payment - Checkout - Failure Page</title>
             </action>
         </reference>
 
         <reference name="content">
-            <block type="zip_payment/checkout_error" name="zip.payment.checkout.error" template="zip/payment/checkout/error.phtml"/>
+            <block type="zip_payment/checkout_failure" name="zip.payment.checkout.failure" template="zip/payment/checkout/failure.phtml"/>
         </reference>
 
-    </zip_payment_checkout_error>
+    </zip_payment_checkout_failure>
 
     <cms_index_index>
 
@@ -151,10 +151,10 @@
         </reference>
 
         <reference name="before_body_end"> 
-            <block type="zip_payment/checkout" name="zip.payment.checkout.script" template="zip/payment/checkout/script.phtml"/>
+            <block type="zip_payment/checkout" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
         </reference>
 
- 
+
     </checkout_onepage_index>
 
     <onestepcheckout_index_index>
@@ -168,7 +168,7 @@
         </reference>
 
         <reference name="before_body_end"> 
-            <block type="zip_payment/checkout" name="zip.payment.checkout.script" template="zip/payment/checkout/script.phtml"/>
+            <block type="zip_payment/checkout" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
         </reference>
 
     </onestepcheckout_index_index>

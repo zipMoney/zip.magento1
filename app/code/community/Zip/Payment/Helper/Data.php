@@ -35,26 +35,17 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getUrl($route, $param);
     }
 
-    /**
-     * Get session namespace
-     *
-     * @return Zip_Payment_Model_Session
-     */
-    public function getZipPaymentSession()
-    {
-        return Mage::getSingleton('zip_payment/session');
-    }
 
     public function getCheckoutSessionId() {
-        return $this->getZipPaymentSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID);
+        return $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID);
     }
 
     public function setCheckoutSessionId($id) {
-        return $this->getZipPaymentSession()->setData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID, $id);
+        return $this->getCheckoutSession()->setData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID, $id);
     }
 
     public function unsetCheckoutSessionId() {
-        $this->getZipPaymentSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID);
+        $this->getCheckoutSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID);
     }
 
 
@@ -88,4 +79,24 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getSingleton('checkout/cart');
     }
 
+    public function getCurrentPaymentMethod() {
+        return $this->getOnepage()->getQuote()->getPayment()->getMethodInstance()->getCode();
+    }
+
+    /**
+     * Empty customer's shopping cart
+     */
+    public function emptyShoppingCart()
+    {
+        try {
+            $this->getCart()->truncate()->save();
+            $this->getCheckoutSession()->setCartWasUpdated(true);
+        } catch (Mage_Core_Exception $exception) {
+            $this->getCheckoutSession()->addError($exception->getMessage());
+        } catch (Exception $exception) {
+            $this->getCheckoutSession()->addException($exception, $this->__('Cannot empty shopping cart.'));
+        }
+    }
+
+    
 }

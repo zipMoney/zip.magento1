@@ -19,46 +19,44 @@ class Zip_Payment_Model_Observer
 
     }
 
-    /**
-     * handle additional payment actions before order been placed
-     */
-    public function startPlacePayment(Varien_Event_Observer $observer) {
+    public function setResponseAfterSavePayment(Varien_Event_Observer $observer) {
 
-        $payment = $observer->getEvent()->getPayment();
-        $method = $payment->getMethodInstance();
+        $methodCode = Mage::helper('zip_payment')->getCurrentPaymentMethod();
 
-        /**
-         * call checkout creation for zip payment
-         */
-        if($method->getCode() == Zip_Payment_Model_Config::METHOD_CODE) {
+        if($methodCode == Zip_Payment_Model_Config::METHOD_CODE) {
+            
+            $controller = $observer->getEvent()->getData('controller_action');
 
-            $checkout = $method->createCheckout(); 
+            $result = Mage::helper('core')->jsonDecode(
+                $controller->getResponse()->getBody('default'),
+                Zend_Json::TYPE_ARRAY
+            );
 
-            if(!empty($checkout)) {
+            if (empty($result['error'])) {
 
-                $controller = $observer->getEvent()->getData('controller_action');
-                $helper = Mage::helper('zip_payment');
-                $redirectUrl = $checkout->getUri();
+                $controller->loadLayout('checkout_onepage_review');
+                $html = $controller->getLayout()->getBlock('root')->toHtml();
 
-                $response = array(
-                    'method_code' => Zip_Payment_Model_Config::METHOD_CODE,
-                    'redirect' => $redirectUrl,
-                    'data' => array(
-                        'id' => $helper->getCheckoutSessionId(),
-                        'uri' => $redirectUrl,
-                        'redirect_uri' => $redirectUrl
-                    )
+                $result['goto_section'] = 'review';
+                $result['update_section'] = array(
+                    'name' => 'review',
+                    'html' => $html
                 );
-    
-                echo Mage::helper('core')->jsonEncode($response);
-                exit;
+                $result['success'] = false;
 
+                if(empty($result['redirect'])) {
+                    $result['error'] = 'Something wrong while creating checkout via Zip Payment ';
+                }
+
+                $controller->getResponse()->clearHeader('Location');
+                $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
             }
 
         }
 
         return $this;
-       
+
     }
 
+    
 }

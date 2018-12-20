@@ -1,0 +1,24 @@
+<?php if($this->isActive()): ?>
+
+<script type="text/javascript" src="<?= $this->getLibScript() ?>"></script>
+<!-- Zip Payment one page checkout JS -->
+<script type="text/javascript" src="<?= $this->getJsUrl('zip/payment/opcheckout.js') ?>"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+
+if('Zip' in window && Zip.Checkout) {
+
+    Zip.Checkout.config = {
+        'methodCode': '<?= $this->getMethodCode() ?>',
+        'isRedirect': <?= $this->isRedirect() ? 'true' : 'false' ?>,
+        'checkoutUrl': '<?= $this->getCheckoutUrl() ?>',
+        'responseUrl': '<?= $this->getResponseUrl() ?>',
+        'logLevel': '<?= $this->getLogLevel() ?>'
+    };
+}
+
+//]]>
+</script>
+
+<?php endif; ?>
