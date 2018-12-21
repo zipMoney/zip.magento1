@@ -23,8 +23,12 @@
             <zip_payment>
                 <class>Zip_Payment_Helper</class>
             </zip_payment>
+            <payment>
+				<rewrite>
+					<data>Zip_Payment_Helper_Payment</data>
+				</rewrite>
+			</payment>
         </helpers>
-
         <events>
             <controller_action_predispatch>
                 <observers>
@@ -41,8 +45,7 @@
                         <method>setResponseAfterSavePayment</method>
                     </zip_payment_checkout_onepage_savepayment>
                 </observers>
-            </controller_action_postdispatch_checkout_onepage_savepayment>
-            
+            </controller_action_postdispatch_checkout_onepage_savepayment> 
         </events>
     </global>
 
@@ -70,7 +73,7 @@
             <modules>
                 <translations>
                     <files>
-                        <default>zip_payment.csv</default>
+                        <default>Zip_Payment.csv</default>
                     </files>
                 </translations>
             </modules>
@@ -109,7 +112,7 @@
                 <order_status>processing</order_status>
                 <display_mode>redirect</display_mode>
                 <min_order_total>1</min_order_total>
-                <sort_order>3</sort_order>
+                <sort_order>1</sort_order>
                 <country_currency>
                     <allowspecific>1</allowspecific>
                     <specificcountry>AU</specificcountry>

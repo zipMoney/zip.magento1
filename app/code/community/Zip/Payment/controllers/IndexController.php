@@ -10,9 +10,11 @@ class Zip_Payment_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction() {
 
+        $helper = Mage::helper('zip_payment');
+
         $isLandingPageEnabled = Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
 
-        if(!Mage::helper('zip_payment')->isActive() || !$isLandingPageEnabled) {
+        if(!$helper->isActive() || !$isLandingPageEnabled) {
             return null; 
         }
 
@@ -23,13 +25,13 @@ class Zip_Payment_IndexController extends Mage_Core_Controller_Front_Action
         if($breadcrumbs) {
 
             $breadcrumbs->addCrumb('home', array(
-                'label' => $this->__('Home'),
-                'title' => $this->__('Home'),
+                'label' => $helper->__('Home'),
+                'title' => $helper->__('Home'),
                 'link'  => Mage::getBaseUrl()
             ))
             ->addCrumb('zip_payment', array(
-                'label' => $this->__('Zip Payment'),
-                'title' => $this->__('Zip Payment')
+                'label' => $helper->__('Zip Payment'),
+                'title' => $helper->__('Zip Payment')
             ));
         }
 

@@ -63,8 +63,8 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         return $this->config;
     }
 
-    public function getApiConfig() {
-        return $this->getConfig()->getApiConfiguration();
+    public function getApiConfig($storeId = null) {
+        return $this->getConfig()->getApiConfiguration($storeId);
     }
 
     /**
@@ -237,13 +237,12 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         
         try {
 
+            $order = $payment->getOrder();
             $charge = Mage::getModel('zip_payment/api_charge', $this->getApiConfig());
-                
-            $checkoutId = $this->_getHelper()->getCheckoutSessionId();
 
-            if($checkoutId) {
+            if($this->_getHelper()->getCheckoutSessionId()) {
                 // Create Charge
-                $charge = $charge->create($payment->getOrder(), $this->getConfigPaymentAction());
+                $charge = $charge->create($order, $this->getConfigPaymentAction());
             }
 
 

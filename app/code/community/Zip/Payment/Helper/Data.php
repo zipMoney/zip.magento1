@@ -94,7 +94,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         } catch (Mage_Core_Exception $exception) {
             $this->getCheckoutSession()->addError($exception->getMessage());
         } catch (Exception $exception) {
-            $this->getCheckoutSession()->addException($exception, $this->__('Cannot empty shopping cart.'));
+            $this->getCheckoutSession()->addException($exception, Mage::helper('zip_payment')->__('Cannot empty shopping cart'));
         }
     }
 

@@ -67,7 +67,6 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($curl, CURLOPT_TIMEOUT, 20);
             curl_setopt($curl, CURLOPT_URL, $url);
-            // https://www.blender.stackexchange.com/
 
             // if SSL verification is disabled
             if(!$curlSSLVerificationEnabled) {

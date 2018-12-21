@@ -36,11 +36,11 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
             $this->getLogger()->debug("create refund response:" . json_encode($refund));
 
             if (isset($refund->error)) {
-                Mage::throwException($this->_helper->__('Could not create the refund'));
+                Mage::throwException($this->getHelper()->__('Could not create the refund'));
             }
 
             if (!$refund->getId()) {
-                Mage::throwException($this->_helper->__('Invalid Refund'));
+                Mage::throwException($this->getHelper()->__('Invalid Refund'));
             }
 
             $this->response = $refund;

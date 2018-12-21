@@ -32,9 +32,9 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
     public function getStatusLabel($statusLevel = null)
     {
         $statusList = array(
-            Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_SUCCESS => Mage::helper('zip_payment')->__('success'),
-            Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_WARNING => Mage::helper('zip_payment')->__('warning'),
-            Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_ERROR => Mage::helper('zip_payment')->__('error')
+            Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_SUCCESS => Mage::helper('zip_payment')->__('Success'),
+            Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_WARNING => Mage::helper('zip_payment')->__('Warning'),
+            Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_ERROR => Mage::helper('zip_payment')->__('Error')
         );
 
         return (!is_null($statusLevel) && isset($statusList[$statusLevel])) ? $statusList[$statusLevel] : null;

@@ -16,7 +16,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_PaymentAction
             ),
             array(
                 'value' => Zip_Payment_Model_Method::ACTION_AUTHORIZE_CAPTURE,
-                'label' => Mage::helper('zip_payment')->__('Authorize and Capture')
+                'label' => Mage::helper('zip_payment')->__('Immediate Capture')
             )
         );
     }

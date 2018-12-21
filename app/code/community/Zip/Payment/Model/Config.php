@@ -5,6 +5,7 @@ use Zip\Configuration;
 class Zip_Payment_Model_Config
 {
     const METHOD_CODE = 'zip_payment';
+    const LEGACY_METHOD_CODE = 'zipmoneypayment';
 
     const CONFIG_CUSTOM_NODE_NAME = 'custom';
     const CONFIG_LOGO_PATH = 'payment/zip_payment/logo';
@@ -284,7 +285,7 @@ class Zip_Payment_Model_Config
     
     public function getApiConfiguration($storeId = null) {
 
-        if($this->apiConfig === null || ($storeId ? $this->storeId !== $storeId : true)) {
+        if($this->apiConfig === null || ($storeId == null || $this->storeId !== $storeId)) {
 
             $this->setStoreId($storeId);
 
