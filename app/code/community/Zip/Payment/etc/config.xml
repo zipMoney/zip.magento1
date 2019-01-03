@@ -23,11 +23,6 @@
             <zip_payment>
                 <class>Zip_Payment_Helper</class>
             </zip_payment>
-            <payment>
-				<rewrite>
-					<data>Zip_Payment_Helper_Payment</data>
-				</rewrite>
-			</payment>
         </helpers>
         <events>
             <controller_action_predispatch>
@@ -49,7 +44,7 @@
         </events>
     </global>
 
-     <frontend>
+    <frontend>
         <secure_url>
             <zip_payment_checkout>/zip_payment/checkout</zip_payment_checkout>
         </secure_url>
@@ -103,6 +98,9 @@
 
     <default>
         <payment>
+            <zipmoneypayment>
+                <model>zip_payment/method</model>
+            </zipmoneypayment>
             <zip_payment>
                 <active>0</active>
                 <title>Zip - Own it now, pay later</title>
