@@ -108,10 +108,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      * Log debug data to file
      *
      * @param mixed $debugData
-     */
-    protected function _debug($debugData)
+     *
+    pro
     {
-        if ($this->getDebugFlag()) {
+       
             $this->getLogger()->log($debugData);
 
         }
@@ -173,14 +173,12 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     {
         $checkout = $this->createCheckout(); 
 
-        $checkoutId = $this->_getHelper()->getCheckoutSessionId();
-        $redirectUrl = Mage::helper('core/url')->getCurrentUrl();
-
-        if(!empty($checkout)) {
+        if($checkout) {
             $redirectUrl = $checkout->getRedirectUrl();
+            $this->_getHelper()->setCheckoutRedirectUrl($redirectUrl);
         }
 
-        return $redirectUrl;
+        return parent::getCheckoutRedirectUrl();
         
     }
 

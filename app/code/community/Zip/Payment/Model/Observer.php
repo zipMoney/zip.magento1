@@ -21,7 +21,7 @@ class Zip_Payment_Model_Observer
 
     public function setResponseAfterSavePayment(Varien_Event_Observer $observer) {
 
-        $methodCode = Mage::helper('zip_payment')->getCurrentPaymentMethod();
+        $methodCode = Mage::helper('zip_payment')->getCurrentPaymentMethod()->getCode();
 
         if($methodCode == Zip_Payment_Model_Config::METHOD_CODE) {
             
@@ -43,10 +43,6 @@ class Zip_Payment_Model_Observer
                     'html' => $html
                 );
                 $result['success'] = false;
-
-                if(empty($result['redirect'])) {
-                    $result['error'] = 'Something wrong while creating checkout via Zip Payment ';
-                }
 
                 $controller->getResponse()->clearHeader('Location');
                 $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));

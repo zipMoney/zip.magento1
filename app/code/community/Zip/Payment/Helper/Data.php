@@ -48,6 +48,18 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         $this->getCheckoutSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID);
     }
 
+    public function getCheckoutRedirectUrl() {
+        return $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL);
+    }
+
+    public function setCheckoutRedirectUrl($redirectUrl) {
+        return $this->getCheckoutSession()->setData(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL, $redirectUrl);
+    }
+
+    public function unsetCheckoutRedirectUrl() {
+        $this->getCheckoutSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL);
+    }
+
     public function getCheckoutJsLibUrl() {
         return Mage::getSingleton('zip_payment/config')->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_JS_LIB_PATH);
     }
@@ -83,8 +95,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     public function getCurrentPaymentMethod() {
-        return $this->getOnepage()->getQuote()->getPayment()->getMethodInstance()->getCode();
+        return $this->getOnepage()->getQuote()->getPayment()->getMethodInstance();
     }
+
 
     /**
      * Empty customer's shopping cart

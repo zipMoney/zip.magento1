@@ -47,10 +47,11 @@ class Zip_Payment_Model_Config
     /**
      * checkout
      */
-    const CHECKOUT_REDIRECT_URL_ROUTE = 'zip_payment/checkout/redirect';
+    const CHECKOUT_START_URL_ROUTE = 'zip_payment/checkout/start';
     const CHECKOUT_RESPONSE_URL_ROUTE = 'zip_payment/checkout/response';
     const CHECKOUT_FAILURE_URL_ROUTE = 'zip_payment/checkout/failure';
     const CHECKOUT_SESSION_ID = 'zip_payment_checkout_id';
+    const CHECKOUT_REDIRECT_URL = 'zip_payment_redirect_url';
 
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
     const CONFIG_CHECKOUT_ERROR_CONTACT_PATH = 'payment/zip_payment/checkout/error/contact';

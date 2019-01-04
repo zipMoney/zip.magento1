@@ -49,7 +49,6 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                 }
 
                 $this->response = $checkout;
-                return $this;
 
             } catch (ApiException $e) {
                 $this->logException($e);
@@ -60,7 +59,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
             $this->getLogger()->debug("Checkout ID already exists:" . json_encode($checkoutId));
         }
 
-        return null;
+        return $this;
     }
 
     protected function prepareCreatePayload()
@@ -98,7 +97,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         $billingAddr->setLine1($billing->getStreet1());
         $billingAddr->setLine2($billing->getStreet2());
         $billingAddr->setCountry($billing->getCountryId());
-        $billingAddr->setState(empty($billing->getRegion()) ? $billing->getCity() : $billing->getRegion());
+        $billingAddr->setState($billing->getRegion());
         $billingAddr->setCity($billing->getCity());
         $billingAddr->setPostalCode($billing->getPostcode());
 

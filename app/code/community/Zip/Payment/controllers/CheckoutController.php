@@ -13,6 +13,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
 
         $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - responseAction'));
         $errorMessage = '';
+        $this->getHelper()->getCheckoutSession()->getMessages(true);
 
         try {
             
@@ -29,13 +30,17 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $errorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH));
             $this->getHelper()->getCheckoutSession()->addError($errorMessage);
             $this->getLogger()->error($e->getMessage());
+
+            $response = Mage::getSingleton('zip_payment/checkout')->processResponseResult($result);
             $this->getHelper()->unsetCheckoutSessionId();
-            $this->redirectToCartOrError();
+            $this->getHelper()->unsetCheckoutRedirectUrl();
+            $this->getRequest()->isAjax() ? $this->returnJsonResponse($response) :  $this->redirectToCartOrError();
             return;
         }
 
         $response = Mage::getSingleton('zip_payment/checkout')->processResponseResult($result);
         $this->getHelper()->unsetCheckoutSessionId();
+        $this->getHelper()->unsetCheckoutRedirectUrl();
 
         if($this->getRequest()->isAjax()) {
             $this->returnJsonResponse($response);
@@ -55,16 +60,23 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
     /**
      * handle redirect url from checkout js
      */
-    public function redirectAction() {
+    public function startAction() {
 
         if(!$this->getHelper()->isActive()) {
             return;
         }
 
-        $redirectUrl = urldecode($this->getRequest()->getParam('redirect_url'));
+        $checkoutId = Mage::helper('zip_payment')->getCheckoutSessionId();
+        $redirectUrl = Mage::helper('zip_payment')->getCheckoutRedirectUrl();
+
+        if(empty($checkoutId)) {
+            $redirectUrl = Mage::helper('zip_payment')->getCurrentPaymentMethod()->getCheckoutRedirectUrl();
+            $checkoutId = Mage::helper('zip_payment')->getCheckoutSessionId();
+            $redirectUrl = Mage::helper('zip_payment')->getCheckoutRedirectUrl();
+        }
 
         $response = array(
-            'id' => Mage::helper('zip_payment')->getCheckoutSessionId(),
+            'id' => $checkoutId,
             'uri' => $redirectUrl,
             'redirect_uri' => $redirectUrl
         );

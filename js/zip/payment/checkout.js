@@ -2,31 +2,19 @@ if('Zip' in window && Zip.Checkout) {
 
     Object.extend(Zip.Checkout, {
 
-        saveRedirectUrl: function(redirect){
-
-            if(payment.currentMethod == Zip.Checkout.settings.methodCode) {
-        
-                if(redirect) {
-                    Zip.Checkout.settings.redirectUrl = redirect;
-                }
-
-            } 
-        
-        },
-
         placeOrder: function(callback) {
 
             if(payment.currentMethod == Zip.Checkout.settings.methodCode) {
     
-                var redirectUrl = Zip.Checkout.settings.redirectUrl;
+                // var redirectUrl = Zip.Checkout.settings.redirectUrl;
 
                 // if current display mode is lightbox and redirect url is not same as response url
-                if(Zip.Checkout && !Zip.Checkout.settings.isRedirect && redirectUrl.indexOf(Zip.Checkout.settings.responseUrl) == -1) {
+                if(Zip.Checkout && !Zip.Checkout.settings.isRedirect) {
 
                     Zip.Checkout.init({
                         request: 'standard',
                         redirect: Zip.Checkout.settings.isRedirect,
-                        checkoutUri: Zip.Checkout.settings.checkoutUrl + '?redirect_url=' + encodeURIComponent(redirectUrl),
+                        checkoutUri: Zip.Checkout.settings.checkoutUrl,
                         redirectUri: Zip.Checkout.settings.responseUrl,
                         onComplete: function (data) {
                             

@@ -47,15 +47,6 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
         return $this->getConfig()->getValue(self::CONFIG_CHECKOUT_LOADER_IMAGE_PATH);
     }
 
-    /**
-     * Returns the create url.
-     *
-     * @return string
-     */
-    public function getCreateUrl()
-    {
-        return $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL_ROUTE);
-    }
 
      /**
      * Returns the checkout url.
@@ -64,7 +55,7 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
      */
     public function getCheckoutUrl()
     {
-        return $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL_ROUTE);
+        return $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_START_URL_ROUTE);
     }
 
     /**

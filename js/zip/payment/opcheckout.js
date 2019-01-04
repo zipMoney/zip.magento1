@@ -1,29 +1,6 @@
 
 
 if('Zip' in window && Zip.Checkout) {
-
-    if('payment' in window) {
-
-        Object.extend(payment, {
-    
-            paymentOnSave: payment.onSave,
-    
-            onSave: function(transport){
-    
-                if (!transport) return;
-
-                var response = transport.responseJSON || transport.responseText.evalJSON(true) || {};
-
-                // save redirect url from response
-                Zip.Checkout.saveRedirectUrl(response.redirect);
-
-                payment.paymentOnSave(transport);
-            
-            }
-    
-        });
-    
-    }
     
     if('Review' in window) {
     
