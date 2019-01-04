@@ -1,5 +1,7 @@
 <?php if($this->isActive()): ?>
 
+<script type="text/javascript" src="<?= $this->getCheckoutJsLibUrl() ?>"></script>
+
 <script type="text/javascript">
 //<![CDATA[
 
@@ -15,6 +17,10 @@ Zip.Checkout.settings = {
 };
 
 //]]>
+
 </script>
+
+<script type="text/javascript" src="<?= $this->getCheckoutJs() ?>"></script>
+<script type="text/javascript" src="<?= $this->getOnePageCheckoutJs() ?>"></script>
 
 <?php endif; ?>

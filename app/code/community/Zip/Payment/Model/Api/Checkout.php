@@ -49,14 +49,18 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                 }
 
                 $this->response = $checkout;
+                return $this;
 
             } catch (ApiException $e) {
                 $this->logException($e);
                 throw $e;
             }
         }
+        else {
+            $this->getLogger()->debug("Checkout ID already exists:" . json_encode($checkoutId));
+        }
 
-        return $this;
+        return null;
     }
 
     protected function prepareCreatePayload()

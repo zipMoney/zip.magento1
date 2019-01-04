@@ -106,5 +106,18 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
 
         return '';
     }
+
+    public function getCheckoutJsLibUrl() {
+        return $this->getHelper()->getCheckoutJsLibUrl();
+    }
+
+    public function getCheckoutJs() {
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS) . '/zip/payment/checkout.js';
+    }
+
+    public function getOnePageCheckoutJs() {
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS) . '/zip/payment/opcheckout.js';
+    }
+    
     
 }

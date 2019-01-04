@@ -98,7 +98,7 @@
     <default>
         <payment>
             <zipmoneypayment>
-                <model>zip_payment/legacy</model>
+                <model>zip_payment/legacyMethod</model>
             </zipmoneypayment>
             <zip_payment>
                 <active>0</active>
@@ -187,7 +187,7 @@
                     <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
                 </admin_notification>
                 <widgets>
-                    <js_lib>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/plugin/widget/zip-widget.min.js</js_lib>    
+                    <js_lib>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/plugin/widget/zip-widget-js.min.js</js_lib>    
                 </widgets>
             </zip_payment>
         </payment>
