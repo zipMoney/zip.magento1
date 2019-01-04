@@ -104,14 +104,14 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         return $this->quote;
     }
 
-     /**
+      /**
      * Log debug data to file
      *
      * @param mixed $debugData
-     *
-    pro
+     */
+    protected function _debug($debugData)
     {
-       
+        if ($this->getDebugFlag()) {
             $this->getLogger()->log($debugData);
 
         }
