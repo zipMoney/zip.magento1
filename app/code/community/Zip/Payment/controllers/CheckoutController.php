@@ -29,6 +29,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $errorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH));
             $this->getHelper()->getCheckoutSession()->addError($errorMessage);
             $this->getLogger()->error($e->getMessage());
+            $this->getHelper()->unsetCheckoutSessionId();
             $this->redirectToCartOrError();
             return;
         }

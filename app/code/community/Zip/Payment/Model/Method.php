@@ -179,9 +179,6 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         if(!empty($checkout)) {
             $redirectUrl = $checkout->getRedirectUrl();
         }
-        else if(!empty($checkoutId)) {
-            $redirectUrl = $this->_getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) . '?' . Zip_Payment_Controller_Checkout::URL_PARAM_RESULT . '=' . Zip_Payment_Model_Api_CheckoutResponseResult::APPROVED;
-        }
 
         return $redirectUrl;
         
@@ -197,30 +194,24 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     protected function createCheckout()
     {
-        $this->getLogger()->debug($this->_getHelper()->__("Zip_Payment_Model_Method - Create Checkout"));
+        $this->getLogger()->debug($this->_getHelper()->__('Zip_Payment_Model_Method - Create Checkout'));
 
-        $checkoutId = $this->_getHelper()->getCheckoutSessionId();
+        $quote = $this->getQuote();
 
-        if (empty($checkoutId)) {
+        if (!$quote->hasItems() || $quote->getHasError()) {
+            Mage::throwException($this->getHelper()->__('Unable to initialize the Checkout.'));
+        }
 
-            $quote = $this->getQuote();
+        try {
 
-            if (!$quote->hasItems() || $quote->getHasError()) {
-                Mage::throwException($this->getHelper()->__('Unable to initialize the Checkout.'));
-            }
+            // Create Checkout
+            $checkout = Mage::getModel('zip_payment/api_checkout', $this->getApiConfig())
+            ->create($quote);
 
-            try {
+            return $checkout;
 
-                // Create Checkout
-                $checkout = Mage::getModel('zip_payment/api_checkout', $this->getApiConfig())
-                ->create($quote);
-
-                return $checkout;
-
-            } catch (Exception $e) {
-                Mage::throwException($this->_getHelper()->__('Failed to process checkout - ' . $e->getMessage()));
-            }
-            
+        } catch (Exception $e) {
+            Mage::throwException($this->_getHelper()->__('Failed to process checkout - ' . $e->getMessage()));
         }
 
         return null;

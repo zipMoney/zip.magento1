@@ -5,7 +5,6 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
 {
 
     const CONFIG_DISPLAY_MODE_PATH = 'payment/zip_payment/display_mode';
-    const CONFIG_CHECKOUT_SCRIPT_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
     const CONFIG_CHECKOUT_LOADER_IMAGE_PATH = 'payment/zip_payment/checkout/loader_image';
 
     /**
@@ -38,10 +37,6 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
     public function isActive() {
 
         return $this->getHelper()->isActive();
-    }
-
-    public function getLibScript() {
-        return $this->getConfig()->getValue(self::CONFIG_CHECKOUT_SCRIPT_LIB_PATH);
     }
 
     public function getMethodCode() {

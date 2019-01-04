@@ -48,6 +48,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         $this->getCheckoutSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID);
     }
 
+    public function getCheckoutJsLibUrl() {
+        return Mage::getSingleton('zip_payment/config')->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_JS_LIB_PATH);
+    }
 
     /**
      * Return checkout session object

@@ -56,6 +56,8 @@ class Zip_Payment_Model_Config
     const CONFIG_CHECKOUT_ERROR_CONTACT_PATH = 'payment/zip_payment/checkout/error/contact';
     const CONFIG_CHECKOUT_ERROR_PATH_PREFIX = 'payment/zip_payment/checkout/error/';
 
+    const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
+
     /**
      * Charge
      */

@@ -24,31 +24,36 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 
     public function create()
     {
-        $payload = $this->prepareCreatePayload();
+        $checkoutId = $this->getHelper()->getCheckoutSessionId();
 
-        try {
+        if (empty($checkoutId)) {
 
-            $this->getLogger()->debug("create checkout request:" . json_encode($payload));
+            $payload = $this->prepareCreatePayload();
 
-            $checkout = $this->getApi()->checkoutsCreate($payload);
-            
-            $this->getLogger()->debug("create checkout response:" . json_encode($checkout));
+            try {
 
-            if (isset($checkout->error)) {
-                Mage::throwException($this->getHelper()->__('Something wrong when checkout been created'));
+                $this->getLogger()->debug("create checkout request:" . json_encode($payload));
+
+                $checkout = $this->getApi()->checkoutsCreate($payload);
+                
+                $this->getLogger()->debug("create checkout response:" . json_encode($checkout));
+
+                if (isset($checkout->error)) {
+                    Mage::throwException($this->getHelper()->__('Something wrong when checkout been created'));
+                }
+
+                if (isset($checkout['id']) && isset($checkout['uri'])) {
+                    $this->getHelper()->setCheckoutSessionId($checkout['id']);
+                } else {
+                    throw new Mage_Payment_Exception("Could not redirect to zip checkout page");
+                }
+
+                $this->response = $checkout;
+
+            } catch (ApiException $e) {
+                $this->logException($e);
+                throw $e;
             }
-
-            if (isset($checkout['id']) && isset($checkout['uri'])) {
-                $this->getHelper()->setCheckoutSessionId($checkout['id']);
-            } else {
-                throw new Mage_Payment_Exception("Could not redirect to zip checkout page");
-            }
-
-            $this->response = $checkout;
-
-        } catch (ApiException $e) {
-            $this->logException($e);
-            throw $e;
         }
 
         return $this;
