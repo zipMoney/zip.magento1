@@ -143,14 +143,23 @@
     <checkout_onepage_index>
 
         <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>  
+            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>
+            <action method="addJs" ifconfig="payment/zip_payment/active">
+                <file helper="zip_payment/getCheckoutJsLibUrl" />
+            </action>
         </reference>
 
         <reference name="content">
             <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
         </reference>
 
-        <reference name="before_body_end"> 
+        <reference name="before_body_end">
+            <action method="addJs" ifconfig="payment/zip_payment/active">
+                <script>zip/payment/checkout.js</script>
+            </action>
+            <action method="addJs" ifconfig="payment/zip_payment/active">
+                <script>zip/payment/opcheckout.js</script>
+            </action>
             <block type="zip_payment/checkout" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
         </reference>
 
@@ -172,5 +181,32 @@
         </reference>
 
     </onestepcheckout_index_index>
+
+
+    <lotusbreath_onestepcheckout_index_index>
+
+        <reference name="head">
+            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>
+            <action method="addJs" ifconfig="payment/zip_payment/active">
+                <file helper="zip_payment/getCheckoutJsLibUrl" />
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
+        </reference>
+
+        <reference name="before_body_end">
+            <action method="addJs" ifconfig="payment/zip_payment/active">
+                <script>zip/payment/checkout.js</script>
+            </action>
+            <action method="addJs" ifconfig="payment/zip_payment/active">
+                <script>zip/payment/onestepcheckout/lotusbreath_onestepcheckout.js</script>
+            </action>
+            <block type="zip_payment/checkout" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
+        </reference>
+
+    </lotusbreath_onestepcheckout_index_index>
+
 
 </layout> 
