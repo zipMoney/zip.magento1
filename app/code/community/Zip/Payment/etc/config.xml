@@ -11,7 +11,6 @@
         <models>
             <zip_payment>
                 <class>Zip_Payment_Model</class>
-                <resourceModel>pay_mysql4</resourceModel>
             </zip_payment>
         </models>
         <blocks>
