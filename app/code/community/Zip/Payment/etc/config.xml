@@ -99,7 +99,7 @@
     <default>
         <payment>
             <zipmoneypayment>
-                <model>zip_payment/method</model>
+                <model>zip_payment/legacy</model>
             </zipmoneypayment>
             <zip_payment>
                 <active>0</active>

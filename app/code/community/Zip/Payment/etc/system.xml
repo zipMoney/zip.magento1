@@ -345,19 +345,6 @@
                                                         </depends>
                                                     </log_level>
 
-                                                    <log_file translate="label">
-                                                        <label>Log File Name</label>
-                                                        <tooltip>Identify file name for Zip Debug Logs in system log folder</tooltip>
-                                                        <config_path>payment/zip_payment/debug/log_file</config_path>
-                                                        <frontend_type>text</frontend_type>
-                                                        <sort_order>30</sort_order>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>1</show_in_store>
-                                                        <depends>
-                                                            <enabled>1</enabled>
-                                                        </depends>
-                                                    </log_file>
                                                 </fields>
                                             </debug>
 
