@@ -1,12 +1,15 @@
 <?php
 
+/**
+ * Helper functions
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    const CONFIG_ACTIVE_PATH = 'payment/zip_payment/active';
-
-    public function isActive() {
-        return Mage::getSingleton('zip_payment/config')->getFlag(self::CONFIG_ACTIVE_PATH);
-    }
 
     /**
      * Retrieves the extension version.
@@ -19,6 +22,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     }
     
 
+    /**
+     * autoload API SDK from lib folder
+     */
     public function autoLoad() {
         require_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
     }
@@ -35,34 +41,6 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getUrl($route, $param);
     }
 
-
-    public function getCheckoutSessionId() {
-        return $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID);
-    }
-
-    public function setCheckoutSessionId($id) {
-        return $this->getCheckoutSession()->setData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID, $id);
-    }
-
-    public function unsetCheckoutSessionId() {
-        $this->getCheckoutSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_SESSION_ID);
-    }
-
-    public function getCheckoutRedirectUrl() {
-        return $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL);
-    }
-
-    public function setCheckoutRedirectUrl($redirectUrl) {
-        return $this->getCheckoutSession()->setData(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL, $redirectUrl);
-    }
-
-    public function unsetCheckoutRedirectUrl() {
-        $this->getCheckoutSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_REDIRECT_URL);
-    }
-
-    public function getCheckoutJsLibUrl() {
-        return Mage::getSingleton('zip_payment/config')->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_JS_LIB_PATH);
-    }
 
     /**
      * Return checkout session object
@@ -94,6 +72,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getSingleton('checkout/cart');
     }
 
+    /**
+     * get payment method currently been used
+     */
     public function getCurrentPaymentMethod() {
         return $this->getOnepage()->getQuote()->getPayment()->getMethodInstance();
     }
@@ -114,5 +95,50 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         }
     }
 
-    
+
+
+    /******************************************* SESSION ************************************************* */
+
+    /**
+     * save checkout session data
+     */
+    public function saveCheckoutSessionData($data) {
+        $this->getCheckoutSession()->setData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY, $data);
+    }
+
+    /**
+     * get checkout session id
+     * 
+     * @return string
+     */
+    public function getCheckoutSessionId() {
+        $sessionData = $this->getCheckoutSessionData();
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY] : null;
+    }
+
+    /**
+     * get checkout session redirect url
+     * 
+     * @return string
+     */
+    public function getCheckoutSessionRedirectUrl() {
+        $sessionData = $this->getCheckoutSessionData();
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY] : null;
+    }
+
+    /**
+     * get checkout session data
+     */
+    public function getCheckoutSessionData() {
+       return  $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
+    }
+
+    /**
+     * unset checkout session data
+     */
+    public function unsetCheckoutSessionData() {
+        $this->getCheckoutSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
+    }
+
+
 }

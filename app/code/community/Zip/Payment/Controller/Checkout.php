@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Checkout controller model
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
 {
     const URL_PARAM_RESULT = 'result';
@@ -7,6 +15,8 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
 
     const SUCCESS_URL_ROUTE = 'checkout/onepage/success';
     const CART_URL_ROUTE = 'checkout/cart';
+
+    const GENERAL_CHECKOUT_ERROR = 'Something wrong while processing checkout';
 
     /**
      * @var Zip_Payment_Model_Logger
@@ -69,8 +79,6 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         }
         return $this->config;
     }
-
-
 
     /**
      * Redirects to the cart or error page.
@@ -142,6 +150,74 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
     {
         $this->getResponse()->setHeader('Content-type', 'application/json', true);
         return $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+
+    /**
+     * process checkout's response result 
+     */
+    protected function processResponseResult($result) {
+
+        $response = array(
+            'success' => false,
+            'error_message' => null
+        );
+
+        // place order when result is approved
+        if($result == Zip_Payment_Model_Api_Checkout::RESULT_APPROVED) {
+
+            try {
+
+                $this->saveOrder();
+                $response['success'] = true;
+                
+            } catch (Exception $e) {
+                throw $e;
+            }
+
+        } else {
+            $response['error_message'] = $this->generateErrorMessage($result);
+        }
+
+        return $response;
+    }
+
+    /**
+     * save order
+     */
+    protected function saveOrder() {
+
+        $onepage = $this->getHelper()->getOnepage();
+        $onepage->getQuote()->collectTotals();
+        $onepage->saveOrder();
+
+        $this->getLogger()->debug('Order has been saved successfully');
+    }
+
+    /**
+     * generate error message for checkout result
+     */
+    protected function generateErrorMessage($result) {
+
+        $errorMessage = $this->getHelper()->__('Checkout has been ' . $result);
+        $this->getHelper()->getCheckoutSession()->addError($errorMessage);
+
+        $additionalErrorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ERROR_PATH_PREFIX . $result));
+        if($additionalErrorMessage) {
+            $this->getHelper()->getCheckoutSession()->addError($additionalErrorMessage);
+        }
+
+        $this->getLogger()->debug($errorMessage);
+
+        switch($result) {
+            case Zip_Payment_Model_Api_Checkout::RESULT_DECLINED:
+            case Zip_Payment_Model_Api_Checkout::RESULT_REFERRED: 
+                return $errorMessage;
+            case Zip_Payment_Model_Api_Checkout::RESULT_CANCELLED:
+                return null;
+            default:
+                return self::GENERAL_CHECKOUT_ERROR;
+        }
+
     }
 
 }

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Handle Feed for Admin Notification
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotification_Model_Feed
 {
     const CONFIG_FEED_URL_PATH = 'payment/zip_payment/admin_notification/feed_url';
@@ -7,7 +15,6 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
     const RELEASE_FIELD = 'release';
     const VERSION_FIELD = 'version';
     const NOTIFICATION_FIELD = 'notifications';
-
     const DEFAULT_NOTIFICATION_TITLE = 'Zip Payment';
 
     protected $feedData = null;
@@ -54,6 +61,9 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
         return $this;
     }
 
+    /**
+     * get notifications for version upgrade
+     */
     public function getVersionUpgradeNotification() {
 
         $currentVersion = Mage::helper("zip_payment")->getCurrentVersion();
@@ -82,6 +92,11 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
         return null;
     }
 
+    /**
+     * get feed url
+     * 
+     * @return string
+     */
     public function getFeedUrl()
     {
         if (is_null($this->_feedUrl)) {
@@ -90,6 +105,9 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
         return $this->_feedUrl;
     }
 
+    /**
+     * get feed data
+     */
     public function getFeedData() {
 
         $curl = new Varien_Http_Adapter_Curl();

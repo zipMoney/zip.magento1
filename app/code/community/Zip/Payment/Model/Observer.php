@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Observer model
+ *
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Model_Observer
 {
 
@@ -19,6 +27,9 @@ class Zip_Payment_Model_Observer
 
     }
 
+    /**
+     * update response result after payment been saved
+     */
     public function setResponseAfterSavePayment(Varien_Event_Observer $observer) {
 
         $methodCode = Mage::helper('zip_payment')->getCurrentPaymentMethod()->getCode();

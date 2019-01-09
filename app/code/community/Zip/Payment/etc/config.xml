@@ -80,7 +80,7 @@
                 <observers>
                     <zip_payment_notification>
                         <class>zip_payment/adminhtml_observer</class>
-                        <method>checkNotifications</method>
+                        <method>checkAdminNotifications</method>
                     </zip_payment_notification>
                 </observers>
             </controller_action_predispatch_adminhtml>
@@ -108,7 +108,6 @@
                 <payment_action>authorize_capture</payment_action>
                 <order_status>processing</order_status>
                 <display_mode>redirect</display_mode>
-                <min_order_total>1</min_order_total>
                 <sort_order>1</sort_order>
                 <country_currency>
                     <allowspecific>1</allowspecific>
@@ -165,7 +164,7 @@
                 <logo>http://d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
                 <portal>
                     <sandbox>https://merchant.sandbox.zipmoney.com.au/</sandbox>
-                    <production>https://merchant2.zipmoney.com.au/</production>
+                    <production>https://merchant.zipmoney.com.au/</production>
                 </portal>
                 <checkout>
                     <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
@@ -187,7 +186,7 @@
                     <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
                 </admin_notification>
                 <widgets>
-                    <js_lib>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/plugin/widget/zip-widget-js.min.js</js_lib>    
+                    <js_lib>https://static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget-js.min.js</js_lib>    
                 </widgets>
             </zip_payment>
         </payment>

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Charge API Model                                                                                  
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
 
 use Zip\Model\CreateChargeRequest;
 use Zip\Model\CaptureChargeRequest;
@@ -21,10 +28,10 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     protected $order = null;
     protected $paymentAction = null;
 
-    protected function getOrder() {
-        return $this->order;
-    }
-
+    /**
+     * get API model
+     * @return Zip\Api\ChargeApi
+     */
     public function getApi()
     {
         if ($this->api === null) {
@@ -47,12 +54,9 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         $payload = $this->prepareCreatePayload();
 
         try {
-            $this->getLogger()->debug("create charge request:" . json_encode($payload));
 
             $charge = $this->getApi()
             ->chargesCreate($payload, $this->getIdempotencyKey());
-
-            $this->getLogger()->debug("create charge response:" . json_encode($charge));
 
             if (isset($charge->error)) {
                 Mage::throwException($this->getHelper()->__('Could not create the charge'));
@@ -84,17 +88,18 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     public function capture($chargeId, $amount, $isPartialCapture = null)
     {
         try {
-            $captureChargeReq = new CaptureChargeRequest(array(
+            
+            $params = array(
                 'amount' => (float)$amount,
                 'is_partial_capture' => $isPartialCapture
-            ));
+            )
+            
+            $captureChargeReq = new CaptureChargeRequest($params);
 
-            $this->getLogger()->debug("capture charge request:" . json_encode($captureChargeReq));
+            $this->getLogger()->debug("Create charge: " . json_encode($params));
 
             $charge = $this->getApi()
             ->chargesCapture($chargeId, $captureChargeReq, $this->getIdempotencyKey());
-
-            $this->getLogger()->debug("capture charge response:" . json_encode($charge));
 
             if (isset($charge->error)) {
                 Mage::throwException($this->getHelper()->__('Could not capture the charge'));
@@ -116,16 +121,17 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         return $this;
     }
 
+    /**
+     * cancel a charge
+     */
     public function cancel($chargeId)
     {
         try {
 
-            $this->getLogger()->debug("cancel charge request: " . $chargeId);
+            $this->getLogger()->debug("Cancel charge: " . $chargeId);
 
             $charge = $this->getApi()
             ->chargesCancel($chargeId, $this->getIdempotencyKey());
-
-            $this->getLogger()->debug("cancel charge response:" . json_encode($charge));
 
             if (isset($charge->error)) {
                 Mage::throwException($this->getHelper()->__('Could not capture the charge'));
@@ -151,11 +157,6 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     /**
      * charge and authorized are the same payload
      *
-     * @param Mage_Sales_Model_Order $order
-     * @param float $amount
-     * @param Zip\Model\Authority $authority
-     * @param boolean $isCharge
-     * @return Zip\Model\CreateChargeRequest $chargeReq
      */
     public function prepareCreatePayload()
     {
@@ -173,6 +174,9 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         return $chargeReq;
     }
 
+    /**
+     * prepare charge order
+     */
     protected function getChargeOrder()
     {
         $chargeOrder = new ChargeOrder();
@@ -204,15 +208,31 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         return $authority;
     }
 
+    /**
+     * is currently using immediate capture
+     */
     protected function isImmediateCapture() 
     {
         return $this->paymentAction == Zip_Payment_Model_Method::ACTION_AUTHORIZE_CAPTURE;
     }
 
+    /**
+     * get current order
+     */
+    protected function getOrder() {
+        return $this->order;
+    }
+
+    /**
+     * get charge id
+     */
     public function getId() {
        return $this->getResponse() ? $this->getResponse()->getId() : null;
     }
 
+    /**
+     * get receipt number
+     */
     public function getReceiptNumber() {
         return $this->getResponse() ? $this->getResponse()->getReceiptNumber() : null;
     }

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Lagger model to handle debug logs
+ * Extends Mage_Core_Model_Logger                                                     
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
 {
     const CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH = 'payment/zip_payment/debug/log_private_data_keys';
@@ -7,6 +16,10 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
     protected $config = null;
     protected $privateDataKeys = null;
 
+    /**
+     * get configuration model
+     * @return Zip_Payment_Model_Config
+     */
     protected function getConfig() {
 
         if($this->config === null) {

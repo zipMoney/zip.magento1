@@ -1,9 +1,20 @@
 <?php
 
+/**
+ * Block model of checkout failure
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Block_Checkout_Failure extends Mage_Core_Block_Template
 {  
 
-    protected $config = null;
+    /**
+     * @var Zip_Payment_Model_Config
+     */
+    protected $config;
     protected $messageItems = null;
 
     public function __construct()
@@ -11,13 +22,19 @@ class Zip_Payment_Block_Checkout_Failure extends Mage_Core_Block_Template
         $this->messageItems = $this->getHelper()->getCheckoutSession()->getMessages()->getItems();
     }
 
-    protected function getConfig() {
-        if($this->config == null) {
+    
+    /**
+     * Config instance getter
+     * @return Zip_Payment_Model_Config
+     */
+    public function getConfig()
+    {
+        if ($this->config == null) {
             $this->config = Mage::getSingleton('zip_payment/config');
         }
         return $this->config;
     }
-
+    
     /**
      * Retrieve model helper
      *
@@ -30,11 +47,11 @@ class Zip_Payment_Block_Checkout_Failure extends Mage_Core_Block_Template
 
 
     public function getLogo() {
-        return $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_LOGO_PATH);
+        return $this->getConfig()->getLogo()
     }
 
     public function getTitle() {
-        return $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_TITLE_PATH);
+        return  $this->getConfig()->getTitle();
     }
 
     public function getHeadingText()

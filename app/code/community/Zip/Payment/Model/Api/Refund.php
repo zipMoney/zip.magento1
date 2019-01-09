@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Refund API Model                                                                                  
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 use Zip\Model\CreateRefundRequest;
 use Zip\Api\RefundApi;
 use Zip\ApiException;
@@ -10,6 +18,10 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
     protected $chargeId = null;
     protected $reason = null;
 
+    /**
+     * get API model
+     * @return Zip\Api\RefundApi
+     */
     protected function getApi()
     {
         if ($this->api === null) {
@@ -19,6 +31,12 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
         return $this->api;
     }
 
+    /**
+     * create a refund
+     * @param string $chargeId Charge ID
+     * @param string $amount Charge Amount
+     * @param string $reason reason of refund
+     */
     public function create($chargeId, $amount, $reason)
     {
         $this->chargeId = $chargeId;
@@ -29,11 +47,13 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
 
         try {
 
-            $this->getLogger()->debug("create refund request:" . json_encode($payload));
+            $this->getLogger()->debug("Create refund" . json_encode(array(
+                'charge_id' => $chargeId,
+                'amount' => $amount,
+                'reason' => $reason
+            )));
 
             $refund = $this->getApi()->refundsCreate($payload, $this->getIdempotencyKey());
-            
-            $this->getLogger()->debug("create refund response:" . json_encode($refund));
 
             if (isset($refund->error)) {
                 Mage::throwException($this->getHelper()->__('Could not create the refund'));
@@ -53,32 +73,25 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
         return $this;
     }
 
+    /**
+     * generate payload for refund
+     */
     protected function prepareCreatePayload()
     {
         $refundReq = new CreateRefundRequest();
 
         $refundReq
-        ->setAmount($this->getAmount())
-        ->setReason($this->getReason())
-        ->setChargeId($this->getChargeId())
+        ->setAmount($this->amount)
+        ->setReason($this->reason)
+        ->setChargeId($this->chargeId)
         ->setMetadata($this->getMetadata());
 
         return $refundReq;
     }
 
-    protected function getAmount() {
-        return $this->amount;
-    }
-
-    protected function getChargeId() {
-        return $this->chargeId;
-    }
-
-
-    protected function getReason() {
-        return $this->reason;
-    }
-
+    /**
+     * get refund id
+     */
     public function getId() {
         return $this->getResponse() ? $this->getResponse()->getId() : null;
     }

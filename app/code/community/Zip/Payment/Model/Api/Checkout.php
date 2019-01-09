@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Checkout API Model                                                                                  
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 use Zip\Model\CreateCheckoutRequest;
 use Zip\Api\CheckoutApi;
 use Zip\Model\CheckoutOrder;
@@ -12,7 +20,18 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 {
 
     const CHECKOUT_TYPE = 'standard';
+    const CHECKOUT_ID_KEY = 'id';
+    const CHECKOUT_REDIRECT_URL_KEY = 'url';
 
+    const RESULT_APPROVED = 'approved';
+    const RESULT_DECLINED = 'declined';
+    const RESULT_CANCELLED = 'cancelled';
+    const RESULT_REFERRED = 'referred';
+
+    /**
+     * get API model
+     * @return Zip\Api\CheckoutApi
+     */
     protected function getApi()
     {
         if ($this->api === null) {
@@ -22,6 +41,9 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         return $this->api;
     }
 
+    /**
+     * create a checkout
+     */
     public function create()
     {
         $checkoutId = $this->getHelper()->getCheckoutSessionId();
@@ -32,18 +54,20 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 
             try {
 
-                $this->getLogger()->debug("create checkout request:" . json_encode($payload));
+                $this->getLogger()->debug("Create checkout");
 
                 $checkout = $this->getApi()->checkoutsCreate($payload);
-                
-                $this->getLogger()->debug("create checkout response:" . json_encode($checkout));
 
                 if (isset($checkout->error)) {
                     Mage::throwException($this->getHelper()->__('Something wrong when checkout been created'));
                 }
 
-                if (isset($checkout['id']) && isset($checkout['uri'])) {
-                    $this->getHelper()->setCheckoutSessionId($checkout['id']);
+                if (isset($checkout[self::CHECKOUT_ID_KEY]) && isset($checkout[self::CHECKOUT_REDIRECT_URL_KEY])) {
+                    // save checkout data into session
+                    $this->getHelper()->saveCheckoutSessionData({
+                        self::CHECKOUT_ID_KEY: $checkout[self::CHECKOUT_ID_KEY],
+                        self::CHECKOUT_REDIRECT_URL_KEY: $checkout[self::CHECKOUT_REDIRECT_URL_KEY]
+                    });
                 } else {
                     throw new Mage_Payment_Exception("Could not redirect to zip checkout page");
                 }
@@ -62,6 +86,9 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         return $this;
     }
 
+    /**
+     * prepare for payload of checkout creation
+     */
     protected function prepareCreatePayload()
     {
         $checkoutReq = new CreateCheckoutRequest();
@@ -76,6 +103,9 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         return $checkoutReq;
     }
 
+    /**
+     * generate payload data for customer
+     */
     protected function getShopper()
     {
         $shopper = new Shopper();
@@ -105,6 +135,9 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         return $shopper;
     }
 
+    /**
+     * generate payload data for order
+     */
     protected function getCheckoutOrder()
     {
         $order = new CheckoutOrder();
@@ -131,16 +164,22 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     protected function getCheckoutConfiguration()
     {
         $checkoutConfig = new CheckoutConfiguration();
-        $redirectUrl = Mage::helper('zip_payment')->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE);
+        $redirectUrl = $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE);
         $checkoutConfig->setRedirectUri($redirectUrl);
 
         return $checkoutConfig;
     }
 
+    /**
+     * get redirect url
+     */
     public function getRedirectUrl() {
         return $this->getResponse() ? $this->getResponse()->getUri() : null;
     }
 
+    /**
+     * get checkout id
+     */
     public function getId() {
         return $this->getResponse() ? $this->getResponse()->getId() : null;
     }

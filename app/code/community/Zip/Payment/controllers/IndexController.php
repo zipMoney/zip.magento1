@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Index controller
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 use Zip\ApiException;
 
 class Zip_Payment_IndexController extends Mage_Core_Controller_Front_Action

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Block class of Admin version field
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Block_Adminhtml_System_Config_Field_Version extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /**

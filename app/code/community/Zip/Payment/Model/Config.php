@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Model for configuration                                                                                 
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 use Zip\Configuration;
 
 class Zip_Payment_Model_Config
@@ -7,6 +15,10 @@ class Zip_Payment_Model_Config
     const METHOD_CODE = 'zip_payment';
     const LEGACY_METHOD_CODE = 'zipmoneypayment';
 
+    /**
+     * basic configuration paths
+     */
+    const CONFIG_ACTIVE_PATH = 'payment/zip_payment/active';
     const CONFIG_CUSTOM_NODE_NAME = 'custom';
     const CONFIG_LOGO_PATH = 'payment/zip_payment/logo';
     const CONFIG_TITLE_PATH = 'payment/zip_payment/title';
@@ -50,8 +62,7 @@ class Zip_Payment_Model_Config
     const CHECKOUT_START_URL_ROUTE = 'zip_payment/checkout/start';
     const CHECKOUT_RESPONSE_URL_ROUTE = 'zip_payment/checkout/response';
     const CHECKOUT_FAILURE_URL_ROUTE = 'zip_payment/checkout/failure';
-    const CHECKOUT_SESSION_ID = 'zip_payment_checkout_id';
-    const CHECKOUT_REDIRECT_URL = 'zip_payment_redirect_url';
+    const CHECKOUT_SESSION_KEY = 'zip_payment_checkout';
 
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
     const CONFIG_CHECKOUT_ERROR_CONTACT_PATH = 'payment/zip_payment/checkout/error/contact';
@@ -63,6 +74,11 @@ class Zip_Payment_Model_Config
      * Charge
      */
     const PAYMENT_RECEIPT_NUMBER_KEY = 'receipt_number';
+
+    /**
+     * Admin Notification
+     */
+    const CONFIG_NOTIFICATION_ENABLED_PATH = 'payment/zip_payment/admin_notification/enabled';
 
     /**
      * Current store id
@@ -119,6 +135,7 @@ class Zip_Payment_Model_Config
         return $this;
     }
 
+
     /**
      * Payment method instance code getter
      *
@@ -128,6 +145,21 @@ class Zip_Payment_Model_Config
     {
         return $this->methodCode;
     }
+
+    /*************************** BASIC **********************************/
+
+    public function isActive() {
+        return $this->getFlag(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH);
+    }
+
+    public function getLogo() {
+        return $this->getValue(Zip_Payment_Model_Config::CONFIG_LOGO_PATH);
+    }
+
+    public function getTitle() {
+        return $this->getValue(Zip_Payment_Model_Config::CONFIG_TITLE_PATH);
+    }
+
 
     /*************************** DEBUG & LOG **********************************/
 
@@ -153,6 +185,9 @@ class Zip_Payment_Model_Config
         return $this->logLevel;
     }
 
+    /**
+     * is log been enabled
+     */
     public function isLogEnabled() {
 
         if($this->logEnabled === null) {
@@ -270,6 +305,8 @@ class Zip_Payment_Model_Config
 
     }
 
+    /*************************** PAYMENT **********************************/
+
     /**
      * Check whether method active in configuration
      *
@@ -285,10 +322,16 @@ class Zip_Payment_Model_Config
         return $this->getFlag("payment/{$methodCode}/active") && $this->isMerchantCountrySupported();
     }
 
-    
+    /**
+     * generate API configuration
+     * @param string $storeId Store ID
+     * @return object
+     */
     public function getApiConfiguration($storeId = null) {
 
-        if($this->apiConfig === null || ($storeId == null || $this->storeId !== $storeId)) {
+        // when api configuration is null or store id has been changed
+        // new api configuration need to be created
+        if($this->apiConfig === null || $this->storeId !== $storeId) {
 
             $this->setStoreId($storeId);
 

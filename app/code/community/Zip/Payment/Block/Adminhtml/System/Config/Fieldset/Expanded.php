@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Block class of expanded admin section
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Expanded extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
     /**

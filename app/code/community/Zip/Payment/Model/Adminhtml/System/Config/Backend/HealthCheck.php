@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Admin Model of health check
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage_Core_Model_Config_Data
 {
 
@@ -30,6 +38,9 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         $this->setValue($result);
     }
 
+    /**
+     * check multiple items and get health result
+     */
     protected function getHealthResult() {
 
         $sslEnabled = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
@@ -92,14 +103,17 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 $isAccessible = !empty(curl_getinfo($curl, CURLINFO_PRIMARY_IP)); 
                 $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);   
 
+                // if API certification invalid
                 if(!$sslVerified) {
                     $this->appendFailedItem(self::STATUS_WARNING, self::API_CERTIFICATE_INVALID_MESSAGE);
                 }
 
+                // if API server is inaccessible
                 if(!$isAccessible) {
                     $this->appendFailedItem(self::STATUS_ERROR, self::API_INACCESSIBLE_MESSAGE);
                 }
 
+                // if API credential is invalid
                 if($httpCode == '401') {
                     $this->appendFailedItem(self::STATUS_ERROR, self::API_CREDENTIAL_INVALID_MESSAGE);
                 }
@@ -120,6 +134,9 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         
     }
 
+    /**
+     * append failed item into health result
+     */
     protected function appendFailedItem($status, $label) {
 
         if(!is_null($status) && $this->result['overall_status'] < $status) {

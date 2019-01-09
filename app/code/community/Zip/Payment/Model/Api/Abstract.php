@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Abstract Model of Payment API                                                                                     
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
+
 use Zip\Model\OrderShipping;
 use Zip\Model\OrderItem;
 use Zip\Model\Address;
@@ -59,6 +67,9 @@ abstract class Zip_Payment_Model_Api_Abstract
         return $this->quote;
     }
 
+    /**
+     * log exception for api error
+     */
     protected function logException($e)
     {
         if ($e instanceof ApiException) {
@@ -85,15 +96,30 @@ abstract class Zip_Payment_Model_Api_Abstract
         return $metadata;
     }
 
+    /**
+     * get Idempotency Key
+     * 
+     * @return string
+     */
     protected function getIdempotencyKey()
     {
         return uniqid();
     }
 
+    /**
+     * get api response
+     * 
+     * @return object
+     */
     protected function getResponse() {
         return $this->response;
     }
 
+    /**
+     * capture order's shipping details
+     * 
+     * @return Zip\Model\OrderShipping
+     */
     protected function getOrderShipping() {
 
         $shippingDetail = new OrderShipping();
@@ -124,6 +150,11 @@ abstract class Zip_Payment_Model_Api_Abstract
         return $shippingDetail;
     }
 
+    /**
+     * capture order items
+     * 
+     * @return Zip\Model\OrderItem
+     */
     protected function getOrderItems() {
 
         $items = $this->getQuote()->getAllVisibleItems();
@@ -190,8 +221,6 @@ abstract class Zip_Payment_Model_Api_Abstract
          }
 
         return $orderItems;
-
-
     }
     
 }
