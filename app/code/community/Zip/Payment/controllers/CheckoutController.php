@@ -25,7 +25,9 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
 
         try {
             $result = $this->getRequest()->getParam(self::URL_PARAM_RESULT);
-            $checkoutId = $this->getHelper()->getCheckoutSessionId();
+            // get checkout id from checkout session or url parameter
+            // filter the result to remove additional GTM string
+            $checkoutId = preg_replace('/\?.+$/', '', ($this->getHelper()->getCheckoutSessionId() || $this->getRequest()->getParam(self::URL_PARAM_CHECKOUT_ID));
 
             $this->getLogger()->debug($this->getHelper()->__('Checkout Result: %s',  $result));
 

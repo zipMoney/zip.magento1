@@ -187,8 +187,14 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
     protected function saveOrder() {
 
         $onepage = $this->getHelper()->getOnepage();
-        $onepage->getQuote()->collectTotals();
-        $onepage->saveOrder();
+
+        if($onepage) {
+            $onepage->getQuote()->collectTotals();
+            $onepage->saveOrder();
+        }
+        else {
+
+        }
 
         $this->getLogger()->debug('Order has been saved successfully');
     }

@@ -69,7 +69,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                         self::CHECKOUT_REDIRECT_URL_KEY: $checkout[self::CHECKOUT_REDIRECT_URL_KEY]
                     });
                 } else {
-                    throw new Mage_Payment_Exception("Could not redirect to zip checkout page");
+                    throw new Mage_Payment_Exception("Could not create checkout");
                 }
 
                 $this->response = $checkout;
@@ -81,6 +81,44 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         }
         else {
             $this->getLogger()->debug("Checkout ID already exists:" . json_encode($checkoutId));
+        }
+
+        return $this;
+    }
+
+    /**
+     * retrieve a checkout
+     */
+    public function retrieve($checkoutId)
+    {
+
+        if (!empty($checkoutId)) {
+
+            try {
+
+                $this->getLogger()->debug("Retrieve checkout");
+
+                $checkout = $this->getApi()->checkoutsGet($checkoutId);
+
+                if (isset($checkout[self::CHECKOUT_ID_KEY]) && isset($checkout[self::CHECKOUT_REDIRECT_URL_KEY])) {
+                    // save checkout data into session
+                    $this->getHelper()->saveCheckoutSessionData({
+                        self::CHECKOUT_ID_KEY: $checkout[self::CHECKOUT_ID_KEY],
+                        self::CHECKOUT_REDIRECT_URL_KEY: $checkout[self::CHECKOUT_REDIRECT_URL_KEY]
+                    });
+                } else {
+                    throw new Mage_Payment_Exception("Could not retrieve a checkout");
+                }
+
+                $this->response = $checkout;
+
+            } catch (ApiException $e) {
+                $this->logException($e);
+                throw $e;
+            }
+        }
+        else {
+            $this->getLogger()->debug("Checkout ID does not exist");
         }
 
         return $this;
