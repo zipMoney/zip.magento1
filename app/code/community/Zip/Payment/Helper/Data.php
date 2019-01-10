@@ -12,6 +12,13 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
     /**
+     * is Zip Payment active
+     */
+    public function isActive() {
+        return Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH);
+    }
+
+    /**
      * Retrieves the extension version.
      *
      * @return string
@@ -25,7 +32,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * autoload API SDK from lib folder
      */
-    public function autoLoad() {
+    public function autoload() {
         require_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
     }
 

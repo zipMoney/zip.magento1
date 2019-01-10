@@ -64,10 +64,12 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 
                 if (isset($checkout[self::CHECKOUT_ID_KEY]) && isset($checkout[self::CHECKOUT_REDIRECT_URL_KEY])) {
                     // save checkout data into session
-                    $this->getHelper()->saveCheckoutSessionData({
-                        self::CHECKOUT_ID_KEY: $checkout[self::CHECKOUT_ID_KEY],
-                        self::CHECKOUT_REDIRECT_URL_KEY: $checkout[self::CHECKOUT_REDIRECT_URL_KEY]
-                    });
+                    $this->getHelper()->saveCheckoutSessionData(
+                        array(
+                            self::CHECKOUT_ID_KEY => $checkout[self::CHECKOUT_ID_KEY],
+                            self::CHECKOUT_REDIRECT_URL_KEY => $checkout[self::CHECKOUT_REDIRECT_URL_KEY]
+                        )
+                    );
                 } else {
                     throw new Mage_Payment_Exception("Could not create checkout");
                 }
@@ -100,12 +102,8 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 
                 $checkout = $this->getApi()->checkoutsGet($checkoutId);
 
-                if (isset($checkout[self::CHECKOUT_ID_KEY]) && isset($checkout[self::CHECKOUT_REDIRECT_URL_KEY])) {
-                    // save checkout data into session
-                    $this->getHelper()->saveCheckoutSessionData({
-                        self::CHECKOUT_ID_KEY: $checkout[self::CHECKOUT_ID_KEY],
-                        self::CHECKOUT_REDIRECT_URL_KEY: $checkout[self::CHECKOUT_REDIRECT_URL_KEY]
-                    });
+                if (isset($checkout[self::CHECKOUT_ID_KEY])) {
+                    
                 } else {
                     throw new Mage_Payment_Exception("Could not retrieve a checkout");
                 }
@@ -220,5 +218,12 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
      */
     public function getId() {
         return $this->getResponse() ? $this->getResponse()->getId() : null;
+    }
+
+    /**
+     * get cart reference
+     */
+    public function getCartReference() {
+        return $this->getResponse() ? $this->getResponse()->getOrder()->getReference() : null;
     }
 }

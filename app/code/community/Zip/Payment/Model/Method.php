@@ -64,7 +64,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     {
         if ($this->config == null) {
             $storeId = Mage::app()->getStore()->getStoreId();
-            $this->config = Mage::getModel('zip_payment/config', $storeId);
+            $this->config = Mage::getSingleton('zip_payment/config', $storeId);
             $this->config->setMethod($this->getCode());
         }
         return $this->config;

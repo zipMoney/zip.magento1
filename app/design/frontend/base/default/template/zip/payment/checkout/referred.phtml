@@ -1,7 +1,6 @@
 <?php
     $logo = $this->getLogo();
     $slogan = $this->getSlogan();
-    $title = $this->getTitle();
     $heading = $this->getHeadingText();
     $messageItems = $this->getMessageItems();
 ?>
@@ -26,7 +25,7 @@
             </ul>
         <?php endif; ?>
         <p>
-            <?= $this->getContactText() ?>
+            <?= $this->getContentHtml() ?>
         </p>             
     </div>
 

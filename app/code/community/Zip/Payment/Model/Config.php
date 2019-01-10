@@ -62,11 +62,12 @@ class Zip_Payment_Model_Config
     const CHECKOUT_START_URL_ROUTE = 'zip_payment/checkout/start';
     const CHECKOUT_RESPONSE_URL_ROUTE = 'zip_payment/checkout/response';
     const CHECKOUT_FAILURE_URL_ROUTE = 'zip_payment/checkout/failure';
+    const CHECKOUT_REFERRED_URL_ROUTE = 'zip_payment/checkout/referred';
     const CHECKOUT_SESSION_KEY = 'zip_payment_checkout';
 
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
     const CONFIG_CHECKOUT_ERROR_CONTACT_PATH = 'payment/zip_payment/checkout/error/contact';
-    const CONFIG_CHECKOUT_ERROR_PATH_PREFIX = 'payment/zip_payment/checkout/error/';
+    const CONFIG_CHECKOUT_REFERRED_GENERAL_MESSAGE_PATH = 'payment/zip_payment/checkout/referred/general';
 
     const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
 
@@ -147,10 +148,6 @@ class Zip_Payment_Model_Config
     }
 
     /*************************** BASIC **********************************/
-
-    public function isActive() {
-        return $this->getFlag(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH);
-    }
 
     public function getLogo() {
         return $this->getValue(Zip_Payment_Model_Config::CONFIG_LOGO_PATH);

@@ -1,15 +1,18 @@
 <?php
 
 /**
- * Block model of checkout failure
+ * Block model of checkout Referred
  * 
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
  **/
 
-class Zip_Payment_Block_Checkout_Failure extends Mage_Core_Block_Template
+class Zip_Payment_Block_Checkout_Referred extends Mage_Core_Block_Template
 {  
+    const CONFIG_REFERRED_TITLE_PATH = 'payment/zip_payment/checkout/referred/title';
+    const CONFIG_REFERRED_HEADING_PATH = 'payment/zip_payment/checkout/referred/heading';
+    const CONFIG_REFERRED_CONTENT_PATH = 'payment/zip_payment/checkout/referred/content';
 
     /**
      * @var Zip_Payment_Model_Config
@@ -47,7 +50,7 @@ class Zip_Payment_Block_Checkout_Failure extends Mage_Core_Block_Template
 
 
     /**
-     * get Zip payment logo
+     * Get Zip payment logo
      * @return string
      */
     public function getLogo() {
@@ -61,27 +64,8 @@ class Zip_Payment_Block_Checkout_Failure extends Mage_Core_Block_Template
     public function getSlogan() {
         return $this->getConfig()->getTitle();
     }
+    
 
-    /**
-     * get zip payment title
-     * @return string
-     */
-    public function getTitle() {
-        return $this->getConfig()->getTitle();
-    }
-
-    /**
-     * get heading text
-     * @return string
-     */
-    public function getHeadingText()
-    {
-        if(!empty($this->messageItems)) {
-            return (string) $this->messageItems[0]->getText();
-        }
-
-        return $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH));
-    }
 
     /**
      * retrieve all message items
@@ -101,10 +85,19 @@ class Zip_Payment_Block_Checkout_Failure extends Mage_Core_Block_Template
     }
 
     /**
-     * get contact text
+     * get heading text
+     * @return string
      */
-    public function getContactText()
+    public function getHeadingText()
     {
-        return $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ERROR_CONTACT_PATH));
+        return $this->getHelper()->__($this->getConfig()->getValue(self::CONFIG_REFERRED_HEADING_PATH));
+    }
+
+    /**
+     * get content
+     */
+    public function getContentHtml()
+    {
+        return $this->getHelper()->__($this->getConfig()->getValue(self::CONFIG_REFERRED_CONTENT_PATH));
     }
 }

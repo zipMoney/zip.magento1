@@ -25,18 +25,29 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
 
         try {
             $result = $this->getRequest()->getParam(self::URL_PARAM_RESULT);
-            // get checkout id from checkout session or url parameter
-            // filter the result to remove additional GTM string
-            $checkoutId = preg_replace('/\?.+$/', '', ($this->getHelper()->getCheckoutSessionId() || $this->getRequest()->getParam(self::URL_PARAM_CHECKOUT_ID));
+            $this->getLogger()->debug($this->getHelper()->__('Checkout Result: %s', $result));
 
-            $this->getLogger()->debug($this->getHelper()->__('Checkout Result: %s',  $result));
+            $checkoutId = $this->getHelper()->getCheckoutSessionId();
 
-            if (empty($checkoutId)) {
-                Mage::throwException($this->getHelper()->__('The checkoutId does not exist'));
+            if(empty($checkoutId)) {
+
+                // get checkout id from checkout url parameter
+                // filter the result to remove additional GTM string
+                $checkoutId = preg_replace('/\?.+$/', '', $this->getRequest()->getParam(self::URL_PARAM_CHECKOUT_ID) ?: '');
+
+                if (empty($checkoutId)) {
+                    Mage::throwException($this->getHelper()->__('The checkoutId does not exist'));
+                }
+
+                $response = $this->processResponseResult($result, $checkoutId);
+            }
+            else {
+
+                $response = $this->processResponseResult($result);
+                $this->getHelper()->unsetCheckoutSessionData();
+
             }
 
-            $response = $this->processResponseResult($result);
-            $this->getHelper()->unsetCheckoutSessionData();
 
         } catch (Exception $e) {
             $errorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH));
@@ -88,45 +99,39 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function failureAction() {
         
-        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - failureAction'));
+        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - failure action'));
 
         try {
 
             $this->loadLayout();
-
-            $breadcrumbs = $this->getLayout()->getBlock('breadcrumbs');
-
-            if($breadcrumbs) {
-
-                $breadcrumbs->addCrumb('home', array(
-                    'label' => $this->__('Home'),
-                    'title' => $this->__('Home'),
-                    'link'  => Mage::getBaseUrl()
-                ));
-
-                $isLandingPageEnabled = Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
-
-                if($isLandingPageEnabled) {
-                    $breadcrumbs->addCrumb('zip_payment', array(
-                        'label' => $this->__('Zip Payment'),
-                        'title' => $this->__('Zip Payment'),
-                        'link'  => $this->getHelper()->getUrl(Zip_Payment_Model_Config::LANDING_PAGE_URL_ROUTE)
-                    ));
-                }
-
-                $breadcrumbs->addCrumb('zip_payment_checkout_error', array(
-                    'label' => $this->__('Checkout Error'),
-                    'title' => $this->__('Checkout Error')
-                ));
-
-            }
-
+            $this->createBreadCrumbs('zip_payment_checkout_failure', 'Checkout Failure');
             $this->renderLayout();
             $this->getLogger()->debug($this->getHelper()->__('Successfully redirect to the failure page.'));
 
         } catch (Exception $e) {
             $this->getLogger()->error(json_encode($this->getRequest()->getParams()));
             Mage::getSingleton('checkout/session')->addError($this->getHelper()->__('An error occurred during redirecting to failure page.'));
+        }
+
+    }
+
+    /**
+     * Action to handle checkout errors
+     */
+    public function referredAction() {
+        
+        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - referred action'));
+
+        try {
+
+            $this->loadLayout();
+            $this->createBreadCrumbs('zip_payment_checkout_referred', 'Checkout Referred');
+            $this->renderLayout();
+            $this->getLogger()->debug($this->getHelper()->__('Successfully redirect to the referred page.'));
+
+        } catch (Exception $e) {
+            $this->getLogger()->error(json_encode($this->getRequest()->getParams()));
+            Mage::getSingleton('checkout/session')->addError($this->getHelper()->__('An error occurred during redirecting to referred page.'));
         }
 
     }

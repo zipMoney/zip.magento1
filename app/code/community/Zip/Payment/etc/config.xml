@@ -108,6 +108,7 @@
                 <payment_action>authorize_capture</payment_action>
                 <order_status>processing</order_status>
                 <display_mode>redirect</display_mode>
+                <referred_mode>1</referred_mode>
                 <sort_order>1</sort_order>
                 <country_currency>
                     <allowspecific>1</allowspecific>
@@ -172,8 +173,11 @@
                     <error>
                         <general>Something went wrong. Please try to checkout out again</general>
                         <contact><![CDATA[Please contact the merchant or visit <a href='https://help.zipmoney.com.au/hc/en-us/requests/new' target='_blank'>Zip Help Center</a> for any enquiries]]></contact>
-                        <referred>Your application is currently under review by Zip and will be processed very shortly. You can contact the customer care at customercare@zipmoney.com.au for any enquiries.</referred>
                     </error>
+                    <referred>
+                        <heading>Order Placed Successfully</heading>
+                        <content><![CDATA[<p>Congratulations! You have successfully placed your order, pending approval of your Zip Money application.</p><p>You will recevie an email with instructions shortly on whether your application has been approved or not. If approved you will be able to complete your purchase following the link in the email.</p>]]></content>
+                    </referred>
                 </checkout>
                 <country_currency>
                     <supported_countries>AU</supported_countries>
