@@ -102,6 +102,20 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         }
     }
 
+    /**
+     * get full action name for current page
+     */
+    public function getPageIdentifier() {
+        return Mage::app()->getFrontController()->getAction()->getFullActionName();
+    }
+
+
+    /**
+     * is currently using one page checkout
+     */
+    public function isOnepageCheckout() {
+        return $this->getPageIdentifier() == 'checkout_onepage_index';
+    }
 
 
     /******************************************* SESSION ************************************************* */

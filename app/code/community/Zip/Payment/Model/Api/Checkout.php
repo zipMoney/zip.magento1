@@ -8,20 +8,20 @@
  *
  **/
 
-use Zip\Model\CreateCheckoutRequest;
-use Zip\Api\CheckoutApi;
-use Zip\Model\CheckoutOrder;
-use Zip\Model\Shopper;
-use Zip\Model\Address;
-use Zip\Model\CheckoutConfiguration;
-use Zip\ApiException;
+use \Zip\Model\CreateCheckoutRequest;
+use \Zip\Api\CheckoutApi;
+use \Zip\Model\CheckoutOrder;
+use \Zip\Model\Shopper;
+use \Zip\Model\Address;
+use \Zip\Model\CheckoutConfiguration;
+use \Zip\ApiException;
 
 class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 {
 
     const CHECKOUT_TYPE = 'standard';
     const CHECKOUT_ID_KEY = 'id';
-    const CHECKOUT_REDIRECT_URL_KEY = 'url';
+    const CHECKOUT_REDIRECT_URL_KEY = 'uri';
 
     const RESULT_APPROVED = 'approved';
     const RESULT_DECLINED = 'declined';

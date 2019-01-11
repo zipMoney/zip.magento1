@@ -172,8 +172,11 @@
                     <loader_image>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
                     <error>
                         <general>Something went wrong. Please try to checkout out again</general>
-                        <contact><![CDATA[Please contact the merchant or visit <a href='https://help.zipmoney.com.au/hc/en-us/requests/new' target='_blank'>Zip Help Center</a> for any enquiries]]></contact>
                     </error>
+                    <failure>
+                        <heading>Something went wrong. Please try to checkout out again</heading>
+                        <content><![CDATA[Please contact the merchant or visit <a href='https://help.zipmoney.com.au/hc/en-us/requests/new' target='_blank'>Zip Help Center</a> for any enquiries]]></content>
+                    </failure>
                     <referred>
                         <heading>Order Placed Successfully</heading>
                         <content><![CDATA[<p>Congratulations! You have successfully placed your order, pending approval of your Zip Money application.</p><p>You will recevie an email with instructions shortly on whether your application has been approved or not. If approved you will be able to complete your purchase following the link in the email.</p>]]></content>

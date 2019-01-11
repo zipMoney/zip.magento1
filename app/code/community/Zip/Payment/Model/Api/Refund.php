@@ -8,9 +8,9 @@
  *
  **/
 
-use Zip\Model\CreateRefundRequest;
-use Zip\Api\RefundApi;
-use Zip\ApiException;
+use \Zip\Model\CreateRefundRequest;
+use \Zip\Api\RefundApi;
+use \Zip\ApiException;
 
 class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract 
 {

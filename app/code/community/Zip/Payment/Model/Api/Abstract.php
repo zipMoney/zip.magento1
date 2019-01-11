@@ -8,11 +8,11 @@
  *
  **/
 
-use Zip\Model\OrderShipping;
-use Zip\Model\OrderItem;
-use Zip\Model\Address;
-use Zip\Model\Metadata;
-use Zip\ApiException;
+use \Zip\Model\OrderShipping;
+use \Zip\Model\OrderItem;
+use \Zip\Model\Address;
+use \Zip\Model\Metadata;
+use \Zip\ApiException;
 
 abstract class Zip_Payment_Model_Api_Abstract
 {

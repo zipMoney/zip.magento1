@@ -6,7 +6,7 @@ spl_autoload_register(function($class) {
     $prefix = 'Zip\\';
 
     // base directory for the namespace prefix
-    $baseDir = __DIR__ . '/src/';
+    $baseDir = __DIR__ . '/';
 
     // does the class use the namespace prefix?
     $len = strlen($prefix);

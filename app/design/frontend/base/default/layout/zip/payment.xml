@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
 
+    <!-- 
+        Zip Payment Pages 
+    -->
+
+    <!-- Landing page -->
     <zip_payment_index_index>
 
         <label>Zip Payment - Landing Page</label>
@@ -25,6 +30,7 @@
         </reference>
     </zip_payment_index_index>
 
+    <!-- Failure page -->
     <zip_payment_checkout_failure>
 
         <label>Zip Payment - Checkout - Failure Page</label>
@@ -42,11 +48,12 @@
         </reference>
 
         <reference name="content">
-            <block type="zip_payment/checkout_failure" name="zip.payment.checkout.failure" template="zip/payment/checkout/failure.phtml"/>
+            <block type="zip_payment/checkout_failure" name="zip.payment.checkout.failure" template="zip/payment/checkout/page.phtml"/>
         </reference>
 
     </zip_payment_checkout_failure>
 
+    <!-- Referred page -->
     <zip_payment_checkout_referred>
 
         <label>Zip Payment - Checkout - Referred Page</label>
@@ -64,11 +71,16 @@
         </reference>
 
         <reference name="content">
-            <block type="zip_payment/checkout_referred" name="zip.payment.checkout.referred" template="zip/payment/checkout/referred.phtml"/>
+            <block type="zip_payment/checkout_referred" name="zip.payment.checkout.referred" template="zip/payment/checkout/page.phtml"/>
         </reference>
 
     </zip_payment_checkout_referred>
 
+    <!-- 
+        Zip Payment Widgets 
+    -->
+
+    <!-- Home page -->
     <cms_index_index>
 
         <reference name="head">
@@ -85,6 +97,7 @@
 
     </cms_index_index>
 
+    <!-- Product page -->
     <catalog_product_view>
 
         <reference name="head">
@@ -109,6 +122,7 @@
   
     </catalog_product_view>
 
+    <!-- Category page -->
     <catalog_category_default>
 
         <reference name="head">
@@ -141,6 +155,7 @@
 
     </catalog_category_layered>
 
+    <!-- Cart page -->
     <checkout_cart_index>	
 
         <reference name="head">
@@ -162,6 +177,11 @@
 
     </checkout_cart_index>
 
+    <!-- 
+        checkout pages 
+    -->
+
+    <!-- One Page Checkout -->
     <checkout_onepage_index>
 
         <reference name="head">
@@ -176,24 +196,24 @@
             <block type="zip_payment/checkout" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
         </reference>
 
-
     </checkout_onepage_index>
+    <!-- End One Page Checkout -->
 
+    <!-- Idev Onestep Checkout -->
     <onestepcheckout_index_index>
-
         <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>   
+            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>
         </reference>
 
         <reference name="content">
             <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
         </reference>
 
-        <reference name="before_body_end"> 
+        <reference name="before_body_end">
             <block type="zip_payment/checkout" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
         </reference>
-
     </onestepcheckout_index_index>
+    <!-- End Idev Onestep Checkout -->
 
 
 </layout> 

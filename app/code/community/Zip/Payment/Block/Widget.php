@@ -40,6 +40,16 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     }
 
     /**
+     * Retrieve model helper
+     *
+     * @return Zip_Payment_Helper_Data
+     */
+    public function getHelper()
+    {
+        return Mage::helper('zip_payment');
+    }
+
+    /**
      * get merchant id from public key
      */
     public function getMerchantId() {
@@ -67,7 +77,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     protected function isActive($widgetType) 
     {
 
-        if(Mage::helper('zip_payment')->isActive() && $this->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
+        if($this->getHelper()->isActive() && $this->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
 
             $pageType = $this->getWidgetPageType();
    
@@ -113,14 +123,17 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
      */
     protected function getWidgetPageType()
     {
-        $pageIdentifier = Mage::app()->getFrontController()->getAction()->getFullActionName();
+        $pageIdentifier = $this->getHelper()->getPageIdentifier();
+
+        if(Zip_Payment_Model_Config::SUPPORTED_CHECKOUT_TYPES[$pageIdentifier]) {
+            return 'checkout';
+        }
 
         switch($pageIdentifier){
             case 'cms_index_index': return 'home';
             case 'catalog_product_view': return 'product'; 
             case 'catalog_category_view': return 'category'; 
             case 'checkout_cart_index': return 'cart';
-            case 'checkout_onepage_index': return 'checkout';
             case 'zip_payment_index_index': return 'landing';
         }
 

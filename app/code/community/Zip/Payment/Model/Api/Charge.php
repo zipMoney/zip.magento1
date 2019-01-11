@@ -8,12 +8,12 @@
  *
  **/
 
-use Zip\Model\CreateChargeRequest;
-use Zip\Model\CaptureChargeRequest;
-use Zip\Model\ChargeOrder;
-use Zip\Model\Authority;
-use Zip\Api\ChargeApi;
-use Zip\ApiException;
+use \Zip\Model\CreateChargeRequest;
+use \Zip\Model\CaptureChargeRequest;
+use \Zip\Model\ChargeOrder;
+use \Zip\Model\Authority;
+use \Zip\Api\ChargeApi;
+use \Zip\ApiException;
 
 class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract 
 {
@@ -92,7 +92,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
             $params = array(
                 'amount' => (float)$amount,
                 'is_partial_capture' => $isPartialCapture
-            )
+            );
             
             $captureChargeReq = new CaptureChargeRequest($params);
 

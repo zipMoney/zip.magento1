@@ -8,7 +8,7 @@
  *
  **/
 
-use Zip\ApiException;
+use \Zip\ApiException;
 
 class Zip_Payment_IndexController extends Mage_Core_Controller_Front_Action
 {   

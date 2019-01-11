@@ -19,8 +19,10 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
     public function responseAction()
     {
 
-        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - responseAction'));
         $errorMessage = '';
+        $response = array();
+
+        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - responseAction'));
         $this->getHelper()->getCheckoutSession()->getMessages(true);
 
         try {

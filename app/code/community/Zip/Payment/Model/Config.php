@@ -8,7 +8,7 @@
  *
  **/
 
-use Zip\Configuration;
+use \Zip\Configuration;
 
 class Zip_Payment_Model_Config
 {
@@ -66,10 +66,15 @@ class Zip_Payment_Model_Config
     const CHECKOUT_SESSION_KEY = 'zip_payment_checkout';
 
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
-    const CONFIG_CHECKOUT_ERROR_CONTACT_PATH = 'payment/zip_payment/checkout/error/contact';
-    const CONFIG_CHECKOUT_REFERRED_GENERAL_MESSAGE_PATH = 'payment/zip_payment/checkout/referred/general';
-
     const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
+    const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/custom_script';
+
+    const CHECKOUT_TYPE_ONEPAGE = 'one_page_checkout';
+    const SUPPORTED_CHECKOUT_TYPES = array(
+        'checkout_onepage_index' => self::CHECKOUT_TYPE_ONEPAGE,
+        'onestepcheckout_index_index' => 'idev_one_step_checkout'
+    );
+    
 
     /**
      * Charge
@@ -96,13 +101,16 @@ class Zip_Payment_Model_Config
 
     protected $apiConfig = null;
 
-    /**
-     * Set store id, if specified
-     */
-    public function __construct($storeId = null)
+    // constructor
+    public function __construct($options)
     {
-        if ($storeId == null) {
-            $storeId = Mage::app()->getStore()->getId();;
+        /**
+         * Set store id, if specified
+         */
+        if (isset($options['store_id'])) {
+            $storeId = $options['store_id'];
+        } else {
+            $storeId = Mage::app()->getStore()->getId();
         }
 
         $this->setStoreId($storeId);
@@ -332,7 +340,7 @@ class Zip_Payment_Model_Config
 
             $this->setStoreId($storeId);
 
-            Mage::helper('zip_payment')->autoLoad();
+            Mage::helper('zip_payment')->autoload();
 
             $apiConfig = Configuration::getDefaultConfiguration();
             $magentoVersion = Mage::getVersion();
@@ -342,7 +350,7 @@ class Zip_Payment_Model_Config
             ->setApiKey('Authorization', Mage::helper('core')->decrypt($this->getValue(self::CONFIG_PRIVATE_KEY_PATH)))
             ->setEnvironment($this->getValue(self::CONFIG_ENVIRONMENT_PATH))
             ->setApiKeyPrefix('Authorization', 'Bearer')
-            ->setPlatform("Magento/{$magentoVersion} Zip_Payment/{$extensionVersio}")
+            ->setPlatform("Magento/{$magentoVersion} Zip_Payment/{$extensionVersion}")
             ->setCurlTimeout((int)$this->getValue(self::CONFIG_API_TIMEOUT_PATH));
 
             if($this->isDebugEnabled() && $this->isLogEnabled() && $this->getLogLevel() >= Zend_Log::DEBUG) {

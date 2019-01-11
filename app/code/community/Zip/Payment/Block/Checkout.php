@@ -14,7 +14,7 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
     const CONFIG_DISPLAY_MODE_PATH = 'payment/zip_payment/display_mode';
     const CONFIG_CHECKOUT_LOADER_IMAGE_PATH = 'payment/zip_payment/checkout/loader_image';
     const CHECKOUT_JS_PATH = '/zip/payment/checkout.js';
-    const ONE_PAGE_CHECKOUT_JS_PATH = '/zip/payment/opcheckout.js';
+    const ONEPAGE_CHECKOUT_JS_PATH = '/zip/payment/opcheckout.js';
 
     /**
      * @var Zip_Payment_Model_Config
@@ -100,18 +100,29 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
     }
 
     /**
-     * get url of checkout js
+     * get a list of script urls for supporting specific kind of checkout
      */
-    public function getCheckoutJs() {
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS) . self::CHECKOUT_JS_PATH;
+    public function getCheckoutScriptList() {
+
+        $scriptBaseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS);
+        $baseScript = $scriptBaseUrl . self::CHECKOUT_JS_PATH;
+        $scriptList = array($baseScript);
+
+        $pageIdentifier = $this->getHelper()->getPageIdentifier();
+
+        if($this->getHelper()->isOnepageCheckout()){
+            array_push($scriptList, $scriptBaseUrl . self::ONEPAGE_CHECKOUT_JS_PATH);
+        }
+        else {
+            $customScript = $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH);
+            if($customScript) {
+                array_push($scriptList, $customScript);
+            }   
+        }
+
+        return $scriptList;
     }
 
-    /**
-     * get url of one page checkout js
-     */
-    public function getOnePageCheckoutJs() {
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS) . self::ONE_PAGE_CHECKOUT_JS_PATH;
-    }
 
     /**
      * Whether to use redirect or not.
