@@ -39,7 +39,15 @@
                         <method>setResponseAfterSavePayment</method>
                     </zip_payment_checkout_onepage_savepayment>
                 </observers>
-            </controller_action_postdispatch_checkout_onepage_savepayment> 
+            </controller_action_postdispatch_checkout_onepage_savepayment>
+            <controller_action_layout_load_before>
+              <observers>
+                  <set_checkout_layout_handle>
+                      <class>zip_payment/observer</class>
+                      <method>setCheckoutLayoutHandle</method>
+                  </set_checkout_layout_handle>
+              </observers>
+          </controller_action_layout_load_before>
         </events>
     </global>
 
@@ -181,6 +189,14 @@
                         <heading>Order Placed Successfully</heading>
                         <content><![CDATA[<p>Congratulations! You have successfully placed your order, pending approval of your Zip Money application.</p><p>You will recevie an email with instructions shortly on whether your application has been approved or not. If approved you will be able to complete your purchase following the link in the email.</p>]]></content>
                     </referred>
+                    <onestepcheckouts>
+                        <onestepcheckout_index_index>1</onestepcheckout_index_index>
+                        <iwd_opc_index_index>1</iwd_opc_index_index>
+                        <opc_index_index>1</opc_index_index>
+                        <aitcheckout_checkout_index>1</aitcheckout_checkout_index>
+                        <aw_onestepcheckout_index_index>1</aw_onestepcheckout_index_index>
+                        <gomage_checkout_onepage_index>1</gomage_checkout_onepage_index>
+                    </onestepcheckouts>
                 </checkout>
                 <country_currency>
                     <supported_countries>AU</supported_countries>

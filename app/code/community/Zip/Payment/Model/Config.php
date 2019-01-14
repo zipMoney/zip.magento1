@@ -68,13 +68,8 @@ class Zip_Payment_Model_Config
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
     const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
     const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/custom_script';
-
-    const CHECKOUT_TYPE_ONEPAGE = 'one_page_checkout';
-    const SUPPORTED_CHECKOUT_TYPES = array(
-        'checkout_onepage_index' => self::CHECKOUT_TYPE_ONEPAGE,
-        'onestepcheckout_index_index' => 'idev_one_step_checkout'
-    );
-    
+    const CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH = 'payment/zip_payment/checkout/onestepcheckouts';
+    const ONEPAGE_CHECKOUT_IDENTIFIER = 'checkout_onepage_index';
 
     /**
      * Charge

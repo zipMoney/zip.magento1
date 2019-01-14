@@ -29,6 +29,7 @@
             <block type="page/html" name="zip.payment.landing" template="zip/payment/index/landing.phtml"/>
         </reference>
     </zip_payment_index_index>
+    <!-- End Landing page -->
 
     <!-- Failure page -->
     <zip_payment_checkout_failure>
@@ -52,6 +53,7 @@
         </reference>
 
     </zip_payment_checkout_failure>
+    <!-- End Failure page -->
 
     <!-- Referred page -->
     <zip_payment_checkout_referred>
@@ -75,6 +77,7 @@
         </reference>
 
     </zip_payment_checkout_referred>
+    <!-- End Referred page -->
 
     <!-- 
         Zip Payment Widgets 
@@ -96,6 +99,7 @@
         </reference>
 
     </cms_index_index>
+    <!-- End Home page -->
 
     <!-- Product page -->
     <catalog_product_view>
@@ -121,6 +125,7 @@
         </reference>
   
     </catalog_product_view>
+    <!-- End Product page -->
 
     <!-- Category page -->
     <catalog_category_default>
@@ -154,6 +159,7 @@
         </reference>
 
     </catalog_category_layered>
+    <!-- End Category page -->
 
     <!-- Cart page -->
     <checkout_cart_index>	
@@ -176,14 +182,14 @@
         </reference>
 
     </checkout_cart_index>
+    <!-- End Cart page -->
 
     <!-- 
         checkout pages 
     -->
 
-    <!-- One Page Checkout -->
-    <checkout_onepage_index>
-
+    <!-- Layout handler for Onestep Checkout -->
+    <checkout_layout_hander>
         <reference name="head">
             <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>
         </reference>
@@ -195,25 +201,8 @@
         <reference name="before_body_end">
             <block type="zip_payment/checkout" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
         </reference>
-
-    </checkout_onepage_index>
-    <!-- End One Page Checkout -->
-
-    <!-- Idev Onestep Checkout -->
-    <onestepcheckout_index_index>
-        <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>
-        </reference>
-
-        <reference name="content">
-            <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
-        </reference>
-
-        <reference name="before_body_end">
-            <block type="zip_payment/checkout" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
-        </reference>
-    </onestepcheckout_index_index>
-    <!-- End Idev Onestep Checkout -->
+    </checkout_layout_hander>
+    <!-- End Layout handler for Onestep Checkout -->
 
 
 </layout> 

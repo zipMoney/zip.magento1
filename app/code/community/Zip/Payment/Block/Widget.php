@@ -125,7 +125,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     {
         $pageIdentifier = $this->getHelper()->getPageIdentifier();
 
-        if(Zip_Payment_Model_Config::SUPPORTED_CHECKOUT_TYPES[$pageIdentifier]) {
+        if($this->getHelper()->isOnepageCheckout() || $this->getHelper()->isOnestepCheckout()) {
             return 'checkout';
         }
 
