@@ -22,6 +22,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     const CHECKOUT_TYPE = 'standard';
     const CHECKOUT_ID_KEY = 'id';
     const CHECKOUT_REDIRECT_URL_KEY = 'uri';
+    const CHECKOUT_RESULT_KEY = 'result';
 
     const RESULT_APPROVED = 'approved';
     const RESULT_DECLINED = 'declined';
@@ -46,7 +47,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
      */
     public function create()
     {
-        $checkoutId = $this->getHelper()->getCheckoutSessionId();
+        $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
 
         if (empty($checkoutId)) {
 

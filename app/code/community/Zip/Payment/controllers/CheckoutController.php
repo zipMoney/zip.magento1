@@ -18,9 +18,9 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function responseAction()
     {
-
-        $errorMessage = '';
-        $response = array();
+        if(!$this->getHelper()->isActive()) {
+            return;
+        }
 
         $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - responseAction'));
         $this->getHelper()->getCheckoutSession()->getMessages(true);
@@ -29,8 +29,9 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $result = $this->getRequest()->getParam(self::URL_PARAM_RESULT);
             $this->getLogger()->debug($this->getHelper()->__('Checkout Result: %s', $result));
 
-            $checkoutId = $this->getHelper()->getCheckoutSessionId();
+            $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
 
+            // if checkout id can't be found in the checkout session
             if(empty($checkoutId)) {
 
                 // get checkout id from checkout url parameter
@@ -41,15 +42,14 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
                     Mage::throwException($this->getHelper()->__('The checkoutId does not exist'));
                 }
 
-                $response = $this->processResponseResult($result, $checkoutId);
+                $this->processResponseResult($result, $checkoutId);
             }
             else {
 
-                $response = $this->processResponseResult($result);
+                $this->processResponseResult($result);
                 $this->getHelper()->unsetCheckoutSessionData();
 
             }
-
 
         } catch (Exception $e) {
             $errorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH));
@@ -58,12 +58,6 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $this->getHelper()->getCheckoutSession()->addError($e->getMessage());
         }
 
-        if($this->getRequest()->isAjax()) {
-            $this->returnJsonResponse($response);
-        }
-        else {
-            $response['success'] ? $this->redirectToSuccess() : $this->redirectToCartOrError();
-        }
     }
 
     /**
@@ -75,16 +69,16 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             return;
         }
 
-        $checkoutId = Mage::helper('zip_payment')->getCheckoutSessionId();
-        $redirectUrl = Mage::helper('zip_payment')->getCheckoutSessionRedirectUrl();
+        $checkoutId = Mage::helper('zip_payment')->getCheckoutIdFromSession();
+        $redirectUrl = Mage::helper('zip_payment')->getCheckoutRedirectUrlFromSession();
 
         /**
          * re-generate checkout session data if there is any one empty
          */
         if(empty($checkoutId) || empty($redirectUrl)) {
             Mage::helper('zip_payment')->getCurrentPaymentMethod()->getCheckoutRedirectUrl();
-            $checkoutId = Mage::helper('zip_payment')->getCheckoutSessionId();
-            $redirectUrl = Mage::helper('zip_payment')->getCheckoutSessionRedirectUrl();
+            $checkoutId = Mage::helper('zip_payment')->getCheckoutIdFromSession();
+            $redirectUrl = Mage::helper('zip_payment')->getCheckoutRedirectUrlFromSession();
         }
 
         $response = array(
@@ -101,6 +95,10 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function failureAction() {
         
+        if(!$this->getHelper()->isActive()) {
+            return;
+        }
+
         $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - failure action'));
 
         try {
@@ -121,6 +119,10 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      * Action to handle checkout errors
      */
     public function referredAction() {
+
+        if(!$this->getHelper()->isActive()) {
+            return;
+        }
         
         $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - referred action'));
 

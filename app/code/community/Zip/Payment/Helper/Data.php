@@ -118,11 +118,18 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->getPageIdentifier() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER;
     }
 
-        /**
+    /**
      * checkout current page is onestep checkout
      */
     public function isOnestepCheckout() {
         return Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH . '/' . $this->getPageIdentifier());
+    }
+
+    /**
+     * check whether current checkout is referred
+     */
+    public function isCheckoutReferred() {
+        return $this->getCheckoutResultFromSession() == Zip_Payment_Model_Api_Checkout::RESULT_REFERRED;
     }
 
 
@@ -132,34 +139,49 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      * save checkout session data
      */
     public function saveCheckoutSessionData($data) {
-        $this->getCheckoutSession()->setData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY, $data);
-    }
+        $sessionData = $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
 
-    /**
-     * get checkout session id
-     * 
-     * @return string
-     */
-    public function getCheckoutSessionId() {
-        $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY] : null;
-    }
-
-    /**
-     * get checkout session redirect url
-     * 
-     * @return string
-     */
-    public function getCheckoutSessionRedirectUrl() {
-        $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY] : null;
+        if($sessionData) {
+            $data = array_merge($sessionData, $data);
+        }
+        $this->getCheckoutSession()->setData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY,  $data);
     }
 
     /**
      * get checkout session data
      */
     public function getCheckoutSessionData() {
-       return  $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
+       return $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
+    }
+
+     /**
+     * get checkout id from checkout session
+     * 
+     * @return string
+     */
+    public function getCheckoutIdFromSession() {
+        $sessionData = $this->getCheckoutSessionData();
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY] : null;
+    }
+
+    /**
+     * get checkout redirect url from checkout session
+     * 
+     * @return string
+     */
+    public function getCheckoutRedirectUrlFromSession() {
+        $sessionData = $this->getCheckoutSessionData();
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY] : null;
+    }
+
+    /**
+     * get checkout result from checkout session
+     * 
+     * @return string
+     */
+    public function getCheckoutResultFromSession() {
+        $sessionData = $this->getCheckoutSessionData();
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_RESULT_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_RESULT_KEY] : null;
     }
 
     /**

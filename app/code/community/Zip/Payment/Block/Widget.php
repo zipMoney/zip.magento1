@@ -44,7 +44,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
      *
      * @return Zip_Payment_Helper_Data
      */
-    public function getHelper()
+    public function getModelHelper()
     {
         return Mage::helper('zip_payment');
     }
@@ -76,8 +76,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
      */
     protected function isActive($widgetType) 
     {
-
-        if($this->getHelper()->isActive() && $this->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
+        if($this->getModelHelper()->isActive() && $this->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
 
             $pageType = $this->getWidgetPageType();
    
@@ -86,7 +85,14 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
                 if(in_array($widgetType, self::ROOT_WIDGET_TYPES)) {
 
                     foreach(self::SUPPORTED_WIDGET_TYPES as $supportedWidgetType) {
-                        $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $supportedWidgetType;
+                        
+                        if($pageType == 'landing') {
+                            $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/enabled';
+                        }
+                        else {
+                            $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $supportedWidgetType;
+                        }
+                        
                         $enabled = $this->getConfig()->getValue($path);
                         
                         /**
@@ -123,9 +129,9 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
      */
     protected function getWidgetPageType()
     {
-        $pageIdentifier = $this->getHelper()->getPageIdentifier();
+        $pageIdentifier = $this->getModelHelper()->getPageIdentifier();
 
-        if($this->getHelper()->isOnepageCheckout() || $this->getHelper()->isOnestepCheckout()) {
+        if($this->getModelHelper()->isOnepageCheckout() || $this->getModelHelper()->isOnestepCheckout()) {
             return 'checkout';
         }
 
@@ -134,7 +140,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
             case 'catalog_product_view': return 'product'; 
             case 'catalog_category_view': return 'category'; 
             case 'checkout_cart_index': return 'cart';
-            case 'zip_payment_index_index': return 'landing';
+            case 'cms_page_view': return 'landing';
         }
 
         return null;

@@ -203,7 +203,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
 
         $authority
         ->setType($type)
-        ->setValue($this->getHelper()->getCheckoutSessionId());
+        ->setValue($this->getHelper()->getCheckoutIdFromSession());
 
         return $authority;
     }

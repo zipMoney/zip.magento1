@@ -53,8 +53,9 @@ class Zip_Payment_Model_Config
     /**
      * landing page
      */
-    const CONFIG_LANDING_PAGE_ENABLED_PATH = 'payment/zip_payment/pages/landing_page';
-    const LANDING_PAGE_URL_ROUTE = 'zip_payment';
+    const CONFIG_LANDING_PAGE_ENABLED_PATH = 'payment/zip_payment/widgets/landing_page/enabled';
+    const LANDING_PAGE_URL_IDENTIFIER = 'about_zip_payment';
+    const LANDING_PAGE_URL_ROUTE = 'about_zip_payment';
 
     /**
      * checkout
@@ -63,13 +64,18 @@ class Zip_Payment_Model_Config
     const CHECKOUT_RESPONSE_URL_ROUTE = 'zip_payment/checkout/response';
     const CHECKOUT_FAILURE_URL_ROUTE = 'zip_payment/checkout/failure';
     const CHECKOUT_REFERRED_URL_ROUTE = 'zip_payment/checkout/referred';
+    const CHECKOUT_SUCCESS_URL_ROUTE = 'checkout/onepage/success';
+    const CHECKOUT_CART_URL_ROUTE = 'checkout/cart';
+
     const CHECKOUT_SESSION_KEY = 'zip_payment_checkout';
+    const ONEPAGE_CHECKOUT_IDENTIFIER = 'checkout_onepage_index';
 
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
     const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
-    const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/custom_script';
+    const CONFIG_CEHCKOUT_DISPLAY_MODE_PATH = 'payment/zip_payment/checkout/display_mode';
+    const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/checkout/custom_script';
     const CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH = 'payment/zip_payment/checkout/onestepcheckouts';
-    const ONEPAGE_CHECKOUT_IDENTIFIER = 'checkout_onepage_index';
+    const CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH = 'payment/zip_payment/checkout/referred_order_creation';
 
     /**
      * Charge

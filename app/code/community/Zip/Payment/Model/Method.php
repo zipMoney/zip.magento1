@@ -25,13 +25,14 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     protected $config = null;
     protected $logger = null;
     protected $quote = null;
+    protected $paymentAction = null;
     
     /**
      * Payment Method features
      * @var bool
      */
     protected $_isGateway                   = false;
-    protected $_canOrder                    = false;
+    protected $_canOrder                    = true;
     protected $_canAuthorize                = true;
     protected $_canCapture                  = true;
     protected $_canCapturePartial           = false;
@@ -164,10 +165,27 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function getConfigData($field, $storeId = null)
     {
+        // set order status as pending for referred checkout
+        if($this->_getHelper()->isCheckoutReferred() && $field == 'order_status') {
+            return Mage::getSingleton('sales/order_config')->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_NEW);
+        }
         return $this->getConfig()->getValue("payment/{$this->getCode()}/{$field}");
     }
 
-    
+    /**
+     * Get config payment action url
+     * change payment action to order for referred checkout
+     *
+     * @return string
+     */
+    public function getConfigPaymentAction()
+    {
+        $this->paymentAction || $this->paymentAction = $this->_getHelper()->isCheckoutReferred() ? self::ACTION_ORDER : parent::getConfigPaymentAction();
+
+        $this->getLogger()->debug($this->_getHelper()->__('Zip_Payment_Model_Method - get Configuration action: ' . $this->paymentAction));
+
+        return $this->paymentAction;
+    }
 
     /**
      * Create Checkout and get Checkout redirect URL
@@ -208,7 +226,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         $quote = $this->getQuote();
 
         if (!$quote->hasItems() || $quote->getHasError()) {
-            Mage::throwException($this->getHelper()->__('Unable to initialize the Checkout.'));
+            Mage::throwException($this->_getHelper()->__('Unable to initialize the Checkout.'));
         }
 
         try {
@@ -224,6 +242,25 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         return null;
+    }
+
+    /**
+     * Order payment abstract method
+     *
+     * @param Varien_Object $payment
+     * @param float $amount
+     *
+     * @return Mage_Payment_Model_Abstract
+     */
+    public function order(Varien_Object $payment, $amount)
+    {
+        $this->getLogger()->debug($this->_getHelper()->__('Zip_Payment_Model_Method - order'));
+
+        if (!$this->canOrder()) {
+            Mage::throwException(Mage::helper('payment')->__('Order action is not available.'));
+        }
+        
+        return $this;
     }
 
 
@@ -245,7 +282,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             $order = $payment->getOrder();
             $charge = Mage::getModel('zip_payment/api_charge', $this->getApiConfig());
 
-            if($this->_getHelper()->getCheckoutSessionId()) {
+            if($this->_getHelper()->getCheckoutIdFromSession()) {
                 // Create Charge
                 $charge = $charge->create($order, $this->getConfigPaymentAction());
             }
@@ -286,6 +323,11 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             Mage::throwException($this->_getHelper()->__('Capture action is not available.'));
         }
 
+        if ($this->_getHelper()->getCheckoutResultFromSession() !== Zip_Payment_Model_Api_Checkout::RESULT_APPROVED) {
+            $this->getLogger()->debug($this->_getHelper()->__("Checkout has not been approved, payment will not be processing."));
+            return;
+        }
+
         $authorizationTransaction = $payment->getAuthorizationTransaction();
         $authId = null;
 
@@ -316,7 +358,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             } 
             else {
 
-                $checkoutId = $this->_getHelper()->getCheckoutSessionId();
+                $checkoutId = $this->_getHelper()->getCheckoutIdFromSession();
 
                 if($checkoutId) {
 

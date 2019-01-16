@@ -13,9 +13,6 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
     const URL_PARAM_RESULT = 'result';
     const URL_PARAM_CHECKOUT_ID = 'checkoutId';
 
-    const SUCCESS_URL_ROUTE = 'checkout/onepage/success';
-    const CART_URL_ROUTE = 'checkout/cart';
-
     const GENERAL_CHECKOUT_ERROR = 'Something wrong while processing checkout';
 
     /**
@@ -81,69 +78,105 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
     }
 
     /**
-     * Redirects to the cart or error page.
-     * @param $result
+     * process checkout's response result 
+     * @param string $checkoutId Checkout ID From Url or other external place which need to validate
+     * @param object $result response result
      */
-    protected function redirectToCartOrError()
-    {
-        if ($this->getQuote()->getIsActive()) {
-            $this->_redirect(self::CART_URL_ROUTE);
-        } else {
-            $this->_redirect(Zip_Payment_Model_Config::CHECKOUT_FAILURE_URL_ROUTE);
+    protected function processResponseResult($result, $checkoutId = null) {
+
+        $response = array(
+            'success' => false,
+            'error_message' => null,
+            'redirect_url' => null
+        );
+
+        // save result into checkout session
+        $this->getHelper()->saveCheckoutSessionData(array(
+            Zip_Payment_Model_Api_Checkout::CHECKOUT_RESULT_KEY => $result
+        ));
+
+        switch($result) {
+            case Zip_Payment_Model_Api_Checkout::RESULT_APPROVED: 
+                $response['success'] = $this->handleApprovedCheckout();
+                $response['redirect_url'] = Mage::getUrl(Zip_Payment_Model_Config::CHECKOUT_SUCCESS_URL_ROUTE, array('_secure' => true));
+            break;
+            case Zip_Payment_Model_Api_Checkout::RESULT_REFERRED:
+                $response['success'] = $this->handleReferredCheckout();
+                $response['redirect_url'] = Mage::getUrl(Zip_Payment_Model_Config::CHECKOUT_REFERRED_URL_ROUTE, array('_secure' => true));
+            break;
+            default:
+                $response['error_message'] = $this->generateMessage($result);
+                // Redirects to the cart or error page.
+                $response['redirect_url'] = $this->getQuote()->getIsActive() ? Mage::getUrl(Zip_Payment_Model_Config::CHECKOUT_CART_URL_ROUTE, array('_secure' => true)) : Mage::getUrl(Zip_Payment_Model_Config::CHECKOUT_FAILURE_URL_ROUTE, array('_secure' => true));
+            break;
         }
-    }
 
-    /**
-     * Redirects to the success page or referred page
-     */
-    protected function redirectToSuccess()
-    {
-        $this->getHelper()->emptyShoppingCart();
-
-        if($result == Zip_Payment_Model_Api_Checkout::RESULT_REFERRED) {
-            $this->_redirect(Zip_Payment_Model_Config::CHECKOUT_REFERRED_URL_ROUTE, array('_secure' => true));
+        // if it's an ajax call
+        if($this->getRequest()->isAjax()) {
+            $this->returnJsonResponse($response);
         }
         else {
-            $this->_redirect(self::SUCCESS_URL_ROUTE, array('_secure' => true));
+            $this->_redirect($response['redirect_url']);
         }
-
     }
 
     /**
-     * Send Ajax redirect response
-     *
-     * @return Mage_Checkout_OnepageController
+     * handle approved checkout
      */
-    protected function ajaxRedirectResponse()
-    {
-        $this->getResponse()
-            ->setHeader('HTTP/1.1', '403 Session Expired')
-            ->setHeader('Login-Required', 'true')
-            ->sendResponse();
-        return $this;
+    protected function handleApprovedCheckout() {
+
+        try {
+
+            $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - handle approved checkout'));
+
+            // if a checkout id has been received
+            if($checkoutId) {
+
+                $apiConfig = $this->getConfig()->getApiConfiguration();
+                // Retrieve Checkout using external checkout id
+                $checkout = Mage::getModel('zip_payment/api_checkout', $apiConfig)
+                ->retrieve($checkoutId);
+                $orderId = $checkout->getCartReference();
+
+                $quote = Mage::getSingleton('sales/quote')->load($orderId, 'reserved_order_id');
+
+                if ($quote->getId()) {
+                    // load quote into onepage session
+                    $quote->setIsActive(true);
+                }
+            }
+
+            $this->placeOrder();
+            return true;
+            
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        return false;
     }
 
     /**
-     * Validate ajax request and redirect on failure
-     *
-     * @return bool
+     * handle referred checkout
      */
-    protected function expireAjax()
-    {
-        if (!$this->getOnepage()->getQuote()->hasItems()
-            || $this->getOnepage()->getQuote()->getHasError()
-            || $this->getOnepage()->getQuote()->getIsMultiShipping()
-        ) {
-            $this->ajaxRedirectResponse();
+    protected function handleReferredCheckout() {
+
+        try {
+
+            $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - handle referred checkout'));
+
+            $createOrder = $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH);
+
+            if($createOrder) {
+                $this->placeOrder();
+            }
+
             return true;
+
+        } catch (Exception $e) {
+            throw $e;
         }
-        $action = strtolower($this->getRequest()->getActionName());
-        if (Mage::getSingleton('checkout/session')->getCartWasUpdated(true)
-            && !in_array($action, array('index', 'progress'))
-        ) {
-            $this->ajaxRedirectResponse();
-            return true;
-        }
+
         return false;
     }
 
@@ -161,61 +194,9 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
 
 
     /**
-     * process checkout's response result 
-     * @param string $externalCheckoutId Checkout ID From Url or other external place
-     * @param object $result response result
-     */
-    protected function processResponseResult($result, $externalCheckoutId = null) {
-
-        $response = array(
-            'success' => false,
-            'error_message' => null
-        );
-
-        // place order when result is approved
-        if($result == Zip_Payment_Model_Api_Checkout::RESULT_APPROVED) {
-
-            try {
-
-                if($externalCheckoutId) {
-
-                    $apiConfig = $this->getConfig()->getApiConfiguration();
-                    // Retrieve Checkout using external checkout id
-                    $checkout = Mage::getModel('zip_payment/api_checkout', $apiConfig)
-                    ->retrieve($externalCheckoutId);
-                    $orderId = $checkout->getCartReference();
-
-                    $quote = Mage::getSingleton('sales/quote')->load($orderId, 'reserved_order_id');
-
-                    if ($quote->getId()) {
-                        // load quote into onepage session
-                        $quote->setIsActive(true);
-                    }
-                }
-
-                $this->placeOrder($checkoutId);
-                $response['success'] = true;
-                
-            } catch (Exception $e) {
-                throw $e;
-            }
-
-        }
-        else if($result == Zip_Payment_Model_Api_Checkout::RESULT_REFERRED) {
-            $response['success'] = true;
-        } 
-        else {
-            $response['error_message'] = $this->generateMessage($result);
-        }
-
-        return $response;
-    }
-
-    /**
      * place order
-     * @param string $checkoutId Checkout ID
      */
-    protected function placeOrder($checkoutId) {
+    protected function placeOrder() {
 
         $onepage = $this->getHelper()->getOnepage();
 
@@ -265,7 +246,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
             $isLandingPageEnabled = Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
 
             if($isLandingPageEnabled) {
-                $breadcrumbs->addCrumb('zip_payment', array(
+                $breadcrumbs->addCrumb(Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER, array(
                     'label' => $this->__('About Zip Payment'),
                     'title' => $this->__('About Zip Payment'),
                     'link'  => $this->getHelper()->getUrl(Zip_Payment_Model_Config::LANDING_PAGE_URL_ROUTE)

@@ -85,7 +85,7 @@
                                     </active>
                                     <environment translate="label">
                                         <label>Environment</label>
-                                        <tooltip>Set to 'Production' to start accepting Zip Payment payments on your website. Ensure your Zip Payment ID and Zip Payment Key are your 'Production' credentials if not in 'Test' mode</tooltip>
+                                        <tooltip>Set to 'Production' to start accepting Zip Payment on your website. Ensure your Zip Payment ID and Zip Payment Key are your 'Production' credentials if not in 'Test' mode</tooltip>
                                         <config_path>payment/zip_payment/environment</config_path>
                                         <frontend_type>select</frontend_type>
                                         <source_model>zip_payment/adminhtml_system_config_source_environment</source_model>
@@ -153,7 +153,7 @@
                                                     </title>
                                                     <payment_action translate="label">
                                                         <label>Payment Action</label>
-                                                        <tooltip>Capture Mode to handle zip payment</tooltip>
+                                                        <tooltip>Capture Mode to handle Zip Payment</tooltip>
                                                         <config_path>payment/zip_payment/payment_action</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>zip_payment/adminhtml_system_config_source_paymentAction</source_model>
@@ -176,7 +176,7 @@
                                                         <label>Display Mode</label>
                                                         <tooltip>Select display mode for Zip Checkout, popup or redirect</tooltip>
                                                         <comment>This setting is used to identify how can we handle checkout authneitcation and confirmation from Zip</comment>
-                                                        <config_path>payment/zip_payment/display_mode</config_path>
+                                                        <config_path>payment/zip_payment/checkout/display_mode</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>zip_payment/adminhtml_system_config_source_displayMode</source_model>
                                                         <sort_order>40</sort_order>
@@ -188,25 +188,25 @@
                                                         <label>Custom Script</label>
                                                         <tooltip>Define custom script for checkout page</tooltip>
                                                         <comment>You're able to enter the url of script which will be loaded on the checkout page</comment>
-                                                        <config_path>payment/zip_payment/custom_script</config_path>
+                                                        <config_path>payment/zip_payment/checkout/custom_script</config_path>
                                                         <frontend_type>text</frontend_type>
                                                         <sort_order>50</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
                                                     </custom_script>
-                                                    <referred_mode translate="label">
+                                                    <referred_order_creation translate="label">
                                                         <label>Create Order for referred appication</label>
                                                         <tooltip>Select 'Yes' to create a order for referred checkot which need additonal review</tooltip>
                                                         <comment>The default value is 'Yes', always create a new order for referred checkout</comment>
-                                                        <config_path>payment/zip_payment/referred_mode</config_path>
+                                                        <config_path>payment/zip_payment/checkout/referred_order_creation</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>adminhtml/system_config_source_yesno</source_model>
                                                         <sort_order>60</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
-                                                    </referred_mode>
+                                                    </referred_order_creation>
                                                     <min_order_total translate="label">
                                                         <label>Minimum Order Total</label>
                                                         <tooltip>The minimum order value amount required to checkout</tooltip>
@@ -218,17 +218,6 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
                                                     </min_order_total>
-                                                    <max_order_total translate="label">
-                                                        <label>Maximum Order Total</label>
-                                                        <tooltip>The maximum order value amount required to checkout</tooltip>
-                                                        <config_path>payment/zip_payment/max_order_total</config_path>
-                                                        <frontend_type>text</frontend_type>
-                                                        <frontend_class>validate-number</frontend_class>
-                                                        <sort_order>80</sort_order>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>0</show_in_store>
-                                                    </max_order_total>
                                                     <sort_order translate="label">
                                                         <label>Sort Order</label>
                                                         <config_path>payment/zip_payment/sort_order</config_path>
@@ -285,29 +274,6 @@
                                                     </allowed_currencies>
                                                 </fields>
                                             </country_currency>
-
-                                            <pages type="group" translate="label">
-                                                <label>Pages</label>
-                                                <show_in_default>1</show_in_default>
-                                                <show_in_website>1</show_in_website>
-                                                <show_in_store>1</show_in_store>
-                                                <sort_order>30</sort_order>
-                                                <fields>
-                                                    <landing_page translate="label">
-                                                        <label>Enable Landing Page</label>
-                                                        <tooltip>Select 'Yes' to enable landing page</tooltip>
-                                                        <comment><![CDATA[The path of landing page url is <strong>/zip_payment</strong>]]></comment>
-                                                        <config_path>payment/zip_payment/pages/landing_page</config_path>
-                                                        <frontend_type>select</frontend_type>
-                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
-                                                        <sort_order>30</sort_order>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>1</show_in_store>
-                                                        <sort_order>10</sort_order>
-                                                    </landing_page>
-                                                </fields>
-                                            </pages>
 
                                             <api type="group" translate="label">
                                                 <label>API</label>
@@ -418,18 +384,6 @@
                                 <frontend_model>zip_payment/adminhtml_system_config_fieldset_expanded</frontend_model>
                                 <expanded>0</expanded>
                                 <fields>
-                                    <enabled translate="label">
-                                        <label>Enabled</label>
-                                        <tooltip>Set to 'Yes' to enable widget and banners</tooltip>
-                                        <config_path>payment/zip_payment/widgets/enabled</config_path>
-                                        <frontend_type>select</frontend_type>
-                                        <source_model>adminhtml/system_config_source_yesno</source_model>
-                                        <sort_order>10</sort_order>
-                                        <show_in_default>1</show_in_default>
-                                        <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
-                                    </enabled>
-
                                     <home_page type="group" translate="label">
                                         <label>Home Page</label>
                                         <frontend_type>text</frontend_type>
@@ -570,17 +524,19 @@
                                         <show_in_store>1</show_in_store>
                                         <sort_order>50</sort_order>
                                         <fields>
-                                            <inline translate="label comment">
-                                                <label>Display Inline Content</label>
-                                                <tooltip>Display inline content on Zip Payment Landing page</tooltip>
-                                                <config_path>payment/zip_payment/widgets/landing_page/inline</config_path>
-                                                <sort_order>10</sort_order>
+                                            <enabled translate="label comment">
+                                                <label>Enable Landing Page</label>
+                                                <tooltip>Select 'Yes' to enable landing page</tooltip>
+                                                <comment><![CDATA[The url of landing page is <a href="/about_zip_payment" target="_blank">/about_zip_payment</a>. <br/>Go to Admin - CMS - Pages to customize this landing page.]]></comment>
+                                                <config_path>payment/zip_payment/widgets/landing_page/enabled</config_path>
                                                 <frontend_type>select</frontend_type>
                                                 <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                <sort_order>30</sort_order>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                            </inline>
+                                                <sort_order>10</sort_order>
+                                            </enabled>
                                         </fields>
                                     </landing_page>
                                 </fields>

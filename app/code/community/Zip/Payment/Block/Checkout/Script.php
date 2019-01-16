@@ -1,18 +1,16 @@
 <?php
 
 /**
- * Block model for checkout
+ * Block model for checkout script
  * 
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
  **/
 
-class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
+class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
 {
-
-    const CONFIG_DISPLAY_MODE_PATH = 'payment/zip_payment/display_mode';
-    const CONFIG_CHECKOUT_LOADER_IMAGE_PATH = 'payment/zip_payment/checkout/loader_image';
+    
     const CHECKOUT_JS_PATH = '/zip/payment/checkout.js';
     const ONEPAGE_CHECKOUT_JS_PATH = '/zip/payment/opcheckout.js';
 
@@ -38,7 +36,7 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
      *
      * @return Zip_Payment_Helper_Data
      */
-    public function getHelper()
+    public function getModelHelper()
     {
         return Mage::helper('zip_payment');
     }
@@ -50,7 +48,7 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
      */
     public function isActive() {
 
-        return $this->getHelper()->isActive();
+        return $this->getModelHelper()->isActive();
     }
 
     /**
@@ -62,16 +60,6 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
         return $this->getConfig()->getMethodCode();
     }
 
-    /**
-     * get loader images
-     * 
-     * @return string
-     */
-    public function getLoaderImageUrl() {
-        return $this->getConfig()->getValue(self::CONFIG_CHECKOUT_LOADER_IMAGE_PATH);
-    }
-
-
      /**
      * Returns the checkout url.
      *
@@ -79,7 +67,7 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
      */
     public function getCheckoutUrl()
     {
-        return $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_START_URL_ROUTE);
+        return $this->getModelHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_START_URL_ROUTE);
     }
 
     /**
@@ -89,7 +77,7 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
      */
     public function getResponseUrl()
     {
-        return $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) . '?' . Zip_Payment_Controller_Checkout::URL_PARAM_RESULT . '=';
+        return $this->getModelHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) . '?' . Zip_Payment_Controller_Checkout::URL_PARAM_RESULT . '=';
     }
 
     /**
@@ -108,9 +96,9 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
         $baseScript = $scriptBaseUrl . self::CHECKOUT_JS_PATH;
         $scriptList = array($baseScript);
 
-        $pageIdentifier = $this->getHelper()->getPageIdentifier();
+        $pageIdentifier = $this->getModelHelper()->getPageIdentifier();
 
-        if($this->getHelper()->isOnepageCheckout()){
+        if($this->getModelHelper()->isOnepageCheckout()){
             array_push($scriptList, $scriptBaseUrl . self::ONEPAGE_CHECKOUT_JS_PATH);
         }
         else {
@@ -131,7 +119,7 @@ class Zip_Payment_Block_Checkout extends Mage_Core_Block_Template
      */
     public function isRedirect()
     {
-        return $this->getConfig()->getValue(self::CONFIG_DISPLAY_MODE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
+        return $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CEHCKOUT_DISPLAY_MODE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
     }
 
     /**
