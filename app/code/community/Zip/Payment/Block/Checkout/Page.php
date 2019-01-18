@@ -72,15 +72,7 @@ class Zip_Payment_Block_Checkout_Page extends Mage_Core_Block_Template
      */
     public function getMessageItems()
     {
-        if(!empty($this->messageItems)) {
-            array_shift($this->messageItems);
-
-            if(!empty($this->messageItems)) {
-                return $this->messageItems;
-            }
-        }
-
-        return null;
+        return $this->messageItems;
     }
 
      /**

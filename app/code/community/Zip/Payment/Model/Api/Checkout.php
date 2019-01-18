@@ -22,12 +22,15 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     const CHECKOUT_TYPE = 'standard';
     const CHECKOUT_ID_KEY = 'id';
     const CHECKOUT_REDIRECT_URL_KEY = 'uri';
-    const CHECKOUT_RESULT_KEY = 'result';
+    const CHECKOUT_STATE_KEY = 'state';
 
-    const RESULT_APPROVED = 'approved';
-    const RESULT_DECLINED = 'declined';
-    const RESULT_CANCELLED = 'cancelled';
-    const RESULT_REFERRED = 'referred';
+    const STATE_CREATED = 'created';
+    const STATE_EXPIRED = 'expired';
+    const STATE_APPROVED = 'approved';
+    const STATE_REFERRED = 'referred';
+    const STATE_COMPLETED = 'completed';
+    const STATE_CANCELLED = 'cancelled';
+    const STATE_DECLINED = 'declined';
 
     /**
      * get API model
@@ -103,9 +106,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 
                 $checkout = $this->getApi()->checkoutsGet($checkoutId);
 
-                if (isset($checkout[self::CHECKOUT_ID_KEY])) {
-                    
-                } else {
+                if (!isset($checkout[self::CHECKOUT_ID_KEY])) {
                     throw new Mage_Payment_Exception("Could not retrieve a checkout");
                 }
 
@@ -222,9 +223,25 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     }
 
     /**
-     * get cart reference
+     * get checkout state
      */
-    public function getCartReference() {
+    public function getState() {
+        return $this->getResponse() ? $this->getResponse()->getState() : null;
+    }
+
+    /**
+     * get all allowed checkout states
+     */
+    public function getAllowedStates() {
+        return $this->getResponse() ? $this->getResponse()->getStateAllowableValues() : null;
+    }
+
+    /**
+     * get order reference
+     */
+    public function getOrderReference() {
         return $this->getResponse() ? $this->getResponse()->getOrder()->getReference() : null;
     }
+
+    
 }

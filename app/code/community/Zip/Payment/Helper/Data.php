@@ -12,10 +12,17 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
     /**
+     * get config model
+     */
+    public function getConfig() {
+        return Mage::getSingleton('zip_payment/config');
+    }
+
+    /**
      * is Zip Payment active
      */
     public function isActive() {
-        return Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH);
+        return $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH);
     }
 
     /**
@@ -98,7 +105,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         } catch (Mage_Core_Exception $exception) {
             $this->getCheckoutSession()->addError($exception->getMessage());
         } catch (Exception $exception) {
-            $this->getCheckoutSession()->addException($exception, Mage::helper('zip_payment')->__('Cannot empty shopping cart'));
+            $this->getCheckoutSession()->addException($exception, $this->__('Cannot empty shopping cart'));
         }
     }
 
@@ -122,14 +129,20 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      * checkout current page is onestep checkout
      */
     public function isOnestepCheckout() {
-        return Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH . '/' . $this->getPageIdentifier());
+        return $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH . '/' . $this->getPageIdentifier());
     }
 
     /**
-     * check whether current checkout is referred
+     * check whether an order is a referred order
      */
-    public function isCheckoutReferred() {
-        return $this->getCheckoutResultFromSession() == Zip_Payment_Model_Api_Checkout::RESULT_REFERRED;
+    public function isReferredOrder($order) {
+
+        if($order && $order->getId()) {
+            return $order->getStatus() === $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH);
+        }
+
+        return false;
+        
     }
 
 
@@ -179,9 +192,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      * 
      * @return string
      */
-    public function getCheckoutResultFromSession() {
+    public function getCheckoutStateFromSession() {
         $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_RESULT_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_RESULT_KEY] : null;
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY] : null;
     }
 
     /**

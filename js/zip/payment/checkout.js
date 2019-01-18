@@ -2,14 +2,21 @@ if('Zip' in window && Zip.Checkout) {
 
     Object.extend(Zip.Checkout, {
 
-        redirectTo: function(url) {
+        showOverlay: function() {
             document.getElementById('zip_payment_overlay').setAttribute('class', 'active');
+        },
+        hideOverlay: function() {
+            document.getElementById('zip_payment_overlay').removeAttribute('class');
+        },
+        redirectTo: function(url) {
             location.href = url;
         },
 
         placeOrder: function(callback) {
 
             if(payment.currentMethod == Zip.Checkout.settings.methodCode) {
+
+                Zip.Checkout.showOverlay();
 
                 // if current display mode is lightbox and redirect url is not same as response url
                 if(Zip.Checkout && !Zip.Checkout.settings.isRedirect) {
@@ -35,6 +42,7 @@ if('Zip' in window && Zip.Checkout) {
                                     success: function(resp) {
 
                                         if(resp.error_message) {
+                                            Zip.Checkout.hideOverlay();
                                             alert(resp.error_message);
                                         }
                                         else if(resp.redirect_url) {

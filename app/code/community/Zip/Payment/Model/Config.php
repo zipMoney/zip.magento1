@@ -75,7 +75,9 @@ class Zip_Payment_Model_Config
     const CONFIG_CEHCKOUT_DISPLAY_MODE_PATH = 'payment/zip_payment/checkout/display_mode';
     const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/checkout/custom_script';
     const CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH = 'payment/zip_payment/checkout/onestepcheckouts';
-    const CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH = 'payment/zip_payment/checkout/referred_order_creation';
+
+    const CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH = 'payment/zip_payment/checkout/referred/order_creation';
+    const CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH = 'payment/zip_payment/checkout/referred/order_status';
 
     /**
      * Charge

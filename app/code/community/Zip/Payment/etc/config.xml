@@ -136,7 +136,10 @@
                 <sort_order>1</sort_order>
                 <checkout>
                     <display_mode>redirect</display_mode>
-                    <referred_order_creation>1</referred_order_creation>
+                    <referred>
+                        <order_creation>1</order_creation>
+                        <order_status>pending</order_status>
+                    </referred>
                 </checkout>
                 <country_currency>
                     <allowspecific>1</allowspecific>

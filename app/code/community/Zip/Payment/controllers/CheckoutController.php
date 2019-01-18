@@ -25,38 +25,15 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - responseAction'));
         $this->getHelper()->getCheckoutSession()->getMessages(true);
 
-        try {
-            $result = $this->getRequest()->getParam(self::URL_PARAM_RESULT);
-            $this->getLogger()->debug($this->getHelper()->__('Checkout Result: %s', $result));
+        // get response result
+        $result = $this->getRequest()->getParam(self::URL_PARAM_RESULT);
+        // get checkout id from checkout url parameter
+        // filter the result to remove additional GTM string
+        $checkoutId = preg_replace('/\?.+$/', '', $this->getRequest()->getParam(self::URL_PARAM_CHECKOUT_ID) ?: '');
+        $this->getLogger()->debug($this->getHelper()->__('Checkout Result from url: %s', $result));
+        $this->getLogger()->debug($this->getHelper()->__('Checkout ID from url: %s', $checkoutId));
 
-            $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
-
-            // if checkout id can't be found in the checkout session
-            if(empty($checkoutId)) {
-
-                // get checkout id from checkout url parameter
-                // filter the result to remove additional GTM string
-                $checkoutId = preg_replace('/\?.+$/', '', $this->getRequest()->getParam(self::URL_PARAM_CHECKOUT_ID) ?: '');
-
-                if (empty($checkoutId)) {
-                    Mage::throwException($this->getHelper()->__('The checkoutId does not exist'));
-                }
-
-                $this->processResponseResult($result, $checkoutId);
-            }
-            else {
-
-                $this->processResponseResult($result);
-                $this->getHelper()->unsetCheckoutSessionData();
-
-            }
-
-        } catch (Exception $e) {
-            $errorMessage = $this->getHelper()->__($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_GENERAL_ERROR_PATH));
-            $this->getHelper()->getCheckoutSession()->addError($errorMessage);
-            $this->getLogger()->error($e->getMessage());
-            $this->getHelper()->getCheckoutSession()->addError($e->getMessage());
-        }
+        $this->processResponseResult($checkoutId, $result);
 
     }
 

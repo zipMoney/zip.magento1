@@ -165,11 +165,18 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function getConfigData($field, $storeId = null)
     {
+        $configValue = null;
+
         // set order status as pending for referred checkout
-        if($this->_getHelper()->isCheckoutReferred() && $field == 'order_status') {
-            return Mage::getSingleton('sales/order_config')->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_NEW);
+        if($this->isCheckoutReferred()) {
+            $configValue = $this->getConfig()->getValue("payment/{$this->getCode()}/checkout/referred/{$field}");
         }
-        return $this->getConfig()->getValue("payment/{$this->getCode()}/{$field}");
+
+        if(is_null($configValue)) {
+            $configValue = $this->getConfig()->getValue("payment/{$this->getCode()}/{$field}");
+        }
+        
+        return $configValue;
     }
 
     /**
@@ -180,11 +187,15 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function getConfigPaymentAction()
     {
-        $this->paymentAction || $this->paymentAction = $this->_getHelper()->isCheckoutReferred() ? self::ACTION_ORDER : parent::getConfigPaymentAction();
+        $this->paymentAction || $this->paymentAction = $this->isCheckoutReferred() ? self::ACTION_ORDER : parent::getConfigPaymentAction();
 
         $this->getLogger()->debug($this->_getHelper()->__('Zip_Payment_Model_Method - get Configuration action: ' . $this->paymentAction));
 
         return $this->paymentAction;
+    }
+
+    protected function isCheckoutReferred() {
+        return $this->_getHelper()->getCheckoutStateFromSession() == Zip_Payment_Model_Api_Checkout::STATE_REFERRED;
     }
 
     /**
@@ -323,9 +334,12 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             Mage::throwException($this->_getHelper()->__('Capture action is not available.'));
         }
 
-        if ($this->_getHelper()->getCheckoutResultFromSession() !== Zip_Payment_Model_Api_Checkout::RESULT_APPROVED) {
-            $this->getLogger()->debug($this->_getHelper()->__("Checkout has not been approved, payment will not be processing."));
-            return;
+        $checkoutState = $this->_getHelper()->getCheckoutStateFromSession();
+
+        if(!$checkoutState) {
+            Mage::throwException($this->_getHelper()->__('Invalid Checkout state, payment will not be processing.'));
+        }else if ($checkoutState !== Zip_Payment_Model_Api_Checkout::STATE_APPROVED) {
+            Mage::throwException($this->_getHelper()->__('Checkout is %s, payment will not be processing.', $checkoutState));
         }
 
         $authorizationTransaction = $payment->getAuthorizationTransaction();

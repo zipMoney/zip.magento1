@@ -164,6 +164,7 @@
                                                     </payment_action>
                                                     <order_status translate="label">
                                                         <label>New Order Status</label>
+                                                        <tooltip>Define the order status after payment been processed</tooltip>
                                                         <frontend_type>select</frontend_type>
                                                         <config_path>payment/zip_payment/order_status</config_path>
                                                         <source_model>adminhtml/system_config_source_order_status_processing</source_model>
@@ -195,18 +196,6 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
                                                     </custom_script>
-                                                    <referred_order_creation translate="label">
-                                                        <label>Create Order for referred appication</label>
-                                                        <tooltip>Select 'Yes' to create a order for referred checkot which need additonal review</tooltip>
-                                                        <comment>The default value is 'Yes', always create a new order for referred checkout</comment>
-                                                        <config_path>payment/zip_payment/checkout/referred_order_creation</config_path>
-                                                        <frontend_type>select</frontend_type>
-                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
-                                                        <sort_order>60</sort_order>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>0</show_in_store>
-                                                    </referred_order_creation>
                                                     <min_order_total translate="label">
                                                         <label>Minimum Order Total</label>
                                                         <tooltip>The minimum order value amount required to checkout</tooltip>
@@ -220,6 +209,7 @@
                                                     </min_order_total>
                                                     <sort_order translate="label">
                                                         <label>Sort Order</label>
+                                                        <tooltip>Give a number to define the position in payment option Zip Payment will be placed, 0 is the first position</tooltip>
                                                         <config_path>payment/zip_payment/sort_order</config_path>
                                                         <frontend_type>text</frontend_type>
                                                         <frontend_class>validate-number</frontend_class>
@@ -228,6 +218,41 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                     </sort_order>
+
+                                                     <referred type="group" translate="label">
+                                                        <label>Referred Appication</label>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                        <sort_order>90</sort_order>
+                                                        <fields>
+                                                            <order_creation translate="label">
+                                                                <label>Create Order</label>
+                                                                <tooltip>Select 'Yes' to create a order for referred checkot which need additonal review</tooltip>
+                                                                <comment>The default value is 'Yes', always create a new order for referred checkout</comment>
+                                                                <config_path>payment/zip_payment/checkout/referred/order_creation</config_path>
+                                                                <frontend_type>select</frontend_type>
+                                                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                                <sort_order>10</sort_order>
+                                                                <show_in_default>1</show_in_default>
+                                                                <show_in_website>1</show_in_website>
+                                                                <show_in_store>0</show_in_store>
+                                                            </order_creation>
+
+                                                            <order_status translate="label">
+                                                                <label>New Order Status</label>
+                                                                <tooltip>Define the order status when a referred order be placed</tooltip>
+                                                                <frontend_type>select</frontend_type>
+                                                                <config_path>payment/zip_payment/checkout/referred/order_status</config_path>
+                                                                <source_model>adminhtml/system_config_source_order_status_new</source_model>
+                                                                <sort_order>20</sort_order>
+                                                                <show_in_default>1</show_in_default>
+                                                                <show_in_website>1</show_in_website>
+                                                                <show_in_store>0</show_in_store>
+                                                            </order_status>
+                                                        </fields>
+                                                    </referred>
                                                 </fields>
                                             </checkout>
 
