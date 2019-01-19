@@ -67,6 +67,16 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Return customer session object
+     *
+     * @return Mage_Customer_Model_Session
+     */
+    public function getCustomerSession()
+    {
+        return Mage::getSingleton('customer/session');
+    }
+
+    /**
      * Get one page checkout model
      *
      * @return Mage_Checkout_Model_Type_Onepage
