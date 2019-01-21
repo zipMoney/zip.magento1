@@ -8,7 +8,7 @@
  *
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Zip_Payment_Block_Adminhtml_System_Config_Fieldset
 {
     protected $noticeTemplate = 'zip/payment/system/config/fieldset/group/notice.phtml';
 
@@ -19,7 +19,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     protected function _construct() 
     {
         $this->notificationFeedModel = Mage::getSingleton('zip_payment/adminhtml_notification_feed');
-        $this->currentVersion = Mage::helper("zip_payment")->getCurrentVersion();
+        $this->currentVersion = $this->getModelHelper()->getCurrentVersion();
         $this->notificationData = $this->notificationFeedModel->getFeedData();
 
         parent::_construct();

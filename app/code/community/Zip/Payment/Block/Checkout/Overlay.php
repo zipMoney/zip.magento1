@@ -8,36 +8,9 @@
  *
  **/
 
-class Zip_Payment_Block_Checkout_Overlay extends Mage_Core_Block_Template
+class Zip_Payment_Block_Checkout_Overlay extends Zip_Payment_Block_Template
 {
     const CONFIG_CHECKOUT_LOADER_IMAGE_PATH = 'payment/zip_payment/checkout/loader_image';
-
-    /**
-     * @var Zip_Payment_Model_Config
-     */
-    protected $config;
-
-    /**
-     * Config instance getter
-     * @return Zip_Payment_Model_Config
-     */
-    public function getConfig()
-    {
-        if ($this->config == null) {
-            $this->config = Mage::getSingleton('zip_payment/config');
-        }
-        return $this->config;
-    }
-
-    /**
-     * Retrieve model helper
-     *
-     * @return Zip_Payment_Helper_Data
-     */
-    public function getModelHelper()
-    {
-        return Mage::helper('zip_payment');
-    }
 
     /**
      * is current payment active

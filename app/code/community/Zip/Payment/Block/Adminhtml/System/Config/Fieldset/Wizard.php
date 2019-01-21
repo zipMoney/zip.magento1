@@ -8,7 +8,7 @@
  *
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Zip_Payment_Block_Adminhtml_System_Config_Fieldset
 {
     protected $headerTitleTemplate = 'zip/payment/system/config/fieldset/wizard/header_title.phtml';
     protected $noticeTemplate = 'zip/payment/system/config/fieldset/wizard/notice.phtml';
@@ -17,7 +17,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
 
     protected function _construct()
     {
-        $this->pluginCurrentVersion = Mage::helper("zip_payment")->getCurrentVersion();
+        $this->pluginCurrentVersion = $this->getModelHelper()->getCurrentVersion();
         parent::_construct();
     }
 
@@ -74,7 +74,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
         $block->setTemplate($this->headerTitleTemplate);
         $block->setData(array(
             'version' => $this->pluginCurrentVersion,
-            'logo' => Mage::getSingleton('zip_payment/config')->getLogo(),
+            'logo' => $this->getConfig()->getLogo(),
             'element' => $element,
             'config' => $this->getGroup($element)->asArray()
         ));

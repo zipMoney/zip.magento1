@@ -43,10 +43,12 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
      */
     protected function getHealthResult() {
 
+        $config = Mage::helper('zip_payment')->getConfig();
+
         $sslEnabled = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
         $curlEnabled = function_exists('curl_version');
-        $publicKey = Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_PUBLIC_KEY_PATH);
-        $privateKey = Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_PRIVATE_KEY_PATH);
+        $publicKey = $config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
+        $privateKey = $config->getValue(self::CONFIG_PRIVATE_KEY_PATH);
 
         // check if public key is empty
         if(empty($publicKey)) {
@@ -71,7 +73,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             $curl = curl_init();
 
             $curlSSLVerificationEnabled = curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER) && curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER);
-            $apiConfig = Mage::getSingleton('zip_payment/config')->getApiConfiguration();
+            $apiConfig = $config->getApiConfiguration();
             $url = $apiConfig->getHost();
 
             curl_setopt($curl, CURLOPT_NOBODY, true);

@@ -119,6 +119,7 @@ class Checkout implements ArrayAccess
 
     const TYPE_STANDARD = 'standard';
     const TYPE_EXPRESS = 'express';
+
     const STATE_CREATED = 'created';
     const STATE_EXPIRED = 'expired';
     const STATE_APPROVED = 'approved';

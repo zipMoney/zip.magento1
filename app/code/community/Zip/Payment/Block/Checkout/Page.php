@@ -8,46 +8,17 @@
  *
  **/
 
-class Zip_Payment_Block_Checkout_Page extends Mage_Core_Block_Template
+class Zip_Payment_Block_Checkout_Page extends Zip_Payment_Block_Template
 {  
 
     protected $headingTextConfigPath = null;
     protected $contentHtmlConfigPath = null;
-
-    /**
-     * @var Zip_Payment_Model_Config
-     */
-    protected $config;
     protected $messageItems = null;
 
     public function __construct()
     {
         $this->messageItems = $this->getModelHelper()->getCheckoutSession()->getMessages()->getItems();
     }
-
-    
-    /**
-     * Config instance getter
-     * @return Zip_Payment_Model_Config
-     */
-    public function getConfig()
-    {
-        if ($this->config == null) {
-            $this->config = Mage::getSingleton('zip_payment/config');
-        }
-        return $this->config;
-    }
-    
-    /**
-     * Retrieve model helper
-     *
-     * @return Zip_Payment_Helper_Data
-     */
-    public function getModelHelper()
-    {
-        return Mage::helper('zip_payment');
-    }
-
 
     /**
      * get Zip payment logo

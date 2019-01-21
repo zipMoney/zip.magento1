@@ -27,9 +27,9 @@ class Zip_Payment_Model_Config
      * country and currency
      */
     const CONFIG_MERCHANT_COUNTRY_PATH = 'payment/account/merchant_country';
-    const CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH = 'payment/zip_payment/allow_specific_countries';
-    const CONFIG_SPECIFIC_COUNTRIES_PATH = 'payment/zip_payment/specific_countries';
-    const CONFIG_ALLOWED_CURRENCIES_PATH = 'payment/zip_payment/allowed_currencies';
+    const CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH = 'payment/zip_payment/country_currency/allow_specific_countries';
+    const CONFIG_SPECIFIC_COUNTRIES_PATH = 'payment/zip_payment/country_currency/specific_countries';
+    const CONFIG_ALLOWED_CURRENCIES_PATH = 'payment/zip_payment/country_currency/allowed_currencies';
     const CONFIG_SUPPORTED_COUNTRIES_PATH = 'payment/zip_payment/country_currency/supported_countries';
     const CONFIG_SUPPORTED_CURRENCIES_PATH = 'payment/zip_payment/country_currency/supported_currencies';
 
@@ -110,7 +110,7 @@ class Zip_Payment_Model_Config
         /**
          * Set store id, if specified
          */
-        if (isset($options['store_id'])) {
+        if (isset($options['store_id']) && !empty($options['store_id'])) {
             $storeId = $options['store_id'];
         } else {
             $storeId = Mage::app()->getStore()->getId();

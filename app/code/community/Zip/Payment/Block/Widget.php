@@ -8,7 +8,7 @@
  *
  **/
 
-class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
+class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
 {
 
     const CONFIG_WIDGET_PATH_PREFIX = 'payment/zip_payment/widgets/';
@@ -21,33 +21,6 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     
     const ROOT_WIDGET_TYPES = array('head', 'root', 'popup');
     const SUPPORTED_WIDGET_TYPES = array('widget', 'banner', 'tagline', 'inline');
-
-    /**
-     * @var Zip_Payment_Model_Config
-     */
-    protected $config;
-
-    /**
-     * Config instance getter
-     * @return Zip_Payment_Model_Config
-     */
-    public function getConfig()
-    {
-        if ($this->config == null) {
-            $this->config = Mage::getSingleton('zip_payment/config');
-        }
-        return $this->config;
-    }
-
-    /**
-     * Retrieve model helper
-     *
-     * @return Zip_Payment_Helper_Data
-     */
-    public function getModelHelper()
-    {
-        return Mage::helper('zip_payment');
-    }
 
     /**
      * get merchant id from public key

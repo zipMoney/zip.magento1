@@ -65,7 +65,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     {
         if ($this->config == null) {
             $storeId = Mage::app()->getStore()->getStoreId();
-            $this->config = Mage::getSingleton('zip_payment/config', array('store_id' => $storeId));
+            $this->config = $this->_getHelper()->getConfig($storeId);
             $this->config->setMethod($this->getCode());
         }
         return $this->config;
@@ -195,7 +195,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     }
 
     protected function isCheckoutReferred() {
-        return $this->_getHelper()->getCheckoutStateFromSession() == Zip_Payment_Model_Api_Checkout::STATE_REFERRED;
+        return $this->_getHelper()->getCheckoutStateFromSession() == Zip_Payment_Model_Api_Checkout::STATE_CREATED;
     }
 
     /**

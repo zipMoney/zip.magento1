@@ -27,7 +27,6 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     const STATE_CREATED = 'created';
     const STATE_EXPIRED = 'expired';
     const STATE_APPROVED = 'approved';
-    const STATE_REFERRED = 'referred';
     const STATE_COMPLETED = 'completed';
     const STATE_CANCELLED = 'cancelled';
     const STATE_DECLINED = 'declined';

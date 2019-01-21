@@ -142,8 +142,8 @@
                     </referred>
                 </checkout>
                 <country_currency>
-                    <allowspecific>1</allowspecific>
-                    <specificcountry>AU</specificcountry>
+                    <allow_specific_countries>1</allow_specific_countries>
+                    <specific_countries>AU</specific_countries>
                     <allowed_currencies>AUD</allowed_currencies>
                 </country_currency>
                 <api>

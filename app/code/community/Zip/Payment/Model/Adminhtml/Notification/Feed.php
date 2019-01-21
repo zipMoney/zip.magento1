@@ -18,6 +18,30 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
     const DEFAULT_NOTIFICATION_TITLE = 'Zip Payment';
 
     protected $feedData = null;
+    
+    /**
+     * Config model instance
+     *
+     * @var Zip_Payment_Model_Config
+     */
+    protected $config = null;
+
+    /**
+     * get config instance
+     */
+    protected function getConfig() {
+        if($this->config == null) {
+            $this->config = $this->getHelper()->getConfig();
+        }
+        return $this->config;
+    }
+
+    /**
+     * get model helper
+     */
+    protected function getHelper() {
+        return Mage::helper('zip_payment');
+    }
 
     /**
      * Check feed for modification
@@ -66,7 +90,7 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
      */
     public function getVersionUpgradeNotification() {
 
-        $currentVersion = Mage::helper("zip_payment")->getCurrentVersion();
+        $currentVersion = $this->getHelper()->getCurrentVersion();
 
         if($this->feedData == null) {
             $this->feedData = $this->getFeedData();
@@ -100,7 +124,7 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
     public function getFeedUrl()
     {
         if (is_null($this->_feedUrl)) {
-            $this->_feedUrl = Mage::getSingleton('zip_payment/config')->getValue(self::CONFIG_FEED_URL_PATH);
+            $this->_feedUrl = $this->getConfig()->getValue(self::CONFIG_FEED_URL_PATH);
         }
         return $this->_feedUrl;
     }

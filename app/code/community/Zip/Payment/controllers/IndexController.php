@@ -20,7 +20,7 @@ class Zip_Payment_IndexController extends Mage_Core_Controller_Front_Action
 
         $helper = Mage::helper('zip_payment');
 
-        $isLandingPageEnabled = Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
+        $isLandingPageEnabled = $helper->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
 
         if(!$helper->isActive() || !$isLandingPageEnabled) {
             return null; 

@@ -45,18 +45,26 @@ class Zip_Payment_Block_Method_Info extends Mage_Payment_Block_Info
         return $transport->addData($info);
     }
 
-    /**
-     * Config instance getter
-     * @return Zip_Payment_Model_Config
+      /**
+     * get config instance
      */
-    public function getConfig()
-    {
-        if ($this->config == null) {
-            $this->config = Mage::getSingleton('zip_payment/config');
+    protected function getConfig() {
+        if($this->config == null) {
+            $this->config = $this->getModelHelper()->getConfig();
         }
         return $this->config;
     }
 
+    /**
+     * get model helper
+     */
+    protected function getModelHelper() {
+        return Mage::helper('zip_payment');
+    }
+
+    /**
+     * get log url
+     */
     protected function getLogo() {
         return $this->getConfig()->getLogo();
     }

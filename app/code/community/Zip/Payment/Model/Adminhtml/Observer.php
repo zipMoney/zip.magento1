@@ -14,11 +14,36 @@ class Zip_Payment_Model_Adminhtml_Observer
 {
 
     /**
+     * Config model instance
+     *
+     * @var Zip_Payment_Model_Config
+     */
+    protected $config = null;
+
+    /**
+     * get config instance
+     */
+    protected function getConfig() {
+        if($this->config == null) {
+            $this->config = $this->getHelper()->getConfig();
+        }
+        return $this->config;
+    }
+
+
+    /**
+     * get model helper
+     */
+    protected function getHelper() {
+        return Mage::helper('zip_payment');
+    }
+
+    /**
      * Check admin notifications
      */
     public function checkAdminNotifications(Varien_Event_Observer $observer) {
 
-        $enabled = Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_NOTIFICATION_ENABLED_PATH);
+        $enabled = $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_NOTIFICATION_ENABLED_PATH);
         
         if($enabled) {
             Mage::getSingleton('zip_payment/adminhtml_notification_feed')->checkUpdate();
@@ -30,7 +55,7 @@ class Zip_Payment_Model_Adminhtml_Observer
      */
     public function updateLandingPageStatus(Varien_Event_Observer $observer) {
 
-        $isLandingPageEnabled = Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
+        $isLandingPageEnabled = $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
         $identifier = Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER;
         Mage::getSingleton('cms/page')->load($identifier, 'identifier')->setData('is_active', $isLandingPageEnabled ? 1 : 0)->save();
     }

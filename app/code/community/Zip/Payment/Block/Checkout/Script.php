@@ -8,38 +8,11 @@
  *
  **/
 
-class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
+class Zip_Payment_Block_Checkout_Script extends Zip_Payment_Block_Template
 {
     
     const CHECKOUT_JS_PATH = '/zip/payment/checkout.js';
     const ONEPAGE_CHECKOUT_JS_PATH = '/zip/payment/opcheckout.js';
-
-    /**
-     * @var Zip_Payment_Model_Config
-     */
-    protected $config;
-
-    /**
-     * Config instance getter
-     * @return Zip_Payment_Model_Config
-     */
-    public function getConfig()
-    {
-        if ($this->config == null) {
-            $this->config = Mage::getSingleton('zip_payment/config');
-        }
-        return $this->config;
-    }
-
-    /**
-     * Retrieve model helper
-     *
-     * @return Zip_Payment_Helper_Data
-     */
-    public function getModelHelper()
-    {
-        return Mage::helper('zip_payment');
-    }
 
     /**
      * is current payment active

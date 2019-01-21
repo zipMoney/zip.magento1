@@ -72,7 +72,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
      */
     protected function getConfig() {
         if($this->config == null) {
-            $this->config = Mage::getSingleton('zip_payment/config');
+            $this->config = $this->getHelper()->getConfig();
         }
         return $this->config;
     }
@@ -106,7 +106,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
                     $response['success'] = $this->handleApprovedCheckout($checkout);
                     $response['success'] && $response['redirect_url'] =  Zip_Payment_Model_Config::CHECKOUT_SUCCESS_URL_ROUTE;
                 break;
-                case Zip_Payment_Model_Api_Checkout::STATE_REFERRED:
+                case Zip_Payment_Model_Api_Checkout::STATE_CREATED:
                     $response['success'] = $this->handleReferredCheckout($checkout);
                     $response['success'] && $response['redirect_url'] = Zip_Payment_Model_Config::CHECKOUT_REFERRED_URL_ROUTE;
                 break;
@@ -288,102 +288,141 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
             // if current shopping cart has quote and is valid
             if($quote->getId() && $quote->getReservedOrderId() == $orderId) {
 
-                $this->getLogger()->debug($this->getHelper()->__('One valid quote %s exists in current shopping cart', $quote->getId()));
-
-                $quote
-                ->collectTotals()
-                ->save();
-                
-                $onepage->saveOrder();
+                $this->placeOrderForCurrentQuote($quote, $onepage);
             }
             else {
 
                 $this->getLogger()->debug($this->getHelper()->__('No any valid quote in current shopping cart'));
-
                 $order = Mage::getSingleton('sales/order')->loadByIncrementId($orderId);
 
                 // if cart session is empty but order exists
                 if($order->getId()) {
-
-                    $this->getLogger()->debug($this->getHelper()->__('Found an existing order #%s', $orderId));
-
-                    // Try to generate invoice and add transaction into existing order
-
-                    if(!$this->getHelper()->isReferredOrder($order)) {
-                        Mage::throwException($this->getHelper()->__('Current order is not a valid referred order. payment can\'t be processed.'));
-                    }
-
-                    if (!$order->canInvoice()) {
-                        Mage::throwException$this->getHelper()->__('Cannot create an invoice for this order.'));
-                    }
-
-                    $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
-
-                    if (!$invoice->getTotalQty()) {
-                        Mage::throwException(
-                            Mage::helper('core')->__('Cannot create an invoice without products.')
-                        );
-                    }
-                    
-                    $invoice->setRequestedCaptureCase(
-                        Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE
-                    );
-                    
-                    $invoice->addComment('Invoice generated automatically');
-                    $invoice->register();
-                    
-                    $transactionSave = Mage::getModel('core/resource_transaction')
-                        ->addObject($invoice)
-                        ->addObject($order)
-                        ->save();
-                    
-                    try {
-                        $invoice->sendEmail(true);
-                    } catch (Exception $e) {
-                        Mage::logException($e);
-                        Mage::getSingleton('core/session')
-                            ->addError($this->__('Unable to send the invoice email.'));
-                    }
+                    $this->placeOrderForExistingOrder($order);
                 }
+                // no cart and order
                 else {
-
-                    $this->getLogger()->debug($this->getHelper()->__('Could not find any existing order #%s, try to load shopping cart', $order->getId()));
-
-                    // Try to load quote and place a new order
-                    $quote = Mage::getSingleton('sales/quote')->load($orderId, 'reserved_order_id');
-
-                    if(!$quote->getId()) {
-                        Mage::throwException($this->getHelper()->__('Can\'t grab Shopping cart, payment can\'t be processed.'));
-                    }
-    
-                    $quote->setIsActive(true)->save();
-
-                    $this->getHelper()->getCheckoutSession()->replaceQuote($quote);
-                    $this->getHelper()->getCustomerSession()->setCartWasUpdated(true); 
-    
-                    $quote
-                    ->getShippingAddress()
-                    ->setCollectShippingRates(true)
-                    ->collectShippingRates()
-                    ->collectTotals()
-                    ->save();
-    
-                    $onepage->saveOrder();
-
+                   $this->placeOrderForExistingQuote($orderId, $onepage);
                 }
 
             }
                     
             $this->getLogger()->debug('Order has been saved successfully');
 
+        } catch(Exception $e) {
+            throw $e;
         }
-        catch(Exception $e) {
+
+    }
+
+    /**
+     * place order for current quote
+     */
+    protected function placeOrderForCurrentQuote($quote, $onepage) {
+
+        try {
+        
+            $this->getLogger()->debug($this->getHelper()->__('One valid quote %s exists in current shopping cart', $quote->getId()));
+
+            $quote
+            ->collectTotals()
+            ->save();
+            
+            $onepage->saveOrder();
+        } catch(Exception $e) {
+            throw $e;
+        }
+    }
+    
+
+    /**
+     * add invoice and process payment for existing order
+     * @param $order
+     */
+    protected function placeOrderForExistingOrder($order) {
+
+        $this->getLogger()->debug($this->getHelper()->__('Found an existing order #%s', $order->getIncrementId()));
+
+        // Try to generate invoice and add transaction into existing order
+
+        if(!$this->getHelper()->isReferredOrder($order)) {
+            Mage::throwException($this->getHelper()->__('Current order is not a valid referred order. payment can\'t be processed.'));
+        }
+
+        if (!$order->canInvoice()) {
+            Mage::throwException($this->getHelper()->__('Cannot create an invoice for this order.'));
+        }
+
+        try {
+            $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+
+            if (!$invoice->getTotalQty()) {
+                Mage::throwException(
+                    Mage::helper('core')->__('Cannot create an invoice without products.')
+                );
+            }
+            
+            $invoice->setRequestedCaptureCase(
+                Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE
+            );
+            
+            $invoice->addComment('Invoice generated automatically');
+            $invoice->register();
+            
+            $transactionSave = Mage::getModel('core/resource_transaction')
+                ->addObject($invoice)
+                ->addObject($order)
+                ->save();
+
+        } catch (Exception $e) {
             throw $e;
         }
 
         
+        try {
+            $invoice->sendEmail(true);
+        } catch (Exception $e) {
+            Mage::logException($e);
+            Mage::getSingleton('core/session')
+                ->addError($this->__('Unable to send the invoice email.'));
+        }
+
     }
 
+    /**
+     * place order for an existing quote which is currently loaded in the shopping cart
+     */
+    protected function placeOrderForExistingQuote($orderId, $onepage) {
+
+        $this->getLogger()->debug($this->getHelper()->__('Could not find any existing order #%s, try to load shopping cart', $orderId));
+
+        // Try to load quote and place a new order
+        $quote = Mage::getSingleton('sales/quote')->load($orderId, 'reserved_order_id');
+
+        if(!$quote->getId()) {
+            Mage::throwException($this->getHelper()->__('Can\'t grab Shopping cart, payment can\'t be processed.'));
+        }
+
+        try {
+
+            $quote->setIsActive(true)->save();
+
+            $this->getHelper()->getCheckoutSession()->replaceQuote($quote);
+            $this->getHelper()->getCustomerSession()->setCartWasUpdated(true); 
+
+            $quote
+            ->getShippingAddress()
+            ->setCollectShippingRates(true)
+            ->collectShippingRates()
+            ->collectTotals()
+            ->save();
+
+            $onepage->saveOrder();
+
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+    }
     /**
      * generate messageS for checkout result
      */
@@ -426,7 +465,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
                 'link'  => Mage::getBaseUrl()
             ));
 
-            $isLandingPageEnabled = Mage::getSingleton('zip_payment/config')->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
+            $isLandingPageEnabled = $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
 
             if($isLandingPageEnabled) {
                 $breadcrumbs->addCrumb(Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER, array(
