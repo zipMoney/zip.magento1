@@ -178,10 +178,11 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     protected function getCheckoutOrder()
     {
         $order = new CheckoutOrder();
+        $quote = $this->getQuote()->reserveOrderId();
 
-        $reference = $this->getQuote()->getReservedOrderId();
-        $currency = $this->getQuote()->getQuoteCurrencyCode() ? $this->getQuote()->getQuoteCurrencyCode() : null;
-        $grandTotal = $this->getQuote()->getGrandTotal() ? $this->getQuote()->getGrandTotal() : 0.00;
+        $reference = $quote->getReservedOrderId() ?: null;
+        $currency = $quote->getQuoteCurrencyCode() ?: null;
+        $grandTotal = $quote->getGrandTotal() ?: 0.00;
 
         $order
         ->setReference($reference)

@@ -206,7 +206,6 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCheckoutStateFromSession() {
         $sessionData = $this->getCheckoutSessionData();
-        var_dump($sessionData); die;
         return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY] : null;
     }
 

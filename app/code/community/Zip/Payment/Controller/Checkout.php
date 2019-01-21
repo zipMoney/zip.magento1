@@ -287,7 +287,6 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
 
             // if current shopping cart has quote and is valid
             if($quote->getId() && $quote->getReservedOrderId() == $orderId) {
-
                 $this->placeOrderForCurrentQuote($quote, $onepage);
             }
             else {
@@ -328,6 +327,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
             ->save();
             
             $onepage->saveOrder();
+
         } catch(Exception $e) {
             throw $e;
         }
@@ -399,7 +399,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         $quote = Mage::getSingleton('sales/quote')->load($orderId, 'reserved_order_id');
 
         if(!$quote->getId()) {
-            Mage::throwException($this->getHelper()->__('Can\'t grab Shopping cart, payment can\'t be processed.'));
+            Mage::throwException($this->getHelper()->__('Could not grab Shopping cart, payment can\'t be processed.'));
         }
 
         try {
