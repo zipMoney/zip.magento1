@@ -168,11 +168,11 @@
                     <product_page>
                         <banner>
                             <enabled>0</enabled>
-                            <selector>#header-nav</selector>
+                            <selector>.add-to-cart</selector>
                         </banner>
                         <tagline>
                             <enabled>0</enabled>
-                            <selector>#header-nav</selector>
+                            <selector>.add-to-cart</selector>
                         </tagline>
                         <widget>
                             <enabled>1</enabled>
@@ -192,11 +192,11 @@
                         </banner>
                         <tagline>
                             <enabled>0</enabled>
-                            <selector>#header-nav</selector>
+                            <selector>.checkout-types.bottom</selector>
                         </tagline>
                         <widget>
                             <enabled>1</enabled>
-                            <selector>#header-nav</selector>
+                            <selector>.checkout-types.bottom</selector>
                         </widget>
                     </cart_page>
                     <checkout_page>
