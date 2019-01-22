@@ -146,6 +146,10 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
             Mage::throwException($this->getHelper()->__('The checkoutId does not exist'));
         }
 
+        $this->getHelper()->saveCheckoutSessionData(array(
+            Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY => $checkoutId
+        ));
+
         return $checkoutId;
 
     }

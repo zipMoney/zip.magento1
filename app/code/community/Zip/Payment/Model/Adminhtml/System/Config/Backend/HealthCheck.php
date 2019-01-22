@@ -23,6 +23,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const API_PRIVATE_KEY_INVALID_MESSAGE = 'Your API private key is empty or invalid';
     const API_PUBLIC_KEY_INVALID_MESSAGE = 'Your API public key is empty or invalid';
     const API_CREDENTIAL_INVALID_MESSAGE = 'Your API credential is invalid';
+    const MERCHANT_COUNTRY_NOT_SUPPORTED_MESSAGE = 'Your merchant country not been supported';
 
     const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
@@ -50,14 +51,19 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         $publicKey = $config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
         $privateKey = $config->getValue(self::CONFIG_PRIVATE_KEY_PATH);
 
+        // check if private key is empty
+        if(empty($privateKey)) {
+            $this->appendFailedItem(self::STATUS_ERROR, self::API_PRIVATE_KEY_INVALID_MESSAGE);
+        }
+
         // check if public key is empty
         if(empty($publicKey)) {
             $this->appendFailedItem(self::STATUS_ERROR, self::API_PUBLIC_KEY_INVALID_MESSAGE);
         }
 
-        // check if private key is empty
-        if(empty($privateKey)) {
-            $this->appendFailedItem(self::STATUS_ERROR, self::CONFIG_PRIVATE_KEY_PATH);
+        // check if current merchant country been supported
+        if(!$config->isMerchantCountrySupported()) {
+            $this->appendFailedItem(self::STATUS_ERROR, self::MERCHANT_COUNTRY_NOT_SUPPORTED_MESSAGE);
         }
 
         // check whether SSL is enabled

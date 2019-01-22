@@ -15,8 +15,8 @@
                     <fields/>
                 </zip_payment_group>
 
-                <zip_payment>
-                    <method type="group" translate="label comment">
+                <zip_payment_solution>
+                    <zip_payment type="group" translate="label comment">
                         <label><![CDATA[Zip Payment Solution]]></label>
                         <frontend_type>text</frontend_type>
                         <show_in_default>1</show_in_default>
@@ -31,7 +31,7 @@
                         <active_path>payment/zip_payment/active</active_path>
                         <comment><![CDATA[Zip Payment gives your customers the power to pay later, interest free &nbsp;&nbsp;<a href="https://zip.co/im-a-business" target="_blank">learn more</a><br/>Don't have an account? Click <a href="https://zippay.com.au/partner-sign-up/" target="_blank">here</a> to apply for a <strong>Zip Business Account</strong>]]></comment>
                         <fields>
-                            <status type="group" translate="label">
+                            <zip_payment_status type="group" translate="label">
                                 <label>Status</label>
                                 <frontend_type>text</frontend_type>
                                 <expanded>1</expanded>
@@ -61,8 +61,8 @@
                                         <show_in_store>1</show_in_store>
                                     </health_check>
                                 </fields>
-                            </status>
-                            <settings type="group" translate="label">
+                            </zip_payment_status>
+                            <zip_payment_settings type="group" translate="label">
                                 <label>Settings</label>
                                 <frontend_type>text</frontend_type>
                                 <show_in_default>1</show_in_default>
@@ -85,7 +85,7 @@
                                     </active>
                                     <environment translate="label">
                                         <label>Environment</label>
-                                        <tooltip>Set to 'Production' to start accepting Zip Payment on your website. Ensure your Zip Payment ID and Zip Payment Key are your 'Production' credentials if not in 'Test' mode</tooltip>
+                                        <tooltip>Only use "Production" in conjunction with production Zip partner credentials, and only use ‘Sandbox’ in conjunction with sandbox Zip partner credentials</tooltip>
                                         <config_path>payment/zip_payment/environment</config_path>
                                         <frontend_type>select</frontend_type>
                                         <source_model>zip_payment/adminhtml_system_config_source_environment</source_model>
@@ -104,7 +104,7 @@
                                     </credential_button>
                                     <private_key translate="label">
                                         <label>Private Key</label>
-                                        <tooltip>Enter the Zip Merchant Private key which is provided to you on setup of your Merchant Account. Note: may be different for 'Sandbox' or 'Production' environment</tooltip>
+                                        <tooltip>Enter the "Zip Partner Private Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
                                         <config_path>payment/zip_payment/private_key</config_path>
                                         <frontend_type>obscure</frontend_type>
                                         <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
@@ -115,7 +115,7 @@
                                     </private_key>
                                     <public_key>
                                         <label>Public Key</label>
-                                        <tooltip>Enter the Zip Merchant Public Key provided to you on setup of your Merchant Account. Note: may be different for 'Sandbox' or 'Production' environment</tooltip>
+                                        <tooltip>Enter the "Zip Partner Public Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
                                         <config_path>payment/zip_payment/public_key</config_path>
                                         <frontend_type>text</frontend_type>
                                         <sort_order>60</sort_order>
@@ -123,7 +123,7 @@
                                         <show_in_website>1</show_in_website>
                                         <show_in_store>0</show_in_store>
                                     </public_key>
-                                    <advanced type="group" translate="label">
+                                    <zip_payment_setting_advanced type="group" translate="label">
                                         <label>Advanced Settings</label>
                                         <frontend_class>config-advanced</frontend_class>
                                         <frontend_type>text</frontend_type>
@@ -132,7 +132,7 @@
                                         <show_in_store>1</show_in_store>
                                         <sort_order>100</sort_order>
                                         <fields>
-                                            <checkout type="group" translate="label">
+                                            <zip_payment_setting_checkout type="group" translate="label">
                                                 <label>Checkout</label>
                                                 <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
@@ -176,7 +176,7 @@
                                                     <display_mode translate="label">
                                                         <label>Display Mode</label>
                                                         <tooltip>Select display mode for Zip Checkout, popup or redirect</tooltip>
-                                                        <comment>This setting is used to identify how can we handle checkout authneitcation and confirmation from Zip</comment>
+                                                        <comment>This setting is used to identify how can we handle checkout authentication and confirmation from Zip</comment>
                                                         <config_path>payment/zip_payment/checkout/display_mode</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>zip_payment/adminhtml_system_config_source_displayMode</source_model>
@@ -219,7 +219,7 @@
                                                         <show_in_store>1</show_in_store>
                                                     </sort_order>
 
-                                                     <referred type="group" translate="label">
+                                                     <zip_payment_setting_referred type="group" translate="label">
                                                         <label>Referred Appication</label>
                                                         <frontend_type>text</frontend_type>
                                                         <show_in_default>1</show_in_default>
@@ -228,9 +228,9 @@
                                                         <sort_order>90</sort_order>
                                                         <fields>
                                                             <order_creation translate="label">
-                                                                <label>Create Order</label>
-                                                                <tooltip>Select 'Yes' to create a order for referred checkot which need additonal review</tooltip>
-                                                                <comment>The default value is 'Yes', always create a new order for referred checkout</comment>
+                                                                <label>Order Handling</label>
+                                                                <tooltip>Zip Money refer application default order handling</tooltip>
+                                                                <comment>Required for Zip Money product only. The default value is “Yes”, create order for referred application</comment>
                                                                 <config_path>payment/zip_payment/checkout/referred/order_creation</config_path>
                                                                 <frontend_type>select</frontend_type>
                                                                 <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -252,11 +252,11 @@
                                                                 <show_in_store>0</show_in_store>
                                                             </order_status>
                                                         </fields>
-                                                    </referred>
+                                                    </zip_payment_setting_referred>
                                                 </fields>
-                                            </checkout>
+                                            </zip_payment_setting_checkout>
 
-                                            <country_currency type="group" translate="label">
+                                            <zip_payment_setting_country_currency type="group" translate="label">
                                                 <label>Country and Currency</label>
                                                 <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
@@ -298,9 +298,9 @@
                                                         <sort_order>30</sort_order>
                                                     </allowed_currencies>
                                                 </fields>
-                                            </country_currency>
+                                            </zip_payment_setting_country_currency>
 
-                                            <api type="group" translate="label">
+                                            <zip_payment_setting_api type="group" translate="label">
                                                 <label>API</label>
                                                 <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
@@ -332,9 +332,9 @@
                                                         <show_in_store></show_in_store>
                                                     </tokenisation> -->
                                                 </fields>
-                                            </api>
+                                            </zip_payment_setting_api>
 
-                                            <debug type="group" translate="label">
+                                            <zip_payment_setting_debug type="group" translate="label">
                                                 <label>Debug Mode</label>
                                                 <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
@@ -371,9 +371,9 @@
                                                     </log_level>
 
                                                 </fields>
-                                            </debug>
+                                            </zip_payment_setting_debug>
 
-                                            <admin_notification type="group" translate="label">
+                                            <zip_payment_setting_admin_notification type="group" translate="label">
                                                 <label>Admin Notification</label>
                                                 <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
@@ -393,13 +393,13 @@
                                                         <show_in_store>1</show_in_store>
                                                     </enabled>
                                                 </fields>
-                                            </admin_notification>
+                                            </zip_payment_setting_admin_notification>
                                         </fields>
-                                    </advanced>
+                                    </zip_payment_setting_advanced>
                                 </fields>
-                            </settings>
+                            </zip_payment_settings>
 
-                            <widgets type="group" translate="label">
+                            <zip_payment_widgets type="group" translate="label">
                                 <label>Widgets and Banners</label>
                                 <frontend_type>text</frontend_type>
                                 <show_in_default>1</show_in_default>
@@ -407,31 +407,53 @@
                                 <show_in_store>1</show_in_store>
                                 <sort_order>30</sort_order>
                                 <frontend_model>zip_payment/adminhtml_system_config_fieldset_expanded</frontend_model>
+                                <comment><![CDATA[<p>Display Zip Payment marketing banner and popup on home page to give customers more information and increase conversions</p>]]></comment>
                                 <expanded>0</expanded>
                                 <fields>
-                                    <home_page type="group" translate="label">
+                                    <zip_payment_widgets_home_page type="group" translate="label">
                                         <label>Home Page</label>
                                         <frontend_type>text</frontend_type>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
                                         <show_in_store>1</show_in_store>
-                                        <sort_order>20</sort_order>
+                                        <sort_order>10</sort_order>
                                         <fields>
-                                            <banner translate="label comment">
-                                                <label>Display Strip Banner</label>
-                                                <tooltip>Display Zip Payment marketing banner and popup on home page to give customers more information and increase conversions</tooltip>
-                                                <config_path>payment/zip_payment/widgets/home_page/banner</config_path>
-                                                <sort_order>10</sort_order>
-                                                <frontend_type>select</frontend_type>
-                                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                            <zip_payment_widgets_home_page_banner type="group" translate="label">
+                                                <label>Strip Banner</label>
+                                                <expanded>1</expanded>
+                                                <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                            </banner>
+                                                <sort_order>10</sort_order>
+                                                <fields>
+                                                    <enabled translate="label comment">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Select 'Yes' to enable Strip Banner</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/home_page/banner/enabled</config_path>
+                                                        <sort_order>10</sort_order>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                    <selector translate="label comment">
+                                                        <label>Element selector</label>
+                                                        <tooltip>Enter HTML element selector to insert widget in any places</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/home_page/banner/selector</config_path>
+                                                        <sort_order>20</sort_order>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </selector>
+                                                </fields>
+                                            </zip_payment_widgets_home_page_banner>
                                         </fields>
-                                    </home_page>
+                                    </zip_payment_widgets_home_page>
 
-                                    <product_page type="group" translate="label">
+                                    <zip_payment_widgets_product_page type="group" translate="label">
                                         <label>Product Page</label>
                                         <frontend_type>text</frontend_type>
                                         <show_in_default>1</show_in_default>
@@ -439,43 +461,106 @@
                                         <show_in_store>1</show_in_store>
                                         <sort_order>20</sort_order>
                                         <fields>
-                                            <widget translate="label comment">
-                                                <label>Display Widget</label>
-                                                <tooltip>Display Zip Payment marketing widget and popup on product pages to give customers more information and increase conversions</tooltip>
-                                                <config_path>payment/zip_payment/widgets/product_page/widget</config_path>
+                                            <zip_payment_widgets_product_page_banner type="group" translate="label">
+                                                <label>Strip Banner</label>
+                                                <expanded>1</expanded>
+                                                <frontend_type>text</frontend_type>
+                                                <show_in_default>1</show_in_default>
+                                                <show_in_website>1</show_in_website>
+                                                <show_in_store>1</show_in_store>
                                                 <sort_order>10</sort_order>
-                                                <frontend_type>select</frontend_type>
-                                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                <fields>
+                                                    <enabled translate="label comment">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Select 'Yes' to enable Strip Banner</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/product_page/banner/enabled</config_path>
+                                                        <sort_order>10</sort_order>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                    <selector translate="label comment">
+                                                        <label>Element selector</label>
+                                                        <tooltip>Enter HTML element selector to insert widget in any places</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/product_page/banner/selector</config_path>
+                                                        <sort_order>20</sort_order>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </selector>
+                                                </fields>
+                                            </zip_payment_widgets_product_page_banner>
+                                            <zip_payment_widgets_product_page_tagline type="group" translate="label">
+                                                <label>Tagline</label>
+                                                <expanded>1</expanded>
+                                                <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                            </widget>
-                                            <banner translate="label comment">
-                                                <label>Display Strip Banner</label>
-                                                <tooltip>Display Zip Payment marketing banner and popup on product pages to give customers more information and increase conversions</tooltip>
-                                                <config_path>payment/zip_payment/widgets/product_page/banner</config_path>
                                                 <sort_order>20</sort_order>
-                                                <frontend_type>select</frontend_type>
-                                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                <fields>
+                                                    <enabled translate="label comment">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Select 'Yes' to enable Tagline</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/product_page/tagline/enabled</config_path>
+                                                        <sort_order>10</sort_order>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                    <selector translate="label comment">
+                                                        <label>Element selector</label>
+                                                        <tooltip>Enter HTML element selector to insert widget in any places</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/product_page/tagline/selector</config_path>
+                                                        <sort_order>20</sort_order>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </selector>
+                                                </fields>
+                                            </zip_payment_widgets_product_page_tagline>
+                                            <zip_payment_widgets_product_page_widget type="group" translate="label">
+                                                <label>Widget</label>
+                                                <expanded>1</expanded>
+                                                <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                            </banner>
-                                            <tagline translate="label">
-                                                <label>Display Tagline</label>
-                                                <tooltip>Display the Tagline</tooltip>
-                                                <config_path>payment/zip_payment/widgets/product_page/tagline</config_path>
-                                                <frontend_type>select</frontend_type>
-                                                <source_model>adminhtml/system_config_source_yesno</source_model>
                                                 <sort_order>30</sort_order>
-                                                <show_in_default>1</show_in_default>
-                                                <show_in_website>1</show_in_website>
-                                                <show_in_store>1</show_in_store>
-                                            </tagline>
+                                                <fields>
+                                                    <enabled translate="label comment">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Select 'Yes' to enable Widget</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/product_page/widget/enabled</config_path>
+                                                        <sort_order>10</sort_order>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                    <selector translate="label comment">
+                                                        <label>Element selector</label>
+                                                        <tooltip>Enter HTML element selector to insert widget in any places</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/product_page/widget/selector</config_path>
+                                                        <sort_order>20</sort_order>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </selector>
+                                                </fields>
+                                            </zip_payment_widgets_product_page_widget>
                                         </fields>
-                                    </product_page>
+                                    </zip_payment_widgets_product_page>
 
-                                    <category_page type="group" translate="label">
+                                    <zip_payment_widgets_category_page type="group" translate="label">
                                         <label>Category Page</label>
                                         <frontend_type>text</frontend_type>
                                         <show_in_default>1</show_in_default>
@@ -483,21 +568,42 @@
                                         <show_in_store>1</show_in_store>
                                         <sort_order>30</sort_order>
                                         <fields>
-                                            <banner translate="label comment">
-                                                <label>Display Strip Banner</label>
-                                                <tooltip>Display Zip Payment marketing banner and popup on category pages to give customers more information and increase conversions</tooltip>
-                                                <config_path>payment/zip_payment/widgets/category_page/banner</config_path>
-                                                <sort_order>10</sort_order>
-                                                <frontend_type>select</frontend_type>
-                                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                            <zip_payment_widgets_category_page_banner type="group" translate="label">
+                                                <label>Strip Banner</label>
+                                                <expanded>1</expanded>
+                                                <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                            </banner>
+                                                <sort_order>10</sort_order>
+                                                <fields>
+                                                    <enabled translate="label comment">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Select 'Yes' to enable Strip Banner</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/category_page/banner/enabled</config_path>
+                                                        <sort_order>10</sort_order>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                    <selector translate="label comment">
+                                                        <label>Element selector</label>
+                                                        <tooltip>Enter HTML element selector to insert widget in any places</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/category_page/banner/selector</config_path>
+                                                        <sort_order>20</sort_order>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </selector>
+                                                </fields>
+                                            </zip_payment_widgets_category_page_banner>
                                         </fields>
-                                    </category_page>
+                                    </zip_payment_widgets_category_page>
 
-                                    <cart_page type="group" translate="label">
+                                    <zip_payment_widgets_cart_page type="group" translate="label">
                                         <label>Cart Page</label>
                                         <frontend_type>text</frontend_type>
                                         <show_in_default>1</show_in_default>
@@ -505,43 +611,106 @@
                                         <show_in_store>1</show_in_store>
                                         <sort_order>40</sort_order>
                                         <fields>
-                                            <widget translate="label comment">
-                                                <label>Display Widget</label>
-                                                <tooltip>Display Zip Payment marketing widget and popup on the cart page to give customers more information and increase conversions</tooltip>
-                                                <config_path>payment/zip_payment/widgets/cart_page/widget</config_path>
+                                            <zip_payment_widgets_cart_page_banner type="group" translate="label">
+                                                <label>Strip Banner</label>
+                                                <expanded>1</expanded>
+                                                <frontend_type>text</frontend_type>
+                                                <show_in_default>1</show_in_default>
+                                                <show_in_website>1</show_in_website>
+                                                <show_in_store>1</show_in_store>
                                                 <sort_order>10</sort_order>
-                                                <frontend_type>select</frontend_type>
-                                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                <fields>
+                                                    <enabled translate="label comment">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Select 'Yes' to enable Strip Banner</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/cart_page/banner/enabled</config_path>
+                                                        <sort_order>10</sort_order>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                    <selector translate="label comment">
+                                                        <label>Element selector</label>
+                                                        <tooltip>Enter HTML element selector to insert widget in any places</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/cart_page/banner/selector</config_path>
+                                                        <sort_order>20</sort_order>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </selector>
+                                                </fields>
+                                            </zip_payment_widgets_cart_page_banner>
+                                            <zip_payment_widgets_cart_page_tagline type="group" translate="label">
+                                                <label>Tagline</label>
+                                                <expanded>1</expanded>
+                                                <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                            </widget>
-                                            <banner translate="label comment">
-                                                <label>Display Strip Banner</label>
-                                                <tooltip>Display Zip Payment marketing banner and popup on cart pages to give customers more information and increase conversions</tooltip>
-                                                <config_path>payment/zip_payment/widgets/cart_page/banner</config_path>
                                                 <sort_order>20</sort_order>
-                                                <frontend_type>select</frontend_type>
-                                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                <fields>
+                                                    <enabled translate="label comment">
+                                                        <label>Enabled</label>
+                                                        <tooltip>Select 'Yes' to enable Tagline</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/cart_page/tagline/enabled</config_path>
+                                                        <sort_order>10</sort_order>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                    <selector translate="label comment">
+                                                        <label>Element selector</label>
+                                                        <tooltip>Enter HTML element selector to insert widget in any places</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/cart_page/tagline/selector</config_path>
+                                                        <sort_order>20</sort_order>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </selector>
+                                                </fields>
+                                            </zip_payment_widgets_cart_page_tagline>
+                                            <zip_payment_widgets_cart_page_widget type="group" translate="label">
+                                                <label>Widget</label>
+                                                <expanded>1</expanded>
+                                                <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                            </banner>
-                                            <tagline translate="label">
-                                                <label>Display Tagline</label>
-                                                <tooltip>Display the Tagline</tooltip>
-                                                <config_path>payment/zip_payment/widgets/cart_page/tagline</config_path>
-                                                <frontend_type>select</frontend_type>
-                                                <source_model>adminhtml/system_config_source_yesno</source_model>
                                                 <sort_order>30</sort_order>
-                                                <show_in_default>1</show_in_default>
-                                                <show_in_website>1</show_in_website>
-                                                <show_in_store>1</show_in_store>
-                                            </tagline>
+                                                <fields>
+                                                    <enabled translate="label comment">
+                                                        <label>Enabledt</label>
+                                                        <tooltip>Select 'Yes' to enable Widget</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/cart_page/widget/enabled</config_path>
+                                                        <sort_order>10</sort_order>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </enabled>
+                                                    <selector translate="label comment">
+                                                        <label>Element selector</label>
+                                                        <tooltip>Enter HTML element selector to insert widget in any places</tooltip>
+                                                        <config_path>payment/zip_payment/widgets/cart_page/widget/selector</config_path>
+                                                        <sort_order>20</sort_order>
+                                                        <frontend_type>text</frontend_type>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </selector>
+                                                </fields>
+                                            </zip_payment_widgets_cart_page_widget>
                                         </fields>
-                                    </cart_page>
+                                    </zip_payment_widgets_cart_page>
 
-                                    <landing_page type="group" translate="label">
+                                    <zip_payment_widgets_landing_page type="group" translate="label">
                                         <label>Landing Page</label>
                                         <frontend_type>text</frontend_type>
                                         <show_in_default>1</show_in_default>
@@ -563,12 +732,12 @@
                                                 <sort_order>10</sort_order>
                                             </enabled>
                                         </fields>
-                                    </landing_page>
+                                    </zip_payment_widgets_landing_page>
                                 </fields>
-                            </widgets>
+                            </zip_payment_widgets>
                         </fields>
-                    </method>
-                </zip_payment>
+                    </zip_payment>
+                </zip_payment_solution>
             </groups>
         </payment>
     </sections>

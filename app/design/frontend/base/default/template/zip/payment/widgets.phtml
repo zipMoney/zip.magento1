@@ -1,0 +1,17 @@
+<?php if($this->isActive()): ?>
+
+<script type="text/javascript">
+
+// Zip widgets configuration
+var zip_configurable_widgets = {};
+
+<?php foreach($this->getElementSelectors() as $key => $selector): ?>
+zip_configurable_widgets.<?= $key ?>="<?= $selector ?>";
+<?php endforeach; ?>
+
+</script>
+
+<div data-zm-merchant="<?= $this->getMerchantId() ?>" data-env="<?= $this->getEnvironment()?>"></div>
+<script type="text/javascript" src="<?= $this->getLibScript() ?>"></script>
+
+<?php endif; ?>

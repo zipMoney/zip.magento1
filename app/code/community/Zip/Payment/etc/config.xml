@@ -159,25 +159,51 @@
                     <enabled>1</enabled>
                 </admin_notification>
                 <widgets>
-                    <enabled>1</enabled>
                     <home_page>
-                        <banner>1</banner>
+                        <banner>
+                            <enabled>1</enabled>
+                            <selector>#header-nav</selector>
+                        </banner>
                     </home_page>
                     <product_page>
-                        <banner>0</banner>
-                        <tagline>0</tagline>
-                        <widget>1</widget>
+                        <banner>
+                            <enabled>0</enabled>
+                            <selector>#header-nav</selector>
+                        </banner>
+                        <tagline>
+                            <enabled>0</enabled>
+                            <selector>#header-nav</selector>
+                        </tagline>
+                        <widget>
+                            <enabled>1</enabled>
+                            <selector>#header-nav</selector>
+                        </widget>
                     </product_page>
                     <category_page>
-                        <banner>1</banner>
+                        <banner>
+                            <enabled>1</enabled>
+                            <selector>#header-nav</selector>
+                        </banner>
                     </category_page>
                     <cart_page>
-                        <banner>0</banner>
-                        <tagline>0</tagline>
-                        <widget>1</widget>
+                        <banner>
+                            <enabled>0</enabled>
+                            <selector>#header-nav</selector>
+                        </banner>
+                        <tagline>
+                            <enabled>0</enabled>
+                            <selector>#header-nav</selector>
+                        </tagline>
+                        <widget>
+                            <enabled>1</enabled>
+                            <selector>#header-nav</selector>
+                        </widget>
                     </cart_page>
                     <checkout_page>
-                        <widget>1</widget>
+                        <widget>
+                            <enabled>1</enabled>
+                            <selector>#header-nav</selector>
+                        </widget>
                     </checkout_page>
                     <landing_page>
                         <enabled>1</enabled>
@@ -229,7 +255,8 @@
                     <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
                 </admin_notification>
                 <widgets>
-                    <js_lib>https://static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget-js.min.js</js_lib>    
+                    <enabled>1</enabled>
+                    <js_lib>https://static.zipmoney.com.au/lib/js/zm-widget-js/dist/zip-widget-js.min.js</js_lib>
                 </widgets>
             </zip_payment>
         </payment>

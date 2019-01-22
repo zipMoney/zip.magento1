@@ -18,9 +18,8 @@ class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
     const CONFIG_ENVIRONMENT_PATH = 'payment/zip_payment/environment';
     const CONFIG_HOME_PAGE_PATH = 'web/default/cms_home_page';
-    
-    const ROOT_WIDGET_TYPES = array('head', 'root', 'popup');
-    const SUPPORTED_WIDGET_TYPES = array('widget', 'banner', 'tagline', 'inline');
+ 
+    const SUPPORTED_WIDGET_TYPES = array('widget', 'banner', 'tagline');
 
     /**
      * get merchant id from public key
@@ -47,52 +46,58 @@ class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
     /**
      * check is one widget type is enabled / active
      */
-    protected function isActive($widgetType) 
+    protected function isActive() 
     {
         if($this->getModelHelper()->isActive() && $this->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
 
             $pageType = $this->getWidgetPageType();
-   
-            if(!empty($pageType)) {
 
-                if(in_array($widgetType, self::ROOT_WIDGET_TYPES)) {
+            if(is_null($pageType)) {
+                return false;
+            }
 
-                    foreach(self::SUPPORTED_WIDGET_TYPES as $supportedWidgetType) {
-                        
-                        if($pageType == 'landing') {
-                            $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/enabled';
-                        }
-                        else {
-                            $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $supportedWidgetType;
-                        }
-                        
-                        $enabled = $this->getConfig()->getValue($path);
-                        
-                        /**
-                         * Make sure there one widget type is enable for current page type
-                         */
-                        if(!is_null($enabled) && boolval($enabled)) {
-                            return true;
-                        }
-                    }
-    
-                    return false;
-    
+            if($pageType == 'landing') {
+                return $this->getConfig()->getFlag(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/enabled');
+            }
+
+            foreach(self::SUPPORTED_WIDGET_TYPES as $widgetType) {
+                
+                $enabled = $this->getConfig()->getValue(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType . '/enabled');
+                
+                /**
+                 * Make sure there one widget type is enable for current page type
+                 */
+                if(!is_null($enabled) && boolval($enabled)) {
+                    return true;
                 }
-                elseif(in_array($widgetType, self::SUPPORTED_WIDGET_TYPES)) {
-    
-                    if(!empty($widgetType)) {
-                        $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType;
-                        return $this->getConfig()->getFlag($path);
-                    }
-    
-                }
-
             }
 
         }
 
         return false;
+    }
+
+    /**
+     * get element selectors for current widgets
+     */
+    protected function getElementSelectors() 
+    {
+        $selectors = array();
+
+        foreach(self::SUPPORTED_WIDGET_TYPES as $widgetType) {
+
+            $pageType = $this->getWidgetPageType();
+            $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType;
+            $enabled = $this->getConfig()->getValue($path . '/enabled');
+
+            if(!is_null($enabled) && boolval($enabled)) {
+                $widgetType = $widgetType == 'widget' ? $pageType . '_' . $widgetType : $widgetType;
+                $selectors[$widgetType] = $this->getConfig()->getValue($path . '/selector');
+            }
+
+        }
+
+        return $selectors;
     }
 
     /**

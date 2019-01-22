@@ -2,6 +2,29 @@
 <layout version="0.1.0">
 
     <!-- 
+        Zip Payment Widgets 
+    -->
+
+    <default>
+        <reference name="before_body_end">
+            <block type="zip_payment/widget" name="zip.payment.widget" template="zip/payment/widgets.phtml"/> 
+        </reference>
+    </default>
+
+    <!-- 
+        checkout pages 
+    -->
+
+    <!-- Layout handler for Onestep Checkout -->
+    <checkout_layout_hander>
+        <reference name="before_body_end">
+            <block type="zip_payment/checkout_overlay" name="zip.payment.checkout.overlay" template="zip/payment/checkout/overlay.phtml"/>
+            <block type="zip_payment/checkout_script" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
+        </reference>
+    </checkout_layout_hander>
+    <!-- End Layout handler for Onestep Checkout -->
+
+    <!-- 
         Zip Payment Pages 
     -->
 
@@ -52,131 +75,5 @@
 
     </zip_payment_checkout_referred>
     <!-- End Referred page -->
-
-    <!-- 
-        Zip Payment Widgets 
-    -->
-
-    <!-- Home page -->
-    <cms_index_index>
-
-        <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>   
-        </reference>
-
-        <reference name="content">
-            <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
-        </reference>   
-
-        <reference name="top.menu">
-            <block type="zip_payment/widget" name="zip.payment.widget.banner" template="zip/payment/widgets/banner.phtml" />
-        </reference>
-
-    </cms_index_index>
-    <!-- End Home page -->
-
-    <!-- Product page -->
-    <catalog_product_view>
-
-        <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>   
-        </reference>
-
-        <reference name="content">
-            <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
-        </reference>
-
-        <reference name="top.menu">
-            <block type="zip_payment/widget" name="zip.payment.widget.banner" template="zip/payment/widgets/banner.phtml" />
-        </reference>
-  
-        <reference name="product.info.extrahint">
-            <block type="zip_payment/widget" name="zip.payment.widget.tagline" template="zip/payment/widgets/tagline.phtml" />
-        </reference>
-        
-        <reference name="product.info.addtocart">
-            <block type="zip_payment/widget" name="zip.payment.widget.popup" template="zip/payment/widgets/popup.phtml" />
-        </reference>
-  
-    </catalog_product_view>
-    <!-- End Product page -->
-
-    <!-- Category page -->
-    <catalog_category_default>
-
-        <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>   
-        </reference>
-
-        <reference name="content">
-            <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
-        </reference>
-
-        <reference name="top.menu">
-            <block type="zip_payment/widget" name="zip.payment.widget.banner" template="zip/payment/widgets/banner.phtml" />
-        </reference>
-
-    </catalog_category_default>
-
-    <catalog_category_layered>
-    
-        <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>   
-        </reference>
-
-        <reference name="content">
-            <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
-        </reference>
-
-        <reference name="top.menu">
-            <block type="zip_payment/widget" name="zip.payment.widget.banner" template="zip/payment/widgets/banner.phtml" />
-        </reference>
-
-    </catalog_category_layered>
-    <!-- End Category page -->
-
-    <!-- Cart page -->
-    <checkout_cart_index>	
-
-        <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>   
-        </reference>
-
-        <reference name="content">
-            <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
-        </reference>
-
-        <reference name="top.menu">
-            <block type="zip_payment/widget" name="zip_payment.widget.banner" template="zip/payment/widgets/banner.phtml" />
-        </reference>
-  
-        <reference name="checkout.cart.methods">
-            <block type="zip_payment/widget" name="zip_payment.widget.tagline" template="zip/payment/widgets/tagline.phtml" />
-            <block type="zip_payment/widget" name="zip_payment.widget.widget" template="zip/payment/widgets/popup.phtml" after="-" />
-        </reference>
-
-    </checkout_cart_index>
-    <!-- End Cart page -->
-
-    <!-- 
-        checkout pages 
-    -->
-
-    <!-- Layout handler for Onestep Checkout -->
-    <checkout_layout_hander>
-        <reference name="head">
-            <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>
-        </reference>
-
-        <reference name="content">
-            <block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"/>
-        </reference>
-
-        <reference name="before_body_end">
-            <block type="zip_payment/checkout_overlay" name="zip.payment.checkout.overlay" template="zip/payment/checkout/overlay.phtml"/>
-            <block type="zip_payment/checkout_script" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
-        </reference>
-    </checkout_layout_hander>
-    <!-- End Layout handler for Onestep Checkout -->
 
 </layout> 

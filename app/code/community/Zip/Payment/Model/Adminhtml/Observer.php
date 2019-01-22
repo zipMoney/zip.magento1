@@ -68,7 +68,7 @@ class Zip_Payment_Model_Adminhtml_Observer
     {
         $paymentGroups = $observer->getEvent()->getConfig()->getNode('sections/payment/groups');
 
-        $payments = $paymentGroups->xpath('zip_payment/*');
+        $payments = $paymentGroups->xpath('zip_payment_solution/*');
         
         foreach ($payments as $payment) {
             $fields = $paymentGroups->xpath((string)$payment->group . '/fields');

@@ -374,6 +374,8 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 
                 $checkoutId = $this->_getHelper()->getCheckoutIdFromSession();
 
+                $this->getLogger()->debug($this->_getHelper()->__("Checkout ID: " . $checkoutId));
+
                 if($checkoutId) {
 
                     // Create Charge
