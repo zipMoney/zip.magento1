@@ -146,10 +146,6 @@
                     <specific_countries>AU</specific_countries>
                     <allowed_currencies>AUD</allowed_currencies>
                 </country_currency>
-                <api>
-                    <timeout>20</timeout>
-                    <tokenisation>0</tokenisation>
-                </api>
                 <debug>
                     <enabled>1</enabled>
                     <log_level>6</log_level>
@@ -168,15 +164,15 @@
                     <product_page>
                         <banner>
                             <enabled>0</enabled>
-                            <selector>.add-to-cart</selector>
+                            <selector>#header-nav</selector>
                         </banner>
                         <tagline>
                             <enabled>0</enabled>
-                            <selector>.add-to-cart</selector>
+                            <selector>.product-shop .product-options-bottom</selector>
                         </tagline>
                         <widget>
                             <enabled>1</enabled>
-                            <selector>#header-nav</selector>
+                            <selector>.product-shop .product-options-bottom</selector>
                         </widget>
                     </product_page>
                     <category_page>
@@ -200,10 +196,10 @@
                         </widget>
                     </cart_page>
                     <checkout_page>
-                        <widget>
+                        <banner>
                             <enabled>1</enabled>
                             <selector>#header-nav</selector>
-                        </widget>
+                        </banner>
                     </checkout_page>
                     <landing_page>
                         <enabled>1</enabled>
@@ -248,6 +244,10 @@
                     <supported_countries>AU</supported_countries>
                     <supported_currencies>AUD</supported_currencies>
                 </country_currency>
+                <api>
+                    <timeout>0</timeout>
+                    <tokenisation>0</tokenisation>
+                </api>
                 <debug>
                     <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
                 </debug>

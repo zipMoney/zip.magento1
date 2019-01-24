@@ -189,7 +189,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     {
         $this->paymentAction || $this->paymentAction = $this->isCheckoutReferred() ? self::ACTION_ORDER : parent::getConfigPaymentAction();
 
-        $this->getLogger()->debug($this->_getHelper()->__('Zip_Payment_Model_Method - get Configuration action: ' . $this->paymentAction));
+        $this->getLogger()->debug('Zip_Payment_Model_Method - get Configuration action: ' . $this->paymentAction);
 
         return $this->paymentAction;
     }
@@ -232,19 +232,25 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     protected function createCheckout()
     {
-        $this->getLogger()->debug($this->_getHelper()->__('Zip_Payment_Model_Method - Create Checkout'));
+        $this->getLogger()->debug('Zip_Payment_Model_Method - Create Checkout');
 
-        $quote = $this->getQuote();
+        $this->getQuote()->collectTotals();
 
-        if (!$quote->hasItems() || $quote->getHasError()) {
-            Mage::throwException($this->_getHelper()->__('Unable to initialize the Checkout.'));
+        if (!$this->getQuote()->getGrandTotal() && !$this->getQuote()->hasNominalItems()) {
+            Mage::throwException($this->_getHelper()->__('Does not support processing orders with zero amount.'));
         }
 
         try {
 
+            $quote = $this->getQuote()->reserveOrderId()->save();
+
+            if (!$quote->hasItems() || $quote->getHasError()) {
+                Mage::throwException($this->_getHelper()->__('Unable to initialize the Checkout.'));
+            }
+
             // Create Checkout
             $checkout = Mage::getModel('zip_payment/api_checkout', $this->getApiConfig())
-            ->create($quote);
+            ->create();
 
             return $checkout;
 
@@ -265,7 +271,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function order(Varien_Object $payment, $amount)
     {
-        $this->getLogger()->debug($this->_getHelper()->__('Zip_Payment_Model_Method - order'));
+        $this->getLogger()->debug('Zip_Payment_Model_Method - order');
 
         if (!$this->canOrder()) {
             Mage::throwException(Mage::helper('payment')->__('Order action is not available.'));
@@ -495,7 +501,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         $chargeId = $payment->getParentTransactionID();
         $storeId = $payment->getOrder()->getStoreId();
 
-        $this->getLogger()->debug($this->_getHelper()->__('Cancel Charge For Order: ' . $orderId));
+        $this->getLogger()->debug('Cancel Charge For Order: ' . $orderId);
 
         try {
 

@@ -30,29 +30,34 @@ if('Zip' in window && Zip.Checkout) {
                         onComplete: function (data) {
                             
                             var url = Zip.Checkout.settings.responseUrl + data.state;
+
+                            switch(data.state) {
+                                case 'approved': 
+                                    Zip.Checkout.redirectTo(url);
+                                break;
+                                case 'cancelled':
+                                    Zip.Checkout.hideOverlay();
+                                    return;
+                                default:
+                                    $j.ajax({
+                                        url: url,
+                                        type: 'GET',
+                                        success: function(resp) {
+
+                                            if(resp.error_message) {
+                                                Zip.Checkout.hideOverlay();
+                                                alert(resp.error_message);
+                                            }
+                                            else if(resp.redirect_url) {
+                                                Zip.Checkout.redirectTo(resp.redirect_url);
+                                            }
+                                            
+                                        }
+                                    });
+                                break;
+
+                            }
                             
-                            if(data.state == 'approved') {
-                                Zip.Checkout.redirectTo(url);
-                            }
-                            else {
-
-                                $j.ajax({
-                                    url: url,
-                                    type: 'GET',
-                                    success: function(resp) {
-
-                                        if(resp.error_message) {
-                                            Zip.Checkout.hideOverlay();
-                                            alert(resp.error_message);
-                                        }
-                                        else if(resp.redirect_url) {
-                                            Zip.Checkout.redirectTo(resp.redirect_url);
-                                        }
-                                        
-                                    }
-                                });
-
-                            }
                         },
                         onError: function (data) {
                             if(data.state) {

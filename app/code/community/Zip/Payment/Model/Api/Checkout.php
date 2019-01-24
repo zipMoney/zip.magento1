@@ -11,8 +11,8 @@
 use \Zip\Model\CreateCheckoutRequest;
 use \Zip\Api\CheckoutApi;
 use \Zip\Model\CheckoutOrder;
-use \Zip\Model\Shopper;
 use \Zip\Model\Address;
+use \Zip\Model\Shopper;
 use \Zip\Model\CheckoutConfiguration;
 use \Zip\ApiException;
 
@@ -26,6 +26,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 
     const STATE_CREATED = 'created';
     const STATE_EXPIRED = 'expired';
+    const STATE_REFERRED = 'referred';
     const STATE_APPROVED = 'approved';
     const STATE_COMPLETED = 'completed';
     const STATE_CANCELLED = 'cancelled';
@@ -178,7 +179,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     protected function getCheckoutOrder()
     {
         $order = new CheckoutOrder();
-        $quote = $this->getQuote()->reserveOrderId();
+        $quote = $this->getQuote();
 
         $reference = $quote->getReservedOrderId() ?: null;
         $currency = $quote->getQuoteCurrencyCode() ?: null;

@@ -22,7 +22,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             return;
         }
 
-        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - responseAction'));
+        $this->getLogger()->debug('Zip_Payment_CheckoutController - responseAction');
         $this->getHelper()->getCheckoutSession()->getMessages(true);
 
         // get response result
@@ -30,11 +30,8 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         // get checkout id from checkout url parameter
         // filter the result to remove additional GTM string
         $checkoutId = preg_replace('/\?.+$/', '', $this->getRequest()->getParam(self::URL_PARAM_CHECKOUT_ID) ?: '');
-        $this->getLogger()->debug($this->getHelper()->__('Checkout Result from url: %s', $result));
-        $this->getLogger()->debug($this->getHelper()->__('Checkout ID from url: %s', $checkoutId));
 
         $this->processResponseResult($checkoutId, $result);
-
     }
 
     /**
@@ -76,14 +73,14 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             return;
         }
 
-        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - failure action'));
+        $this->getLogger()->debug('Zip_Payment_CheckoutController - failure action');
 
         try {
 
             $this->loadLayout();
             $this->createBreadCrumbs('zip_payment_checkout_failure', 'Checkout Failure');
             $this->renderLayout();
-            $this->getLogger()->debug($this->getHelper()->__('Successfully redirect to the failure page.'));
+            $this->getLogger()->debug('Successfully redirect to the failure page.');
 
         } catch (Exception $e) {
             $this->getLogger()->error(json_encode($this->getRequest()->getParams()));
@@ -101,14 +98,14 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             return;
         }
         
-        $this->getLogger()->debug($this->getHelper()->__('Zip_Payment_CheckoutController - referred action'));
+        $this->getLogger()->debug('Zip_Payment_CheckoutController - referred action');
 
         try {
 
             $this->loadLayout();
             $this->createBreadCrumbs('zip_payment_checkout_referred', 'Checkout Referred');
             $this->renderLayout();
-            $this->getLogger()->debug($this->getHelper()->__('Successfully redirect to the referred page.'));
+            $this->getLogger()->debug('Successfully redirect to the referred page.');
 
         } catch (Exception $e) {
             $this->getLogger()->error(json_encode($this->getRequest()->getParams()));

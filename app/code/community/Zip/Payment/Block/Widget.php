@@ -56,6 +56,10 @@ class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
                 return false;
             }
 
+            if($pageType == 'checkout') {
+                return true;
+            }
+
             if($pageType == 'landing') {
                 return $this->getConfig()->getFlag(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/enabled');
             }

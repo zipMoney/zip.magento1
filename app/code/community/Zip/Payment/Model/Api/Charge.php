@@ -24,8 +24,6 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
 
     protected $chargeId = null;
     protected $receiptNumber = null;
-
-    protected $order = null;
     protected $paymentAction = null;
 
     /**
@@ -109,7 +107,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
                 Mage::throwException($this->getHelper()->__('Invalid Charge'));
             }
 
-            $this->getLogger()->debug($this->getHelper()->__("Charge State: %s", $charge->getState()));
+            $this->getLogger()->debug('Charge State: ' . $charge->getState());
 
             $this->response = $charge;
 
@@ -128,7 +126,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     {
         try {
 
-            $this->getLogger()->debug("Cancel charge: " . $chargeId);
+            $this->getLogger()->debug('Cancel charge: '. $chargeId);
 
             $charge = $this->getApi()
             ->chargesCancel($chargeId, $this->getIdempotencyKey());
@@ -141,7 +139,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
                 Mage::throwException($this->getHelper()->__('Invalid Charge Cancel'));
             }
 
-            $this->getLogger()->debug($this->getHelper()->__("Charge State: %s", $charge->getState()));
+            $this->getLogger()->debug('Charge State: ' . $charge->getState());
 
             $this->response = $charge;
 
@@ -214,13 +212,6 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     protected function isImmediateCapture() 
     {
         return $this->paymentAction == Zip_Payment_Model_Method::ACTION_AUTHORIZE_CAPTURE;
-    }
-
-    /**
-     * get current order
-     */
-    protected function getOrder() {
-        return $this->order;
     }
 
     /**
