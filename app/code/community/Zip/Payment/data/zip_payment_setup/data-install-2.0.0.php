@@ -1,17 +1,17 @@
 <?php
 
-$layout = <<<EOF
-<reference name="head">
-    <block type="zip_payment/widget" name="zip.payment.widget.head" template="zip/payment/widgets/head.phtml"/>   
-</reference>
-EOF;
+// allow zip payment widget in block permission
+$widgetBlockName = 'zip_payment/widget';
+Mage::getModel('admin/block')->load($widgetBlockName,'block_name')
+->setData('block_name', $widgetBlockName)
+->setData('is_allowed', 1)
+->save();
 
-    
 $content = <<<EOF
-{{block type="zip_payment/widget" name="zip.payment.widget.root" template="zip/payment/widgets/root.phtml"}}
-{{block type="core/template" name="zip.payment.landing" template="zip/payment/widgets/landing.phtml"}}
+<div data-zm-asset="landingpage" data-zm-widget="inline"></div>
 EOF;
 
+// set up landing page
 $landingPageData = array(
     'title' => 'About Zip Payment',
     'root_template' => 'one_column',
@@ -20,7 +20,7 @@ $landingPageData = array(
     'identifier' => Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER,
     'content_heading' => 'About Zip Payment',
     'stores' => array(0),//available for all store views
-    'layout_update_xml' => $layout,
+    'layout_update_xml' => '',
     'content' => $content
 );
 
