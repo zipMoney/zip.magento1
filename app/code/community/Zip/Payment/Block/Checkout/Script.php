@@ -50,7 +50,7 @@ class Zip_Payment_Block_Checkout_Script extends Zip_Payment_Block_Template
      */
     public function getResponseUrl()
     {
-        return $this->getModelHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) . '?' . Zip_Payment_Controller_Checkout::URL_PARAM_RESULT . '=';
+        return $this->getModelHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) . '?' . Zip_Payment_Model_Config::URL_PARAM_RESULT . '=';
     }
 
     /**

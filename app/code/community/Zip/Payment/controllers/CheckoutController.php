@@ -26,12 +26,12 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         $this->getHelper()->getCheckoutSession()->getMessages(true);
 
         // get response result
-        $result = $this->getRequest()->getParam(self::URL_PARAM_RESULT);
+        $state = $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_RESULT);
         // get checkout id from checkout url parameter
         // filter the result to remove additional GTM string
-        $checkoutId = preg_replace('/\?.+$/', '', $this->getRequest()->getParam(self::URL_PARAM_CHECKOUT_ID) ?: '');
+        $checkoutId = preg_replace('/\?.+$/', '', $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_CHECKOUT_ID) ?: '');
 
-        $this->processResponseResult($checkoutId, $result);
+        Mage::getSingleton('zip_payment/checkout')->handleResponse($checkoutId, $state);
     }
 
     /**
@@ -43,16 +43,16 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             return;
         }
 
-        $checkoutId = Mage::helper('zip_payment')->getCheckoutIdFromSession();
-        $redirectUrl = Mage::helper('zip_payment')->getCheckoutRedirectUrlFromSession();
+        $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
+        $redirectUrl = $this->getHelper()->getCheckoutRedirectUrlFromSession();
 
         /**
          * re-generate checkout session data if there is any one empty
          */
         if(empty($checkoutId) || empty($redirectUrl)) {
-            Mage::helper('zip_payment')->getCurrentPaymentMethod()->getCheckoutRedirectUrl();
-            $checkoutId = Mage::helper('zip_payment')->getCheckoutIdFromSession();
-            $redirectUrl = Mage::helper('zip_payment')->getCheckoutRedirectUrlFromSession();
+            $this->getHelper()->getCurrentPaymentMethod()->getCheckoutRedirectUrl();
+            $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
+            $redirectUrl = $this->getHelper()->getCheckoutRedirectUrlFromSession();
         }
 
         $response = array(
@@ -61,7 +61,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             'redirect_uri' => $redirectUrl
         );
 
-        $this->returnJsonResponse($response);
+        $this->getHelper()->returnJsonResponse($response);
     }
 
     /**

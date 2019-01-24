@@ -87,17 +87,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getSingleton('checkout/type_onepage');
     }
-
-    /**
-     * Retrieve shopping cart model object
-     *
-     * @return Mage_Checkout_Model_Cart
-     */
-    public function getCart()
-    {
-        return Mage::getSingleton('checkout/cart');
-    }
-
+    
     /**
      * get payment method currently been used
      */
@@ -112,14 +102,27 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     public function emptyShoppingCart()
     {
         try {
-            $this->getCart()->truncate()->save();
-            $this->getCheckoutSession()->setCartWasUpdated(true);
+            $this->getCheckoutSession()
+            ->setQuoteId(null);
         } catch (Mage_Core_Exception $exception) {
             $this->getCheckoutSession()->addError($exception->getMessage());
         } catch (Exception $exception) {
             $this->getCheckoutSession()->addException($exception, $this->__('Cannot empty shopping cart'));
         }
     }
+
+    /**
+     * Prepare JSON formatted data for response to client
+     *
+     * @param $response
+     * @return Zend_Controller_Response_Abstract
+     */
+    public function returnJsonResponse($response)
+    {
+        Mage::app()->getFrontController()->getResponse()->setHeader('Content-type', 'application/json', true);
+        Mage::app()->getFrontController()->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+
 
     /******************************************* PAGE DETECTION ************************************************* */
 

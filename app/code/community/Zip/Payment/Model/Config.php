@@ -80,6 +80,12 @@ class Zip_Payment_Model_Config
     const CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH = 'payment/zip_payment/checkout/referred/order_status';
 
     /**
+     * Response 
+     */
+    const URL_PARAM_RESULT = 'result';
+    const URL_PARAM_CHECKOUT_ID = 'checkoutId';
+
+    /**
      * Charge
      */
     const PAYMENT_RECEIPT_NUMBER_KEY = 'receipt_number';

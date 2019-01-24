@@ -252,6 +252,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             $checkout = Mage::getModel('zip_payment/api_checkout', $this->getApiConfig())
             ->create();
 
+            $this->_getHelper()->saveCheckoutSessionData(array(
+                Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY => $checkout->getId(),
+            ));
+
             return $checkout;
 
         } catch (Exception $e) {
