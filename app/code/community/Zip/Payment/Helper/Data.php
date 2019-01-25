@@ -36,14 +36,6 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return trim((string) Mage::getConfig()->getNode()->modules->Zip_Payment->version);
     }
-    
-
-    /**
-     * autoload API SDK from lib folder
-     */
-    public function autoload() {
-        require_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
-    }
 
     /**
      * Get current store url
@@ -102,12 +94,13 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     public function emptyShoppingCart()
     {
         try {
-            $this->getCheckoutSession()
-            ->setQuoteId(null);
+            $this->getCheckoutSession()->getQuote()->setIsActive(0)->save();
+            $this->getCheckoutSession()->setQuoteId(null);
+            
         } catch (Mage_Core_Exception $exception) {
             $this->getCheckoutSession()->addError($exception->getMessage());
         } catch (Exception $exception) {
-            $this->getCheckoutSession()->addException($exception, $this->__('Cannot empty shopping cart'));
+            $this->getCheckoutSession()->addException($exception, $this->__('Could not empty shopping cart'));
         }
     }
 
@@ -217,6 +210,13 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function unsetCheckoutSessionData() {
         $this->getCheckoutSession()->unsetData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
+    }
+
+    /**
+     * check if current checkout state is referred
+     */
+    public function isReferredCheckout() {
+        return $this->getCheckoutStateFromSession() == Zip_Payment_Model_Api_Checkout::STATE_REFERRED;
     }
 
 

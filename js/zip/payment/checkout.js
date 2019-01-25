@@ -19,7 +19,7 @@ if('Zip' in window && Zip.Checkout) {
                 Zip.Checkout.showOverlay();
 
                 // if current display mode is lightbox and redirect url is not same as response url
-                if(Zip.Checkout && !Zip.Checkout.settings.isRedirect) {
+                if(Zip.Checkout) {
 
                     Zip.Checkout.init({
                         request: 'standard',
@@ -73,10 +73,7 @@ if('Zip' in window && Zip.Checkout) {
                     });
 
                 }
-                else {
-                    Zip.Checkout.redirectTo(redirectUrl);
-                }
-
+                
                 return;
 
             }

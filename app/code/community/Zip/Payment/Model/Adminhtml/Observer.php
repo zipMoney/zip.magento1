@@ -57,7 +57,12 @@ class Zip_Payment_Model_Adminhtml_Observer
 
         $isLandingPageEnabled = $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
         $identifier = Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER;
-        Mage::getSingleton('cms/page')->load($identifier, 'identifier')->setData('is_active', $isLandingPageEnabled ? 1 : 0)->save();
+        
+        Mage::getSingleton('cms/page')
+        ->load($identifier, 'identifier')
+        ->setData('is_active', $isLandingPageEnabled ? 1 : 0)
+        ->save();
+
     }
 
 

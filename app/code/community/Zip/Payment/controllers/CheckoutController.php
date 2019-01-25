@@ -18,6 +18,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function responseAction()
     {
+
         if(!$this->getHelper()->isActive()) {
             return;
         }
@@ -31,7 +32,15 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         // filter the result to remove additional GTM string
         $checkoutId = preg_replace('/\?.+$/', '', $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_CHECKOUT_ID) ?: '');
 
-        Mage::getSingleton('zip_payment/checkout')->handleResponse($checkoutId, $state);
+        try {
+            $response = Mage::getSingleton('zip_payment/checkout')->handleResponse($checkoutId, $state);
+            $this->redirectAfterResponse($response);
+        } catch (Exception $e) {
+            $this->getLogger()->error($e->getMessage());
+            $this->getHelper()->getCheckoutSession()->addError($e->getMessage());
+        }
+        
+        
     }
 
     /**
@@ -97,7 +106,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         if(!$this->getHelper()->isActive()) {
             return;
         }
-        
+
         $this->getLogger()->debug('Zip_Payment_CheckoutController - referred action');
 
         try {

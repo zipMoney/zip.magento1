@@ -185,7 +185,7 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
                                                     </display_mode>
-                                                    <custom_script translate="label">
+                                                    <!-- <custom_script translate="label">
                                                         <label>Custom Script</label>
                                                         <tooltip>Define custom script for checkout page</tooltip>
                                                         <comment>You're able to enter the url of script which will be loaded on the checkout page</comment>
@@ -195,7 +195,7 @@
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
-                                                    </custom_script>
+                                                    </custom_script> -->
                                                     <min_order_total translate="label">
                                                         <label>Minimum Order Total</label>
                                                         <tooltip>The minimum order value amount required to checkout</tooltip>
@@ -218,43 +218,43 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                     </sort_order>
-
-                                                     <zip_payment_setting_referred type="group" translate="label">
-                                                        <label>Referred Appication</label>
-                                                        <frontend_type>text</frontend_type>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>1</show_in_store>
-                                                        <sort_order>90</sort_order>
-                                                        <fields>
-                                                            <order_creation translate="label">
-                                                                <label>Order Handling</label>
-                                                                <tooltip>Zip Money refer application default order handling</tooltip>
-                                                                <comment>Required for Zip Money product only. The default value is “Yes”, create order for referred application</comment>
-                                                                <config_path>payment/zip_payment/checkout/referred/order_creation</config_path>
-                                                                <frontend_type>select</frontend_type>
-                                                                <source_model>adminhtml/system_config_source_yesno</source_model>
-                                                                <sort_order>10</sort_order>
-                                                                <show_in_default>1</show_in_default>
-                                                                <show_in_website>1</show_in_website>
-                                                                <show_in_store>0</show_in_store>
-                                                            </order_creation>
-
-                                                            <order_status translate="label">
-                                                                <label>New Order Status</label>
-                                                                <tooltip>Define the order status when a referred order be placed</tooltip>
-                                                                <frontend_type>select</frontend_type>
-                                                                <config_path>payment/zip_payment/checkout/referred/order_status</config_path>
-                                                                <source_model>adminhtml/system_config_source_order_status_new</source_model>
-                                                                <sort_order>20</sort_order>
-                                                                <show_in_default>1</show_in_default>
-                                                                <show_in_website>1</show_in_website>
-                                                                <show_in_store>0</show_in_store>
-                                                            </order_status>
-                                                        </fields>
-                                                    </zip_payment_setting_referred>
                                                 </fields>
                                             </zip_payment_setting_checkout>
+
+                                            <zip_payment_setting_referred type="group" translate="label">
+                                                <label>Referred Appication</label>
+                                                <frontend_type>text</frontend_type>
+                                                <show_in_default>1</show_in_default>
+                                                <show_in_website>1</show_in_website>
+                                                <show_in_store>1</show_in_store>
+                                                <sort_order>20</sort_order>
+                                                <fields>
+                                                    <order_creation translate="label">
+                                                        <label>Order Handling</label>
+                                                        <tooltip>Zip Money refer application default order handling</tooltip>
+                                                        <comment>Required for Zip Money product only. The default value is “Yes”, create order for referred application</comment>
+                                                        <config_path>payment/zip_payment/checkout/referred/order_creation</config_path>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <sort_order>10</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>0</show_in_store>
+                                                    </order_creation>
+
+                                                    <order_status translate="label">
+                                                        <label>New Order Status</label>
+                                                        <tooltip>Define the order status when a referred order be placed</tooltip>
+                                                        <frontend_type>select</frontend_type>
+                                                        <config_path>payment/zip_payment/checkout/referred/order_status</config_path>
+                                                        <source_model>adminhtml/system_config_source_order_status_new</source_model>
+                                                        <sort_order>20</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>0</show_in_store>
+                                                    </order_status>
+                                                </fields>
+                                            </zip_payment_setting_referred>
 
                                             <zip_payment_setting_country_currency type="group" translate="label">
                                                 <label>Country and Currency</label>
@@ -262,7 +262,7 @@
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
                                                 <show_in_store>1</show_in_store>
-                                                <sort_order>20</sort_order>
+                                                <sort_order>30</sort_order>
                                                 <fields>
                                                     <allowspecific translate="label">
                                                         <label>Payment from applicable countries</label>

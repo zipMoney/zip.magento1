@@ -64,15 +64,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     public function getConfig()
     {
         if ($this->config == null) {
-            $storeId = Mage::app()->getStore()->getStoreId();
-            $this->config = $this->_getHelper()->getConfig($storeId);
+            $this->config = $this->_getHelper()->getConfig();
             $this->config->setMethod($this->getCode());
         }
         return $this->config;
-    }
-
-    public function getApiConfig($storeId = null) {
-        return $this->getConfig()->getApiConfiguration($storeId);
     }
 
     /**
@@ -168,7 +163,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         $configValue = null;
 
         // set order status as pending for referred checkout
-        if($this->isCheckoutReferred()) {
+        if($this->_getHelper()->isReferredCheckout()) {
             $configValue = $this->getConfig()->getValue("payment/{$this->getCode()}/checkout/referred/{$field}");
         }
 
@@ -187,15 +182,9 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function getConfigPaymentAction()
     {
-        $this->paymentAction || $this->paymentAction = $this->isCheckoutReferred() ? self::ACTION_ORDER : parent::getConfigPaymentAction();
-
-        $this->getLogger()->debug('Zip_Payment_Model_Method - get Configuration action: ' . $this->paymentAction);
+        $this->paymentAction || $this->paymentAction = $this->_getHelper()->isReferredCheckout() ? self::ACTION_ORDER : parent::getConfigPaymentAction();
 
         return $this->paymentAction;
-    }
-
-    protected function isCheckoutReferred() {
-        return $this->_getHelper()->getCheckoutStateFromSession() == Zip_Payment_Model_Api_Checkout::STATE_CREATED;
     }
 
     /**
@@ -249,7 +238,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             }
 
             // Create Checkout
-            $checkout = Mage::getModel('zip_payment/api_checkout', $this->getApiConfig())
+            $checkout = Mage::getModel('zip_payment/api_checkout')
             ->create();
 
             $this->_getHelper()->saveCheckoutSessionData(array(
@@ -275,7 +264,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function order(Varien_Object $payment, $amount)
     {
-        $this->getLogger()->debug('Zip_Payment_Model_Method - order');
+        $this->getLogger()->debug('Zip_Payment_Model_Method - Order');
 
         if (!$this->canOrder()) {
             Mage::throwException(Mage::helper('payment')->__('Order action is not available.'));
@@ -301,7 +290,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         try {
 
             $order = $payment->getOrder();
-            $charge = Mage::getModel('zip_payment/api_charge', $this->getApiConfig());
+            $charge = Mage::getModel('zip_payment/api_charge');
 
             if($this->_getHelper()->getCheckoutIdFromSession()) {
                 // Create Charge
@@ -358,7 +347,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         try {
 
             $storeId = $payment->getOrder()->getStoreId();
-            $charge = Mage::getModel('zip_payment/api_charge', $this->getApiConfig($storeId));
+            $charge = Mage::getModel('zip_payment/api_charge', array('store_id' => $storeId));
                 
             // if the payment has been authorized before
             if($authorizationTransaction) {
@@ -456,7 +445,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             $chargeId = preg_replace('/_rn_[0-9]+?$/i', '', $transactionID);
 
             // Create refund
-            $refund = Mage::getModel('zip_payment/api_refund', $this->getApiConfig($storeId))
+            $refund = Mage::getModel('zip_payment/api_refund', array('store_id' => $storeId))
             ->create($chargeId, $amount, $reason);
 
             $this->getLogger()->info($this->_getHelper()->__("Refund for Order [ %s ] for amount %s was successful", $orderId, $amount));
@@ -510,7 +499,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         try {
 
             // Cancel Charge
-            $charge = Mage::getModel('zip_payment/api_charge', $this->getApiConfig($storeId))
+            $charge = Mage::getModel('zip_payment/api_charge', array('store_id' => $storeId))
             ->cancel($chargeId);
 
             if (isset($charge->error)) {

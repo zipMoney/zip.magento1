@@ -79,7 +79,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             $curl = curl_init();
 
             $curlSSLVerificationEnabled = curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER) && curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER);
-            $apiConfig = $config->getApiConfiguration();
+            $apiConfig = Mage::getSingleton('zip_payment/api_abstract')->initApiConfiguration();
             $url = $apiConfig->getHost();
 
             curl_setopt($curl, CURLOPT_NOBODY, true);

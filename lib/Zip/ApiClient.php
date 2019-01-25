@@ -210,7 +210,6 @@ class ApiClient
             error_log("[DEBUG] HTTP Request body  ~BEGIN~" . PHP_EOL . print_r($postData, true) . PHP_EOL . "~END~" . PHP_EOL, 3, $this->config->getDebugFile());
 
             curl_setopt($curl, CURLOPT_VERBOSE, 1);
-            curl_setopt($curl, CURLOPT_STDERR, 0);
         } else {
             curl_setopt($curl, CURLOPT_VERBOSE, 0);
         }

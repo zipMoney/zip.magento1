@@ -38,6 +38,31 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         return $this->logger;
     }
 
+        
+    /**
+     * handle redirect after response been processed
+     */
+    protected function redirectAfterResponse($response) {
+
+        $this->getHelper()->unsetCheckoutSessionData();
+        $this->getHelper()->emptyShoppingCart();
+
+        if(!isset($response['redirect_url']) || empty($response['redirect_url'])) {
+            return;
+        }
+
+        // if it's an ajax call
+        if(Mage::app()->getRequest()->isAjax()) {
+            $response['redirect_url'] = Mage::getUrl($response['redirect_url'], array('_secure' => true));
+            $this->getHelper()->returnJsonResponse($response);
+        }
+        else {
+            $this->_redirect($response['redirect_url'], array('_secure' => true));
+        }
+
+    }
+    
+
     
     /**
      * create breadcrumb for checkout pages
@@ -54,7 +79,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
                 'link'  => Mage::getBaseUrl()
             ));
 
-            $isLandingPageEnabled = $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
+            $isLandingPageEnabled = $this->getHelper()->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
 
             if($isLandingPageEnabled) {
                 $breadcrumbs->addCrumb(Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER, array(

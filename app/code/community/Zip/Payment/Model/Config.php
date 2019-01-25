@@ -8,8 +8,6 @@
  *
  **/
 
-use \Zip\Configuration;
-
 class Zip_Payment_Model_Config
 {
     const METHOD_CODE = 'zip_payment';
@@ -95,47 +93,13 @@ class Zip_Payment_Model_Config
      */
     const CONFIG_NOTIFICATION_ENABLED_PATH = 'payment/zip_payment/admin_notification/enabled';
 
-    /**
-     * Current store id
-     *
-     * @var int
-     */
-    protected $storeId = null;
     protected $methodCode = self::METHOD_CODE;
-
     protected $debugEnabled = null;
     protected $logEnabled = null;
     protected $logLevel = null;
     protected $logFile = null;
 
     protected $apiConfig = null;
-
-    // constructor
-    public function __construct($options)
-    {
-        /**
-         * Set store id, if specified
-         */
-        if (isset($options['store_id']) && !empty($options['store_id'])) {
-            $storeId = $options['store_id'];
-        } else {
-            $storeId = Mage::app()->getStore()->getId();
-        }
-
-        $this->setStoreId($storeId);
-    }
-
-    /**
-     * Store ID setter
-     *
-     * @param int $storeId
-     * @return Zip_Payment_Model_Config
-     */
-    public function setStoreId($storeId)
-    {
-        $this->storeId = (int)$storeId;
-        return $this;
-    }
 
      /**
      * Method code setter
@@ -269,9 +233,10 @@ class Zip_Payment_Model_Config
     protected function getMerchantCountry()
     {
         $countryCode = $this->getValue(self::CONFIG_MERCHANT_COUNTRY_PATH);
+        $storeId = Mage::app()->getStore()->getId();
 
         if (!$countryCode) {
-            $countryCode = Mage::helper('core')->getDefaultCountry($this->storeId);
+            $countryCode = Mage::helper('core')->getDefaultCountry($storeId);
         }
         return $countryCode;
     }
@@ -299,6 +264,7 @@ class Zip_Payment_Model_Config
     public function getValue($path) {
 
         $value = (string) Mage::getConfig()->getNode(self::CONFIG_CUSTOM_NODE_NAME . '/' . $path);
+        $storeId = Mage::app()->getStore()->getId();
 
         if(empty($value)) {
             $value = Mage::getStoreConfig($path, $this->storeId);
@@ -335,47 +301,5 @@ class Zip_Payment_Model_Config
         
         return $this->getFlag("payment/{$methodCode}/active") && $this->isMerchantCountrySupported();
     }
-
-    /**
-     * generate API configuration
-     * @param string $storeId Store ID
-     * @return object
-     */
-    public function getApiConfiguration($storeId = null) {
-
-        // when api configuration is null or store id has been changed
-        // new api configuration need to be created
-        if($this->apiConfig === null || $this->storeId !== $storeId) {
-
-            $this->setStoreId($storeId);
-
-            Mage::helper('zip_payment')->autoload();
-
-            $apiConfig = Configuration::getDefaultConfiguration();
-            $magentoVersion = Mage::getVersion();
-            $extensionVersion = Mage::helper('zip_payment')->getCurrentVersion();
-            
-            $apiConfig
-            ->setApiKey('Authorization', Mage::helper('core')->decrypt($this->getValue(self::CONFIG_PRIVATE_KEY_PATH)))
-            ->setEnvironment($this->getValue(self::CONFIG_ENVIRONMENT_PATH))
-            ->setApiKeyPrefix('Authorization', 'Bearer')
-            ->setPlatform("Magento/{$magentoVersion} Zip_Payment/{$extensionVersion}")
-            ->setCurlTimeout((int)$this->getValue(self::CONFIG_API_TIMEOUT_PATH));
-
-            if($this->isDebugEnabled() && $this->isLogEnabled() && $this->getLogLevel() >= Zend_Log::DEBUG) {
-
-                $apiConfig
-                ->setDebug($this->getValue(self::CONFIG_API_TIMEOUT_PATH))
-                ->setDebugFile(Mage::getBaseDir('log') . DS .$this->getLogFile());
-            }
-            
-            $apiConfig->setDefaultHeaders();
-            $this->apiConfig = $apiConfig;
-        }
-
-        return $this->apiConfig;
-    }
-
-    
 
 }

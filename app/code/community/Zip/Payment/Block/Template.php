@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * TBlock template model
+ * 
+ * @package     Zip_Payment
+ * @author      Zip Co - Plugin Team
+ *
+ **/
 
 class Zip_Payment_Block_Template extends Mage_Core_Block_Template {
 
