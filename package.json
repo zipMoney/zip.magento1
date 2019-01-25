@@ -1,6 +1,6 @@
 {
-  "name": "zipmoney-checkout",
-  "version": "1.0.0",
+  "name": "Zip-Payment-Magento-1",
+  "version": "2.0.0",
   "description": "Magento specific library for handling zipMoney Checkout",
   "devDependencies": {
     "del": "^2.2.0",
