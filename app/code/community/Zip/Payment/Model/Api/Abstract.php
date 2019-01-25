@@ -1,20 +1,17 @@
 <?php
 
 /**
- * Abstract Model of Payment API                                                                                     
+ * Abstract Model of Payment API       
  * 
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
  **/
 
-require_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
-
 use \Zip\Model\OrderShipping;
 use \Zip\Model\OrderItem;
 use \Zip\Model\Address;
 use \Zip\Model\Metadata;
-use \Zip\Configuration;
 use \Zip\ApiException;
 
 abstract class Zip_Payment_Model_Api_Abstract
@@ -34,49 +31,16 @@ abstract class Zip_Payment_Model_Api_Abstract
             $storeId = Mage::app()->getStore()->getId();
         }
 
-        $this->apiConfig = $this->initApiConfiguration($storeId);
+        if($this->apiConfig === null || $this->storeId !== $storeId) {
+            // when api configuration is null or store id has been changed
+            // new api configuration need to be created
+            $this->apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration($storeId);
+            $this->storeId = $storeId;
+        }
     }
 
     abstract protected function getApi();
     abstract protected function prepareCreatePayload();
-
-    /**
-     * generate API configuration
-     * @param string $storeId Store ID
-     * @return object
-     */
-    public function initApiConfiguration($storeId = null) {
-
-        // when api configuration is null or store id has been changed
-        // new api configuration need to be created
-        if($this->apiConfig === null || $this->storeId !== $storeId) {
-
-            $this->storeId = $storeId;
-
-            $apiConfig = Configuration::getDefaultConfiguration();
-            $config = $this->getHelper()->getConfig();
-            $magentoVersion = Mage::getVersion();
-            $extensionVersion = $this->getHelper()->getCurrentVersion();
-            
-            $apiConfig
-            ->setApiKey('Authorization', Mage::helper('core')->decrypt($config->getValue(Zip_Payment_Model_Config::CONFIG_PRIVATE_KEY_PATH)))
-            ->setEnvironment($config->getValue(Zip_Payment_Model_Config::CONFIG_ENVIRONMENT_PATH))
-            ->setApiKeyPrefix('Authorization', 'Bearer')
-            ->setPlatform("Magento/{$magentoVersion} Zip_Payment/{$extensionVersion}")
-            ->setCurlTimeout((int)$config->getValue(Zip_Payment_Model_Config::CONFIG_API_TIMEOUT_PATH));
-
-            if($config->isDebugEnabled() && $config->isLogEnabled() && $config->getLogLevel() >= Zend_Log::DEBUG) {
-
-                $apiConfig
-                ->setDebug($config->getValue(Zip_Payment_Model_Config::CONFIG_API_TIMEOUT_PATH))
-                ->setDebugFile(Mage::getBaseDir('log') . DS . $config->getLogFile());
-            }
-            
-            $apiConfig->setDefaultHeaders();
-        }
-
-        return $apiConfig;
-    }
 
     /**
      * Get logger object

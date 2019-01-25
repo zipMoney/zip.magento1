@@ -8,7 +8,7 @@
  *
  **/
 
-class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
+class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
 {
 
     const CONFIG_WIDGET_PATH_PREFIX = 'payment/zip_payment/widgets/';
@@ -25,21 +25,21 @@ class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
      * get merchant id from public key
      */
     public function getMerchantId() {
-        return $this->getConfig()->getValue(self::CONFIG_PUBLIC_KEY_PATH);
+        return Mage::helper('zip_payment')->getConfig()->getValue(self::CONFIG_PUBLIC_KEY_PATH);
     }
 
     /**
      * get current environment
      */
     public function getEnvironment() {
-        return $this->getConfig()->getValue(self::CONFIG_ENVIRONMENT_PATH);
+        return Mage::helper('zip_payment')->getConfig()->getValue(self::CONFIG_ENVIRONMENT_PATH);
     }
 
     /**
      * get url of widget js library
      */
     public function getLibScript() {
-        return $this->getConfig()->getValue(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
+        return Mage::helper('zip_payment')->getConfig()->getValue(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
     }
 
 
@@ -48,7 +48,8 @@ class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
      */
     protected function isActive() 
     {
-        if($this->getModelHelper()->isActive() && $this->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
+        $helper = Mage::helper('zip_payment');
+        if($helper->isActive() && $helper->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
 
             $pageType = $this->getWidgetPageType();
 
@@ -61,12 +62,12 @@ class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
             }
 
             if($pageType == 'landing') {
-                return $this->getConfig()->getFlag(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/enabled');
+                return $helper->getConfig()->getFlag(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/enabled');
             }
 
             foreach(self::SUPPORTED_WIDGET_TYPES as $widgetType) {
                 
-                $enabled = $this->getConfig()->getValue(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType . '/enabled');
+                $enabled = $helper->getConfig()->getValue(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType . '/enabled');
                 
                 /**
                  * Make sure there one widget type is enable for current page type
@@ -87,16 +88,17 @@ class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
     protected function getElementSelectors() 
     {
         $selectors = array();
+        $helper = Mage::helper('zip_payment');
 
         foreach(self::SUPPORTED_WIDGET_TYPES as $widgetType) {
 
             $pageType = $this->getWidgetPageType();
             $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType;
-            $enabled = $this->getConfig()->getValue($path . '/enabled');
+            $enabled =$helper->getConfig()->getValue($path . '/enabled');
 
             if(!is_null($enabled) && boolval($enabled)) {
                 $widgetType = $widgetType == 'widget' ? $pageType . '_' . $widgetType : $widgetType;
-                $selectors[$widgetType] = $this->getConfig()->getValue($path . '/selector');
+                $selectors[$widgetType] = $helper->getConfig()->getValue($path . '/selector');
             }
 
         }
@@ -111,9 +113,10 @@ class Zip_Payment_Block_Widget extends Zip_Payment_Block_Template
      */
     protected function getWidgetPageType()
     {
-        $pageIdentifier = $this->getModelHelper()->getPageIdentifier();
+        $helper = Mage::helper('zip_payment');
+        $pageIdentifier = $helper->getPageIdentifier();
 
-        if($this->getModelHelper()->isOnepageCheckout() || $this->getModelHelper()->isOnestepCheckout()) {
+        if($helper->isOnepageCheckout() || $helper->isOnestepCheckout()) {
             return 'checkout';
         }
 

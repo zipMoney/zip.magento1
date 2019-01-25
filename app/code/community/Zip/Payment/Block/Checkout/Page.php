@@ -8,7 +8,7 @@
  *
  **/
 
-class Zip_Payment_Block_Checkout_Page extends Zip_Payment_Block_Template
+class Zip_Payment_Block_Checkout_Page extends Mage_Core_Block_Template
 {  
 
     protected $headingTextConfigPath = null;
@@ -17,7 +17,7 @@ class Zip_Payment_Block_Checkout_Page extends Zip_Payment_Block_Template
 
     public function __construct()
     {
-        $this->messageItems = $this->getModelHelper()->getCheckoutSession()->getMessages()->getItems();
+        $this->messageItems = Mage::helper('zip_payment')->getCheckoutSession()->getMessages()->getItems();
     }
 
     /**
@@ -25,7 +25,7 @@ class Zip_Payment_Block_Checkout_Page extends Zip_Payment_Block_Template
      * @return string
      */
     public function getLogo() {
-        return $this->getConfig()->getLogo();
+        return Mage::helper('zip_payment')->getConfig()->getLogo();
     }
 
     /**
@@ -33,7 +33,7 @@ class Zip_Payment_Block_Checkout_Page extends Zip_Payment_Block_Template
      * @return string
      */
     public function getSlogan() {
-        return $this->getConfig()->getTitle();
+        return Mage::helper('zip_payment')->getConfig()->getTitle();
     }
 
 
@@ -52,7 +52,7 @@ class Zip_Payment_Block_Checkout_Page extends Zip_Payment_Block_Template
      */
     public function getHeadingText()
     {
-        return $this->getModelHelper()->__($this->getConfig()->getValue($this->headingTextConfigPath));
+        return Mage::helper('zip_payment')->__($this->getConfig()->getValue($this->headingTextConfigPath));
     }
 
     /**
@@ -60,7 +60,7 @@ class Zip_Payment_Block_Checkout_Page extends Zip_Payment_Block_Template
      */
     public function getContentHtml()
     {
-        return $this->getModelHelper()->__($this->getConfig()->getValue($this->contentHtmlConfigPath));
+        return Mage::helper('zip_payment')->__($this->getConfig()->getValue($this->contentHtmlConfigPath));
     }
 
 }
