@@ -1,0 +1,55 @@
+<?php
+    $versionNotification = $this->getVersionNotification();
+    $latestNews = $this->getLatestNews();
+?>
+
+<div id="zip-payment-notice">
+    <?php if(!empty($versionNotification)): ?>
+        <p class="version">
+            <span><?= $versionNotification['title'] ?></span>
+
+            <?php if(!empty($versionNotification['url'])): ?>
+                &nbsp;<a href="<?= $versionNotification['url'] ?>" target="_blank">learn more</a>
+            <?php endif; ?>
+        </p>
+    <?php endif; ?>
+    <?php if(!empty($latestNews)): ?>
+        <p class="news">
+            <strong><?= $latestNews['title'] ?></strong>
+
+            <?php if(!empty($latestNews['description'])): ?>
+                <br/> <span><?= $latestNews['description'] ?></span>
+            <?php endif; ?>
+
+            <?php if(!empty($latestNews['url'])): ?>
+                &nbsp;<a href="<?= $latestNews['url'] ?>" target="_blank">learn more</a>
+            <?php endif; ?>
+        </p>
+    <?php endif; ?>
+</div>
+
+<style type="text/css">
+#zip-payment-notice p.version {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+#zip-payment-notice p.news {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    padding: .75rem 1.25rem;
+    margin: 0;
+}
+
+#zip-payment-notice a {
+    color: #4f4f4f;
+}
+
+
+</style>
