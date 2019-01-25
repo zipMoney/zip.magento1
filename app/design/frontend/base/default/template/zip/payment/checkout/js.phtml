@@ -1,0 +1,27 @@
+<?php if($this->isActive()): ?>
+
+    <script type="text/javascript" src="<?= $this->getCheckoutJsLibUrl() ?>"></script>
+
+    <script type="text/javascript">
+    //<![CDATA[
+
+    Zip = Zip || {};
+    Zip.Checkout = Zip.Checkout || {};
+
+    Zip.Checkout.settings = {
+        methodCode: '<?= $this->getMethodCode() ?>',
+        isRedirect: <?= $this->isRedirect() ? 'true' : 'false' ?>,
+        checkoutUrl: '<?= $this->getCheckoutUrl() ?>',
+        responseUrl: '<?= $this->getResponseUrl() ?>',
+        logLevel: '<?= $this->getLogLevel() ?>'
+    };
+
+    //]]>
+
+    </script>
+
+    <?php foreach($this->getCheckoutScriptList() as $scriptUrl) :?>
+        <script type="text/javascript" src="<?= $scriptUrl ?>"></script>
+    <?php endforeach; ?>
+
+<?php endif; ?>

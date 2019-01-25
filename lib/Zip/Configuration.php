@@ -8,7 +8,7 @@
  * @link     https://github.com/zipMoney/merchantapi-php
  */
 
-namespace zipMoney;
+namespace Zip;
 
 class Configuration
 {

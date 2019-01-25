@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -35,7 +35,7 @@ class Flightadditionaldetails implements ArrayAccess
         'origin' => 'string',
         'destination' => 'string',
         'duration' => 'string',
-        'passengers' => '\zipMoney\Model\FlightadditionaldetailsPassengers[]',
+        'passengers' => 'Zip\Model\FlightadditionaldetailsPassengers[]',
         'stopovers' => 'string[]'
     );
 
@@ -316,7 +316,7 @@ class Flightadditionaldetails implements ArrayAccess
 
     /**
      * Gets passengers
-     * @return \zipMoney\Model\FlightadditionaldetailsPassengers[]
+     * @return Zip\Model\FlightadditionaldetailsPassengers[]
      */
     public function getPassengers()
     {
@@ -325,7 +325,7 @@ class Flightadditionaldetails implements ArrayAccess
 
     /**
      * Sets passengers
-     * @param \zipMoney\Model\FlightadditionaldetailsPassengers[] $passengers
+     * @param Zip\Model\FlightadditionaldetailsPassengers[] $passengers
      * @return $this
      */
     public function setPassengers($passengers)
@@ -407,10 +407,10 @@ class Flightadditionaldetails implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

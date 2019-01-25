@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -28,12 +28,12 @@ class CreateChargeRequest implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        'authority' => '\zipMoney\Model\Authority',
+        'authority' => 'Zip\Model\Authority',
         'reference' => 'string',
         'amount' => 'float',
         'currency' => 'string',
         'capture' => 'bool',
-        'order' => '\zipMoney\Model\ChargeOrder',
+        'order' => 'Zip\Model\ChargeOrder',
         'metadata' => 'object'
     );
 
@@ -194,7 +194,7 @@ class CreateChargeRequest implements ArrayAccess
 
     /**
      * Gets authority
-     * @return \zipMoney\Model\Authority
+     * @return Zip\Model\Authority
      */
     public function getAuthority()
     {
@@ -203,7 +203,7 @@ class CreateChargeRequest implements ArrayAccess
 
     /**
      * Sets authority
-     * @param \zipMoney\Model\Authority $authority
+     * @param Zip\Model\Authority $authority
      * @return $this
      */
     public function setAuthority($authority)
@@ -303,7 +303,7 @@ class CreateChargeRequest implements ArrayAccess
 
     /**
      * Gets order
-     * @return \zipMoney\Model\ChargeOrder
+     * @return Zip\Model\ChargeOrder
      */
     public function getOrder()
     {
@@ -312,7 +312,7 @@ class CreateChargeRequest implements ArrayAccess
 
     /**
      * Sets order
-     * @param \zipMoney\Model\ChargeOrder $order
+     * @param Zip\Model\ChargeOrder $order
      * @return $this
      */
     public function setOrder($order)
@@ -394,10 +394,10 @@ class CreateChargeRequest implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

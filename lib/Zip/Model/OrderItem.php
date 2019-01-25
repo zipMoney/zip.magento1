@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -37,7 +37,7 @@ class OrderItem implements ArrayAccess
         'image_uri' => 'string',
         'item_uri' => 'string',
         'product_code' => 'string',
-        'additional_details' => '\zipMoney\Model\OrderItemAdditionalDetails[]'
+        'additional_details' => 'Zip\Model\OrderItemAdditionalDetails[]'
     );
 
     public static function zipTypes()
@@ -327,9 +327,8 @@ class OrderItem implements ArrayAccess
      */
     public function setQuantity($quantity)
     {
-
         if (!is_null($quantity) && ($quantity <= 0)) {
-            throw new \InvalidArgumentException('invalid value for $quantity when calling OrderItem., must be bigger than 0.');
+            throw new \InvalidArgumentException('invalid value for quantity when calling OrderItem., must be bigger than 0.');
         }
 
         $this->container['quantity'] = $quantity;
@@ -431,7 +430,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets additional_details
-     * @return \zipMoney\Model\OrderItemAdditionalDetails[]
+     * @return Zip\Model\OrderItemAdditionalDetails[]
      */
     public function getAdditionalDetails()
     {
@@ -440,7 +439,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets additional_details
-     * @param \zipMoney\Model\OrderItemAdditionalDetails[] $additional_details
+     * @param Zip\Model\OrderItemAdditionalDetails[] $additional_details
      * @return $this
      */
     public function setAdditionalDetails($additional_details)
@@ -501,10 +500,10 @@ class OrderItem implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

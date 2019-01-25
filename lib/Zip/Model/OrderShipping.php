@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -29,8 +29,8 @@ class OrderShipping implements ArrayAccess
       */
     protected static $zipTypes = array(
         'pickup' => 'bool',
-        'tracking' => '\zipMoney\Model\OrderShippingTracking',
-        'address' => '\zipMoney\Model\Address'
+        'tracking' => 'Zip\Model\OrderShippingTracking',
+        'address' => 'Zip\Model\Address'
     );
 
     public static function zipTypes()
@@ -84,10 +84,6 @@ class OrderShipping implements ArrayAccess
     {
         return self::$getters;
     }
-
-    
-
-    
 
     /**
      * Associative array for storing property values
@@ -154,7 +150,7 @@ class OrderShipping implements ArrayAccess
 
     /**
      * Gets tracking
-     * @return \zipMoney\Model\OrderShippingTracking
+     * @return Zip\Model\OrderShippingTracking
      */
     public function getTracking()
     {
@@ -163,7 +159,7 @@ class OrderShipping implements ArrayAccess
 
     /**
      * Sets tracking
-     * @param \zipMoney\Model\OrderShippingTracking $tracking
+     * @param Zip\Model\OrderShippingTracking $tracking
      * @return $this
      */
     public function setTracking($tracking)
@@ -175,7 +171,7 @@ class OrderShipping implements ArrayAccess
 
     /**
      * Gets address
-     * @return \zipMoney\Model\Address
+     * @return Zip\Model\Address
      */
     public function getAddress()
     {
@@ -184,7 +180,7 @@ class OrderShipping implements ArrayAccess
 
     /**
      * Sets address
-     * @param \zipMoney\Model\Address $address
+     * @param Zip\Model\Address $address
      * @return $this
      */
     public function setAddress($address)
@@ -245,10 +241,10 @@ class OrderShipping implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

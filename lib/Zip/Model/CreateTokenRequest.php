@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -28,7 +28,7 @@ class CreateTokenRequest implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        'authority' => '\zipMoney\Model\Authority'
+        'authority' => 'Zip\Model\Authority'
     );
 
     public static function zipTypes()
@@ -129,7 +129,7 @@ class CreateTokenRequest implements ArrayAccess
 
     /**
      * Gets authority
-     * @return \zipMoney\Model\Authority
+     * @return Zip\Model\Authority
      */
     public function getAuthority()
     {
@@ -138,7 +138,7 @@ class CreateTokenRequest implements ArrayAccess
 
     /**
      * Sets authority
-     * @param \zipMoney\Model\Authority $authority
+     * @param Zip\Model\Authority $authority
      * @return $this
      */
     public function setAuthority($authority)
@@ -199,10 +199,10 @@ class CreateTokenRequest implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

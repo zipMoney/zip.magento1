@@ -1,1 +1,0 @@
-# zipMoney Payment Extension for Magento 1

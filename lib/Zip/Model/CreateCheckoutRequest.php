@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -29,11 +29,11 @@ class CreateCheckoutRequest implements ArrayAccess
       */
     protected static $zipTypes = array(
         'type' => 'string',
-        'shopper' => '\zipMoney\Model\Shopper',
-        'order' => '\zipMoney\Model\CheckoutOrder',
-        'features' => '\zipMoney\Model\CreateCheckoutRequestFeatures',
-        'metadata' => '\zipMoney\Model\Metadata',
-        'config' => '\zipMoney\Model\CheckoutConfiguration'
+        'shopper' => 'Zip\Model\Shopper',
+        'order' => 'Zip\Model\CheckoutOrder',
+        'features' => 'Zip\Model\CreateCheckoutRequestFeatures',
+        'metadata' => 'Zip\Model\Metadata',
+        'config' => 'Zip\Model\CheckoutConfiguration'
     );
 
     public static function zipTypes()
@@ -208,7 +208,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Gets shopper
-     * @return \zipMoney\Model\Shopper
+     * @return Zip\Model\Shopper
      */
     public function getShopper()
     {
@@ -217,7 +217,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Sets shopper
-     * @param \zipMoney\Model\Shopper $shopper
+     * @param Zip\Model\Shopper $shopper
      * @return $this
      */
     public function setShopper($shopper)
@@ -229,7 +229,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Gets order
-     * @return \zipMoney\Model\CheckoutOrder
+     * @return Zip\Model\CheckoutOrder
      */
     public function getOrder()
     {
@@ -238,7 +238,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Sets order
-     * @param \zipMoney\Model\CheckoutOrder $order
+     * @param Zip\Model\CheckoutOrder $order
      * @return $this
      */
     public function setOrder($order)
@@ -250,7 +250,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Gets features
-     * @return \zipMoney\Model\CreateCheckoutRequestFeatures
+     * @return Zip\Model\CreateCheckoutRequestFeatures
      */
     public function getFeatures()
     {
@@ -259,7 +259,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Sets features
-     * @param \zipMoney\Model\CreateCheckoutRequestFeatures $features
+     * @param Zip\Model\CreateCheckoutRequestFeatures $features
      * @return $this
      */
     public function setFeatures($features)
@@ -271,7 +271,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Gets metadata
-     * @return \zipMoney\Model\Metadata
+     * @return Zip\Model\Metadata
      */
     public function getMetadata()
     {
@@ -280,7 +280,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Sets metadata
-     * @param \zipMoney\Model\Metadata $metadata
+     * @param Zip\Model\Metadata $metadata
      * @return $this
      */
     public function setMetadata($metadata)
@@ -292,7 +292,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Gets config
-     * @return \zipMoney\Model\CheckoutConfiguration
+     * @return Zip\Model\CheckoutConfiguration
      */
     public function getConfig()
     {
@@ -301,7 +301,7 @@ class CreateCheckoutRequest implements ArrayAccess
 
     /**
      * Sets config
-     * @param \zipMoney\Model\CheckoutConfiguration $config
+     * @param Zip\Model\CheckoutConfiguration $config
      * @return $this
      */
     public function setConfig($config)
@@ -362,10 +362,10 @@ class CreateCheckoutRequest implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

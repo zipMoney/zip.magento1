@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -36,7 +36,7 @@ class Charge implements ArrayAccess
         'captured_amount' => 'float',
         'refunded_amount' => 'float',
         'created_date' => '\DateTime',
-        'order' => '\zipMoney\Model\ChargeOrder',
+        'order' => 'Zip\Model\ChargeOrder',
         'metadata' => 'object',
         'receipt_number' => 'string'
     );
@@ -446,7 +446,7 @@ class Charge implements ArrayAccess
 
     /**
      * Gets order
-     * @return \zipMoney\Model\ChargeOrder
+     * @return Zip\Model\ChargeOrder
      */
     public function getOrder()
     {
@@ -455,7 +455,7 @@ class Charge implements ArrayAccess
 
     /**
      * Sets order
-     * @param \zipMoney\Model\ChargeOrder $order
+     * @param Zip\Model\ChargeOrder $order
      * @return $this
      */
     public function setOrder($order)
@@ -558,10 +558,10 @@ class Charge implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

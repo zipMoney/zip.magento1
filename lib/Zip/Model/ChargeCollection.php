@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -28,7 +28,7 @@ class ChargeCollection implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        'items' => '\zipMoney\Model\Charge[]'
+        'items' => 'Zip\Model\Charge[]'
     );
 
     public static function zipTypes()
@@ -129,7 +129,7 @@ class ChargeCollection implements ArrayAccess
 
     /**
      * Gets items
-     * @return \zipMoney\Model\Charge[]
+     * @return Zip\Model\Charge[]
      */
     public function getItems()
     {
@@ -138,7 +138,7 @@ class ChargeCollection implements ArrayAccess
 
     /**
      * Sets items
-     * @param \zipMoney\Model\Charge[] $items
+     * @param Zip\Model\Charge[] $items
      * @return $this
      */
     public function setItems($items)
@@ -199,10 +199,10 @@ class ChargeCollection implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

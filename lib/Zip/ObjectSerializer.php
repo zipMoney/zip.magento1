@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney;
+namespace Zip;
 
 /**
  * ObjectSerializer Class Doc Comment
@@ -257,7 +257,7 @@ class ObjectSerializer
             // If a discriminator is defined and points to a valid subclass, use it.
             $discriminator = $class::DISCRIMINATOR;
             if (!empty($discriminator) && isset($data->{$discriminator}) && is_string($data->{$discriminator})) {
-                $subclass = '\zipMoney\Model\\' . $data->{$discriminator};
+                $subclass = 'Zip\Model\\' . $data->{$discriminator};
                 if (is_subclass_of($subclass, $class)) {
                     $class = $subclass;
                 }

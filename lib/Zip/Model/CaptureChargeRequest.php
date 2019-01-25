@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -28,7 +28,8 @@ class CaptureChargeRequest implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        'amount' => 'float'
+        'amount' => 'float',
+        'is_partial_capture' => 'boolean'
     );
 
     public static function zipTypes()
@@ -41,7 +42,8 @@ class CaptureChargeRequest implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        'amount' => 'amount'
+        'amount' => 'amount',
+        'is_partial_capture' => 'is_partial_capture'
     );
 
 
@@ -50,7 +52,8 @@ class CaptureChargeRequest implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        'amount' => 'setAmount'
+        'amount' => 'setAmount',
+        'is_partial_capture' => 'setPartialCapture'
     );
 
 
@@ -59,7 +62,8 @@ class CaptureChargeRequest implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        'amount' => 'getAmount'
+        'amount' => 'getAmount',
+        'is_partial_capture' => 'isPartialCapture'
     );
 
     public static function attributeMap()
@@ -77,9 +81,6 @@ class CaptureChargeRequest implements ArrayAccess
         return self::$getters;
     }
 
-    
-
-    
 
     /**
      * Associative array for storing property values
@@ -94,6 +95,7 @@ class CaptureChargeRequest implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['amount'] = isset($data['amount']) ? $data['amount'] : null;
+        $this->container['is_partial_capture'] = isset($data['is_partial_capture']) ? $data['is_partial_capture'] : null;
     }
 
     /**
@@ -106,10 +108,10 @@ class CaptureChargeRequest implements ArrayAccess
         $invalid_properties = array();
 
         if ($this->container['amount'] === null) {
-            $invalid_properties[] = "'amount' can't be null";
+            $invalid_properties[] = "Amount value can't be null";
         }
         if (($this->container['amount'] < 0)) {
-            $invalid_properties[] = "invalid value for 'amount', must be bigger than or equal to 0.";
+            $invalid_properties[] = 'Invalid amount value while calling CaptureChargeRequest, must be equal or larger than 0';
         }
 
         return $invalid_properties;
@@ -135,6 +137,27 @@ class CaptureChargeRequest implements ArrayAccess
 
 
     /**
+     * Gets whether it's partial capture
+     * @return bool
+     */
+    public function isPartialCapture()
+    {
+        return $this->container['is_partial_capture'];
+    }
+
+    /**
+     * Set partial capture
+     * @param bool $isPartialCapture Amount can be less than or equal to the previously authorised amount
+     * @return $this
+     */
+    public function setPartialCapture($isPartialCapture)
+    {
+        $this->container['is_partial_capture'] = $isPartialCapture;
+
+        return $this;
+    }
+
+    /**
      * Gets amount
      * @return float
      */
@@ -152,13 +175,14 @@ class CaptureChargeRequest implements ArrayAccess
     {
 
         if (($amount < 0)) {
-            throw new \InvalidArgumentException('invalid value for $amount when calling CaptureChargeRequest., must be bigger than or equal to 0.');
+            throw new \InvalidArgumentException('Invalid amount value while calling CaptureChargeRequest, must be equal or larger than 0.');
         }
 
         $this->container['amount'] = $amount;
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      * @param  integer $offset Offset
@@ -211,11 +235,9 @@ class CaptureChargeRequest implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
-
-

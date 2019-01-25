@@ -9,7 +9,9 @@
  * @link     https://github.com/zipMoney/merchantapi-php
  */
 
-namespace zipMoney;
+use Zip\ObjectSerializer;
+
+namespace Zip;
 
 class ApiClient
 {
@@ -40,7 +42,7 @@ class ApiClient
      *
      * @param Configuration $config config for this ApiClient
      */
-    public function __construct(\zipMoney\Configuration $config = null)
+    public function __construct(Zip\Configuration $config = null)
     {
         if ($config === null) {
             $config = Configuration::getDefaultConfiguration();
@@ -109,7 +111,7 @@ class ApiClient
      * @param string $responseType expected response type of the endpoint
      * @param string $endpointPath path to method endpoint before expanding parameters
      *
-     * @throws \zipMoney\ApiException on a non 2xx response
+     * @throws Zip\ApiException on a non 2xx response
      * @return mixed
      */
     public function callApi($resourcePath, $method, $queryParams, $postData, $headerParams, $responseType = null, $endpointPath = null)
@@ -130,7 +132,7 @@ class ApiClient
         if ($postData and in_array('Content-Type: application/x-www-form-urlencoded', $headers, true)) {
             $postData = http_build_query($postData);
         } elseif ((is_object($postData) or is_array($postData)) and !in_array('Content-Type: multipart/form-data', $headers, true)) { // json model
-            $postData = json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($postData));
+            $postData = json_encode(ObjectSerializer::sanitizeForSerialization($postData));
         }
 
         $url = $this->config->getHost() . $resourcePath;
@@ -208,7 +210,6 @@ class ApiClient
             error_log("[DEBUG] HTTP Request body  ~BEGIN~" . PHP_EOL . print_r($postData, true) . PHP_EOL . "~END~" . PHP_EOL, 3, $this->config->getDebugFile());
 
             curl_setopt($curl, CURLOPT_VERBOSE, 1);
-            curl_setopt($curl, CURLOPT_STDERR, fopen($this->config->getDebugFile(), 'a'));
         } else {
             curl_setopt($curl, CURLOPT_VERBOSE, 0);
         }
@@ -268,9 +269,10 @@ class ApiClient
             if (json_last_error() > 0) { // if response is a string
                 $data = $http_body;
             }
+            
 
             throw new ApiException(
-                "[" . $response_info['http_code'] . "] Error connecting to the API ($url)",
+                $this->generateErrorMessage(json_decode($http_body)),
                 $response_info['http_code'],
                 $http_header,
                 $data
@@ -278,6 +280,30 @@ class ApiClient
         }
 
         return array($data, $response_info['http_code'], $http_header);
+    }
+
+    protected function generateErrorMessage($response) {
+
+        $errorMessage = 'An error occurred while processing payment';
+        
+        if(isset($response->error)) {
+
+            if(isset($response->error->message)) {
+                $errorMessage = (string) $response->error->message;
+            }
+    
+            if(isset($response->error->details)) {
+
+                $errorMessage = '';
+                
+                foreach($response->error->details as $detail) {
+                    $errorMessage .= $detail->message;
+                }
+            }
+
+        }
+
+        return $errorMessage;
     }
 
     /**

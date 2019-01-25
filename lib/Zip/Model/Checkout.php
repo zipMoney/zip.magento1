@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -31,14 +31,14 @@ class Checkout implements ArrayAccess
         'id' => 'string',
         'uri' => 'string',
         'type' => 'string',
-        'shopper' => '\zipMoney\Model\Shopper',
-        'order' => '\zipMoney\Model\CheckoutOrder',
-        'features' => '\zipMoney\Model\CheckoutFeatures',
-        'config' => '\zipMoney\Model\CheckoutConfiguration',
+        'shopper' => 'Zip\Model\Shopper',
+        'order' => 'Zip\Model\CheckoutOrder',
+        'features' => 'Zip\Model\CheckoutFeatures',
+        'config' => 'Zip\Model\CheckoutConfiguration',
         'created' => '\DateTime',
         'state' => 'string',
         'customer_id' => 'string',
-        'metadata' => '\zipMoney\Model\Metadata'
+        'metadata' => 'Zip\Model\Metadata'
     );
 
     public static function zipTypes()
@@ -119,6 +119,7 @@ class Checkout implements ArrayAccess
 
     const TYPE_STANDARD = 'standard';
     const TYPE_EXPRESS = 'express';
+
     const STATE_CREATED = 'created';
     const STATE_EXPIRED = 'expired';
     const STATE_APPROVED = 'approved';
@@ -318,7 +319,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Gets shopper
-     * @return \zipMoney\Model\Shopper
+     * @return Zip\Model\Shopper
      */
     public function getShopper()
     {
@@ -327,7 +328,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Sets shopper
-     * @param \zipMoney\Model\Shopper $shopper
+     * @param Zip\Model\Shopper $shopper
      * @return $this
      */
     public function setShopper($shopper)
@@ -339,7 +340,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Gets order
-     * @return \zipMoney\Model\CheckoutOrder
+     * @return Zip\Model\CheckoutOrder
      */
     public function getOrder()
     {
@@ -348,7 +349,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Sets order
-     * @param \zipMoney\Model\CheckoutOrder $order
+     * @param Zip\Model\CheckoutOrder $order
      * @return $this
      */
     public function setOrder($order)
@@ -360,7 +361,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Gets features
-     * @return \zipMoney\Model\CheckoutFeatures
+     * @return Zip\Model\CheckoutFeatures
      */
     public function getFeatures()
     {
@@ -369,7 +370,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Sets features
-     * @param \zipMoney\Model\CheckoutFeatures $features
+     * @param Zip\Model\CheckoutFeatures $features
      * @return $this
      */
     public function setFeatures($features)
@@ -381,7 +382,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Gets config
-     * @return \zipMoney\Model\CheckoutConfiguration
+     * @return Zip\Model\CheckoutConfiguration
      */
     public function getConfig()
     {
@@ -390,7 +391,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Sets config
-     * @param \zipMoney\Model\CheckoutConfiguration $config
+     * @param Zip\Model\CheckoutConfiguration $config
      * @return $this
      */
     public function setConfig($config)
@@ -469,7 +470,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Gets metadata
-     * @return \zipMoney\Model\Metadata
+     * @return Zip\Model\Metadata
      */
     public function getMetadata()
     {
@@ -478,7 +479,7 @@ class Checkout implements ArrayAccess
 
     /**
      * Sets metadata
-     * @param \zipMoney\Model\Metadata $metadata
+     * @param Zip\Model\Metadata $metadata
      * @return $this
      */
     public function setMetadata($metadata)
@@ -539,10 +540,10 @@ class Checkout implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

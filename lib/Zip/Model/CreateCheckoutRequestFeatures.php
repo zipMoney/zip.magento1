@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -28,7 +28,7 @@ class CreateCheckoutRequestFeatures implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        'tokenisation' => '\zipMoney\Model\CreateCheckoutRequestFeaturesTokenisation'
+        'tokenisation' => 'Zip\Model\CreateCheckoutRequestFeaturesTokenisation'
     );
 
     public static function zipTypes()
@@ -123,7 +123,7 @@ class CreateCheckoutRequestFeatures implements ArrayAccess
 
     /**
      * Gets tokenisation
-     * @return \zipMoney\Model\CreateCheckoutRequestFeaturesTokenisation
+     * @return Zip\Model\CreateCheckoutRequestFeaturesTokenisation
      */
     public function getTokenisation()
     {
@@ -132,7 +132,7 @@ class CreateCheckoutRequestFeatures implements ArrayAccess
 
     /**
      * Sets tokenisation
-     * @param \zipMoney\Model\CreateCheckoutRequestFeaturesTokenisation $tokenisation
+     * @param Zip\Model\CreateCheckoutRequestFeaturesTokenisation $tokenisation
      * @return $this
      */
     public function setTokenisation($tokenisation)
@@ -193,10 +193,10 @@ class CreateCheckoutRequestFeatures implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

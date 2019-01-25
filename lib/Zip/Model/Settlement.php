@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -32,7 +32,7 @@ class Settlement implements ArrayAccess
         'created' => 'string',
         'amount' => 'float',
         'currency' => 'string',
-        'transactions' => '\zipMoney\Model\SettlementTransactions[]'
+        'transactions' => 'Zip\Model\SettlementTransactions[]'
     );
 
     public static function zipTypes()
@@ -222,7 +222,7 @@ class Settlement implements ArrayAccess
 
     /**
      * Gets transactions
-     * @return \zipMoney\Model\SettlementTransactions[]
+     * @return Zip\Model\SettlementTransactions[]
      */
     public function getTransactions()
     {
@@ -231,7 +231,7 @@ class Settlement implements ArrayAccess
 
     /**
      * Sets transactions
-     * @param \zipMoney\Model\SettlementTransactions[] $transactions
+     * @param Zip\Model\SettlementTransactions[] $transactions
      * @return $this
      */
     public function setTransactions($transactions)
@@ -292,10 +292,10 @@ class Settlement implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

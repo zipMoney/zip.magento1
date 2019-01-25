@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -30,7 +30,7 @@ class ErrorResponseError implements ArrayAccess
     protected static $zipTypes = array(
         'code' => 'string',
         'message' => 'string',
-        'details' => '\zipMoney\Model\ErrorResponseErrorDetails[]'
+        'details' => 'Zip\Model\ErrorResponseErrorDetails[]'
     );
 
     public static function zipTypes()
@@ -187,7 +187,7 @@ class ErrorResponseError implements ArrayAccess
 
     /**
      * Gets details
-     * @return \zipMoney\Model\ErrorResponseErrorDetails[]
+     * @return Zip\Model\ErrorResponseErrorDetails[]
      */
     public function getDetails()
     {
@@ -196,7 +196,7 @@ class ErrorResponseError implements ArrayAccess
 
     /**
      * Sets details
-     * @param \zipMoney\Model\ErrorResponseErrorDetails[] $details
+     * @param Zip\Model\ErrorResponseErrorDetails[] $details
      * @return $this
      */
     public function setDetails($details)
@@ -257,10 +257,10 @@ class ErrorResponseError implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

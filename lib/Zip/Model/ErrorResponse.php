@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -28,7 +28,7 @@ class ErrorResponse implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        'error' => '\zipMoney\Model\ErrorResponseError'
+        'error' => 'Zip\Model\ErrorResponseError'
     );
 
     public static function zipTypes()
@@ -123,7 +123,7 @@ class ErrorResponse implements ArrayAccess
 
     /**
      * Gets error
-     * @return \zipMoney\Model\ErrorResponseError
+     * @return Zip\Model\ErrorResponseError
      */
     public function getError()
     {
@@ -132,7 +132,7 @@ class ErrorResponse implements ArrayAccess
 
     /**
      * Sets error
-     * @param \zipMoney\Model\ErrorResponseError $error
+     * @param Zip\Model\ErrorResponseError $error
      * @return $this
      */
     public function setError($error)
@@ -193,10 +193,10 @@ class ErrorResponse implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

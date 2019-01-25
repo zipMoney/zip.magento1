@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -28,7 +28,7 @@ class InlineResponse200 implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        'items' => '\zipMoney\Model\Refund[]'
+        'items' => 'Zip\Model\Refund[]'
     );
 
     public static function zipTypes()
@@ -129,7 +129,7 @@ class InlineResponse200 implements ArrayAccess
 
     /**
      * Gets items
-     * @return \zipMoney\Model\Refund[]
+     * @return Zip\Model\Refund[]
      */
     public function getItems()
     {
@@ -138,7 +138,7 @@ class InlineResponse200 implements ArrayAccess
 
     /**
      * Sets items
-     * @param \zipMoney\Model\Refund[] $items
+     * @param Zip\Model\Refund[] $items
      * @return $this
      */
     public function setItems($items)
@@ -199,10 +199,10 @@ class InlineResponse200 implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

@@ -9,7 +9,7 @@
  */
 
 
-namespace zipMoney\Model;
+namespace Zip\Model;
 
 use \ArrayAccess;
 
@@ -28,7 +28,7 @@ class HateoasLinks implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        '_links' => '\zipMoney\Model\HateoaslinksLinks[]'
+        '_links' => 'Zip\Model\HateoaslinksLinks[]'
     );
 
     public static function zipTypes()
@@ -123,7 +123,7 @@ class HateoasLinks implements ArrayAccess
 
     /**
      * Gets _links
-     * @return \zipMoney\Model\HateoaslinksLinks[]
+     * @return Zip\Model\HateoaslinksLinks[]
      */
     public function getLinks()
     {
@@ -132,7 +132,7 @@ class HateoasLinks implements ArrayAccess
 
     /**
      * Sets _links
-     * @param \zipMoney\Model\HateoaslinksLinks[] $_links
+     * @param Zip\Model\HateoaslinksLinks[] $_links
      * @return $this
      */
     public function setLinks($_links)
@@ -193,10 +193,10 @@ class HateoasLinks implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(\zipMoney\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 
