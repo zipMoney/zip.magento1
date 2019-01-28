@@ -10,7 +10,7 @@
 
 class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
 {
-    
+
     const CHECKOUT_JS_PATH = '/zip/payment/checkout.js';
     const ONEPAGE_CHECKOUT_JS_PATH = '/zip/payment/opcheckout.js';
 
@@ -19,8 +19,8 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
      * 
      * @return boolean
      */
-    public function isActive() {
-
+    public function isActive()
+    {
         return Mage::helper('zip_payment')->isActive();
     }
 
@@ -29,11 +29,12 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
      * 
      * @return string
      */
-    public function getMethodCode() {
+    public function getMethodCode()
+    {
         return Mage::helper('zip_payment')->getConfig()->getMethodCode();
     }
 
-     /**
+    /**
      * Returns the checkout url.
      *
      * @return string
@@ -56,29 +57,27 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
     /**
      * get url of checkout js library
      */
-    public function getCheckoutJsLibUrl() {
+    public function getCheckoutJsLibUrl()
+    {
         return Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_JS_LIB_PATH);
     }
 
     /**
      * get a list of script urls for supporting specific kind of checkout
      */
-    public function getCheckoutScriptList() {
-
+    public function getCheckoutScriptList()
+    {
         $scriptBaseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS);
         $baseScript = $scriptBaseUrl . self::CHECKOUT_JS_PATH;
         $scriptList = array($baseScript);
 
-        $pageIdentifier = Mage::helper('zip_payment')->getPageIdentifier();
-
-        if(Mage::helper('zip_payment')->isOnepageCheckout()){
+        if (Mage::helper('zip_payment')->isOnepageCheckout()) {
             array_push($scriptList, $scriptBaseUrl . self::ONEPAGE_CHECKOUT_JS_PATH);
-        }
-        else {
+        } else {
             $customScript = Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH);
-            if($customScript) {
+            if ($customScript) {
                 array_push($scriptList, $customScript);
-            }   
+            }
         }
 
         return $scriptList;
@@ -98,21 +97,18 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
     /**
      * get log level for checkout JS
      */
-    public function getLogLevel() {
-
+    public function getLogLevel()
+    {
         $config = Mage::helper('zip_payment')->getConfig();
 
-        if($config->isDebugEnabled() && $config->isLogEnabled()) {
-            
+        if ($config->isDebugEnabled() && $config->isLogEnabled()) {
             $logLevel = $config->getLogLevel();
 
-            if($logLevel > Zend_Log::ERR) {
+            if ($logLevel > Zend_Log::ERR) {
                 return 'Information';
-            }
-            else if($logLevel > Zend_Log::DEBUG) {
+            } else if ($logLevel > Zend_Log::DEBUG) {
                 return 'Error';
-            }
-            else {
+            } else {
                 return 'Debug';
             }
         }
@@ -120,5 +116,4 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
         return '';
     }
 
-    
 }
