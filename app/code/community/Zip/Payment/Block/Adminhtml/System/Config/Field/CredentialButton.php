@@ -53,13 +53,14 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends Z
     {
         $originalData = $element->getOriginalData();
         $elementHtmlId = $element->getHtmlId();
+        $helper = Mage::helper('zip_payment');
 
         $this->addData(
             array(
-                'production_text' => $this->getModelHelper()->__('Find your Production keys'),
-                'production_url' => $this->getConfig()->getValue(self::CONFIG_PORTAL_PRODUCTION_PATH),
-                'sandbox_text' => $this->getModelHelper()->__('Find your Sandbox keys'),
-                'sandbox_url' => $this->getConfig()->getValue(self::CONFIG_PORTAL_SANDBOX_PATH),
+                'production_text' => $helper->__('Find your Production keys'),
+                'production_url' => $helper->getConfig()->getValue(self::CONFIG_PORTAL_PRODUCTION_PATH),
+                'sandbox_text' => $helper->__('Find your Sandbox keys'),
+                'sandbox_url' => $helper->getConfig()->getValue(self::CONFIG_PORTAL_SANDBOX_PATH),
                 'html_id' => $elementHtmlId,
             )
         );
