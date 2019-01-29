@@ -46,7 +46,6 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
     protected function redirectAfterResponse($response)
     {
         $this->getHelper()->unsetCheckoutSessionData();
-        $this->getHelper()->emptyShoppingCart();
 
         if(!isset($response['redirect_url']) || empty($response['redirect_url'])) {
             return;
