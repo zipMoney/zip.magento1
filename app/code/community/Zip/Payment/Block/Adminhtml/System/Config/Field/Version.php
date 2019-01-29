@@ -15,6 +15,18 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_Version extends Mage_Admin
      */
     protected $template = 'zip/payment/system/config/field/version.phtml';
 
+    /**
+     * Set template to itself
+     */
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+        if (!$this->getTemplate() && $this->template) {
+            $this->setTemplate($this->template);
+        }
+        return $this;
+    }
+
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $this->addData(

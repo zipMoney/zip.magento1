@@ -16,6 +16,18 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
     protected $template = 'zip/payment/system/config/field/health_check.phtml';
     const HEALTH_CHECK_CACHE_ID = 'zip_payment_health_check';
 
+    /**
+     * Set template to itself
+     */
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+        if (!$this->getTemplate() && $this->template) {
+            $this->setTemplate($this->template);
+        }
+        return $this;
+    }
+
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $result = $element->getValue();
