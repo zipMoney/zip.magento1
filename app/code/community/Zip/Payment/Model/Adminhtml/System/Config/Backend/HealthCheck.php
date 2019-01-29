@@ -2,7 +2,7 @@
 
 /**
  * Admin Model of health check
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -42,8 +42,8 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     /**
      * check multiple items and get health result
      */
-    protected function getHealthResult() {
-
+    protected function getHealthResult()
+    {
         $config = Mage::helper('zip_payment')->getConfig();
 
         $sslEnabled = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
@@ -96,7 +96,6 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             }
 
             try {
-
                 $headers = array(
                     'Authorization: ' . $apiConfig->getApiKeyPrefix('Authorization') . ' ' . $apiConfig->getApiKey('Authorization'),
                     'Content-Type: application/json',
@@ -107,8 +106,8 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 curl_exec($curl);
 
                 $sslVerified = curl_getinfo($curl, CURLINFO_SSL_VERIFYRESULT) == 0;
-                $isAccessible = !empty(curl_getinfo($curl, CURLINFO_PRIMARY_IP)); 
-                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);   
+                $isAccessible = !empty(curl_getinfo($curl, CURLINFO_PRIMARY_IP));
+                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
                 // if API certification invalid
                 if(!$sslVerified) {
@@ -124,28 +123,29 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 if($httpCode == '401') {
                     $this->appendFailedItem(self::STATUS_ERROR, self::API_CREDENTIAL_INVALID_MESSAGE);
                 }
-                
             }
             catch(Exception $e) {
                 $this->appendFailedItem(self::STATUS_ERROR, self::CONFIG_PRIVATE_KEY_PATH);
             }
-            
+
             curl_close($curl);
         }
 
-        usort($this->result['items'], function($a, $b) {
-            return $b['status'] - $a['status'];
-        });
+        usort(
+            $this->result['items'], function ($a, $b) {
+                return $b['status'] - $a['status'];
+            }
+        );
 
         return $this->result;
-        
+
     }
 
     /**
      * append failed item into health result
      */
-    protected function appendFailedItem($status, $label) {
-
+    protected function appendFailedItem($status, $label)
+    {
         if(!is_null($status) && $this->result['overall_status'] < $status) {
             $this->result['overall_status'] = $status;
         }

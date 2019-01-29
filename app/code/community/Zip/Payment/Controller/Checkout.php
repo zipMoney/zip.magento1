@@ -2,7 +2,7 @@
 
 /**
  * Checkout controller model
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -35,15 +35,16 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         if ($this->logger == null) {
             $this->logger = Mage::getSingleton('zip_payment/logger');
         }
+
         return $this->logger;
     }
 
-        
+
     /**
      * handle redirect after response been processed
      */
-    protected function redirectAfterResponse($response) {
-
+    protected function redirectAfterResponse($response)
+    {
         $this->getHelper()->unsetCheckoutSessionData();
         $this->getHelper()->emptyShoppingCart();
 
@@ -61,39 +62,43 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         }
 
     }
-    
 
-    
+
+
     /**
      * create breadcrumb for checkout pages
      */
-    protected function createBreadCrumbs($key, $label) {
-
+    protected function createBreadCrumbs($key, $label)
+    {
         $breadcrumbs = $this->getLayout()->getBlock('breadcrumbs');
 
         if($breadcrumbs) {
-
-            $breadcrumbs->addCrumb('home', array(
+            $breadcrumbs->addCrumb(
+                'home', array(
                 'label' => $this->__('Home'),
                 'title' => $this->__('Home'),
                 'link'  => Mage::getBaseUrl()
-            ));
+                )
+            );
 
             $isLandingPageEnabled = $this->getHelper()->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
 
             if($isLandingPageEnabled) {
-                $breadcrumbs->addCrumb(Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER, array(
+                $breadcrumbs->addCrumb(
+                    Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER, array(
                     'label' => $this->__('About Zip Payment'),
                     'title' => $this->__('About Zip Payment'),
                     'link'  => $this->getHelper()->getUrl(Zip_Payment_Model_Config::LANDING_PAGE_URL_ROUTE)
-                ));
+                    )
+                );
             }
 
-            $breadcrumbs->addCrumb($key, array(
+            $breadcrumbs->addCrumb(
+                $key, array(
                 'label' => $this->__($label),
                 'title' => $this->__($label)
-            ));
-
+                )
+            );
         }
     }
 }

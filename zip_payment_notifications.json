@@ -1,0 +1,24 @@
+{
+    "name": "Zip Payment Plugin Notifications",
+    "release": {
+        "version": "2.0.1",
+        "title": "Zip Payment version 2.0.1 is available now! New Tools to Fuel Your Growth",
+        "description": "fix keyName checking for arrow keys in IE11",
+        "url": "https://zip.co/",
+        "date": "2018/11/25"
+    },
+    "notifications": [
+        {
+            "title": "Own the way you pay at your favourite stores",
+            "description": "Buy the things you love today and pay for them over time, interest free.",
+            "url": "https://zip.co/stores/",
+            "date": "2018/9/25"
+        },
+        {
+            "title": "Big news. Gift cards now available at Zip",
+            "description": "Get that special someone a gift with Zip. Choose a digital gift card from our range in Zip.",
+            "url": "https://zip.co/giftcards/",
+            "date": "2018/10/25"
+        }
+    ]
+}

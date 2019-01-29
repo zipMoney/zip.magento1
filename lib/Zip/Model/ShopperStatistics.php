@@ -122,9 +122,9 @@ class ShopperStatistics implements ArrayAccess
     const FRAUD_CHECK_RESULT_PASS = 'pass';
     const FRAUD_CHECK_RESULT_FAIL = 'fail';
     const FRAUD_CHECK_RESULT_UNKNOWN = 'unknown';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -136,7 +136,7 @@ class ShopperStatistics implements ArrayAccess
             self::CURRENCY_NZD,
         );
     }
-    
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -149,7 +149,7 @@ class ShopperStatistics implements ArrayAccess
             self::FRAUD_CHECK_RESULT_UNKNOWN,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -206,15 +206,16 @@ class ShopperStatistics implements ArrayAccess
      */
     public function valid()
     {
-
         $allowed_values = array("AUD", "NZD");
         if (!in_array($this->container['currency'], $allowed_values)) {
             return false;
         }
+
         $allowed_values = array("pass", "fail", "unknown");
         if (!in_array($this->container['fraud_check_result'], $allowed_values)) {
             return false;
         }
+
         return true;
     }
 
@@ -386,6 +387,7 @@ class ShopperStatistics implements ArrayAccess
         if (!is_null($currency) && (!in_array($currency, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'currency', must be one of 'AUD', 'NZD'");
         }
+
         $this->container['currency'] = $currency;
 
         return $this;
@@ -453,6 +455,7 @@ class ShopperStatistics implements ArrayAccess
         if (!is_null($fraud_check_result) && (!in_array($fraud_check_result, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'fraud_check_result', must be one of 'pass', 'fail', 'unknown'");
         }
+
         $this->container['fraud_check_result'] = $fraud_check_result;
 
         return $this;

@@ -38,8 +38,9 @@ class ObjectSerializer
             foreach ($data as $property => $value) {
                 $data[$property] = self::sanitizeForSerialization($value);
             }
+
             return $data;
-        } elseif (is_object($data)) {                
+        } elseif (is_object($data)) {
             $attr = $data::attributeMap();
             $values = array();
             foreach (array_keys($data::zipTypes()) as $property) {
@@ -49,9 +50,10 @@ class ObjectSerializer
                     $values[$attr[$property]] = self::sanitizeForSerialization($data->$getter());
                 }
             }
-            return (object)$values;
+
+            return (object) $values;
         } else {
-            return (string)$data;
+            return (string) $data;
         }
     }
 
@@ -171,6 +173,7 @@ class ObjectSerializer
             // need to fix the result of multidimensional arrays.
             return preg_replace('/%5B[0-9]+%5D=/', '=', http_build_query($collection, '', '&'));
         }
+
         switch ($collectionFormat) {
             case 'pipes':
                 return implode('|', $collection);
@@ -212,6 +215,7 @@ class ObjectSerializer
                     $deserialized[$key] = self::deserialize($value, $subClass, null);
                 }
             }
+
             return $deserialized;
         } elseif (strcasecmp(substr($class, -2), '[]') === 0) {
             $subClass = substr($class, 0, -2);
@@ -219,6 +223,7 @@ class ObjectSerializer
             foreach ($data as $key => $value) {
                 $values[] = self::deserialize($value, $subClass, null);
             }
+
             return $values;
         } elseif ($class === 'object') {
             settype($data, 'array');
@@ -240,12 +245,14 @@ class ObjectSerializer
             return $data;
         } elseif ($class === '\SplFileObject') {
             // determine file name
-            if (array_key_exists('Content-Disposition', $httpHeaders) &&
-                preg_match('/inline; filename=[\'"]?([^\'"\s]+)[\'"]?$/i', $httpHeaders['Content-Disposition'], $match)) {
+            if (array_key_exists('Content-Disposition', $httpHeaders)
+                && preg_match('/inline; filename=[\'"]?([^\'"\s]+)[\'"]?$/i', $httpHeaders['Content-Disposition'], $match)
+            ) {
                 $filename = Configuration::getDefaultConfiguration()->getTempFolderPath() . sanitizeFilename($match[1]);
             } else {
                 $filename = tempnam(Configuration::getDefaultConfiguration()->getTempFolderPath(), '');
             }
+
             $deserialized = new \SplFileObject($filename, "w");
             $byte_written = $deserialized->fwrite($data);
             if (Configuration::getDefaultConfiguration()->getDebug()) {
@@ -262,6 +269,7 @@ class ObjectSerializer
                     $class = $subclass;
                 }
             }
+
             $instance = new $class();
             foreach ($instance::zipTypes() as $property => $type) {
                 $propertySetters = $instance::setters();
@@ -279,6 +287,7 @@ class ObjectSerializer
                     $instance->$propertySetter(self::deserialize($propertyValue, $type, null));
                 }
             }
+
             return $instance;
         }
     }

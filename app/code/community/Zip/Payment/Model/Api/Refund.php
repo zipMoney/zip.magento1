@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Refund API Model                                                                                  
- * 
+ * Refund API Model
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -12,7 +12,7 @@ use \Zip\Model\CreateRefundRequest;
 use \Zip\Api\RefundApi;
 use \Zip\ApiException;
 
-class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract 
+class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
 {
     protected $amount = 0.0;
     protected $chargeId = null;
@@ -46,12 +46,15 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
         $payload = $this->prepareCreatePayload();
 
         try {
-
-            $this->getLogger()->debug("Create refund" . json_encode(array(
-                'charge_id' => $chargeId,
-                'amount' => $amount,
-                'reason' => $reason
-            )));
+            $this->getLogger()->debug(
+                "Create refund" . json_encode(
+                    array(
+                    'charge_id' => $chargeId,
+                    'amount' => $amount,
+                    'reason' => $reason
+                    )
+                )
+            );
 
             $refund = $this->getApi()->refundsCreate($payload, $this->getIdempotencyKey());
 
@@ -64,7 +67,6 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
             }
 
             $this->response = $refund;
-
         }catch (ApiException $e) {
             $this->logException($e);
             throw $e;
@@ -81,10 +83,10 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
         $refundReq = new CreateRefundRequest();
 
         $refundReq
-        ->setAmount($this->amount)
-        ->setReason($this->reason)
-        ->setChargeId($this->chargeId)
-        ->setMetadata($this->getMetadata());
+            ->setAmount($this->amount)
+            ->setReason($this->reason)
+            ->setChargeId($this->chargeId)
+            ->setMetadata($this->getMetadata());
 
         return $refundReq;
     }
@@ -92,8 +94,9 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
     /**
      * get refund id
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->getResponse() ? $this->getResponse()->getId() : null;
     }
-   
+
 }

@@ -97,9 +97,9 @@ class Refund implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -133,15 +133,19 @@ class Refund implements ArrayAccess
         if ($this->container['id'] === null) {
             $invalid_properties[] = "'id' can't be null";
         }
+
         if ($this->container['reason'] === null) {
             $invalid_properties[] = "'reason' can't be null";
         }
+
         if ($this->container['amount'] === null) {
             $invalid_properties[] = "'amount' can't be null";
         }
+
         if ($this->container['created'] === null) {
             $invalid_properties[] = "'created' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -153,19 +157,22 @@ class Refund implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['id'] === null) {
             return false;
         }
+
         if ($this->container['reason'] === null) {
             return false;
         }
+
         if ($this->container['amount'] === null) {
             return false;
         }
+
         if ($this->container['created'] === null) {
             return false;
         }
+
         return true;
     }
 

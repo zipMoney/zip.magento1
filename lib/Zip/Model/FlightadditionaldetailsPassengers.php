@@ -97,9 +97,9 @@ class FlightadditionaldetailsPassengers implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -133,9 +133,11 @@ class FlightadditionaldetailsPassengers implements ArrayAccess
         if ($this->container['first_name'] === null) {
             $invalid_properties[] = "'first_name' can't be null";
         }
+
         if ($this->container['last_name'] === null) {
             $invalid_properties[] = "'last_name' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -147,13 +149,14 @@ class FlightadditionaldetailsPassengers implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['first_name'] === null) {
             return false;
         }
+
         if ($this->container['last_name'] === null) {
             return false;
         }
+
         return true;
     }
 

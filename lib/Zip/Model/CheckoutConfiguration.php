@@ -77,9 +77,9 @@ class CheckoutConfiguration implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -108,6 +108,7 @@ class CheckoutConfiguration implements ArrayAccess
         if ($this->container['redirect_uri'] === null) {
             $invalid_properties[] = "'redirect_uri' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -119,10 +120,10 @@ class CheckoutConfiguration implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['redirect_uri'] === null) {
             return false;
         }
+
         return true;
     }
 

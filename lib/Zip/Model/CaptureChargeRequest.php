@@ -110,6 +110,7 @@ class CaptureChargeRequest implements ArrayAccess
         if ($this->container['amount'] === null) {
             $invalid_properties[] = "Amount value can't be null";
         }
+
         if (($this->container['amount'] < 0)) {
             $invalid_properties[] = 'Invalid amount value while calling CaptureChargeRequest, must be equal or larger than 0';
         }
@@ -125,13 +126,14 @@ class CaptureChargeRequest implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['amount'] === null) {
             return false;
         }
+
         if ($this->container['amount'] < 0) {
             return false;
         }
+
         return true;
     }
 
@@ -173,7 +175,6 @@ class CaptureChargeRequest implements ArrayAccess
      */
     public function setAmount($amount)
     {
-
         if (($amount < 0)) {
             throw new \InvalidArgumentException('Invalid amount value while calling CaptureChargeRequest, must be equal or larger than 0.');
         }

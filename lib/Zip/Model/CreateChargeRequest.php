@@ -103,9 +103,9 @@ class CreateChargeRequest implements ArrayAccess
 
     const CURRENCY_AUD = 'AUD';
     const CURRENCY_NZD = 'NZD';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -117,7 +117,7 @@ class CreateChargeRequest implements ArrayAccess
             self::CURRENCY_NZD,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -152,12 +152,15 @@ class CreateChargeRequest implements ArrayAccess
         if ($this->container['authority'] === null) {
             $invalid_properties[] = "'authority' can't be null";
         }
+
         if ($this->container['amount'] === null) {
             $invalid_properties[] = "'amount' can't be null";
         }
+
         if ($this->container['currency'] === null) {
             $invalid_properties[] = "'currency' can't be null";
         }
+
         $allowed_values = array("AUD", "NZD");
         if (!in_array($this->container['currency'], $allowed_values)) {
             $invalid_properties[] = "invalid value for 'currency', must be one of 'AUD', 'NZD'.";
@@ -174,20 +177,23 @@ class CreateChargeRequest implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['authority'] === null) {
             return false;
         }
+
         if ($this->container['amount'] === null) {
             return false;
         }
+
         if ($this->container['currency'] === null) {
             return false;
         }
+
         $allowed_values = array("AUD", "NZD");
         if (!in_array($this->container['currency'], $allowed_values)) {
             return false;
         }
+
         return true;
     }
 
@@ -275,6 +281,7 @@ class CreateChargeRequest implements ArrayAccess
         if ((!in_array($currency, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'currency', must be one of 'AUD', 'NZD'");
         }
+
         $this->container['currency'] = $currency;
 
         return $this;

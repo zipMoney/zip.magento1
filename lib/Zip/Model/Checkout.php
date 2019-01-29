@@ -128,7 +128,7 @@ class Checkout implements ArrayAccess
     const STATE_DECLINED = 'declined';
 
 
-    
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -140,7 +140,7 @@ class Checkout implements ArrayAccess
             self::TYPE_EXPRESS,
         );
     }
-    
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -156,7 +156,7 @@ class Checkout implements ArrayAccess
             self::STATE_DECLINED,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -195,9 +195,11 @@ class Checkout implements ArrayAccess
         if ($this->container['id'] === null) {
             $invalid_properties[] = "'id' can't be null";
         }
+
         if ($this->container['uri'] === null) {
             $invalid_properties[] = "'uri' can't be null";
         }
+
         $allowed_values = array("standard", "express");
         if (!in_array($this->container['type'], $allowed_values)) {
             $invalid_properties[] = "invalid value for 'type', must be one of 'standard', 'express'.";
@@ -206,9 +208,11 @@ class Checkout implements ArrayAccess
         if ($this->container['created'] === null) {
             $invalid_properties[] = "'created' can't be null";
         }
+
         if ($this->container['state'] === null) {
             $invalid_properties[] = "'state' can't be null";
         }
+
         $allowed_values = array("created", "expired", "approved", "completed", "cancelled", "declined");
         if (!in_array($this->container['state'], $allowed_values)) {
             $invalid_properties[] = "invalid value for 'state', must be one of 'created', 'expired', 'approved', 'completed', 'cancelled', 'declined'.";
@@ -225,27 +229,32 @@ class Checkout implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['id'] === null) {
             return false;
         }
+
         if ($this->container['uri'] === null) {
             return false;
         }
+
         $allowed_values = array("standard", "express");
         if (!in_array($this->container['type'], $allowed_values)) {
             return false;
         }
+
         if ($this->container['created'] === null) {
             return false;
         }
+
         if ($this->container['state'] === null) {
             return false;
         }
+
         $allowed_values = array("created", "expired", "approved", "completed", "cancelled", "declined");
         if (!in_array($this->container['state'], $allowed_values)) {
             return false;
         }
+
         return true;
     }
 
@@ -312,6 +321,7 @@ class Checkout implements ArrayAccess
         if (!is_null($type) && (!in_array($type, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'type', must be one of 'standard', 'express'");
         }
+
         $this->container['type'] = $type;
 
         return $this;
@@ -442,6 +452,7 @@ class Checkout implements ArrayAccess
         if ((!in_array($state, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'created', 'expired', 'approved', 'completed', 'cancelled', 'declined'");
         }
+
         $this->container['state'] = $state;
 
         return $this;

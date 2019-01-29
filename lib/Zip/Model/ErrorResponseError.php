@@ -85,9 +85,9 @@ class ErrorResponseError implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -118,9 +118,11 @@ class ErrorResponseError implements ArrayAccess
         if ($this->container['code'] === null) {
             $invalid_properties[] = "'code' can't be null";
         }
+
         if ($this->container['message'] === null) {
             $invalid_properties[] = "'message' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -132,13 +134,14 @@ class ErrorResponseError implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['code'] === null) {
             return false;
         }
+
         if ($this->container['message'] === null) {
             return false;
         }
+
         return true;
     }
 

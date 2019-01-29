@@ -77,9 +77,9 @@ class CheckoutFeatures implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -116,7 +116,6 @@ class CheckoutFeatures implements ArrayAccess
      */
     public function valid()
     {
-
         return true;
     }
 

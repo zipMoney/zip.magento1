@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Configuration model for environment                                                                                          
- * 
+ * Configuration model for environment
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *

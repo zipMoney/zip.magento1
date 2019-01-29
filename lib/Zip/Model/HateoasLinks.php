@@ -77,9 +77,9 @@ class HateoasLinks implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -116,7 +116,6 @@ class HateoasLinks implements ArrayAccess
      */
     public function valid()
     {
-
         return true;
     }
 

@@ -116,9 +116,9 @@ class Shopper implements ArrayAccess
     const GENDER_MALE = 'Male';
     const GENDER_FEMALE = 'Female';
     const GENDER_OTHER = 'Other';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -131,7 +131,7 @@ class Shopper implements ArrayAccess
             self::GENDER_OTHER,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -169,9 +169,11 @@ class Shopper implements ArrayAccess
         if ($this->container['first_name'] === null) {
             $invalid_properties[] = "'first_name' can't be null";
         }
+
         if ($this->container['last_name'] === null) {
             $invalid_properties[] = "'last_name' can't be null";
         }
+
         if (!is_null($this->container['phone']) && !preg_match("/^\\+?[\\d\\s]+$/", $this->container['phone'])) {
             $invalid_properties[] = "invalid value for 'phone', must be conform to the pattern /^\\+?[\\d\\s]+$/.";
         }
@@ -179,6 +181,7 @@ class Shopper implements ArrayAccess
         if ($this->container['email'] === null) {
             $invalid_properties[] = "'email' can't be null";
         }
+
         $allowed_values = array("Male", "Female", "Other");
         if (!in_array($this->container['gender'], $allowed_values)) {
             $invalid_properties[] = "invalid value for 'gender', must be one of 'Male', 'Female', 'Other'.";
@@ -187,6 +190,7 @@ class Shopper implements ArrayAccess
         if ($this->container['billing_address'] === null) {
             $invalid_properties[] = "'billing_address' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -198,26 +202,31 @@ class Shopper implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['first_name'] === null) {
             return false;
         }
+
         if ($this->container['last_name'] === null) {
             return false;
         }
+
         if (!preg_match("/^\\+?[\\d\\s]+$/", $this->container['phone'])) {
             return false;
         }
+
         if ($this->container['email'] === null) {
             return false;
         }
+
         $allowed_values = array("Male", "Female", "Other");
         if (!in_array($this->container['gender'], $allowed_values)) {
             return false;
         }
+
         if ($this->container['billing_address'] === null) {
             return false;
         }
+
         return true;
     }
 
@@ -322,7 +331,6 @@ class Shopper implements ArrayAccess
      */
     public function setPhone($phone)
     {
-
         if (!is_null($phone) && (!preg_match("/^\\+?[\\d\\s]+$/", $phone))) {
             throw new \InvalidArgumentException("invalid value for $phone when calling Shopper., must conform to the pattern /^\\+?[\\d\\s]+$/.");
         }
@@ -394,6 +402,7 @@ class Shopper implements ArrayAccess
         if (!is_null($gender) && (!in_array($gender, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'gender', must be one of 'Male', 'Female', 'Other'");
         }
+
         $this->container['gender'] = $gender;
 
         return $this;

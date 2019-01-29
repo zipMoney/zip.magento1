@@ -108,9 +108,9 @@ class Customer implements ArrayAccess
     const GENDER_MALE = 'Male';
     const GENDER_FEMALE = 'Female';
     const GENDER_OTHER = 'Other';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -123,7 +123,7 @@ class Customer implements ArrayAccess
             self::GENDER_OTHER,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -159,18 +159,23 @@ class Customer implements ArrayAccess
         if ($this->container['first_name'] === null) {
             $invalid_properties[] = "'first_name' can't be null";
         }
+
         if ($this->container['last_name'] === null) {
             $invalid_properties[] = "'last_name' can't be null";
         }
+
         if ($this->container['phone'] === null) {
             $invalid_properties[] = "'phone' can't be null";
         }
+
         if ($this->container['email'] === null) {
             $invalid_properties[] = "'email' can't be null";
         }
+
         if ($this->container['birth_date'] === null) {
             $invalid_properties[] = "'birth_date' can't be null";
         }
+
         $allowed_values = array("Male", "Female", "Other");
         if (!in_array($this->container['gender'], $allowed_values)) {
             $invalid_properties[] = "invalid value for 'gender', must be one of 'Male', 'Female', 'Other'.";
@@ -187,26 +192,31 @@ class Customer implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['first_name'] === null) {
             return false;
         }
+
         if ($this->container['last_name'] === null) {
             return false;
         }
+
         if ($this->container['phone'] === null) {
             return false;
         }
+
         if ($this->container['email'] === null) {
             return false;
         }
+
         if ($this->container['birth_date'] === null) {
             return false;
         }
+
         $allowed_values = array("Male", "Female", "Other");
         if (!in_array($this->container['gender'], $allowed_values)) {
             return false;
         }
+
         return true;
     }
 
@@ -378,6 +388,7 @@ class Customer implements ArrayAccess
         if (!is_null($gender) && (!in_array($gender, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'gender', must be one of 'Male', 'Female', 'Other'");
         }
+
         $this->container['gender'] = $gender;
 
         return $this;

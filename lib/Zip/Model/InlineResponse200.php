@@ -77,9 +77,9 @@ class InlineResponse200 implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -108,6 +108,7 @@ class InlineResponse200 implements ArrayAccess
         if ($this->container['items'] === null) {
             $invalid_properties[] = "'items' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -119,10 +120,10 @@ class InlineResponse200 implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['items'] === null) {
             return false;
         }
+
         return true;
     }
 

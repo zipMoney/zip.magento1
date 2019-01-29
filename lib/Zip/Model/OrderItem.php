@@ -118,9 +118,9 @@ class OrderItem implements ArrayAccess
     const TYPE_SHIPPING = 'shipping';
     const TYPE_DISCOUNT = 'discount';
     const TYPE_STORE_CREDIT = 'store_credit';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -135,7 +135,7 @@ class OrderItem implements ArrayAccess
             self::TYPE_STORE_CREDIT,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -173,9 +173,11 @@ class OrderItem implements ArrayAccess
         if ($this->container['name'] === null) {
             $invalid_properties[] = "'name' can't be null";
         }
+
         if ($this->container['amount'] === null) {
             $invalid_properties[] = "'amount' can't be null";
         }
+
         if (!is_null($this->container['quantity']) && ($this->container['quantity'] <= 0)) {
             $invalid_properties[] = "invalid value for 'quantity', must be bigger than 0.";
         }
@@ -183,6 +185,7 @@ class OrderItem implements ArrayAccess
         if ($this->container['type'] === null) {
             $invalid_properties[] = "'type' can't be null";
         }
+
         $allowed_values = array("sku", "tax", "shipping", "discount", "store_credit");
         if (!in_array($this->container['type'], $allowed_values)) {
             $invalid_properties[] = "invalid value for 'type', must be one of 'sku', 'tax', 'shipping', 'discount', 'store_credit'.";
@@ -203,26 +206,31 @@ class OrderItem implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['name'] === null) {
             return false;
         }
+
         if ($this->container['amount'] === null) {
             return false;
         }
+
         if ($this->container['quantity'] <= 0) {
             return false;
         }
+
         if ($this->container['type'] === null) {
             return false;
         }
+
         $allowed_values = array("sku", "tax", "shipping", "discount", "store_credit");
         if (!in_array($this->container['type'], $allowed_values)) {
             return false;
         }
+
         if (strlen($this->container['product_code']) > 200) {
             return false;
         }
+
         return true;
     }
 
@@ -356,6 +364,7 @@ class OrderItem implements ArrayAccess
         if ((!in_array($type, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'type', must be one of 'sku', 'tax', 'shipping', 'discount', 'store_credit'");
         }
+
         $this->container['type'] = $type;
 
         return $this;

@@ -99,9 +99,9 @@ class CreateCheckoutRequest implements ArrayAccess
 
     const TYPE_STANDARD = 'standard';
     const TYPE_EXPRESS = 'express';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -113,7 +113,7 @@ class CreateCheckoutRequest implements ArrayAccess
             self::TYPE_EXPRESS,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -152,9 +152,11 @@ class CreateCheckoutRequest implements ArrayAccess
         if ($this->container['order'] === null) {
             $invalid_properties[] = "'order' can't be null";
         }
+
         if ($this->container['config'] === null) {
             $invalid_properties[] = "'config' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -166,17 +168,19 @@ class CreateCheckoutRequest implements ArrayAccess
      */
     public function valid()
     {
-
         $allowed_values = array("standard", "express");
         if (!in_array($this->container['type'], $allowed_values)) {
             return false;
         }
+
         if ($this->container['order'] === null) {
             return false;
         }
+
         if ($this->container['config'] === null) {
             return false;
         }
+
         return true;
     }
 
@@ -201,6 +205,7 @@ class CreateCheckoutRequest implements ArrayAccess
         if (!is_null($type) && (!in_array($type, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'type', must be one of 'standard', 'express'");
         }
+
         $this->container['type'] = $type;
 
         return $this;

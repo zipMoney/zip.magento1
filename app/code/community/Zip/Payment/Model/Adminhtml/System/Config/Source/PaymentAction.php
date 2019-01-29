@@ -2,8 +2,8 @@
 
 
 /**
- * Configuration model for payment action                                                                                          
- * 
+ * Configuration model for payment action
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *

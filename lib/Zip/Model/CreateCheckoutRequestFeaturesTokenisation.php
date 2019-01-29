@@ -77,9 +77,9 @@ class CreateCheckoutRequestFeaturesTokenisation implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -108,6 +108,7 @@ class CreateCheckoutRequestFeaturesTokenisation implements ArrayAccess
         if ($this->container['required'] === null) {
             $invalid_properties[] = "'required' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -119,10 +120,10 @@ class CreateCheckoutRequestFeaturesTokenisation implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['required'] === null) {
             return false;
         }
+
         return true;
     }
 

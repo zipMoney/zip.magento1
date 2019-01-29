@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Checkout API Model                                                                                  
- * 
+ * Checkout API Model
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -53,11 +53,9 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
 
         if (empty($checkoutId)) {
-
             $payload = $this->prepareCreatePayload();
 
             try {
-
                 $this->getLogger()->debug("Create checkout");
 
                 $checkout = $this->getApi()->checkoutsCreate($payload);
@@ -79,7 +77,6 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                 }
 
                 $this->response = $checkout;
-
             } catch (ApiException $e) {
                 $this->logException($e);
                 throw $e;
@@ -97,11 +94,8 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
      */
     public function retrieve($checkoutId)
     {
-
         if (!empty($checkoutId)) {
-
             try {
-
                 $this->getLogger()->debug("Retrieve checkout");
 
                 $checkout = $this->getApi()->checkoutsGet($checkoutId);
@@ -111,7 +105,6 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                 }
 
                 $this->response = $checkout;
-
             } catch (ApiException $e) {
                 $this->logException($e);
                 throw $e;
@@ -132,11 +125,11 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         $checkoutReq = new CreateCheckoutRequest();
 
         $checkoutReq
-        ->setType(self::CHECKOUT_TYPE)
-        ->setShopper($this->getShopper())
-        ->setOrder($this->getCheckoutOrder())
-        ->setMetadata($this->getMetadata())
-        ->setConfig($this->getCheckoutConfiguration());
+            ->setType(self::CHECKOUT_TYPE)
+            ->setShopper($this->getShopper())
+            ->setOrder($this->getCheckoutOrder())
+            ->setMetadata($this->getMetadata())
+            ->setConfig($this->getCheckoutConfiguration());
 
         return $checkoutReq;
     }
@@ -186,11 +179,11 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         $grandTotal = $quote->getGrandTotal() ?: 0.00;
 
         $order
-        ->setReference($reference)
-        ->setShipping($this->getOrderShipping())
-        ->setCurrency($currency)
-        ->setAmount($grandTotal)
-        ->setItems($this->getOrderItems());
+            ->setReference($reference)
+            ->setShipping($this->getOrderShipping())
+            ->setCurrency($currency)
+            ->setAmount($grandTotal)
+            ->setItems($this->getOrderItems());
 
         return $order;
     }
@@ -212,37 +205,42 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     /**
      * get redirect url
      */
-    public function getRedirectUrl() {
+    public function getRedirectUrl()
+    {
         return $this->getResponse() ? $this->getResponse()->getUri() : null;
     }
 
     /**
      * get checkout id
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->getResponse() ? $this->getResponse()->getId() : null;
     }
 
     /**
      * get checkout state
      */
-    public function getState() {
+    public function getState()
+    {
         return $this->getResponse() ? $this->getResponse()->getState() : null;
     }
 
     /**
      * get all allowed checkout states
      */
-    public function getAllowedStates() {
+    public function getAllowedStates()
+    {
         return $this->getResponse() ? $this->getResponse()->getStateAllowableValues() : null;
     }
 
     /**
      * get order reference
      */
-    public function getOrderReference() {
+    public function getOrderReference()
+    {
         return $this->getResponse() ? $this->getResponse()->getOrder()->getReference() : null;
     }
 
-    
+
 }

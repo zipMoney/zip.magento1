@@ -14,8 +14,8 @@ class Zip_Payment_Model_Observer
     /**
      * disable full page cache for all actions in Zip_Payment_CheckoutController
      */
-    public function processControllerPreDispatch(Varien_Event_Observer $observer) {
-
+    public function processControllerPreDispatch(Varien_Event_Observer $observer)
+    {
         $action = $observer->getEvent()->getControllerAction();
 
         // Check to see if $action is a Zip Payment Checkout controller
@@ -30,12 +30,11 @@ class Zip_Payment_Model_Observer
     /**
      * update response result after payment been saved
      */
-    public function setResponseAfterSavePayment(Varien_Event_Observer $observer) {
-
+    public function setResponseAfterSavePayment(Varien_Event_Observer $observer)
+    {
         $methodCode = Mage::helper('zip_payment')->getCurrentPaymentMethod()->getCode();
 
         if($methodCode == Zip_Payment_Model_Config::METHOD_CODE) {
-            
             $controller = $observer->getEvent()->getData('controller_action');
 
             $result = Mage::helper('core')->jsonDecode(
@@ -44,7 +43,6 @@ class Zip_Payment_Model_Observer
             );
 
             if (empty($result['error'])) {
-
                 $controller->loadLayout('checkout_onepage_review');
                 $html = $controller->getLayout()->getBlock('root')->toHtml();
 
@@ -58,7 +56,6 @@ class Zip_Payment_Model_Observer
                 $controller->getResponse()->clearHeader('Location');
                 $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
             }
-
         }
 
         return $this;
@@ -69,8 +66,8 @@ class Zip_Payment_Model_Observer
      * set layout handle for checkout page
      * @param Varien_Event_Observer $observer   observer object
      */
-    public function setCheckoutLayoutHandle($observer) {
-
+    public function setCheckoutLayoutHandle($observer)
+    {
         $layoutHander = 'checkout_layout_hander';
 
         if(Mage::helper('zip_payment')->isOnepageCheckout() || Mage::helper('zip_payment')->isOnestepCheckout()) {

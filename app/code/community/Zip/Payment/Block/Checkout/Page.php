@@ -2,14 +2,15 @@
 
 /**
  * Block model of cms page for Zip Payment
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
  **/
 
 class Zip_Payment_Block_Checkout_Page extends Mage_Core_Block_Template
-{  
+{
+
 
     protected $headingTextConfigPath = null;
     protected $contentHtmlConfigPath = null;
@@ -24,7 +25,8 @@ class Zip_Payment_Block_Checkout_Page extends Mage_Core_Block_Template
      * get Zip payment logo
      * @return string
      */
-    public function getLogo() {
+    public function getLogo()
+    {
         return Mage::helper('zip_payment')->getConfig()->getLogo();
     }
 
@@ -32,7 +34,8 @@ class Zip_Payment_Block_Checkout_Page extends Mage_Core_Block_Template
      * get Zip payment slogan
      * @return string
      */
-    public function getSlogan() {
+    public function getSlogan()
+    {
         return Mage::helper('zip_payment')->getConfig()->getTitle();
     }
 

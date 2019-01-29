@@ -2,13 +2,13 @@
 
 /**
  * Block class of Admin credential buttons
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends Zip_Payment_Block_Adminhtml_System_Config_Field
+class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
 
     const CONFIG_PORTAL_SANDBOX_PATH = 'payment/zip_payment/portal/sandbox';
@@ -28,6 +28,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends Z
         if (!$this->getTemplate()) {
             $this->setTemplate($this->template);
         }
+
         return $this;
     }
 

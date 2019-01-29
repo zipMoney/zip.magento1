@@ -2,7 +2,7 @@
 
 /**
  * Block model for checkout script
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -16,7 +16,7 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
 
     /**
      * is current payment active
-     * 
+     *
      * @return boolean
      */
     public function isActive()
@@ -26,7 +26,7 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
 
     /**
      * get zip payment's method code
-     * 
+     *
      * @return string
      */
     public function getMethodCode()
