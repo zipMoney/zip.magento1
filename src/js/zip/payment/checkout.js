@@ -1,3 +1,10 @@
+/***********************************************************************************
+ * Base functions for Zip.Checkout
+ *
+ * @author Zip Co - Plugin Team
+ *
+ ***********************************************************************************/
+
 if('Zip' in window && Zip.Checkout) {
     Object.extend(
         Zip.Checkout, {
