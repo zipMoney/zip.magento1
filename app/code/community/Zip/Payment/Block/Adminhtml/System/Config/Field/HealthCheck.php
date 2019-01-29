@@ -8,7 +8,7 @@
  *
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Zip_Payment_Block_Adminhtml_System_Config_Field
+class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /**
      * @var string

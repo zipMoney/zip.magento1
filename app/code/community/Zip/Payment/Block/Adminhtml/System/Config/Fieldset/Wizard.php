@@ -8,7 +8,7 @@
  *
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Zip_Payment_Block_Adminhtml_System_Config_Fieldset
+class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
     protected $headerTitleTemplate = 'zip/payment/system/config/fieldset/wizard/header_title.phtml';
     protected $noticeTemplate = 'zip/payment/system/config/fieldset/wizard/notice.phtml';
