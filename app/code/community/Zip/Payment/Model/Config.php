@@ -274,7 +274,6 @@ class Zip_Payment_Model_Config
     public function getValue($path) {
 
         $value = (string) Mage::getConfig()->getNode(self::CONFIG_CUSTOM_NODE_NAME . '/' . $path);
-        $storeId = Mage::app()->getStore()->getId();
 
         if(empty($value)) {
             $value = Mage::getStoreConfig($path, $this->storeId);

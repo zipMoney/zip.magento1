@@ -445,6 +445,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             $chargeId = preg_replace('/_rn_[0-9]+?$/i', '', $transactionID);
 
             // Create refund
+            $this->getLogger()->debug('Refund store id: ' . $storeId);
             $refund = Mage::getModel('zip_payment/api_refund', array('store_id' => $storeId))
             ->create($chargeId, $amount, $reason);
 

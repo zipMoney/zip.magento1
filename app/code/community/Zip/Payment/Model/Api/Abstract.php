@@ -22,6 +22,7 @@ abstract class Zip_Payment_Model_Api_Abstract
     protected $response = null;
     protected $order = null;
     protected $quote = null;
+    protected $storeId = null;
 
     public function __construct($options)
     {
