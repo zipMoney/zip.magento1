@@ -71,7 +71,7 @@ class Zip_Payment_Model_Checkout
      */
     protected function getConfig()
     {
-        if($this->config == null) {
+        if ($this->config == null) {
             $this->config = $this->getHelper()->getConfig();
         }
 
@@ -94,7 +94,7 @@ class Zip_Payment_Model_Checkout
         try {
             $checkoutIdFromSession = $this->getHelper()->getCheckoutIdFromSession();
             $isReferred = !empty($checkoutId) && (empty($checkoutIdFromSession) || $checkoutIdFromSession != $checkoutId);
-            empty($checkoutIdFromSession) ?: $checkoutId = $checkoutIdFromSession;
+            empty($checkoutIdFromSession) ? : $checkoutId = $checkoutIdFromSession;
 
             if (empty($checkoutId)) {
                 Mage::throwException('The checkout Id does not exist');
@@ -103,21 +103,21 @@ class Zip_Payment_Model_Checkout
             // save checkout id and state into session
             $this->getHelper()->saveCheckoutSessionData(
                 array(
-                Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY => $checkoutId,
-                Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY => $state
+                    Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY => $checkoutId,
+                    Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY => $state
                 )
             );
 
             $this->getLogger()->debug(
                 'response: ' . json_encode(
                     array(
-                    'checkoutid' => $checkoutId,
-                    'state' => $state
+                        'checkoutid' => $checkoutId,
+                        'state' => $state
                     )
                 )
             );
 
-            switch($state) {
+            switch ($state) {
                 // State is Approved
                 case Zip_Payment_Model_Api_Checkout::STATE_APPROVED:
 
@@ -132,19 +132,20 @@ class Zip_Payment_Model_Checkout
 
                     $this->getLogger()->debug('Handle referred checkout');
 
-                    if($this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH)) {
+                    if ($this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH)) {
                         $this->placeOrder();
                     }
 
                     $response['success'] = true;
                     $response['redirect_url'] = Zip_Payment_Model_Config::CHECKOUT_REFERRED_URL_ROUTE;
+                    $this->getHelper()->emptyShoppingCart();
                     break;
                 // Other states
                 default:
 
                     $this->getLogger()->debug("Handle {$state} checkout");
 
-                    if($isReferred) {
+                    if ($isReferred) {
                         $this->cancelReferredOrder($checkoutId);
                     }
 
@@ -183,7 +184,7 @@ class Zip_Payment_Model_Checkout
             $onepage->saveOrder();
 
             $this->getLogger()->debug('Order has been saved successfully');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
 
@@ -197,7 +198,7 @@ class Zip_Payment_Model_Checkout
         try {
             // retrieve checkout from API call
             $checkout = Mage::getModel('zip_payment/api_checkout')
-            ->retrieve($checkoutId);
+                ->retrieve($checkoutId);
 
             $orderId = $checkout->getOrderReference();
 
@@ -205,13 +206,12 @@ class Zip_Payment_Model_Checkout
             $order = Mage::getSingleton('sales/order')->loadByIncrementId($orderId);
 
             // if order exists
-            if($order->getId()) {
+            if ($order->getId()) {
                 $this->placeOrderWithExistingOrder($order);
-            }
-            else {
+            } else {
                 $this->placeOrderWithExistingQuote($orderId);
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
 
@@ -225,18 +225,17 @@ class Zip_Payment_Model_Checkout
     {
         try {
             $checkout = Mage::getModel('zip_payment/api_checkout')
-            ->retrieve($checkoutId);
+                ->retrieve($checkoutId);
 
             $orderId = $checkout->getOrderReference();
             $order = Mage::getSingleton('sales/order')->loadByIncrementId($orderId);
 
             // cancel order if there is pending order exists for this failed checkout
-            if($this->getHelper()->isReferredOrder($order) && $order->canCancel()) {
+            if ($this->getHelper()->isReferredOrder($order) && $order->canCancel()) {
                 $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true)->cancel()->save();
                 $this->getLogger()->debug("Order #{$orderId} has been cancelled");
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
 
@@ -252,7 +251,7 @@ class Zip_Payment_Model_Checkout
         $this->getLogger()->debug("Place order with existing order #{$orderId}");
 
         // if the order state is not pending
-        if(!$this->getHelper()->isReferredOrder($order)) {
+        if (!$this->getHelper()->isReferredOrder($order)) {
             Mage::throwException($this->getHelper()->__('Current order is not a valid referred order. payment can\'t be processed.'));
         }
 
@@ -309,7 +308,7 @@ class Zip_Payment_Model_Checkout
             // Try to load quote and place a new order
             $quote = Mage::getModel('sales/quote')->load($orderId, 'reserved_order_id');
 
-            if(!$quote->getId()) {
+            if (!$quote->getId()) {
                 $this->getLogger()->debug("Could not find any quote for order #{$orderId}");
                 Mage::throwException('Could not retrieve your shopping cart, payment can\'t be processed.');
             }
@@ -317,7 +316,7 @@ class Zip_Payment_Model_Checkout
             $this->getLogger()->debug("Place order with existing quote #{$quote->getId()}");
 
             $quote
-            ->setIsActive(true);
+                ->setIsActive(true);
 
             $this->getHelper()->getCheckoutSession()
                 ->replaceQuote($quote)
@@ -341,7 +340,7 @@ class Zip_Payment_Model_Checkout
     {
         $message = null;
 
-        switch($state) {
+        switch ($state) {
             case Zip_Payment_Model_Api_Checkout::STATE_DECLINED:
             case Zip_Payment_Model_Api_Checkout::STATE_EXPIRED:
                 $message = $this->getHelper()->__("Checkout is {$state}");

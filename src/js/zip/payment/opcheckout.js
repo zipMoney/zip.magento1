@@ -1,3 +1,10 @@
+/***********************************************************************************
+ * Script to support One page Checkout
+ *
+ * @author Zip Co - Plugin Team
+ *
+ ***********************************************************************************/
+
 if('Zip' in window && Zip.Checkout) {
     if('Review' in window) {
         Object.extend(
