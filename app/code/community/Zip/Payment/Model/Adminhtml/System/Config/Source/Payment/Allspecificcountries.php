@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Configuration model for payment specific countries                                                                                          
- * 
+ * Configuration model for payment specific countries
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -14,7 +14,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_Payment_Allspecificcountr
     {
         return array(
             array(
-                'value' => 1, 
+                'value' => 1,
                 'label' => Mage::helper('adminhtml')->__('Specific Countries')
             )
         );

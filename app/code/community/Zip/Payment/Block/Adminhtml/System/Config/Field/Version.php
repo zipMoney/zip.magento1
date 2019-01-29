@@ -2,7 +2,7 @@
 
 /**
  * Block class of Admin version field
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -24,6 +24,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_Version extends Mage_Admin
         if (!$this->getTemplate() && $this->template) {
             $this->setTemplate($this->template);
         }
+
         return $this;
     }
 
@@ -34,7 +35,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_Version extends Mage_Admin
                 'version' => Mage::helper('zip_payment')->getCurrentVersion()
             )
         );
-        
+
         return $this->_toHtml();
     }
 }

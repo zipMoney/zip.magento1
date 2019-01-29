@@ -78,9 +78,9 @@ class OrderItemAdditionalDetails implements ArrayAccess
     }
 
     const TYPE_FLIGHTS = 'Flights';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -91,7 +91,7 @@ class OrderItemAdditionalDetails implements ArrayAccess
             self::TYPE_FLIGHTS,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -133,11 +133,11 @@ class OrderItemAdditionalDetails implements ArrayAccess
      */
     public function valid()
     {
-
         $allowed_values = array("Flights");
         if (!in_array($this->container['type'], $allowed_values)) {
             return false;
         }
+
         return true;
     }
 
@@ -162,6 +162,7 @@ class OrderItemAdditionalDetails implements ArrayAccess
         if (!is_null($type) && (!in_array($type, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'type', must be one of 'Flights'");
         }
+
         $this->container['type'] = $type;
 
         return $this;

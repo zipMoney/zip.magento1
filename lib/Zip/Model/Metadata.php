@@ -28,7 +28,7 @@ class Metadata implements ArrayAccess
       * @var string[]
       */
     protected static $zipTypes = array(
-        
+
     );
 
     public static function zipTypes()
@@ -41,7 +41,7 @@ class Metadata implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = array(
-        
+
     );
 
 
@@ -50,7 +50,7 @@ class Metadata implements ArrayAccess
      * @var string[]
      */
     protected static $setters = array(
-        
+
     );
 
 
@@ -59,7 +59,7 @@ class Metadata implements ArrayAccess
      * @var string[]
      */
     protected static $getters = array(
-        
+
     );
 
     public static function attributeMap()
@@ -77,9 +77,9 @@ class Metadata implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -115,7 +115,6 @@ class Metadata implements ArrayAccess
      */
     public function valid()
     {
-
         return true;
     }
 

@@ -269,7 +269,6 @@ class ApiClient
             if (json_last_error() > 0) { // if response is a string
                 $data = $http_body;
             }
-            
 
             throw new ApiException(
                 $this->generateErrorMessage(json_decode($http_body)),
@@ -282,25 +281,22 @@ class ApiClient
         return array($data, $response_info['http_code'], $http_header);
     }
 
-    protected function generateErrorMessage($response) {
-
+    protected function generateErrorMessage($response)
+    {
         $errorMessage = 'An error occurred while processing payment';
-        
-        if(isset($response->error)) {
 
+        if(isset($response->error)) {
             if(isset($response->error->message)) {
                 $errorMessage = (string) $response->error->message;
             }
-    
-            if(isset($response->error->details)) {
 
+            if(isset($response->error->details)) {
                 $errorMessage = '';
-                
+
                 foreach($response->error->details as $detail) {
                     $errorMessage .= $detail->message;
                 }
             }
-
         }
 
         return $errorMessage;

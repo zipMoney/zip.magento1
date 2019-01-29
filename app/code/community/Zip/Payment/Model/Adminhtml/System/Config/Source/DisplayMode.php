@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Configuration model for payment display mode                                                                                      
- * 
+ * Configuration model for payment display mode
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *

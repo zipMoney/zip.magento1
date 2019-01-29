@@ -2,8 +2,8 @@
 
 /**
  * Lagger model to handle debug logs
- * Extends Mage_Core_Model_Logger                                                     
- * 
+ * Extends Mage_Core_Model_Logger
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -20,15 +20,15 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
      * get configuration model
      * @return Zip_Payment_Model_Config
      */
-    protected function getConfig() {
-
+    protected function getConfig()
+    {
         if($this->config === null) {
             $this->config = Mage::getSingleton('zip_payment/config');
         }
 
         return $this->config;
     }
-    
+
     /**
      * Returns private Data Keys
      *
@@ -37,7 +37,7 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
     public function getPrivateDataKeys()
     {
         if ($this->privateDataKeys === null) {
-            $this->privateDataKeys = explode(',', (string)$this->getConfig()->getValue(self::CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH));
+            $this->privateDataKeys = explode(',', (string) $this->getConfig()->getValue(self::CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH));
         }
 
         return $this->privateDataKeys;
@@ -59,7 +59,7 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
         }
 
         $file = $this->getConfig()->getLogFile();
-        
+
         $debugData = $this->sanitizeDebugData($message);
         parent::log($debugData, $level, $file, $forceLog);
     }
@@ -84,6 +84,7 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
                 }
             }
         }
+
         return $debugData;
     }
 
@@ -96,15 +97,32 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
         $logLevel = Zend_Log::DEBUG;
 
         switch($name) {
-            case 'alert': $logLevel = Zend_Log::ALERT; break;
-            case 'emergency': $logLevel = Zend_Log::EMERG; break;
-            case 'critical': $logLevel = Zend_Log::CRIT; break;
-            case 'error': $logLevel = Zend_Log::ERR; break;
-            case 'warn': $logLevel = Zend_Log::WARN; break;
-            case 'notice': $logLevel = Zend_Log::NOTICE; break;
-            case 'info': $logLevel = Zend_Log::INFO; break;
-            case 'debug': $logLevel = Zend_Log::DEBUG; break;
-            default: break;
+            case 'alert': $logLevel = Zend_Log::ALERT;
+
+                break;
+            case 'emergency': $logLevel = Zend_Log::EMERG;
+
+                break;
+            case 'critical': $logLevel = Zend_Log::CRIT;
+
+                break;
+            case 'error': $logLevel = Zend_Log::ERR;
+
+                break;
+            case 'warn': $logLevel = Zend_Log::WARN;
+
+                break;
+            case 'notice': $logLevel = Zend_Log::NOTICE;
+
+                break;
+            case 'info': $logLevel = Zend_Log::INFO;
+
+                break;
+            case 'debug': $logLevel = Zend_Log::DEBUG;
+
+                break;
+            default:
+                break;
         }
 
         $this->log($message, $logLevel);

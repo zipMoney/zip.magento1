@@ -122,9 +122,9 @@ class Charge implements ArrayAccess
     const STATE_CANCELLED = 'cancelled';
     const STATE_DECLINED = 'declined';
     const STATE_REFUNDED = 'refunded';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -139,7 +139,7 @@ class Charge implements ArrayAccess
             self::STATE_REFUNDED,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -178,15 +178,19 @@ class Charge implements ArrayAccess
         if ($this->container['id'] === null) {
             $invalid_properties[] = "'id' can't be null";
         }
+
         if ($this->container['amount'] === null) {
             $invalid_properties[] = "'amount' can't be null";
         }
+
         if ($this->container['currency'] === null) {
             $invalid_properties[] = "'currency' can't be null";
         }
+
         if ($this->container['state'] === null) {
             $invalid_properties[] = "'state' can't be null";
         }
+
         $allowed_values = array("authorised", "captured", "cancelled", "refunded", "declined");
         if (!in_array($this->container['state'], $allowed_values)) {
             $invalid_properties[] = "invalid value for 'state', must be one of 'authorised', 'captured', 'cancelled', 'refunded', 'declined'.";
@@ -195,6 +199,7 @@ class Charge implements ArrayAccess
         if ($this->container['captured_amount'] === null) {
             $invalid_properties[] = "'captured_amount' can't be null";
         }
+
         if (($this->container['captured_amount'] < 0)) {
             $invalid_properties[] = "invalid value for 'captured_amount', must be bigger than or equal to 0.";
         }
@@ -202,6 +207,7 @@ class Charge implements ArrayAccess
         if ($this->container['refunded_amount'] === null) {
             $invalid_properties[] = "'refunded_amount' can't be null";
         }
+
         if (($this->container['refunded_amount'] < 0)) {
             $invalid_properties[] = "invalid value for 'refunded_amount', must be bigger than or equal to 0.";
         }
@@ -209,9 +215,11 @@ class Charge implements ArrayAccess
         if ($this->container['created_date'] === null) {
             $invalid_properties[] = "'created_date' can't be null";
         }
+
         if ($this->container['receipt_number'] === null) {
             $invalid_properties[] = "'receipt_number' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -223,41 +231,51 @@ class Charge implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['id'] === null) {
             return false;
         }
+
         if ($this->container['amount'] === null) {
             return false;
         }
+
         if ($this->container['currency'] === null) {
             return false;
         }
+
         if ($this->container['state'] === null) {
             return false;
         }
+
         $allowed_values = array("authorised", "captured", "cancelled", "refunded", "declined");
         if (!in_array($this->container['state'], $allowed_values)) {
             return false;
         }
+
         if ($this->container['captured_amount'] === null) {
             return false;
         }
+
         if ($this->container['captured_amount'] < 0) {
             return false;
         }
+
         if ($this->container['refunded_amount'] === null) {
             return false;
         }
+
         if ($this->container['refunded_amount'] < 0) {
             return false;
         }
+
         if ($this->container['created_date'] === null) {
             return false;
         }
+
         if ($this->container['receipt_number'] === null) {
             return false;
         }
+
         return true;
     }
 
@@ -366,6 +384,7 @@ class Charge implements ArrayAccess
         if ((!in_array($state, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'authorised', 'captured', 'cancelled', 'refunded', 'declined'");
         }
+
         $this->container['state'] = $state;
 
         return $this;
@@ -387,7 +406,6 @@ class Charge implements ArrayAccess
      */
     public function setCapturedAmount($captured_amount)
     {
-
         if (($captured_amount < 0)) {
             throw new \InvalidArgumentException('invalid value for $captured_amount when calling Charge., must be bigger than or equal to 0.');
         }
@@ -413,7 +431,6 @@ class Charge implements ArrayAccess
      */
     public function setRefundedAmount($refunded_amount)
     {
-
         if (($refunded_amount < 0)) {
             throw new \InvalidArgumentException('invalid value for $refunded_amount when calling Charge., must be bigger than or equal to 0.');
         }

@@ -89,9 +89,9 @@ class CreateRefundRequest implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -123,12 +123,15 @@ class CreateRefundRequest implements ArrayAccess
         if ($this->container['charge_id'] === null) {
             $invalid_properties[] = "'charge_id' can't be null";
         }
+
         if ($this->container['reason'] === null) {
             $invalid_properties[] = "'reason' can't be null";
         }
+
         if ($this->container['amount'] === null) {
             $invalid_properties[] = "'amount' can't be null";
         }
+
         if (($this->container['amount'] < 0)) {
             $invalid_properties[] = "invalid value for 'amount', must be bigger than or equal to 0.";
         }
@@ -144,19 +147,22 @@ class CreateRefundRequest implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['charge_id'] === null) {
             return false;
         }
+
         if ($this->container['reason'] === null) {
             return false;
         }
+
         if ($this->container['amount'] === null) {
             return false;
         }
+
         if ($this->container['amount'] < 0) {
             return false;
         }
+
         return true;
     }
 
@@ -219,7 +225,6 @@ class CreateRefundRequest implements ArrayAccess
      */
     public function setAmount($amount)
     {
-
         if (($amount < 0)) {
             throw new \InvalidArgumentException('invalid value for $amount when calling CreateRefundRequest., must be bigger than or equal to 0.');
         }

@@ -34,6 +34,7 @@ class ChargeApi
         if ($apiClient === null) {
             $apiClient = new ApiClient();
         }
+
         $this->apiClient = $apiClient;
     }
 
@@ -92,6 +93,7 @@ class ChargeApi
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling chargesCancel');
         }
+
         // parse inputs
         $resourcePath = "/charges/{id}/cancel";
         $httpBody = '';
@@ -102,12 +104,14 @@ class ChargeApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/json'));
 
         // header params
         if ($idempotency_key !== null) {
             $headerParams['Idempotency-Key'] = $this->apiClient->getSerializer()->toHeaderValue($idempotency_key);
         }
+
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
@@ -116,21 +120,23 @@ class ChargeApi
                 $resourcePath
             );
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
-        
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
@@ -206,6 +212,7 @@ class ChargeApi
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling chargesCapture');
         }
+
         // parse inputs
         $resourcePath = "/charges/{id}/capture";
         $httpBody = '';
@@ -216,12 +223,14 @@ class ChargeApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/json'));
 
         // header params
         if ($idempotency_key !== null) {
             $headerParams['Idempotency-Key'] = $this->apiClient->getSerializer()->toHeaderValue($idempotency_key);
         }
+
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
@@ -230,6 +239,7 @@ class ChargeApi
                 $resourcePath
             );
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
@@ -245,11 +255,13 @@ class ChargeApi
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
@@ -329,12 +341,14 @@ class ChargeApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/json'));
 
         // header params
         if ($idempotency_key !== null) {
             $headerParams['Idempotency-Key'] = $this->apiClient->getSerializer()->toHeaderValue($idempotency_key);
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
@@ -350,11 +364,13 @@ class ChargeApi
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
@@ -442,39 +458,45 @@ class ChargeApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/javascript'));
 
         // query params
         if ($state !== null) {
             $queryParams['state'] = $this->apiClient->getSerializer()->toQueryValue($state);
         }
+
         // query params
         if ($skip !== null) {
             $queryParams['skip'] = $this->apiClient->getSerializer()->toQueryValue($skip);
         }
+
         // query params
         if ($limit !== null) {
             $queryParams['limit'] = $this->apiClient->getSerializer()->toQueryValue($limit);
         }
+
         // query params
         if ($expand !== null) {
             $queryParams['expand'] = $this->apiClient->getSerializer()->toQueryValue($expand);
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
-        
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
@@ -532,6 +554,7 @@ class ChargeApi
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling chargesRetrieve');
         }
+
         // parse inputs
         $resourcePath = "/charges/{id}";
         $httpBody = '';
@@ -542,12 +565,14 @@ class ChargeApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/javascript'));
 
         // query params
         if ($expand !== null) {
             $queryParams['expand'] = $this->apiClient->getSerializer()->toQueryValue($expand);
         }
+
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
@@ -556,21 +581,23 @@ class ChargeApi
                 $resourcePath
             );
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
-        
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(

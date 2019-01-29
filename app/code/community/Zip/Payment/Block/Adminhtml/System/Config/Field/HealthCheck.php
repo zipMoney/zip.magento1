@@ -2,7 +2,7 @@
 
 /**
  * Block class of Admin health check field
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -25,6 +25,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
         if (!$this->getTemplate() && $this->template) {
             $this->setTemplate($this->template);
         }
+
         return $this;
     }
 
@@ -51,5 +52,5 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
     }
 
 
-    
+
 }

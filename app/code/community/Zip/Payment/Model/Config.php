@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Model for configuration                                                                                 
- * 
+ * Model for configuration
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -78,7 +78,7 @@ class Zip_Payment_Model_Config
     const CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH = 'payment/zip_payment/checkout/referred/order_status';
 
     /**
-     * Response 
+     * Response
      */
     const URL_PARAM_RESULT = 'result';
     const URL_PARAM_CHECKOUT_ID = 'checkoutId';
@@ -124,6 +124,7 @@ class Zip_Payment_Model_Config
         } elseif (is_string($method)) {
             $this->methodCode = $method;
         }
+
         return $this;
     }
 
@@ -140,22 +141,25 @@ class Zip_Payment_Model_Config
 
     /*************************** BASIC **********************************/
 
-    public function getLogo() {
+    public function getLogo()
+    {
         return $this->getValue(Zip_Payment_Model_Config::CONFIG_LOGO_PATH);
     }
 
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->getValue(Zip_Payment_Model_Config::CONFIG_TITLE_PATH);
     }
 
 
     /*************************** DEBUG & LOG **********************************/
 
-    public function isDebugEnabled() {
-
+    public function isDebugEnabled()
+    {
         if($this->debugEnabled === null) {
             $this->debugEnabled = $this->getFlag(self::CONFIG_DEBUG_ENABLED_PATH);
         }
+
         return $this->debugEnabled;
     }
 
@@ -167,28 +171,25 @@ class Zip_Payment_Model_Config
     public function getLogLevel()
     {
         if ($this->logLevel === null) {
-            $this->logLevel = (int)$this->getValue(self::CONFIG_DEBUG_LOG_LEVEL_PATH);
+            $this->logLevel = (int) $this->getValue(self::CONFIG_DEBUG_LOG_LEVEL_PATH);
         }
-        
+
         return $this->logLevel;
     }
 
     /**
      * is log been enabled
      */
-    public function isLogEnabled() {
-
+    public function isLogEnabled()
+    {
         if($this->logEnabled === null) {
-
             $this->logEnabled = false;
-            
-            if($this->isDebugEnabled()) {
 
-                $isDeveloperLogActive = $this->getFlag(self::CONFIG_DEVELOPER_LOG_ACTIVE_PATH);       
+            if($this->isDebugEnabled()) {
+                $isDeveloperLogActive = $this->getFlag(self::CONFIG_DEVELOPER_LOG_ACTIVE_PATH);
                 $logLevel = $this->getLogLevel();
 
                 $this->logEnabled = ($isDeveloperLogActive && $logLevel >= 0);
-
             }
         }
 
@@ -203,7 +204,6 @@ class Zip_Payment_Model_Config
     public function getLogFile()
     {
         if ($this->logFile === null) {
-
             $logFile = $this->getValue(self::CONFIG_DEBUG_LOG_FILE_PATH);
 
             if (empty($logFile)) {
@@ -226,12 +226,12 @@ class Zip_Payment_Model_Config
      */
     public function isMerchantCountrySupported()
     {
-        if($this->getFlag(self::CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH)){
-
+        if($this->getFlag(self::CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH)) {
             $merchantCountryCode = $this->getMerchantCountry();
-            $supportedCountries = explode(',', (string)$this->getValue(self::CONFIG_SPECIFIC_COUNTRIES_PATH));
+            $supportedCountries = explode(',', (string) $this->getValue(self::CONFIG_SPECIFIC_COUNTRIES_PATH));
             return in_array($merchantCountryCode, $supportedCountries);
         }
+
         return true;
     }
 
@@ -248,6 +248,7 @@ class Zip_Payment_Model_Config
         if (!$countryCode) {
             $countryCode = Mage::helper('core')->getDefaultCountry($storeId);
         }
+
         return $countryCode;
     }
 
@@ -259,7 +260,7 @@ class Zip_Payment_Model_Config
      */
     public function isCurrencySupported($currencyCode)
     {
-        $supportedCurrencies = (string)$this->getValue(self::CONFIG_ALLOWED_CURRENCIES_PATH);
+        $supportedCurrencies = (string) $this->getValue(self::CONFIG_ALLOWED_CURRENCIES_PATH);
         return in_array($currencyCode, explode(',', $supportedCurrencies));
     }
 
@@ -271,8 +272,8 @@ class Zip_Payment_Model_Config
      * @param string $path
      * @return string
      */
-    public function getValue($path) {
-
+    public function getValue($path)
+    {
         $value = (string) Mage::getConfig()->getNode(self::CONFIG_CUSTOM_NODE_NAME . '/' . $path);
 
         if(empty($value)) {
@@ -287,8 +288,8 @@ class Zip_Payment_Model_Config
      * @param string $path
      * @return bool
      */
-    public function getFlag($path) {
-
+    public function getFlag($path)
+    {
         $value = $this->getValue($path);
         return !empty($value) && 'false' !== $value;
 
@@ -307,7 +308,7 @@ class Zip_Payment_Model_Config
         if ($methodCode === null) {
             $methodCode = $this->getMethodCode();
         }
-        
+
         return $this->getFlag("payment/{$methodCode}/active") && $this->isMerchantCountrySupported();
     }
 

@@ -34,6 +34,7 @@ class RefundApi
         if ($apiClient === null) {
             $apiClient = new ApiClient();
         }
+
         $this->apiClient = $apiClient;
     }
 
@@ -98,12 +99,14 @@ class RefundApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/json'));
 
         // header params
         if ($idempotency_key !== null) {
             $headerParams['Idempotency-Key'] = $this->apiClient->getSerializer()->toHeaderValue($idempotency_key);
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
@@ -119,11 +122,13 @@ class RefundApi
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
@@ -201,35 +206,40 @@ class RefundApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/javascript'));
 
         // query params
         if ($charge_id !== null) {
             $queryParams['chargeId'] = $this->apiClient->getSerializer()->toQueryValue($charge_id);
         }
+
         // query params
         if ($skip !== null) {
             $queryParams['skip'] = $this->apiClient->getSerializer()->toQueryValue($skip);
         }
+
         // query params
         if ($limit !== null) {
             $queryParams['limit'] = $this->apiClient->getSerializer()->toQueryValue($limit);
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
-        
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
@@ -285,6 +295,7 @@ class RefundApi
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling refundsRetrieve');
         }
+
         // parse inputs
         $resourcePath = "/refunds/{id}";
         $httpBody = '';
@@ -295,6 +306,7 @@ class RefundApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/javascript'));
 
         // path params
@@ -305,21 +317,23 @@ class RefundApi
                 $resourcePath
             );
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
-        
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Abstract Model of Payment API       
- * 
+ * Abstract Model of Payment API
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -52,6 +52,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         if ($this->logger == null) {
             $this->logger = Mage::getModel('zip_payment/logger');
         }
+
         return $this->logger;
     }
 
@@ -68,7 +69,8 @@ abstract class Zip_Payment_Model_Api_Abstract
     /**
      * get current order
      */
-    protected function getOrder() {
+    protected function getOrder()
+    {
         return $this->order;
     }
 
@@ -92,7 +94,6 @@ abstract class Zip_Payment_Model_Api_Abstract
     protected function logException($e)
     {
         if ($e instanceof ApiException) {
-
             $message = $e->getMessage();
             $this->getLogger()->error("Api Error: " . $message);
             $respBody = $e->getResponseBody();
@@ -106,11 +107,11 @@ abstract class Zip_Payment_Model_Api_Abstract
 
      /**
      * capture order's shipping details
-     * 
+     *
      * @return Zip\Model\OrderShipping
      */
-    protected function getOrderShipping() {
-
+    protected function getOrderShipping()
+    {
         $model = $this->getOrder() ?: $this->getQuote();
 
         $shippingDetail = new OrderShipping();
@@ -120,45 +121,43 @@ abstract class Zip_Payment_Model_Api_Abstract
         $shippingDetail->setPickup($isPickup);
 
         if (!$isPickup) {
-
             $shippingAddress = new Address();
-            
+
             $shippingAddress
-            ->setFirstName($address->getFirstName())
-            ->setLastName($address->getLastName())
-            ->setLine1($address->getStreet1())
-            ->setLine2($address->getStreet2())
-            ->setCountry($address->getCountryId())
-            ->setPostalCode($address->getPostcode())
-            ->setState(empty($address->getRegion()) ? $address->getCity() : $address->getRegion())
-            ->setCity($address->getCity());
+                ->setFirstName($address->getFirstName())
+                ->setLastName($address->getLastName())
+                ->setLine1($address->getStreet1())
+                ->setLine2($address->getStreet2())
+                ->setCountry($address->getCountryId())
+                ->setPostalCode($address->getPostcode())
+                ->setState(empty($address->getRegion()) ? $address->getCity() : $address->getRegion())
+                ->setCity($address->getCity());
 
             $shippingDetail->setAddress($shippingAddress);
 
             // $shippingDetail->setTracking() // TODO
         }
-        
+
         return $shippingDetail;
     }
 
     /**
      * get order items
-     * 
+     *
      * @return Zip\Model\OrderItem
      */
-    protected function getOrderItems() {
-
+    protected function getOrderItems()
+    {
         $model = $this->getOrder() ?: $this->getQuote();
-        
+
         $items = $model->getAllVisibleItems();
         $orderItems = array();
         $totalItemAmount = 0.0;
-        
-        foreach($items as $item) {
 
+        foreach($items as $item) {
             if ($item->getParentItemId()) {
                 // Only sends parent items to zip
-                continue;             
+                continue;
             }
 
             $product = $item->getProduct();
@@ -171,15 +170,15 @@ abstract class Zip_Payment_Model_Api_Abstract
             $thumbnailUrl = (string) Mage::helper('catalog/image')->init($product, 'thumbnail');
 
             $orderItem
-            ->setReference((string) $item->getId())
-            ->setProductCode((string) $item->getSku())
-            ->setName((string) $item->getName())
-            ->setDescription((string) strip_tags($item->getDescription()))
-            ->setAmount($price)
-            ->setQuantity($quantity)
-            ->setType('sku')
-            ->setItemUri((string) $product->getProductUrl())
-            ->setImageUri($thumbnailUrl);
+                ->setReference((string) $item->getId())
+                ->setProductCode((string) $item->getSku())
+                ->setName((string) $item->getName())
+                ->setDescription((string) strip_tags($item->getDescription()))
+                ->setAmount($price)
+                ->setQuantity($quantity)
+                ->setType('sku')
+                ->setItemUri((string) $product->getProductUrl())
+                ->setImageUri($thumbnailUrl);
 
             $orderItems[] = $orderItem;
         }
@@ -187,35 +186,33 @@ abstract class Zip_Payment_Model_Api_Abstract
          //discount and other promotion to balance out
          $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
 
-         if ($shippingAmount > 0) {
- 
-             $shippingItem = new OrderItem;
- 
-             $shippingItem
-             ->setName('Shipping')
-             ->setAmount((float) $shippingAmount)
-             ->setType('shipping')
-             ->setQuantity(1);
- 
-             $orderItems[] = $shippingItem;
-         }
- 
+        if ($shippingAmount > 0) {
+            $shippingItem = new OrderItem;
+
+            $shippingItem
+                ->setName('Shipping')
+                ->setAmount((float) $shippingAmount)
+                ->setType('shipping')
+                ->setQuantity(1);
+
+            $orderItems[] = $shippingItem;
+        }
+
          $grandTotal = $model->getGrandTotal() ?: 0.00;
          //no matter discount or reward point or store credit
          $remaining = $totalItemAmount + $shippingAmount - $grandTotal;
- 
-         if ($remaining < 0) {
- 
-             $discountItem = new OrderItem();
- 
-             $discountItem
-             ->setName("Discount")
-             ->setAmount((float) $remaining)
-             ->setQuantity(1)
-             ->setType("discount");
- 
-             $orderItems[] = $discountItem;
-         }
+
+        if ($remaining < 0) {
+            $discountItem = new OrderItem();
+
+            $discountItem
+                ->setName("Discount")
+                ->setAmount((float) $remaining)
+                ->setQuantity(1)
+                ->setType("discount");
+
+            $orderItems[] = $discountItem;
+        }
 
         return $orderItems;
     }
@@ -234,7 +231,7 @@ abstract class Zip_Payment_Model_Api_Abstract
 
     /**
      * get Idempotency Key
-     * 
+     *
      * @return string
      */
     protected function getIdempotencyKey()
@@ -244,12 +241,13 @@ abstract class Zip_Payment_Model_Api_Abstract
 
     /**
      * get api response
-     * 
+     *
      * @return object
      */
-    protected function getResponse() {
+    protected function getResponse()
+    {
         return $this->response;
     }
 
-    
+
 }

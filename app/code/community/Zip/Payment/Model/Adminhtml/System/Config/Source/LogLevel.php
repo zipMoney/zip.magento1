@@ -2,8 +2,8 @@
 
 
 /**
- * Configuration model for payment's log level                                                                                       
- * 
+ * Configuration model for payment's log level
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *

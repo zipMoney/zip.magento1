@@ -105,9 +105,9 @@ class Address implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -143,6 +143,7 @@ class Address implements ArrayAccess
         if ($this->container['line1'] === null) {
             $invalid_properties[] = "'line1' can't be null";
         }
+
         if ((strlen($this->container['line1']) > 200)) {
             $invalid_properties[] = "invalid value for 'line1', the character length must be smaller than or equal to 200.";
         }
@@ -154,6 +155,7 @@ class Address implements ArrayAccess
         if ($this->container['city'] === null) {
             $invalid_properties[] = "'city' can't be null";
         }
+
         if ((strlen($this->container['city']) > 50)) {
             $invalid_properties[] = "invalid value for 'city', the character length must be smaller than or equal to 50.";
         }
@@ -161,6 +163,7 @@ class Address implements ArrayAccess
         if ($this->container['state'] === null) {
             $invalid_properties[] = "'state' can't be null";
         }
+
         if ((strlen($this->container['state']) > 50)) {
             $invalid_properties[] = "invalid value for 'state', the character length must be smaller than or equal to 50.";
         }
@@ -168,6 +171,7 @@ class Address implements ArrayAccess
         if ($this->container['postal_code'] === null) {
             $invalid_properties[] = "'postal_code' can't be null";
         }
+
         if ((strlen($this->container['postal_code']) > 15)) {
             $invalid_properties[] = "invalid value for 'postal_code', the character length must be smaller than or equal to 15.";
         }
@@ -175,6 +179,7 @@ class Address implements ArrayAccess
         if ($this->container['country'] === null) {
             $invalid_properties[] = "'country' can't be null";
         }
+
         if ((strlen($this->container['country']) > 2)) {
             $invalid_properties[] = "invalid value for 'country', the character length must be smaller than or equal to 2.";
         }
@@ -198,46 +203,58 @@ class Address implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['line1'] === null) {
             return false;
         }
+
         if (strlen($this->container['line1']) > 200) {
             return false;
         }
+
         if (strlen($this->container['line2']) > 200) {
             return false;
         }
+
         if ($this->container['city'] === null) {
             return false;
         }
+
         if (strlen($this->container['city']) > 50) {
             return false;
         }
+
         if ($this->container['state'] === null) {
             return false;
         }
+
         if (strlen($this->container['state']) > 50) {
             return false;
         }
+
         if ($this->container['postal_code'] === null) {
             return false;
         }
+
         if (strlen($this->container['postal_code']) > 15) {
             return false;
         }
+
         if ($this->container['country'] === null) {
             return false;
         }
+
         if (strlen($this->container['country']) > 2) {
             return false;
         }
+
         if (strlen($this->container['country']) < 2) {
             return false;
         }
+
         if (strlen($this->container['first_name']) > 200) {
             return false;
         }
+
         return true;
     }
 
@@ -386,6 +403,7 @@ class Address implements ArrayAccess
         if ((strlen($country) > 2)) {
             throw new \InvalidArgumentException('invalid length for $country when calling Address., must be smaller than or equal to 2.');
         }
+
         if ((strlen($country) < 2)) {
             throw new \InvalidArgumentException('invalid length for $country when calling Address., must be bigger than or equal to 2.');
         }

@@ -89,9 +89,9 @@ class Token implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -123,15 +123,19 @@ class Token implements ArrayAccess
         if ($this->container['id'] === null) {
             $invalid_properties[] = "'id' can't be null";
         }
+
         if ($this->container['value'] === null) {
             $invalid_properties[] = "'value' can't be null";
         }
+
         if ($this->container['active'] === null) {
             $invalid_properties[] = "'active' can't be null";
         }
+
         if ($this->container['created_date'] === null) {
             $invalid_properties[] = "'created_date' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -143,19 +147,22 @@ class Token implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['id'] === null) {
             return false;
         }
+
         if ($this->container['value'] === null) {
             return false;
         }
+
         if ($this->container['active'] === null) {
             return false;
         }
+
         if ($this->container['created_date'] === null) {
             return false;
         }
+
         return true;
     }
 

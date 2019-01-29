@@ -2,7 +2,7 @@
 
 /**
  * Block class of Admin Wizard
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -44,8 +44,8 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     {
         $groupConfig = $this->getGroup($element)->asArray();
         $activePath = isset($groupConfig['active_path']) ? $groupConfig['active_path'] : '';
-        
-        return !empty($activePath) ? (bool)(string)$this->_getConfigDataModel()->getConfigDataValue($activePath) : false;
+
+        return !empty($activePath) ? (bool) (string) $this->_getConfigDataModel()->getConfigDataValue($activePath) : false;
     }
 
     /**
@@ -72,12 +72,14 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     {
         $block = Mage::app()->getLayout()->createBlock('core/template');
         $block->setTemplate($this->headerTitleTemplate);
-        $block->setData(array(
+        $block->setData(
+            array(
             'version' => $this->pluginCurrentVersion,
             'logo' => Mage::helper('zip_payment')->getConfig()->getLogo(),
             'element' => $element,
             'config' => $this->getGroup($element)->asArray()
-        ));
+            )
+        );
 
         return $block->toHtml();
     }

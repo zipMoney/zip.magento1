@@ -133,6 +133,7 @@ class CheckoutOrder implements ArrayAccess
         if ($this->container['amount'] === null) {
             $invalid_properties[] = "'amount' can't be null";
         }
+
         if (($this->container['amount'] < 0)) {
             $invalid_properties[] = "invalid value for 'amount', must be bigger than or equal to 0.";
         }
@@ -140,9 +141,11 @@ class CheckoutOrder implements ArrayAccess
         if ($this->container['currency'] === null) {
             $invalid_properties[] = "'currency' can't be null";
         }
+
         if ($this->container['shipping'] === null) {
             $invalid_properties[] = "'shipping' can't be null";
         }
+
         if (!is_null($this->container['cart_reference']) && (strlen($this->container['cart_reference']) > 200)) {
             $invalid_properties[] = "invalid value for 'cart_reference', the character length must be smaller than or equal to 200.";
         }
@@ -158,25 +161,30 @@ class CheckoutOrder implements ArrayAccess
      */
     public function valid()
     {
-
         if (strlen($this->container['reference']) > 200) {
             return false;
         }
+
         if ($this->container['amount'] === null) {
             return false;
         }
+
         if ($this->container['amount'] < 0) {
             return false;
         }
+
         if ($this->container['currency'] === null) {
             return false;
         }
+
         if ($this->container['shipping'] === null) {
             return false;
         }
+
         if (strlen($this->container['cart_reference']) > 200) {
             return false;
         }
+
         return true;
     }
 
@@ -222,7 +230,6 @@ class CheckoutOrder implements ArrayAccess
      */
     public function setAmount($amount)
     {
-
         if (($amount < 0)) {
             throw new \InvalidArgumentException('invalid value for $amount when calling CheckoutOrder., must be bigger than or equal to 0.');
         }

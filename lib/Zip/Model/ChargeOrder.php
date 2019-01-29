@@ -89,9 +89,9 @@ class ChargeOrder implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -127,6 +127,7 @@ class ChargeOrder implements ArrayAccess
         if ($this->container['shipping'] === null) {
             $invalid_properties[] = "'shipping' can't be null";
         }
+
         if (!is_null($this->container['cart_reference']) && (strlen($this->container['cart_reference']) > 100)) {
             $invalid_properties[] = "invalid value for 'cart_reference', the character length must be smaller than or equal to 100.";
         }
@@ -142,16 +143,18 @@ class ChargeOrder implements ArrayAccess
      */
     public function valid()
     {
-
         if (strlen($this->container['reference']) > 50) {
             return false;
         }
+
         if ($this->container['shipping'] === null) {
             return false;
         }
+
         if (strlen($this->container['cart_reference']) > 100) {
             return false;
         }
+
         return true;
     }
 

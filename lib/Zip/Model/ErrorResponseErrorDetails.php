@@ -81,9 +81,9 @@ class ErrorResponseErrorDetails implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -121,7 +121,6 @@ class ErrorResponseErrorDetails implements ArrayAccess
      */
     public function valid()
     {
-
         return true;
     }
 

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Configuration Model of Payment API       
- * 
+ * Configuration Model of Payment API
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -15,7 +15,7 @@ class Zip_Payment_Model_Api_Configuration
     public function __construct()
     {
         // require autoload from Zip Payment SDK
-        require_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
+        include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
     }
 
     /**

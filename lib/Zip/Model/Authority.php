@@ -84,9 +84,9 @@ class Authority implements ArrayAccess
     const TYPE_CHECKOUT_ID = 'checkout_id';
     const TYPE_STORE_CODE = 'store_code';
     const TYPE_ACCOUNT_TOKEN = 'account_token';
-    
 
-    
+
+
     /**
      * Gets allowable values of the enum
      * @return string[]
@@ -99,7 +99,7 @@ class Authority implements ArrayAccess
             self::TYPE_ACCOUNT_TOKEN,
         );
     }
-    
+
 
     /**
      * Associative array for storing property values
@@ -129,6 +129,7 @@ class Authority implements ArrayAccess
         if ($this->container['type'] === null) {
             $invalid_properties[] = "'type' can't be null";
         }
+
         $allowed_values = array("checkout_id", "store_code", "account_token");
         if (!in_array($this->container['type'], $allowed_values)) {
             $invalid_properties[] = "invalid value for 'type', must be one of 'checkout_id', 'store_code', 'account_token'.";
@@ -137,6 +138,7 @@ class Authority implements ArrayAccess
         if ($this->container['value'] === null) {
             $invalid_properties[] = "'value' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -148,17 +150,19 @@ class Authority implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['type'] === null) {
             return false;
         }
+
         $allowed_values = array("checkout_id", "store_code", "account_token");
         if (!in_array($this->container['type'], $allowed_values)) {
             return false;
         }
+
         if ($this->container['value'] === null) {
             return false;
         }
+
         return true;
     }
 
@@ -183,6 +187,7 @@ class Authority implements ArrayAccess
         if ((!in_array($type, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'type', must be one of 'checkout_id', 'store_code', 'account_token'");
         }
+
         $this->container['type'] = $type;
 
         return $this;

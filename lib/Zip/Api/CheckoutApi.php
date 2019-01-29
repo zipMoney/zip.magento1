@@ -34,6 +34,7 @@ class CheckoutApi
         if ($apiClient === null) {
             $apiClient = new ApiClient();
         }
+
         $this->apiClient = $apiClient;
     }
 
@@ -96,6 +97,7 @@ class CheckoutApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/json'));
 
         // default format to json
@@ -113,11 +115,13 @@ class CheckoutApi
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
@@ -193,6 +197,7 @@ class CheckoutApi
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling checkoutsGet');
         }
+
         // parse inputs
         $resourcePath = "/checkouts/{id}";
         $httpBody = '';
@@ -203,6 +208,7 @@ class CheckoutApi
         if (!is_null($_header_accept)) {
             $headerParams['Accept'] = $_header_accept;
         }
+
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/json'));
 
         // path params
@@ -213,21 +219,23 @@ class CheckoutApi
                 $resourcePath
             );
         }
+
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
-        
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
         } elseif (count($formParams) > 0) {
             $httpBody = $formParams; // for HTTP post (form)
         }
+
         // this endpoint requires API key authentication
         $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
         if (strlen($apiKey) !== 0) {
             $headerParams['Authorization'] = $apiKey;
         }
+
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(

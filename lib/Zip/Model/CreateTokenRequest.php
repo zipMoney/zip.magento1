@@ -77,9 +77,9 @@ class CreateTokenRequest implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -108,6 +108,7 @@ class CreateTokenRequest implements ArrayAccess
         if ($this->container['authority'] === null) {
             $invalid_properties[] = "'authority' can't be null";
         }
+
         return $invalid_properties;
     }
 
@@ -119,10 +120,10 @@ class CreateTokenRequest implements ArrayAccess
      */
     public function valid()
     {
-
         if ($this->container['authority'] === null) {
             return false;
         }
+
         return true;
     }
 

@@ -122,7 +122,6 @@ class OrderShipping implements ArrayAccess
      */
     public function valid()
     {
-
         return true;
     }
 

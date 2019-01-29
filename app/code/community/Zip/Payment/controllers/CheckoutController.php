@@ -2,7 +2,7 @@
 
 /**
  * Checkout controller
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -18,7 +18,6 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function responseAction()
     {
-
         if(!$this->getHelper()->isActive()) {
             return;
         }
@@ -39,15 +38,14 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $this->getLogger()->error($e->getMessage());
             $this->getHelper()->getCheckoutSession()->addError($e->getMessage());
         }
-        
-        
+
     }
 
     /**
      * handle redirect url from checkout js
      */
-    public function startAction() {
-
+    public function startAction()
+    {
         if(!$this->getHelper()->isActive()) {
             return;
         }
@@ -76,8 +74,8 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
     /**
      * Action to handle checkout errors
      */
-    public function failureAction() {
-        
+    public function failureAction()
+    {
         if(!$this->getHelper()->isActive()) {
             return;
         }
@@ -85,12 +83,10 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         $this->getLogger()->debug('Zip_Payment_CheckoutController - failure action');
 
         try {
-
             $this->loadLayout();
             $this->createBreadCrumbs('zip_payment_checkout_failure', 'Checkout Failure');
             $this->renderLayout();
             $this->getLogger()->debug('Successfully redirect to the failure page.');
-
         } catch (Exception $e) {
             $this->getLogger()->error(json_encode($this->getRequest()->getParams()));
             Mage::getSingleton('checkout/session')->addError($this->getHelper()->__('An error occurred during redirecting to failure page.'));
@@ -101,8 +97,8 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
     /**
      * Action to handle checkout errors
      */
-    public function referredAction() {
-
+    public function referredAction()
+    {
         if(!$this->getHelper()->isActive()) {
             return;
         }
@@ -110,12 +106,10 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         $this->getLogger()->debug('Zip_Payment_CheckoutController - referred action');
 
         try {
-
             $this->loadLayout();
             $this->createBreadCrumbs('zip_payment_checkout_referred', 'Checkout Referred');
             $this->renderLayout();
             $this->getLogger()->debug('Successfully redirect to the referred page.');
-
         } catch (Exception $e) {
             $this->getLogger()->error(json_encode($this->getRequest()->getParams()));
             Mage::getSingleton('checkout/session')->addError($this->getHelper()->__('An error occurred during redirecting to referred page.'));

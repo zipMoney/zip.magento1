@@ -2,7 +2,7 @@
 
 /**
  * Block class of expanded admin section
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *

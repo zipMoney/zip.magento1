@@ -2,7 +2,7 @@
 
 /**
  * Block class of admin group
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -16,7 +16,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     protected $currentVersion = '';
     protected $notificationData = array();
 
-    protected function _construct() 
+    protected function _construct()
     {
         $this->notificationFeedModel = Mage::getSingleton('zip_payment/adminhtml_notification_feed');
         $this->currentVersion = Mage::helper('zip_payment')->getCurrentVersion();
@@ -25,15 +25,16 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
         parent::_construct();
     }
 
-    protected function _getHeaderCommentHtml($element) 
+    protected function _getHeaderCommentHtml($element)
     {
-        
         $block = Mage::app()->getLayout()->createBlock('core/template');
         $block->setTemplate($this->noticeTemplate);
-        $block->setData(array(
+        $block->setData(
+            array(
             'version_notification' => $this->notificationFeedModel->getVersionUpgradeNotification(),
             'latest_news' => $this->getLatestNews()
-        ));
+            )
+        );
 
         return $block->toHtml();
     }
@@ -41,9 +42,8 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     /**
      * get latest news from news feed
      */
-    protected function getLatestNews() 
+    protected function getLatestNews()
     {
-
         $notificationField = Zip_Payment_Model_Adminhtml_Notification_Feed::NOTIFICATION_FIELD;
 
         if(isset($this->notificationData[$notificationField])) {

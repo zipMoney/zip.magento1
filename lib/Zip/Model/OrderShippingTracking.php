@@ -85,9 +85,9 @@ class OrderShippingTracking implements ArrayAccess
         return self::$getters;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -138,16 +138,18 @@ class OrderShippingTracking implements ArrayAccess
      */
     public function valid()
     {
-
         if (strlen($this->container['uri']) > 500) {
             return false;
         }
+
         if (strlen($this->container['number']) > 120) {
             return false;
         }
+
         if (strlen($this->container['carrier']) > 120) {
             return false;
         }
+
         return true;
     }
 

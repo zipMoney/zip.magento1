@@ -2,7 +2,7 @@
 
 /**
  * Block class of Admin credential buttons
- * 
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
@@ -28,6 +28,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends M
         if (!$this->getTemplate()) {
             $this->setTemplate($this->template);
         }
+
         return $this;
     }
 

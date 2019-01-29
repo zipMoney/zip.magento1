@@ -2,8 +2,8 @@
 
 /**
  * Handle Legacy zip payment method
- * Extends new Zip payment method                                                         
- * 
+ * Extends new Zip payment method
+ *
  * @package     Zip_Payment
  * @author      Zip Co - Plugin Team
  *
