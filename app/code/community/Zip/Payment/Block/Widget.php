@@ -57,12 +57,8 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
                 return false;
             }
 
-            if($pageType == 'checkout') {
+            if($pageType == 'checkout' || $pageType == 'landing') {
                 return true;
-            }
-
-            if($pageType == 'landing') {
-                return $helper->getConfig()->getFlag(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/enabled');
             }
 
             foreach(self::SUPPORTED_WIDGET_TYPES as $widgetType) {
