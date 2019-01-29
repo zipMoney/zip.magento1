@@ -19,7 +19,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     protected function _construct() 
     {
         $this->notificationFeedModel = Mage::getSingleton('zip_payment/adminhtml_notification_feed');
-        $this->currentVersion = $this->getModelHelper()->getCurrentVersion();
+        $this->currentVersion = Mage::helper('zip_payment')->getCurrentVersion();
         $this->notificationData = $this->notificationFeedModel->getFeedData();
 
         parent::_construct();

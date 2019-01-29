@@ -19,7 +19,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_Version extends Mage_Admin
     {
         $this->addData(
             array(
-                'version' => $this->getModelHelper()->getCurrentVersion()
+                'version' => Mage::helper('zip_payment')->getCurrentVersion()
             )
         );
         

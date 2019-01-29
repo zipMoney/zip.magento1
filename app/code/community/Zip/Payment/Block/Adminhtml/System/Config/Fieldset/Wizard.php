@@ -17,7 +17,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
 
     protected function _construct()
     {
-        $this->pluginCurrentVersion = $this->getModelHelper()->getCurrentVersion();
+        $this->pluginCurrentVersion = Mage::helper('zip_payment')->getCurrentVersion();
         parent::_construct();
     }
 
