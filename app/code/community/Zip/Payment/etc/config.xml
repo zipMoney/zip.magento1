@@ -102,14 +102,6 @@
                     </zip_payment_notification>
                 </observers>
             </controller_action_predispatch_adminhtml>
-            <admin_system_config_changed_section_payment>
-                <observers>
-                    <zip_payment_landing_page>
-                        <class>zip_payment/adminhtml_observer</class>
-                        <method>updateLandingPageStatus</method>
-                    </zip_payment_landing_page>
-                </observers>
-            </admin_system_config_changed_section_payment>
             <adminhtml_init_system_config>
                 <observers>
                     <zip_payment_system_config_load>
@@ -201,9 +193,6 @@
                             <selector>#header-nav</selector>
                         </banner>
                     </checkout_page>
-                    <landing_page>
-                        <enabled>1</enabled>
-                    </landing_page>
                 </widgets>
             </zip_payment>
         </payment>

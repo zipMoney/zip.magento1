@@ -88,10 +88,9 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             curl_setopt($curl, CURLOPT_URL, $url);
 
             // if SSL verification is disabled
-            if(!$curlSSLVerificationEnabled) {
-
+            if (!$curlSSLVerificationEnabled) {
                 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
 
                 $this->appendFailedItem(self::STATUS_WARNING, self::CURL_SSL_VERIFICATION_DISABLED_MESSAGE);
             }

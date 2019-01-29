@@ -98,8 +98,18 @@ class Zip_Payment_Model_Config
     protected $logEnabled = null;
     protected $logLevel = null;
     protected $logFile = null;
+    protected $storeId = null;
 
     protected $apiConfig = null;
+
+    public function __construct($options)
+    {
+        if (isset($options['store_id']) && !empty($options['store_id'])) {
+            $this->storeId = $options['store_id'];
+        } else {
+            $this->storeId = Mage::app()->getStore()->getId();
+        }
+    }
 
      /**
      * Method code setter
