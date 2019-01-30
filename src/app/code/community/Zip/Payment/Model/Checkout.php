@@ -126,6 +126,7 @@ class Zip_Payment_Model_Checkout
 
                     $response['success'] = true;
                     $response['redirect_url'] = Zip_Payment_Model_Config::CHECKOUT_SUCCESS_URL_ROUTE;
+                    $this->getHelper()->emptyShoppingCart();
                     break;
                 // State is referred
                 case Zip_Payment_Model_Api_Checkout::STATE_REFERRED:

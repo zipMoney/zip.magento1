@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>Zip_Payment</name>
+    <version>2.0.0</version>
+    <stability>stable</stability>
+    <license uri="https://opensource.org/licenses/OSL-3.0">OSL-3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Zip Payment extension for Magento 1</summary>
+    <description>The official Zip extension for Magento 1 allows you to offer Zip as a payment method on your Magento store, empowering your customers to own what they want today and pay later.</description>
+    <notes>Refactor the whole plugin</notes>
+    <authors><author><name>Henry Fan</name><user>zipMoney</user><email>haolong.fan@zip.co</email></author><author><name>Ben Zhang</name><user>zipMoney</user><email>ben.zhang@zip.co</email></author></authors>
+    <date>2019-01-30</date>
+    <time>02:23:16</time>
+    <contents></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.3.0</min><max>7.3.0</max></php><extension><name>Core</name><min/><max/></extension></required></dependencies>
+</package>

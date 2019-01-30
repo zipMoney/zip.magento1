@@ -14,13 +14,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * get config model
      */
-    public function getConfig($storeId = null)
+    public function getConfig()
     {
-        return Mage::getModel(
-            'zip_payment/config', array(
-            'store_id' => $storeId
-            )
-        );
+        return Mage::getSingleton('zip_payment/config');
     }
 
     /**

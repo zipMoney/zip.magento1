@@ -98,18 +98,7 @@ class Zip_Payment_Model_Config
     protected $logEnabled = null;
     protected $logLevel = null;
     protected $logFile = null;
-    protected $storeId = null;
-
     protected $apiConfig = null;
-
-    public function __construct($options)
-    {
-        if (isset($options['store_id']) && !empty($options['store_id'])) {
-            $this->storeId = $options['store_id'];
-        } else {
-            $this->storeId = Mage::app()->getStore()->getId();
-        }
-    }
 
      /**
      * Method code setter
@@ -272,12 +261,12 @@ class Zip_Payment_Model_Config
      * @param string $path
      * @return string
      */
-    public function getValue($path)
+    public function getValue($path, $storeId = null)
     {
         $value = (string) Mage::getConfig()->getNode(self::CONFIG_CUSTOM_NODE_NAME . '/' . $path);
 
         if(empty($value)) {
-            $value = Mage::getStoreConfig($path, $this->storeId);
+            $value = Mage::getStoreConfig($path, $storeId);
         }
 
         return $value;
@@ -288,9 +277,9 @@ class Zip_Payment_Model_Config
      * @param string $path
      * @return bool
      */
-    public function getFlag($path)
+    public function getFlag($path, $storeId = null)
     {
-        $value = $this->getValue($path);
+        $value = $this->getValue($path, $storeId);
         return !empty($value) && 'false' !== $value;
 
     }
