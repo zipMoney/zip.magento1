@@ -1,4 +1,8 @@
-<?php if($this->isActive()): ?>
+<?php 
+if (!$this->isActive()) {
+    return;
+} 
+?>
 
 <script type="text/javascript">
 
@@ -6,12 +10,16 @@
 var zip_configurable_widgets = {};
 
 <?php foreach ($this->getElementSelectors() as $key => $selector): ?>
-zip_configurable_widgets.<?= $key ?>="<?= $selector ?>";
+    zip_configurable_widgets.<?php echo $key ?>="<?php echo $selector ?>";
 <?php endforeach; ?>
 
 </script>
 
-<div data-zm-merchant="<?= $this->getMerchantId() ?>" data-env="<?= $this->getEnvironment()?>"></div>
-<script type="text/javascript" src="<?= $this->getLibScript() ?>"></script>
+<div data-zm-merchant="<?php echo $this->getMerchantId() ?>" data-env="<?php echo $this->getEnvironment()?>"></div>
+<script type="text/javascript" src="<?php echo $this->getLibScript() ?>"></script>
 
+<?php if ($this->isDebugModeEnabled()) : ?>
+<script type="text/javascript">
+    Zip.Widget.config.debug = true;
+</script>
 <?php endif; ?>

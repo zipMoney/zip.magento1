@@ -12,6 +12,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
 
     const CONFIG_WIDGET_PATH_PREFIX = 'payment/zip_payment/widgets/';
     const CONFIG_WIDGETS_ENABLED_PATH = 'payment/zip_payment/widgets/enabled';
+    const CONFIG_WIDGETS_DEBUG_PATH = 'payment/zip_payment/widgets/debug';
     const CONFIG_WIDGETS_LIB_SCRIPT_PATH = 'payment/zip_payment/widgets/js_lib';
 
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
@@ -21,11 +22,32 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     const SUPPORTED_WIDGET_TYPES = array('widget', 'banner', 'tagline');
 
     /**
+     * Config instance
+     *
+     * @var Zip_Payment_Model_Config
+     */
+    protected $config = null;
+
+    /**
+     * Config instance getter
+     *
+     * @return Zip_Payment_Model_Config
+     */
+    public function getConfig()
+    {
+        if ($this->config == null) {
+            $this->config = Mage::helper('zip_payment')->getConfig();
+        }
+
+        return $this->config;
+    }
+
+    /**
      * get merchant id from public key
      */
     public function getMerchantId()
     {
-        return Mage::helper('zip_payment')->getConfig()->getValue(self::CONFIG_PUBLIC_KEY_PATH);
+        return $this->getConfig()->getValue(self::CONFIG_PUBLIC_KEY_PATH);
     }
 
     /**
@@ -33,7 +55,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
      */
     public function getEnvironment()
     {
-        return Mage::helper('zip_payment')->getConfig()->getValue(self::CONFIG_ENVIRONMENT_PATH);
+        return $this->getConfig()->getValue(self::CONFIG_ENVIRONMENT_PATH);
     }
 
     /**
@@ -41,17 +63,23 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
      */
     public function getLibScript()
     {
-        return Mage::helper('zip_payment')->getConfig()->getValue(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
+        return $this->getConfig()->getValue(self::CONFIG_WIDGETS_LIB_SCRIPT_PATH);
     }
 
+    /**
+     * is debug mode enabled
+     */
+    protected function isDebugModeEnabled()
+    {
+        return $this->getConfig()->getFlag(self::CONFIG_WIDGETS_DEBUG_PATH);
+    }
 
     /**
      * check is one widget type is enabled / active
      */
     protected function isActive()
     {
-        $helper = Mage::helper('zip_payment');
-        if ($helper->isActive() && $helper->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
+        if (Mage::helper('zip_payment')->isActive() && $this->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
             $pageType = $this->getWidgetPageType();
 
             if (is_null($pageType)) {
@@ -63,7 +91,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
             }
 
             foreach (self::SUPPORTED_WIDGET_TYPES as $widgetType) {
-                $enabled = $helper->getConfig()->getValue(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType . '/enabled');
+                $enabled = $this->getConfig()->getValue(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType . '/enabled');
 
                 /**
                  * Make sure there one widget type is enable for current page type
@@ -76,6 +104,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
 
         return false;
     }
+
 
     /**
      * get element selectors for current widgets
@@ -114,16 +143,16 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         }
 
         switch($pageIdentifier) {
-            case 'cms_index_index':
-                return 'home';
-            case 'catalog_product_view':
-                return 'product';
-            case 'catalog_category_view':
-                return 'category';
-            case 'checkout_cart_index':
-                return 'cart';
-            case 'cms_page_view':
-                return 'landing';
+        case 'cms_index_index':
+            return 'home';
+        case 'catalog_product_view':
+            return 'product';
+        case 'catalog_category_view':
+            return 'category';
+        case 'checkout_cart_index':
+            return 'cart';
+        case 'cms_page_view':
+            return 'landing';
         }
 
         return null;
