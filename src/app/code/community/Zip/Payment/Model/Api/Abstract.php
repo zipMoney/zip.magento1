@@ -200,7 +200,7 @@ abstract class Zip_Payment_Model_Api_Abstract
 
          $grandTotal = $model->getGrandTotal() ?: 0.00;
          //no matter discount or reward point or store credit
-         $remaining = $totalItemAmount + $shippingAmount - $grandTotal;
+         $remaining = $grandTotal - $totalItemAmount - $shippingAmount;
 
         if ($remaining < 0) {
             $discountItem = new OrderItem();
