@@ -50,7 +50,7 @@ class Zip_Payment_Model_Api_Configuration
 
             if ($config->isDebugEnabled() && $config->isLogEnabled() && $config->getLogLevel() >= Zend_Log::DEBUG) {
                 $apiConfig
-                    ->setDebug($config->getValue(Zip_Payment_Model_Config::CONFIG_API_TIMEOUT_PATH, $storeId))
+                    ->setDebug(true)
                     ->setDebugFile(Mage::getBaseDir('log') . DS . $config->getLogFile());
             }
 
