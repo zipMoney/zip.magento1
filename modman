@@ -1,0 +1,8 @@
+src/app/code/community/Zip/Payment app/code/community/Zip/Payment
+src/app/design/adminhtml/default/default/template/zip/payment app/design/adminhtml/default/default/template/zip/payment
+src/app/design/frontend/base/default/layout/zip/payment.xml app/design/frontend/base/default/layout/zip/payment.xml
+src/app/design/frontend/base/default/template/zip/payment app/design/frontend/base/default/template/zip/payment
+src/app/etc/modules/Zip_Payment.xml app/etc/modules/Zip_Payment.xml
+src/app/locale/en_US/Zip_Payment.csv app/locale/en_US/Zip_Payment.csv
+src/js/zip/payment js/zip/payment
+src/lib/Zip lib/Zip

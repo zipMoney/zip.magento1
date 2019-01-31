@@ -1,0 +1,22 @@
+{
+    "name": "zip_payment_magento_1_extension",
+    "description": "Zip Payment Extension for Magento 1",
+    "version": "2.0.0",
+    "authors": [
+        {
+            "name": "Ben Zhang",
+            "email": "ben.zhang@zip.co"
+        },
+        {
+            "name": "Henry Fan",
+            "email": "haolong.fan@zip.co"
+        }
+    ],
+    "scripts": {
+        "build": "sh ./build/shell/build.sh",
+        "test:unit": "php vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php ./test/Test.php"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "7"
+    }
+}

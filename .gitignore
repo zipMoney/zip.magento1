@@ -1,4 +1,6 @@
-/vendor/
+vendor/
+public/
+
 .DS_Store
 *.lock
 node_modules
