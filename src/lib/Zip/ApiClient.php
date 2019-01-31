@@ -78,7 +78,7 @@ class ApiClient
     /**
      * Get API key (with prefix if set)
      *
-     * @param  string $apiKeyIdentifier name of apikey
+     * @param string $apiKeyIdentifier name of apikey
      *
      * @return string API key with the prefix
      */
@@ -207,7 +207,8 @@ class ApiClient
 
         // debugging for curl
         if ($this->config->getDebug()) {
-            error_log("[DEBUG] HTTP Request body  ~BEGIN~" . PHP_EOL . print_r($postData, true) . PHP_EOL . "~END~" . PHP_EOL, 3, $this->config->getDebugFile());
+            error_log("[DEBUG] HTTP Request header: " . PHP_EOL . print_r($headers, true) . PHP_EOL, 3, $this->config->getDebugFile());
+            error_log("[DEBUG] HTTP Request body: " . PHP_EOL . print_r($postData, true) . PHP_EOL, 3, $this->config->getDebugFile());
 
             curl_setopt($curl, CURLOPT_VERBOSE, 1);
         } else {
@@ -237,7 +238,7 @@ class ApiClient
             !empty($headerParams['Idempotency-Key']));
         // debug HTTP response body
         if ($this->config->getDebug()) {
-            error_log("[DEBUG] HTTP Response body ~BEGIN~" . PHP_EOL . print_r($http_body, true) . PHP_EOL . "~END~" . PHP_EOL, 3, $this->config->getDebugFile());
+            error_log("[DEBUG] HTTP Response body: " . PHP_EOL . print_r($http_body, true) . PHP_EOL, 3, $this->config->getDebugFile());
         }
 
         // Handle the response
