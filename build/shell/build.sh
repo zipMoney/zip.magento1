@@ -15,4 +15,5 @@ if [ ! -d "${dist_dir}" ]; then
     mkdir ${dist_dir}
 fi
 
-tar -cvzf ${dist_dir}/${filename} ${src_dir}
+cd ${src_dir}
+tar -zcvf ../${dist_dir}/${filename} *
