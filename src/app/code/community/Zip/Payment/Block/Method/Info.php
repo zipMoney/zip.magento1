@@ -3,9 +3,8 @@
 /**
  * Block model of checkout method information
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Method_Info extends Mage_Payment_Block_Info

@@ -2,10 +2,8 @@
 /**
  * SettlementApi
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 namespace Zip\Api;
@@ -66,7 +64,7 @@ class SettlementApi
      *
      * Retrieve a settlement
      *
-     * @param string $id The settlement id (required)
+     * @param  string $id The settlement id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Settlement
      */
@@ -81,7 +79,7 @@ class SettlementApi
      *
      * Retrieve a settlement
      *
-     * @param string $id The settlement id (required)
+     * @param  string $id The settlement id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Settlement, HTTP status code, HTTP response headers (array of strings)
      */
@@ -139,18 +137,18 @@ class SettlementApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Settlement', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Settlement', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 200:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Settlement', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 400:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 404:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;

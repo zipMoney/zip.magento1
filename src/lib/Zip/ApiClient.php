@@ -3,10 +3,8 @@
 /**
  * ApiClient
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 use Zip\ObjectSerializer;
@@ -294,7 +292,7 @@ class ApiClient
             if(isset($response->error->details)) {
                 $errorMessage = '';
 
-                foreach($response->error->details as $detail) {
+                foreach ($response->error->details as $detail) {
                     $errorMessage .= $detail->message;
                 }
             }

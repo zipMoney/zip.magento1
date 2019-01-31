@@ -2,10 +2,8 @@
 /**
  * ChargeApi
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 namespace Zip\Api;
@@ -66,8 +64,8 @@ class ChargeApi
      *
      * Cancel a charge
      *
-     * @param string $id The id of the authorised charge (required)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  string $id              The id of the authorised charge (required)
+     * @param  string $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Charge
      */
@@ -82,8 +80,8 @@ class ChargeApi
      *
      * Cancel a charge
      *
-     * @param string $id The id of the authorised charge (required)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  string $id              The id of the authorised charge (required)
+     * @param  string $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Charge, HTTP status code, HTTP response headers (array of strings)
      */
@@ -152,26 +150,26 @@ class ChargeApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Charge', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Charge', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 402:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 409:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 200:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Charge', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 400:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 401:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 402:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 409:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;
@@ -183,9 +181,9 @@ class ChargeApi
      *
      * Capture a charge
      *
-     * @param string $id The id of the authorised charge (required)
-     * @param Zip\Model\CaptureChargeRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  string                         $id              The id of the authorised charge (required)
+     * @param  Zip\Model\CaptureChargeRequest $body            (optional)
+     * @param  string                         $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Charge
      */
@@ -200,9 +198,9 @@ class ChargeApi
      *
      * Capture a charge
      *
-     * @param string $id The id of the authorised charge (required)
-     * @param Zip\Model\CaptureChargeRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  string                         $id              The id of the authorised charge (required)
+     * @param  Zip\Model\CaptureChargeRequest $body            (optional)
+     * @param  string                         $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Charge, HTTP status code, HTTP response headers (array of strings)
      */
@@ -277,26 +275,26 @@ class ChargeApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Charge', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Charge', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 402:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 409:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 200:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Charge', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 400:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 401:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 402:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 409:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;
@@ -308,8 +306,8 @@ class ChargeApi
      *
      * Create a charge
      *
-     * @param Zip\Model\CreateChargeRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  Zip\Model\CreateChargeRequest $body            (optional)
+     * @param  string                        $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Charge
      */
@@ -324,8 +322,8 @@ class ChargeApi
      *
      * Create a charge
      *
-     * @param Zip\Model\CreateChargeRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  Zip\Model\CreateChargeRequest $body            (optional)
+     * @param  string                        $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Charge, HTTP status code, HTTP response headers (array of strings)
      */
@@ -386,30 +384,30 @@ class ChargeApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Charge', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 201:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Charge', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 402:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 409:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 201:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Charge', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 400:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 401:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 402:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 403:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 409:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;
@@ -421,10 +419,10 @@ class ChargeApi
      *
      * List charges
      *
-     * @param string $state The state filter (optional)
-     * @param int $skip Number of items to skip when paging (optional, default to 0)
-     * @param int $limit Number of items to retrieve when paging (optional, default to 100)
-     * @param string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
+     * @param  string $state  The state filter (optional)
+     * @param  int    $skip   Number of items to skip when paging (optional, default to 0)
+     * @param  int    $limit  Number of items to retrieve when paging (optional, default to 100)
+     * @param  string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\ChargeCollection
      */
@@ -439,10 +437,10 @@ class ChargeApi
      *
      * List charges
      *
-     * @param string $state The state filter (optional)
-     * @param int $skip Number of items to skip when paging (optional, default to 0)
-     * @param int $limit Number of items to retrieve when paging (optional, default to 100)
-     * @param string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
+     * @param  string $state  The state filter (optional)
+     * @param  int    $skip   Number of items to skip when paging (optional, default to 0)
+     * @param  int    $limit  Number of items to retrieve when paging (optional, default to 100)
+     * @param  string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\ChargeCollection, HTTP status code, HTTP response headers (array of strings)
      */
@@ -512,10 +510,10 @@ class ChargeApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\ChargeCollection', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ChargeCollection', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 200:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ChargeCollection', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;
@@ -527,8 +525,8 @@ class ChargeApi
      *
      * Retrieve a charge
      *
-     * @param string $id The id of the charge (required)
-     * @param string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
+     * @param  string $id     The id of the charge (required)
+     * @param  string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Charge
      */
@@ -543,8 +541,8 @@ class ChargeApi
      *
      * Retrieve a charge
      *
-     * @param string $id The id of the charge (required)
-     * @param string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
+     * @param  string $id     The id of the charge (required)
+     * @param  string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Charge, HTTP status code, HTTP response headers (array of strings)
      */
@@ -613,10 +611,10 @@ class ChargeApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Charge', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Charge', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 200:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Charge', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;

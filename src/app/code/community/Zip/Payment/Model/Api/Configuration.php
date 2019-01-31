@@ -3,9 +3,8 @@
 /**
  * Configuration Model of Payment API
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 use \Zip\Configuration;
@@ -30,7 +29,8 @@ class Zip_Payment_Model_Api_Configuration
 
     /**
      * generate API configuration
-     * @param string $storeId Store ID
+     *
+     * @param  string $storeId Store ID
      * @return object
      */
     public function generateApiConfiguration($storeId = null)

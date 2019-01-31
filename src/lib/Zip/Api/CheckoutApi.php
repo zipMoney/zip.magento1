@@ -2,10 +2,8 @@
 /**
  * CheckoutApi
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 namespace Zip\Api;
@@ -66,7 +64,7 @@ class CheckoutApi
      *
      * Create a checkout
      *
-     * @param Zip\Model\CreateCheckoutRequest $body  (optional)
+     * @param  Zip\Model\CreateCheckoutRequest $body (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Checkout
      */
@@ -81,7 +79,7 @@ class CheckoutApi
      *
      * Create a checkout
      *
-     * @param Zip\Model\CreateCheckoutRequest $body  (optional)
+     * @param  Zip\Model\CreateCheckoutRequest $body (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Checkout, HTTP status code, HTTP response headers (array of strings)
      */
@@ -137,30 +135,30 @@ class CheckoutApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Checkout', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 201:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Checkout', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 402:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 409:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 201:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Checkout', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 400:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 401:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 402:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 403:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 409:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;
@@ -172,7 +170,7 @@ class CheckoutApi
      *
      * Retrieve a checkout
      *
-     * @param string $id  (required)
+     * @param  string $id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Checkout
      */
@@ -187,7 +185,7 @@ class CheckoutApi
      *
      * Retrieve a checkout
      *
-     * @param string $id  (required)
+     * @param  string $id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Checkout, HTTP status code, HTTP response headers (array of strings)
      */
@@ -251,26 +249,26 @@ class CheckoutApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Checkout', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Checkout', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 409:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 200:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Checkout', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 401:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 403:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 404:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 409:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;

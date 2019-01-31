@@ -3,9 +3,8 @@
 /**
  * Block model for widgets
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
@@ -52,24 +51,24 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     protected function isActive()
     {
         $helper = Mage::helper('zip_payment');
-        if($helper->isActive() && $helper->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
+        if ($helper->isActive() && $helper->getConfig()->getFlag(self::CONFIG_WIDGETS_ENABLED_PATH)) {
             $pageType = $this->getWidgetPageType();
 
-            if(is_null($pageType)) {
+            if (is_null($pageType)) {
                 return false;
             }
 
-            if($pageType == 'checkout' || $pageType == 'landing') {
+            if ($pageType == 'checkout' || $pageType == 'landing') {
                 return true;
             }
 
-            foreach(self::SUPPORTED_WIDGET_TYPES as $widgetType) {
+            foreach (self::SUPPORTED_WIDGET_TYPES as $widgetType) {
                 $enabled = $helper->getConfig()->getValue(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType . '/enabled');
 
                 /**
                  * Make sure there one widget type is enable for current page type
                  */
-                if(!is_null($enabled) && boolval($enabled)) {
+                if (!is_null($enabled) && boolval($enabled)) {
                     return true;
                 }
             }
@@ -86,12 +85,12 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         $selectors = array();
         $helper = Mage::helper('zip_payment');
 
-        foreach(self::SUPPORTED_WIDGET_TYPES as $widgetType) {
+        foreach (self::SUPPORTED_WIDGET_TYPES as $widgetType) {
             $pageType = $this->getWidgetPageType();
             $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType;
             $enabled = $helper->getConfig()->getValue($path . '/enabled');
 
-            if(!is_null($enabled) && boolval($enabled)) {
+            if (!is_null($enabled) && boolval($enabled)) {
                 $widgetType = $widgetType == 'widget' ? $pageType . '_' . $widgetType : $widgetType;
                 $selectors[$widgetType] = $helper->getConfig()->getValue($path . '/selector');
             }
@@ -110,11 +109,11 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         $helper = Mage::helper('zip_payment');
         $pageIdentifier = $helper->getPageIdentifier();
 
-        if($helper->isOnepageCheckout() || $helper->isOnestepCheckout()) {
+        if ($helper->isOnepageCheckout() || $helper->isOnestepCheckout()) {
             return 'checkout';
         }
 
-        switch($pageIdentifier){
+        switch($pageIdentifier) {
             case 'cms_index_index':
                 return 'home';
             case 'catalog_product_view':

@@ -2,10 +2,8 @@
 /**
  * RefundApi
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 namespace Zip\Api;
@@ -66,8 +64,8 @@ class RefundApi
      *
      * Create a refund
      *
-     * @param Zip\Model\CreateRefundRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  Zip\Model\CreateRefundRequest $body            (optional)
+     * @param  string                        $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Refund
      */
@@ -82,8 +80,8 @@ class RefundApi
      *
      * Create a refund
      *
-     * @param Zip\Model\CreateRefundRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  Zip\Model\CreateRefundRequest $body            (optional)
+     * @param  string                        $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Refund, HTTP status code, HTTP response headers (array of strings)
      */
@@ -144,22 +142,22 @@ class RefundApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 201:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 402:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 201:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 400:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 401:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
+            case 402:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;
@@ -171,9 +169,9 @@ class RefundApi
      *
      * List refunds
      *
-     * @param string $charge_id  (optional)
-     * @param int $skip Number of items to skip when paging (optional, default to 0)
-     * @param int $limit Number of items to retrieve when paging (optional, default to 100)
+     * @param  string $charge_id (optional)
+     * @param  int    $skip      Number of items to skip when paging (optional, default to 0)
+     * @param  int    $limit     Number of items to retrieve when paging (optional, default to 100)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\InlineResponse200[]
      */
@@ -188,9 +186,9 @@ class RefundApi
      *
      * List refunds
      *
-     * @param string $charge_id  (optional)
-     * @param int $skip Number of items to skip when paging (optional, default to 0)
-     * @param int $limit Number of items to retrieve when paging (optional, default to 100)
+     * @param  string $charge_id (optional)
+     * @param  int    $skip      Number of items to skip when paging (optional, default to 0)
+     * @param  int    $limit     Number of items to retrieve when paging (optional, default to 100)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\InlineResponse200[], HTTP status code, HTTP response headers (array of strings)
      */
@@ -255,10 +253,10 @@ class RefundApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\InlineResponse200[]', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\InlineResponse200[]', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 200:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\InlineResponse200[]', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;
@@ -270,7 +268,7 @@ class RefundApi
      *
      * Retrieve a refund
      *
-     * @param string $id The id of the refund (required)
+     * @param  string $id The id of the refund (required)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Refund
      */
@@ -285,7 +283,7 @@ class RefundApi
      *
      * Retrieve a refund
      *
-     * @param string $id The id of the refund (required)
+     * @param  string $id The id of the refund (required)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Refund, HTTP status code, HTTP response headers (array of strings)
      */
@@ -349,10 +347,10 @@ class RefundApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
+            case 200:
+                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             }
 
             throw $e;

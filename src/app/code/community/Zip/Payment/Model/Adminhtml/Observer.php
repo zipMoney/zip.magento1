@@ -4,9 +4,8 @@
 /**
  * Observer model for Admin
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 
@@ -25,7 +24,7 @@ class Zip_Payment_Model_Adminhtml_Observer
      */
     protected function getConfig()
     {
-        if($this->config == null) {
+        if ($this->config == null) {
             $this->config = $this->getHelper()->getConfig();
         }
 
@@ -48,7 +47,7 @@ class Zip_Payment_Model_Adminhtml_Observer
     {
         $enabled = $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_NOTIFICATION_ENABLED_PATH);
 
-        if($enabled) {
+        if ($enabled) {
             Mage::getSingleton('zip_payment/adminhtml_notification_feed')->checkUpdate();
         }
     }

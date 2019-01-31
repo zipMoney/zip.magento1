@@ -2,10 +2,8 @@
 /**
  * CustomerApi
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 namespace Zip\Api;
@@ -66,7 +64,7 @@ class CustomerApi
      *
      * Retrieve customer
      *
-     * @param string $id  (required)
+     * @param  string $id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return void
      */
@@ -81,7 +79,7 @@ class CustomerApi
      *
      * Retrieve customer
      *
-     * @param string $id  (required)
+     * @param  string $id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */

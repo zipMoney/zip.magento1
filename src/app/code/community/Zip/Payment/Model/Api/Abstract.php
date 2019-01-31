@@ -3,9 +3,8 @@
 /**
  * Abstract Model of Payment API
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 use \Zip\Model\OrderShipping;
@@ -32,7 +31,7 @@ abstract class Zip_Payment_Model_Api_Abstract
             $storeId = Mage::app()->getStore()->getId();
         }
 
-        if($this->apiConfig === null || $this->storeId !== $storeId) {
+        if ($this->apiConfig === null || $this->storeId !== $storeId) {
             // when api configuration is null or store id has been changed
             // new api configuration need to be created
             $this->apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration($storeId);
@@ -45,6 +44,7 @@ abstract class Zip_Payment_Model_Api_Abstract
 
     /**
      * Get logger object
+     *
      * @return Zip_Payment_Model_Logger
      */
     protected function getLogger()
@@ -106,10 +106,10 @@ abstract class Zip_Payment_Model_Api_Abstract
     }
 
      /**
-     * capture order's shipping details
-     *
-     * @return Zip\Model\OrderShipping
-     */
+      * capture order's shipping details
+      *
+      * @return Zip\Model\OrderShipping
+      */
     protected function getOrderShipping()
     {
         $model = $this->getOrder() ?: $this->getQuote();
@@ -154,7 +154,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         $orderItems = array();
         $totalItemAmount = 0.0;
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             if ($item->getParentItemId()) {
                 // Only sends parent items to zip
                 continue;
@@ -221,6 +221,7 @@ abstract class Zip_Payment_Model_Api_Abstract
     /**
      * Returns the prepared metadata model
      * Dummy data as normal merchant don't need this
+     *
      * @return Zip\Model\Metadata
      */
     protected function getMetadata()
@@ -230,7 +231,7 @@ abstract class Zip_Payment_Model_Api_Abstract
     }
 
     /**
-     * get Idempotency Key
+     * Get Idempotency Key
      *
      * @return string
      */
@@ -240,7 +241,7 @@ abstract class Zip_Payment_Model_Api_Abstract
     }
 
     /**
-     * get api response
+     * Get api response
      *
      * @return object
      */

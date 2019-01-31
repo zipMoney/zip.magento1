@@ -3,9 +3,8 @@
 /**
  * Block model for checkout overlay
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Checkout_Overlay extends Mage_Core_Block_Template
@@ -24,6 +23,7 @@ class Zip_Payment_Block_Checkout_Overlay extends Mage_Core_Block_Template
 
     /**
      * get Zip payment logo
+     *
      * @return string
      */
     public function getLogo()
@@ -33,6 +33,7 @@ class Zip_Payment_Block_Checkout_Overlay extends Mage_Core_Block_Template
 
     /**
      * get Zip payment slogan
+     *
      * @return string
      */
     public function getSlogan()

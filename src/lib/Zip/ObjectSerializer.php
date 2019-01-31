@@ -2,10 +2,8 @@
 /**
  * ObjectSerializer
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 
@@ -14,10 +12,8 @@ namespace Zip;
 /**
  * ObjectSerializer Class Doc Comment
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 class ObjectSerializer
 {

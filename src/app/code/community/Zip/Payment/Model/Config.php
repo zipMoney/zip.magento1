@@ -3,9 +3,8 @@
 /**
  * Model for configuration
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Model_Config
@@ -101,11 +100,11 @@ class Zip_Payment_Model_Config
     protected $apiConfig = null;
 
      /**
-     * Method code setter
-     *
-     * @param string|Mage_Payment_Model_Method_Abstract $method
-     * @return Mage_Paypal_Model_Config
-     */
+      * Method code setter
+      *
+      * @param  string|Mage_Payment_Model_Method_Abstract $method
+      * @return Mage_Paypal_Model_Config
+      */
     public function setMethod($method)
     {
         if ($method instanceof Mage_Payment_Model_Method_Abstract) {
@@ -128,7 +127,9 @@ class Zip_Payment_Model_Config
         return $this->methodCode;
     }
 
-    /*************************** BASIC **********************************/
+    /**********************************
+     * BASIC
+     **********************************/
 
     public function getLogo()
     {
@@ -141,11 +142,13 @@ class Zip_Payment_Model_Config
     }
 
 
-    /*************************** DEBUG & LOG **********************************/
+    /**********************************
+     * DEBUG & LOG
+     **********************************/
 
     public function isDebugEnabled()
     {
-        if($this->debugEnabled === null) {
+        if ($this->debugEnabled === null) {
             $this->debugEnabled = $this->getFlag(self::CONFIG_DEBUG_ENABLED_PATH);
         }
 
@@ -171,10 +174,10 @@ class Zip_Payment_Model_Config
      */
     public function isLogEnabled()
     {
-        if($this->logEnabled === null) {
+        if ($this->logEnabled === null) {
             $this->logEnabled = false;
 
-            if($this->isDebugEnabled()) {
+            if ($this->isDebugEnabled()) {
                 $isDeveloperLogActive = $this->getFlag(self::CONFIG_DEVELOPER_LOG_ACTIVE_PATH);
                 $logLevel = $this->getLogLevel();
 
@@ -205,7 +208,9 @@ class Zip_Payment_Model_Config
         return $this->logFile;
     }
 
-    /*************************** COUNTRY AND CURRENCY **********************************/
+    /**********************************
+     * COUNTRY AND CURRENCY
+     **********************************/
 
     /**
      * Check whether method supported for specified country or not
@@ -215,7 +220,7 @@ class Zip_Payment_Model_Config
      */
     public function isMerchantCountrySupported()
     {
-        if($this->getFlag(self::CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH)) {
+        if ($this->getFlag(self::CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH)) {
             $merchantCountryCode = $this->getMerchantCountry();
             $supportedCountries = explode(',', (string) $this->getValue(self::CONFIG_SPECIFIC_COUNTRIES_PATH));
             return in_array($merchantCountryCode, $supportedCountries);
@@ -244,7 +249,7 @@ class Zip_Payment_Model_Config
     /**
      * Check whether specified currency code is supported
      *
-     * @param string $currencyCode
+     * @param  string $currencyCode
      * @return bool
      */
     public function isCurrencySupported($currencyCode)
@@ -254,18 +259,21 @@ class Zip_Payment_Model_Config
     }
 
 
-    /*************************** GET VALUE **********************************/
+    /***************************
+     * GET VALUE
+     **********************************/
 
     /**
      * Get configuration value
-     * @param string $path
+     *
+     * @param  string $path
      * @return string
      */
     public function getValue($path, $storeId = null)
     {
         $value = (string) Mage::getConfig()->getNode(self::CONFIG_CUSTOM_NODE_NAME . '/' . $path);
 
-        if(empty($value)) {
+        if (empty($value)) {
             $value = Mage::getStoreConfig($path, $storeId);
         }
 
@@ -274,7 +282,8 @@ class Zip_Payment_Model_Config
 
     /**
      * Get configuration flag value
-     * @param string $path
+     *
+     * @param  string $path
      * @return bool
      */
     public function getFlag($path, $storeId = null)
@@ -284,12 +293,14 @@ class Zip_Payment_Model_Config
 
     }
 
-    /*************************** PAYMENT **********************************/
+    /**********************************
+     * PAYMENT
+     **********************************/
 
     /**
      * Check whether method active in configuration
      *
-     * @param string $method Method code
+     * @param  string $method Method code
      * @return bool
      */
     public function isMethodAvailable($methodCode = null)

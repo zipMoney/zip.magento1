@@ -3,9 +3,8 @@
 /**
  * Block class of expanded admin section
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Expanded extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
@@ -13,7 +12,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Expanded extends Mage_A
     /**
      * Return collapse state
      *
-     * @param Varien_Data_Form_Element_Abstract $element
+     * @param  Varien_Data_Form_Element_Abstract $element
      * @return bool
      */
     protected function _getCollapseState($element)

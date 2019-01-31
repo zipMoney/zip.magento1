@@ -3,9 +3,8 @@
 /**
  * Block model of checkout Referred
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Checkout_Referred extends Zip_Payment_Block_Checkout_Page

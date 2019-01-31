@@ -46,10 +46,10 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     {
         $notificationField = Zip_Payment_Model_Adminhtml_Notification_Feed::NOTIFICATION_FIELD;
 
-        if(isset($this->notificationData[$notificationField])) {
+        if (isset($this->notificationData[$notificationField])) {
             $feedData = $this->notificationData[$notificationField];
 
-            if(!empty($feedData)) {
+            if (!empty($feedData)) {
                 return array_reverse($feedData)[0];
             }
         }

@@ -3,9 +3,8 @@
 /**
  * Observer model
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Model_Observer
@@ -34,7 +33,7 @@ class Zip_Payment_Model_Observer
     {
         $methodCode = Mage::helper('zip_payment')->getCurrentPaymentMethod()->getCode();
 
-        if($methodCode == Zip_Payment_Model_Config::METHOD_CODE) {
+        if ($methodCode == Zip_Payment_Model_Config::METHOD_CODE) {
             $controller = $observer->getEvent()->getData('controller_action');
 
             $result = Mage::helper('core')->jsonDecode(
@@ -64,13 +63,14 @@ class Zip_Payment_Model_Observer
 
     /**
      * set layout handle for checkout page
-     * @param Varien_Event_Observer $observer   observer object
+     *
+     * @param Varien_Event_Observer $observer observer object
      */
     public function setCheckoutLayoutHandle($observer)
     {
         $layoutHander = 'checkout_layout_hander';
 
-        if(Mage::helper('zip_payment')->isOnepageCheckout() || Mage::helper('zip_payment')->isOnestepCheckout()) {
+        if (Mage::helper('zip_payment')->isOnepageCheckout() || Mage::helper('zip_payment')->isOnestepCheckout()) {
             Mage::app()->getLayout()->getUpdate()->addHandle($layoutHander);
         }
     }
