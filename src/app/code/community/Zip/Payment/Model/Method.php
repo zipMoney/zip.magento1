@@ -329,13 +329,6 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             Mage::throwException($this->_getHelper()->__('Capture action is not available.'));
         }
 
-        $checkoutState = $this->_getHelper()->getCheckoutStateFromSession();
-
-        if(!$checkoutState) {
-            Mage::throwException($this->_getHelper()->__('Invalid Checkout state, payment will not be processing.'));
-        }else if ($checkoutState !== Zip_Payment_Model_Api_Checkout::STATE_APPROVED) {
-            Mage::throwException($this->_getHelper()->__('Checkout is %s, payment will not be processing.', $checkoutState));
-        }
 
         $authorizationTransaction = $payment->getAuthorizationTransaction();
         $authId = null;
@@ -361,8 +354,16 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                     $chargeId = preg_replace('/^' . self::AUTHORIZE_TRANSACTION_ID_PREFIX . '/i', '', $authId);
                     $charge = $charge->capture($chargeId, $amount);
                 }
-            }
-            else {
+            } else {
+
+                $checkoutState = $this->_getHelper()->getCheckoutStateFromSession();
+
+                if (!$checkoutState) {
+                    Mage::throwException($this->_getHelper()->__('Invalid Checkout state, payment will not be processing.'));
+                } else if ($checkoutState !== Zip_Payment_Model_Api_Checkout::STATE_APPROVED) {
+                    Mage::throwException($this->_getHelper()->__('Checkout is %s, payment will not be processing.', $checkoutState));
+                }
+
                 $checkoutId = $this->_getHelper()->getCheckoutIdFromSession();
 
                 $this->getLogger()->debug($this->_getHelper()->__("Checkout ID: " . $checkoutId));
