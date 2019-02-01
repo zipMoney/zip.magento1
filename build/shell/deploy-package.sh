@@ -9,7 +9,7 @@ version=$(cat composer.json | grep -m 1 version | head -1 | awk -F: '{ print $2 
 
 src_dir=./src
 dist_dir=./publish
-filename=${name}-${version}.tgz
+filename=${name}-v${version}.tgz
 
 if [ ! -d "${dist_dir}" ]; then
     mkdir ${dist_dir}
