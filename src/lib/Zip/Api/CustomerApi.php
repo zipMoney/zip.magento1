@@ -106,7 +106,7 @@ class CustomerApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                "{" . "id" . "}",
+                '{id}',
                 $this->apiClient->getSerializer()->toPathValue($id),
                 $resourcePath
             );
@@ -136,9 +136,6 @@ class CustomerApi
 
             return array(null, $statusCode, $httpHeader);
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-            }
-
             throw $e;
         }
     }
@@ -204,9 +201,6 @@ class CustomerApi
 
             return array(null, $statusCode, $httpHeader);
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-            }
-
             throw $e;
         }
     }

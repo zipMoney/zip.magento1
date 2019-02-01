@@ -106,7 +106,7 @@ class SettlementApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                "{" . "id" . "}",
+                '{id}',
                 $this->apiClient->getSerializer()->toPathValue($id),
                 $resourcePath
             );
@@ -137,18 +137,18 @@ class SettlementApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Settlement', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-            case 200:
-                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Settlement', $e->getResponseHeaders());
-                $e->setResponseObject($data);
-                break;
-            case 400:
-                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                $e->setResponseObject($data);
-                break;
-            case 404:
-                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                $e->setResponseObject($data);
-                break;
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Settlement', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 400:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
             }
 
             throw $e;
@@ -216,9 +216,6 @@ class SettlementApi
 
             return array(null, $statusCode, $httpHeader);
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-            }
-
             throw $e;
         }
     }

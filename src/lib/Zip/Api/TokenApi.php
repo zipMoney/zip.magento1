@@ -142,26 +142,26 @@ class TokenApi
             return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Token', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-            case 201:
-                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Token', $e->getResponseHeaders());
-                $e->setResponseObject($data);
-                break;
-            case 401:
-                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                $e->setResponseObject($data);
-                break;
-            case 402:
-                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                $e->setResponseObject($data);
-                break;
-            case 403:
-                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                $e->setResponseObject($data);
-                break;
-            case 409:
-                $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
-                $e->setResponseObject($data);
-                break;
+                case 201:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Token', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 401:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 402:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 409:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
             }
 
             throw $e;

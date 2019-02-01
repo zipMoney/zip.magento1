@@ -284,12 +284,12 @@ class ApiClient
     {
         $errorMessage = 'An error occurred while processing payment';
 
-        if(isset($response->error)) {
-            if(isset($response->error->message)) {
+        if (isset($response->error)) {
+            if (isset($response->error->message)) {
                 $errorMessage = (string) $response->error->message;
             }
 
-            if(isset($response->error->details)) {
+            if (isset($response->error->details)) {
                 $errorMessage = '';
 
                 foreach ($response->error->details as $detail) {

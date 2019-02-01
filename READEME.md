@@ -36,7 +36,7 @@ composer run-script build
 - Go to `Direct package file upload` section and Upload the package
 - Press 'Install' button to install this extension
 
-### To install via Module Manager (modman)
+### Install via Module Manager (modman)
 
 - modman update
 
