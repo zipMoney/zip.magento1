@@ -73,9 +73,9 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         if ($breadcrumbs) {
             $breadcrumbs->addCrumb(
                 'home', array(
-                'label' => $this->__('Home'),
-                'title' => $this->__('Home'),
-                'link'  => Mage::getBaseUrl()
+                    'label' => $this->__('Home'),
+                    'title' => $this->__('Home'),
+                    'link'  => Mage::getBaseUrl()
                 )
             );
 
@@ -84,17 +84,17 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
             if ($isLandingPageEnabled) {
                 $breadcrumbs->addCrumb(
                     Zip_Payment_Model_Config::LANDING_PAGE_URL_IDENTIFIER, array(
-                    'label' => $this->__('About Zip Payment'),
-                    'title' => $this->__('About Zip Payment'),
-                    'link'  => $this->getHelper()->getUrl(Zip_Payment_Model_Config::LANDING_PAGE_URL_ROUTE)
+                        'label' => $this->__('About Zip Payment'),
+                        'title' => $this->__('About Zip Payment'),
+                        'link'  => $this->getHelper()->getUrl(Zip_Payment_Model_Config::LANDING_PAGE_URL_ROUTE)
                     )
                 );
             }
 
             $breadcrumbs->addCrumb(
                 $key, array(
-                'label' => $this->__($label),
-                'title' => $this->__($label)
+                    'label' => $this->__($label),
+                    'title' => $this->__($label)
                 )
             );
         }

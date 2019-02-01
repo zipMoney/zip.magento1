@@ -10,7 +10,6 @@
 class Zip_Payment_Block_Checkout_Page extends Mage_Core_Block_Template
 {
 
-
     protected $headingTextConfigPath = null;
     protected $contentHtmlConfigPath = null;
     protected $messageItems = null;

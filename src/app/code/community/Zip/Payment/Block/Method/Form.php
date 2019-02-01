@@ -29,9 +29,9 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
 
         $block->setData(
             array(
-            'logo' => $config->getLogo(),
-            'title' => $config->getTitle(),
-            'method_code' => $config->getMethodCode()
+                'logo' => $config->getLogo(),
+                'title' => $config->getTitle(),
+                'method_code' => $config->getMethodCode()
             )
         );
 
