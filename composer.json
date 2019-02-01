@@ -13,7 +13,7 @@
         }
     ],
     "scripts": {
-        "build": "sh ./build/shell/build.sh",
+        "deploy:package": "sh ./build/shell/deploy-package.sh",
         "test:unit": "php vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php ./test/Test.php"
     },
     "require-dev": {

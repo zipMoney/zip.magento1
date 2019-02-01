@@ -15,19 +15,21 @@ What things you need to install the software and how to install them
 
 ## Commands
 
-- Build package
+### Deploy Command
+
+- Build deployment package
 
 ``` shell
-composer run-script build
+composer run-script deploy:package
 ```
 
 ## Installation
 
 ### Install via FTP
 
-- Download the latest package release
+- Download the latest release package
 - Extract the contents of the package to your computer
-- Grab all code from `\src` folder and copy into corresponding folders in Magento 1 root directory
+- Grab all code and copy into corresponding folders in Magento 1 root directory
 
 ### Install via Magento Connect Manager
 
@@ -45,7 +47,48 @@ composer run-script build
 ### Payment Section
 
 - Open the Magento Admin
-- Navigate to `Systems -> Configuration` and then locate the `Payment Methods` section in the left menu to access the `Zip Payment` method
+- Navigate to `Systems -> Configuration` and then locate the `Payment Methods` section in the left menu to access the `Zip Payment - Own it now, pay later` method
+- Click `Configure` button to open configuration panel
+
+### Status
+
+- *Version*: Show current version for this extension
+- *Health Check*: List all errors and warnings. It's not been allowed to enable the extension if there is any error found in health check.
+
+### Settings
+
+- Set Enable to `Yes` to enable this payment solution
+- Choose `environment` and press `Find your <environment> keys` button to log into merchant dashboard and grab private key & public key
+- Enter the `Private Key` and `Public Key` in the following fields
+
+#### Checkout
+
+- *Title*: the label will be used as payment option on checkout page
+- *Payment Action*: define how payment will be handled, immediate capture or authorize only
+- *Display Mode*: different display mode on checkout page to handle Zip confirmation page
+
+#### Referred Appication
+
+- *Order Handling*: whether new order will be created for referred application
+- *New Order Status*: define the order status for referred application
+
+#### Country and Currency
+
+This section is used to identify configuration of country and currency
+
+#### Debug Mode
+
+To enable debug mode and define level of log for debugging
+
+#### Admin Notification
+
+Set `Yes` to accept marketing news and notifications
+
+### Widgets and Banners
+
+- Scroll down and expand each page section
+- Expand each widget section and set Enable to `Yes` to enable widget
+- Type `Element selector` to define the location where this widget should put in
 
 ## Copyright
 
