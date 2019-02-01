@@ -4,9 +4,8 @@
 /**
  * Configuration model for payment's log level
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 

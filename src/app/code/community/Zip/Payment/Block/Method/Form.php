@@ -3,9 +3,8 @@
 /**
  * Block model of checkout method form
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
@@ -30,9 +29,9 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
 
         $block->setData(
             array(
-            'logo' => $config->getLogo(),
-            'title' => $config->getTitle(),
-            'method_code' => $config->getMethodCode()
+                'logo' => $config->getLogo(),
+                'title' => $config->getTitle(),
+                'method_code' => $config->getMethodCode()
             )
         );
 

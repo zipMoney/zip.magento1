@@ -2,10 +2,8 @@
 /**
  * CheckoutApi
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 namespace Zip\Api;
@@ -66,7 +64,7 @@ class CheckoutApi
      *
      * Create a checkout
      *
-     * @param Zip\Model\CreateCheckoutRequest $body  (optional)
+     * @param  Zip\Model\CreateCheckoutRequest $body (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Checkout
      */
@@ -81,7 +79,7 @@ class CheckoutApi
      *
      * Create a checkout
      *
-     * @param Zip\Model\CreateCheckoutRequest $body  (optional)
+     * @param  Zip\Model\CreateCheckoutRequest $body (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Checkout, HTTP status code, HTTP response headers (array of strings)
      */
@@ -172,7 +170,7 @@ class CheckoutApi
      *
      * Retrieve a checkout
      *
-     * @param string $id  (required)
+     * @param  string $id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Checkout
      */
@@ -187,7 +185,7 @@ class CheckoutApi
      *
      * Retrieve a checkout
      *
-     * @param string $id  (required)
+     * @param  string $id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Checkout, HTTP status code, HTTP response headers (array of strings)
      */
@@ -214,7 +212,7 @@ class CheckoutApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                "{" . "id" . "}",
+                '{id}',
                 $this->apiClient->getSerializer()->toPathValue($id),
                 $resourcePath
             );

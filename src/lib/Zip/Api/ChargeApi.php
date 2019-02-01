@@ -2,10 +2,8 @@
 /**
  * ChargeApi
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 namespace Zip\Api;
@@ -66,8 +64,8 @@ class ChargeApi
      *
      * Cancel a charge
      *
-     * @param string $id The id of the authorised charge (required)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  string $id              The id of the authorised charge (required)
+     * @param  string $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Charge
      */
@@ -82,8 +80,8 @@ class ChargeApi
      *
      * Cancel a charge
      *
-     * @param string $id The id of the authorised charge (required)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  string $id              The id of the authorised charge (required)
+     * @param  string $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Charge, HTTP status code, HTTP response headers (array of strings)
      */
@@ -115,7 +113,7 @@ class ChargeApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                "{" . "id" . "}",
+                '{id}',
                 $this->apiClient->getSerializer()->toPathValue($id),
                 $resourcePath
             );
@@ -183,9 +181,9 @@ class ChargeApi
      *
      * Capture a charge
      *
-     * @param string $id The id of the authorised charge (required)
-     * @param Zip\Model\CaptureChargeRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  string                         $id              The id of the authorised charge (required)
+     * @param  Zip\Model\CaptureChargeRequest $body            (optional)
+     * @param  string                         $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Charge
      */
@@ -200,9 +198,9 @@ class ChargeApi
      *
      * Capture a charge
      *
-     * @param string $id The id of the authorised charge (required)
-     * @param Zip\Model\CaptureChargeRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  string                         $id              The id of the authorised charge (required)
+     * @param  Zip\Model\CaptureChargeRequest $body            (optional)
+     * @param  string                         $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Charge, HTTP status code, HTTP response headers (array of strings)
      */
@@ -234,7 +232,7 @@ class ChargeApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                "{" . "id" . "}",
+                '{id}',
                 $this->apiClient->getSerializer()->toPathValue($id),
                 $resourcePath
             );
@@ -308,8 +306,8 @@ class ChargeApi
      *
      * Create a charge
      *
-     * @param Zip\Model\CreateChargeRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  Zip\Model\CreateChargeRequest $body            (optional)
+     * @param  string                        $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Charge
      */
@@ -324,8 +322,8 @@ class ChargeApi
      *
      * Create a charge
      *
-     * @param Zip\Model\CreateChargeRequest $body  (optional)
-     * @param string $idempotency_key The unique idempotency key. (optional)
+     * @param  Zip\Model\CreateChargeRequest $body            (optional)
+     * @param  string                        $idempotency_key The unique idempotency key. (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Charge, HTTP status code, HTTP response headers (array of strings)
      */
@@ -421,10 +419,10 @@ class ChargeApi
      *
      * List charges
      *
-     * @param string $state The state filter (optional)
-     * @param int $skip Number of items to skip when paging (optional, default to 0)
-     * @param int $limit Number of items to retrieve when paging (optional, default to 100)
-     * @param string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
+     * @param  string $state  The state filter (optional)
+     * @param  int    $skip   Number of items to skip when paging (optional, default to 0)
+     * @param  int    $limit  Number of items to retrieve when paging (optional, default to 100)
+     * @param  string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\ChargeCollection
      */
@@ -439,10 +437,10 @@ class ChargeApi
      *
      * List charges
      *
-     * @param string $state The state filter (optional)
-     * @param int $skip Number of items to skip when paging (optional, default to 0)
-     * @param int $limit Number of items to retrieve when paging (optional, default to 100)
-     * @param string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
+     * @param  string $state  The state filter (optional)
+     * @param  int    $skip   Number of items to skip when paging (optional, default to 0)
+     * @param  int    $limit  Number of items to retrieve when paging (optional, default to 100)
+     * @param  string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\ChargeCollection, HTTP status code, HTTP response headers (array of strings)
      */
@@ -527,8 +525,8 @@ class ChargeApi
      *
      * Retrieve a charge
      *
-     * @param string $id The id of the charge (required)
-     * @param string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
+     * @param  string $id     The id of the charge (required)
+     * @param  string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Charge
      */
@@ -543,8 +541,8 @@ class ChargeApi
      *
      * Retrieve a charge
      *
-     * @param string $id The id of the charge (required)
-     * @param string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
+     * @param  string $id     The id of the charge (required)
+     * @param  string $expand Allows expanding related entities in the response. Only valid entry is &#39;customer&#39; (optional)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Charge, HTTP status code, HTTP response headers (array of strings)
      */
@@ -576,7 +574,7 @@ class ChargeApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                "{" . "id" . "}",
+                '{id}',
                 $this->apiClient->getSerializer()->toPathValue($id),
                 $resourcePath
             );

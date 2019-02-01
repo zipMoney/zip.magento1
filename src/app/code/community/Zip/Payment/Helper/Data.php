@@ -3,9 +3,8 @@
 /**
  * Helper functions
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
@@ -14,13 +13,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * get config model
      */
-    public function getConfig($storeId = null)
+    public function getConfig()
     {
-        return Mage::getModel(
-            'zip_payment/config', array(
-            'store_id' => $storeId
-            )
-        );
+        return Mage::getSingleton('zip_payment/config');
     }
 
     /**
@@ -44,8 +39,8 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Get current store url
      *
-     * @param $route
-     * @param $param
+     * @param  $route
+     * @param  $param
      * @return string
      */
     public function getUrl($route, $param = array())
@@ -111,7 +106,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Prepare JSON formatted data for response to client
      *
-     * @param $response
+     * @param  $response
      * @return Zend_Controller_Response_Abstract
      */
     public function returnJsonResponse($response)
@@ -121,7 +116,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
 
-    /******************************************* PAGE DETECTION ************************************************* */
+    /*******************************************
+     * PAGE DETECTION
+     *******************************************/
 
     /**
      * get full action name for current page
@@ -152,7 +149,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isReferredOrder($order)
     {
-        if($order && $order->getId()) {
+        if ($order && $order->getId()) {
             return $order->getStatus() === $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH);
         }
 
@@ -161,7 +158,9 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
 
-    /******************************************* SESSION ************************************************* */
+    /*******************************************
+     * SESSION
+     *******************************************/
 
     /**
      * save checkout session data
@@ -170,7 +169,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $sessionData = $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
 
-        if($sessionData) {
+        if ($sessionData) {
             $data = array_merge($sessionData, $data);
         }
 
@@ -186,10 +185,10 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
      /**
-     * get checkout id from checkout session
-     *
-     * @return string
-     */
+      * get checkout id from checkout session
+      *
+      * @return string
+      */
     public function getCheckoutIdFromSession()
     {
         $sessionData = $this->getCheckoutSessionData();

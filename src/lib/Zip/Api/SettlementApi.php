@@ -2,10 +2,8 @@
 /**
  * SettlementApi
  *
- * @category Class
- * @package  zipMoney
- * @author   zipMoney Payments Pty Ltd
- * @link     https://github.com/zipMoney/merchantapi-php
+ * @package Zip
+ * @author  Zip Co - Plugin Team
  */
 
 namespace Zip\Api;
@@ -66,7 +64,7 @@ class SettlementApi
      *
      * Retrieve a settlement
      *
-     * @param string $id The settlement id (required)
+     * @param  string $id The settlement id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return Zip\Model\Settlement
      */
@@ -81,7 +79,7 @@ class SettlementApi
      *
      * Retrieve a settlement
      *
-     * @param string $id The settlement id (required)
+     * @param  string $id The settlement id (required)
      * @throws Zip\ApiException on non-2xx response
      * @return array of Zip\Model\Settlement, HTTP status code, HTTP response headers (array of strings)
      */
@@ -108,7 +106,7 @@ class SettlementApi
         // path params
         if ($id !== null) {
             $resourcePath = str_replace(
-                "{" . "id" . "}",
+                '{id}',
                 $this->apiClient->getSerializer()->toPathValue($id),
                 $resourcePath
             );
@@ -218,9 +216,6 @@ class SettlementApi
 
             return array(null, $statusCode, $httpHeader);
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-            }
-
             throw $e;
         }
     }

@@ -3,9 +3,8 @@
 /**
  * Block class of Admin credential buttons
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends Mage_Adminhtml_Block_System_Config_Form_Field
@@ -35,7 +34,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends M
     /**
      * Unset some non-related element parameters
      *
-     * @param Varien_Data_Form_Element_Abstract $element
+     * @param  Varien_Data_Form_Element_Abstract $element
      * @return string
      */
     public function render(Varien_Data_Form_Element_Abstract $element)
@@ -47,7 +46,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_CredentialButton extends M
     /**
      * Get the button and scripts contents
      *
-     * @param Varien_Data_Form_Element_Abstract $element
+     * @param  Varien_Data_Form_Element_Abstract $element
      * @return string
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)

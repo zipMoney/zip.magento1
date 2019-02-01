@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Checkout controller
+ *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
+ **/
+
 // allow zip payment widget in block permission
 $widgetBlockName = 'zip_payment/widget';
 Mage::getModel('admin/block')->load($widgetBlockName, 'block_name')
@@ -7,9 +14,7 @@ Mage::getModel('admin/block')->load($widgetBlockName, 'block_name')
     ->setData('is_allowed', 1)
     ->save();
 
-$content = <<<EOF
-<div data-zm-asset="landingpage" data-zm-widget="inline"></div>
-EOF;
+$content = '<div data-zm-asset="landingpage" data-zm-widget="inline"></div>';
 
 // set up landing page
 $landingPageData = array(

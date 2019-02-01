@@ -4,9 +4,8 @@
  * Lagger model to handle debug logs
  * Extends Mage_Core_Model_Logger
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
@@ -18,11 +17,12 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
 
     /**
      * get configuration model
+     *
      * @return Zip_Payment_Model_Config
      */
     protected function getConfig()
     {
-        if($this->config === null) {
+        if ($this->config === null) {
             $this->config = Mage::getSingleton('zip_payment/config');
         }
 
@@ -46,10 +46,10 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
     /**
      * Writes the log into log file with given log_level
      *
-     * @param string $message
-     * @param int $level
-     * @param string $file
-     * @param bool $forceLog
+     * @param  string $message
+     * @param  int    $level
+     * @param  string $file
+     * @param  bool   $forceLog
      * @return void
      */
     public function log($message, $level = Zend_Log::INFO, $file = '', $forceLog = true)
@@ -67,7 +67,7 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
     /**
      * Recursive filter data by replacing sensitive information
      *
-     * @param mixed $debugData
+     * @param  mixed $debugData
      * @return mixed
      */
     protected function sanitizeDebugData($debugData)
@@ -76,8 +76,7 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
             foreach ($debugData as $key => $value) {
                 if (in_array($key, $this->getPrivateDataKeys())) {
                     $debugData[$key] = '****';
-                }
-                else {
+                } else {
                     if (is_array($debugData[$key])) {
                         $debugData[$key] = $this->sanitizeDebugData($debugData[$key]);
                     }
@@ -98,28 +97,20 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
 
         switch($name) {
             case 'alert': $logLevel = Zend_Log::ALERT;
-
                 break;
             case 'emergency': $logLevel = Zend_Log::EMERG;
-
                 break;
             case 'critical': $logLevel = Zend_Log::CRIT;
-
                 break;
             case 'error': $logLevel = Zend_Log::ERR;
-
                 break;
             case 'warn': $logLevel = Zend_Log::WARN;
-
                 break;
             case 'notice': $logLevel = Zend_Log::NOTICE;
-
                 break;
             case 'info': $logLevel = Zend_Log::INFO;
-
                 break;
             case 'debug': $logLevel = Zend_Log::DEBUG;
-
                 break;
             default:
                 break;

@@ -147,6 +147,7 @@
                     <enabled>1</enabled>
                 </admin_notification>
                 <widgets>
+                    <debug>0</debug>
                     <home_page>
                         <banner>
                             <enabled>1</enabled>

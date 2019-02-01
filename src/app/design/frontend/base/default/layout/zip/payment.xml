@@ -15,14 +15,14 @@
         checkout pages 
     -->
 
-    <!-- Layout handler for Onestep Checkout -->
+    <!-- Layout handler for Checkout pages -->
     <checkout_layout_hander>
         <reference name="before_body_end">
             <block type="zip_payment/checkout_overlay" name="zip.payment.checkout.overlay" template="zip/payment/checkout/overlay.phtml"/>
             <block type="zip_payment/checkout_script" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
         </reference>
     </checkout_layout_hander>
-    <!-- End Layout handler for Onestep Checkout -->
+    <!-- End Layout handler for Checkout pages -->
 
     <!-- 
         Zip Payment Pages 

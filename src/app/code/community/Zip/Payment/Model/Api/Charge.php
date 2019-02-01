@@ -3,9 +3,8 @@
 /**
  * Charge API Model
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 use \Zip\Model\CreateChargeRequest;
@@ -28,6 +27,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
 
     /**
      * get API model
+     *
      * @return Zip\Api\ChargeApi
      */
     public function getApi()
@@ -40,9 +40,9 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     }
 
     /**
-     * create charge api
+     * Create charge api
      *
-     * @param CreateChargeRequest $payload
+     * @param  CreateChargeRequest $payload
      * @return jsonObject
      */
     public function create($order, $paymentAction)
@@ -78,8 +78,8 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     /**
      * Charge the previous authorized checkout
      *
-     * @param string $chargeId
-     * @param float $amount
+     * @param  string $chargeId
+     * @param  float  $amount
      * @return jsonObject
      */
     public function capture($chargeId, $amount, $isPartialCapture = null)
@@ -149,7 +149,6 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
 
     /**
      * charge and authorized are the same payload
-     *
      */
     public function prepareCreatePayload()
     {
@@ -168,7 +167,9 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     }
 
     /**
-     * prepare charge order
+     * Prepare charge order
+     *
+     * @return ChargeOrder
      */
     protected function getChargeOrder()
     {

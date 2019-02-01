@@ -3,9 +3,8 @@
 /**
  * Block model for checkout script
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template

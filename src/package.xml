@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<package>
+    <name>Zip_Payment</name>
+    <version>2.0.0</version>
+    <stability>stable</stability>
+    <license uri="https://opensource.org/licenses/MIT">MIT</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Zip Payment extension for Magento 1</summary>
+    <description>The official Zip extension for Magento 1 allows you to offer Zip as a payment method on your Magento store, empowering your customers to own what they want today and pay later.</description>
+    <notes>Refactor the whole plugin</notes>
+    <authors>
+        <author>
+            <name>Henry Fan</name>
+            <user>zipMoney</user>
+            <email>haolong.fan@zip.co</email>
+        </author>
+        <author>
+            <name>Ben Zhang</name>
+            <user>zipMoney</user>
+            <email>ben.zhang@zip.co</email>
+        </author>
+    </authors>
+    <date>2019-01-31</date>
+    <time>04:46:14</time>
+    <contents>
+        <target name="magecommunity">
+            <dir name="Zip">
+                <dir name="Payment">
+                    <dir name="Block">
+                        <dir name="Adminhtml">
+                            <dir name="System">
+                                <dir name="Config">
+                                    <dir name="Field">
+                                        <file name="Active.php" hash="d4bb3a70e83b8c538136f2eb069dc8ca"/>
+                                        <file name="CredentialButton.php" hash="6c4ad150aa7a81c41d47ace0dff7697e"/>
+                                        <file name="HealthCheck.php" hash="f986bbad29d94e5cdaae97bf5c2255d1"/>
+                                        <file name="Version.php" hash="43f41ce533d28c551a66015580e11eae"/>
+                                    </dir>
+                                    <dir name="Fieldset">
+                                        <file name="Expanded.php" hash="6c1cdbb5717656fe89cf1a377a3e957c"/>
+                                        <file name="Group.php" hash="f12b86ab5c762496830a49af7613e431"/>
+                                        <file name="Wizard.php" hash="dfae3f1e62d340be5fdce01b1eee3dc7"/>
+                                    </dir>
+                                </dir>
+                            </dir>
+                        </dir>
+                        <dir name="Checkout">
+                            <file name="Failure.php" hash="1f63403f908691299c32bc73894121d0"/>
+                            <file name="Overlay.php" hash="d81d58703ffe1ad0804480f562040678"/>
+                            <file name="Page.php" hash="00c6139a6f16b58573cb1a1b25e2b158"/>
+                            <file name="Referred.php" hash="2e27b57b9df1db64201ca7b4edc54c9b"/>
+                            <file name="Script.php" hash="d6005190202740be92ea6c06ccbdfcfc"/>
+                        </dir>
+                        <dir name="Method">
+                            <file name="Form.php" hash="9b946f965b9e2e0cd1efd0cd3c832616"/>
+                            <file name="Info.php" hash="a307b29e66b2c6b63c9461c42a0a14e6"/>
+                        </dir>
+                        <file name="Widget.php" hash="7f0683fd0c3e32a668dd59659219b2a4"/>
+                    </dir>
+                    <dir name="Controller">
+                        <file name="Checkout.php" hash="5621141082ccb87b85bf722ada8b60f7"/>
+                    </dir>
+                    <dir name="Helper">
+                        <file name="Data.php" hash="4635ae484534aeedeb31bd6db1cd1263"/>
+                    </dir>
+                    <dir name="Model">
+                        <dir name="Adminhtml">
+                            <dir name="Notification">
+                                <file name="Feed.php" hash="99dcc8056b5c44076207f9285634f7d7"/>
+                            </dir>
+                            <file name="Observer.php" hash="298e5d000144aa7872e251cf8929680a"/>
+                            <dir name="System">
+                                <dir name="Config">
+                                    <dir name="Backend">
+                                        <file name="HealthCheck.php" hash="f3a1a5ac13ee4abce3af3ace33b40061"/>
+                                    </dir>
+                                    <dir name="Source">
+                                        <file name="Country.php" hash="ecef29620180410b3ca31642f294dd0b"/>
+                                        <file name="Currency.php" hash="0a2ca8f152eb237242ccb52b199cc7ee"/>
+                                        <file name="DisplayMode.php" hash="91bb2e16ca4d7b94b50817bce69b7f72"/>
+                                        <file name="Environment.php" hash="a2f257e9f0192502ae6a62ec277253eb"/>
+                                        <file name="LogLevel.php" hash="eda02bd2662cce4df607ed43d3bd0663"/>
+                                        <dir name="Payment">
+                                            <file name="Allspecificcountries.php" hash="860de44c4e1a04b0300f57516c07f120"/>
+                                        </dir>
+                                        <file name="PaymentAction.php" hash="1524cde620c8f3be58a93a1f0e25ba0a"/>
+                                    </dir>
+                                </dir>
+                            </dir>
+                        </dir>
+                        <dir name="Api">
+                            <file name="Abstract.php" hash="f4f7642b0b8091c84ca64f9578c636b6"/>
+                            <file name="Charge.php" hash="5505f1d4d3530d0183a86f8f2ff44433"/>
+                            <file name="Checkout.php" hash="5d8beb2875af4ec7dc51da7d794e79fd"/>
+                            <file name="Configuration.php" hash="c215821e98286a011b915e40ba1c1bbe"/>
+                            <file name="Refund.php" hash="a4ebe848940f61a87f96f6537864f055"/>
+                        </dir>
+                        <file name="Checkout.php" hash="c419d2512622dc9ef578a37de4a7f66f"/>
+                        <file name="Config.php" hash="21e3f7aa88105386340ab5cf96a625b5"/>
+                        <file name="LegacyMethod.php" hash="1db5efaa29b08289c6b18a2d95ee8d78"/>
+                        <file name="Logger.php" hash="83bf741c04426393dfe4828a55237c6c"/>
+                        <file name="Method.php" hash="29137bf635b5fcc6abb48f00f84d4175"/>
+                        <file name="Observer.php" hash="6d2dc092c757c4af98443dfea5a343f3"/>
+                    </dir>
+                    <dir name="controllers">
+                        <file name="CheckoutController.php" hash="87c479d809bed4f3d0040d7093e23721"/>
+                    </dir>
+                    <dir name="data">
+                        <dir name="zip_payment_setup">
+                            <file name="data-install-2.0.0.php" hash="9e16d0ae9433e71ead2b604012639cfc"/>
+                        </dir>
+                    </dir>
+                    <dir name="etc">
+                        <file name="adminhtml.xml" hash="b6fe4b6a72cf026fa2937566e77f46e0"/>
+                        <file name="config.xml" hash="571135eb5e233a3aeb84f43025fe65c3"/>
+                        <file name="system.xml" hash="2c4aeb99111c338f02d0aaa4ab264fa8"/>
+                    </dir>
+                </dir>
+            </dir>
+        </target>
+        <target name="magedesign">
+            <dir name="adminhtml">
+                <dir name="default">
+                    <dir name="default">
+                        <dir name="template">
+                            <dir name="zip">
+                                <dir name="payment">
+                                    <dir name="method">
+                                        <dir name="info">
+                                            <file name="default.phtml" hash="cce6dcdcb1bfb73484daa88bb2a2ba5e"/>
+                                        </dir>
+                                    </dir>
+                                    <dir name="system">
+                                        <dir name="config">
+                                            <dir name="field">
+                                                <file name="credential_button.phtml" hash="8a8c3cc35d11b2afda445016e6cc8f4a"/>
+                                                <file name="health_check.phtml" hash="78081da3dbc45c66efed87c3d02b21ef"/>
+                                                <file name="version.phtml" hash="0b0bf1000aa05c10458621f2416d36c3"/>
+                                            </dir>
+                                            <dir name="fieldset">
+                                                <dir name="group">
+                                                    <file name="notice.phtml" hash="d90083f8782f86150653f66e4107ed05"/>
+                                                </dir>
+                                                <dir name="wizard">
+                                                    <file name="header_title.phtml" hash="ed7af39c3b88374b0367eb506b80ad46"/>
+                                                </dir>
+                                            </dir>
+                                        </dir>
+                                    </dir>
+                                </dir>
+                            </dir>
+                        </dir>
+                    </dir>
+                </dir>
+            </dir>
+            <dir name="frontend">
+                <dir name="base">
+                    <dir name="default">
+                        <dir name="layout">
+                            <dir name="zip">
+                                <file name="payment.xml" hash="de3e6ef0b58f24a3b321b5b48cfd1ed4"/>
+                            </dir>
+                        </dir>
+                        <dir name="template">
+                            <dir name="zip">
+                                <dir name="payment">
+                                    <dir name="checkout">
+                                        <file name="js.phtml" hash="6a59d415a6209bb2642458dd74a80e74"/>
+                                        <file name="overlay.phtml" hash="0b7743e8ab3f57bcba28ead57cb53ffa"/>
+                                        <file name="page.phtml" hash="2cd8b68d9b23456b2bc341b2953bc3f5"/>
+                                    </dir>
+                                    <dir name="method">
+                                        <dir name="form">
+                                            <file name="default.phtml" hash="a0a833af9d70f54b9e59cae31736cf3d"/>
+                                            <file name="label.phtml" hash="83c3f7cac870b05e7a7ba4bd9a40a865"/>
+                                        </dir>
+                                        <dir name="info">
+                                            <file name="default.phtml" hash="c08fa33877ce8b730f1890c80a1345f8"/>
+                                        </dir>
+                                    </dir>
+                                    <file name="widgets.phtml" hash="f5ae322c487424e24f8cba58a6c847d3"/>
+                                </dir>
+                            </dir>
+                        </dir>
+                    </dir>
+                </dir>
+            </dir>
+        </target>
+        <target name="mageetc">
+            <dir name="modules">
+                <file name="Zip_Payment.xml" hash="4927f02d085378c2d7744d6608d0a98b"/>
+            </dir>
+        </target>
+        <target name="magelocale">
+            <dir>
+                <dir name="en_US">
+                    <file name="Zip_Payment.csv" hash="913d33923ad6b0189fcc394fb80ca62f"/>
+                </dir>
+            </dir>
+        </target>
+        <target name="mageweb">
+            <dir name="js">
+                <dir name="zip">
+                    <dir name="payment">
+                        <file name="checkout.js" hash="1c56803db22a90e1c9f3cdb542b38be6"/>
+                        <file name="opcheckout.js" hash="ec70acd7f967af11ad1a7e6580889cda"/>
+                    </dir>
+                </dir>
+            </dir>
+        </target>
+        <target name="magelib">
+            <dir name="Zip">
+                <dir name="Api">
+                    <file name="ChargeApi.php" hash="64e625d6dfb2d5a160584429be02c6c1"/>
+                    <file name="CheckoutApi.php" hash="264e8e3b43eb429fe61284c82683b970"/>
+                    <file name="CustomerApi.php" hash="c7b0f34015d55617bd776775934c333b"/>
+                    <file name="RefundApi.php" hash="2bff735d79447e70e8590160830add66"/>
+                    <file name="SettlementApi.php" hash="bfe7ec0a30a7846a96381753a1c3cbe4"/>
+                    <file name="TokenApi.php" hash="17e64f16a79efb9e8dfbb4a05c5aedd6"/>
+                </dir>
+                <file name="ApiClient.php" hash="e99b6ef6093d79446cca7c00df01fecc"/>
+                <file name="ApiException.php" hash="2488e7f317373bef3969afaf4ce6afc2"/>
+                <file name="Configuration.php" hash="1a9012f276b10ca4ba46ed8371df70ec"/>
+                <dir name="Model">
+                    <file name="Address.php" hash="183f8fe6c25e20b3be6084078f025b7b"/>
+                    <file name="Authority.php" hash="134001430d8e516a635f2ee8926c6020"/>
+                    <file name="CaptureChargeRequest.php" hash="a94cb92b6f284fdbc370b8d1523a7c73"/>
+                    <file name="Charge.php" hash="f20c62046b9eddaf607aa0a8b51ee2de"/>
+                    <file name="ChargeCollection.php" hash="7fa03121f34bbf825af6e47e8f5c70e1"/>
+                    <file name="ChargeOrder.php" hash="2cbb7a01582ae7b815921546d6cd5007"/>
+                    <file name="Checkout.php" hash="6ae5891cfc9dc6a39640dba12277e97d"/>
+                    <file name="CheckoutConfiguration.php" hash="bcff624b8b5b4ab7c45ccc17120bfe0d"/>
+                    <file name="CheckoutFeatures.php" hash="55b48c09c497de50b37623dc38022002"/>
+                    <file name="CheckoutFeaturesTokenisation.php" hash="157a85c816917fa6b4fd3132ddc741e3"/>
+                    <file name="CheckoutOrder.php" hash="e05c837431a1a8dcde81162db040a886"/>
+                    <file name="CreateChargeRequest.php" hash="fc763ea2450deedb32f3f4e0a389a97e"/>
+                    <file name="CreateCheckoutRequest.php" hash="ae8288fb773bf48da8d3ee399d654a1f"/>
+                    <file name="CreateCheckoutRequestFeatures.php" hash="31423bc71530dbc74c10594db18e514f"/>
+                    <file name="CreateCheckoutRequestFeaturesTokenisation.php" hash="ff70264959c76afdb38ab0aa19f6a020"/>
+                    <file name="CreateRefundRequest.php" hash="e17a83fcd463a2f5ec95b8d7e3d86874"/>
+                    <file name="CreateTokenRequest.php" hash="e59d141988abd771b2460f8b52f15186"/>
+                    <file name="Customer.php" hash="5ca6eae0656d55a879d8783cf8ebe9af"/>
+                    <file name="ErrorResponse.php" hash="9bcf95d8c4206d0affa369bb795d05c1"/>
+                    <file name="ErrorResponseError.php" hash="d0bf0db3abd6a0f6261190d2e1007074"/>
+                    <file name="ErrorResponseErrorDetails.php" hash="239e5e64f9b0d07375e6c3ebfb30fcbc"/>
+                    <file name="Flightadditionaldetails.php" hash="d0a32820070b5f9c3e5d5acb842221d7"/>
+                    <file name="FlightadditionaldetailsPassengers.php" hash="6f26e1749cdd5f73dcdc22bc084fa27b"/>
+                    <file name="HateoasLinks.php" hash="631f25bc7d721ae2f84eabf58a1be242"/>
+                    <file name="HateoaslinksLinks.php" hash="add090a31b5637b3471367960feb86ee"/>
+                    <file name="InlineResponse200.php" hash="59a552d6530d5725cd6c8e17a33dce66"/>
+                    <file name="Metadata.php" hash="e802768a8cf2b380e4658b06dd2f457a"/>
+                    <file name="OrderItem.php" hash="b634c5173ec8804d93b7f66785aa94de"/>
+                    <file name="OrderItemAdditionalDetails.php" hash="b39856fc8d97da00896a92989668bb71"/>
+                    <file name="OrderShipping.php" hash="781e3fbb57ca79834066275caa1939ff"/>
+                    <file name="OrderShippingTracking.php" hash="97517796f5527a844077f0c3af0c6dc8"/>
+                    <file name="Refund.php" hash="78891dc1c9c0e19f5cd09ab494a42a10"/>
+                    <file name="Settlement.php" hash="61b3fd526e1e92751e8252828c099909"/>
+                    <file name="SettlementTransactions.php" hash="7b4dd646cec16bbb5a1d5c757e13470e"/>
+                    <file name="Shopper.php" hash="babe8a96011c34c956809cdf86d91e17"/>
+                    <file name="ShopperStatistics.php" hash="b7cfd6644029b2fa507f045e28b9beff"/>
+                    <file name="Token.php" hash="1fe4daf49992fe76989f8931a70dadc6"/>
+                </dir>
+                <file name="ObjectSerializer.php" hash="e87d24312188bb6eb96154b15be0e4db"/>
+                <file name="autoload.php" hash="6d3bad38bc711b1246490603ea7685f7"/>
+            </dir>
+        </target>
+    </contents>
+    <compatible/>
+    <dependencies>
+        <required>
+            <php>
+                <min>5.3.0</min>
+                <max>7.3.0</max>
+            </php>
+            <extension>
+                <name>Core</name>
+                <min/>
+                <max/>
+            </extension>
+        </required>
+    </dependencies>
+</package>

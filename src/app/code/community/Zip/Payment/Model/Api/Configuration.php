@@ -3,9 +3,8 @@
 /**
  * Configuration Model of Payment API
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 use \Zip\Configuration;
@@ -30,27 +29,28 @@ class Zip_Payment_Model_Api_Configuration
 
     /**
      * generate API configuration
-     * @param string $storeId Store ID
+     *
+     * @param  string $storeId Store ID
      * @return object
      */
     public function generateApiConfiguration($storeId = null)
     {
         try {
             $apiConfig = Configuration::getDefaultConfiguration();
-            $config = $this->getHelper()->getConfig($storeId);
+            $config = $this->getHelper()->getConfig();
             $magentoVersion = Mage::getVersion();
             $extensionVersion = $this->getHelper()->getCurrentVersion();
 
             $apiConfig
-                ->setApiKey('Authorization', Mage::helper('core')->decrypt($config->getValue(Zip_Payment_Model_Config::CONFIG_PRIVATE_KEY_PATH)))
-                ->setEnvironment($config->getValue(Zip_Payment_Model_Config::CONFIG_ENVIRONMENT_PATH))
+                ->setApiKey('Authorization', Mage::helper('core')->decrypt($config->getValue(Zip_Payment_Model_Config::CONFIG_PRIVATE_KEY_PATH, $storeId)))
+                ->setEnvironment($config->getValue(Zip_Payment_Model_Config::CONFIG_ENVIRONMENT_PATH, $storeId))
                 ->setApiKeyPrefix('Authorization', 'Bearer')
                 ->setPlatform("Magento/{$magentoVersion} Zip_Payment/{$extensionVersion}")
-                ->setCurlTimeout((int) $config->getValue(Zip_Payment_Model_Config::CONFIG_API_TIMEOUT_PATH));
+                ->setCurlTimeout((int) $config->getValue(Zip_Payment_Model_Config::CONFIG_API_TIMEOUT_PATH, $storeId));
 
             if ($config->isDebugEnabled() && $config->isLogEnabled() && $config->getLogLevel() >= Zend_Log::DEBUG) {
                 $apiConfig
-                    ->setDebug($config->getValue(Zip_Payment_Model_Config::CONFIG_API_TIMEOUT_PATH))
+                    ->setDebug(true)
                     ->setDebugFile(Mage::getBaseDir('log') . DS . $config->getLogFile());
             }
 

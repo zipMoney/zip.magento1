@@ -348,11 +348,10 @@
                                                         <config_path>payment/zip_payment/debug/enabled</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>adminhtml/system_config_source_yesno</source_model>
-                                                        <sort_order>30</sort_order>
+                                                        <sort_order>10</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
-                                                        <sort_order>10</sort_order>
                                                     </enabled>
 
                                                     <log_level translate="label">
@@ -757,6 +756,28 @@
                                             </zip_payment_widgets_checkout_page_banner>
                                         </fields>
                                     </zip_payment_widgets_checkout_page>
+                                    <zip_payment_widgets_advanced type="group" translate="label">
+                                        <label>Advanced Settings</label>
+                                        <frontend_class>config-advanced</frontend_class>
+                                        <frontend_type>text</frontend_type>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
+                                        <sort_order>60</sort_order>
+                                        <fields>
+                                            <debug translate="label">
+                                                <label>Debug</label>
+                                                <tooltip>Select 'Yes' to enable debug mode for widget</tooltip>
+                                                <config_path>payment/zip_payment/widgets/debug</config_path>
+                                                <frontend_type>select</frontend_type>
+                                                <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                <sort_order>1</sort_order>
+                                                <show_in_default>1</show_in_default>
+                                                <show_in_website>1</show_in_website>
+                                                <show_in_store>1</show_in_store>
+                                            </debug>
+                                        </fields>
+                                    </zip_payment_widgets_advanced>
                                 </fields>
                             </zip_payment_widgets>
                         </fields>

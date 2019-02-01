@@ -3,9 +3,8 @@
 /**
  * Block class of Admin Wizard
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
@@ -24,7 +23,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     /**
      * Add custom css class
      *
-     * @param Varien_Data_Form_Element_Abstract $element
+     * @param  Varien_Data_Form_Element_Abstract $element
      * @return string
      */
     protected function _getFrontendClass($element)
@@ -36,8 +35,8 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     /**
      * Check whether current payment method is enabled
      *
-     * @param Varien_Data_Form_Element_Abstract $element
-     * @param callback|null $configCallback
+     * @param  Varien_Data_Form_Element_Abstract $element
+     * @param  callback|null                     $configCallback
      * @return bool
      */
     protected function isPaymentEnabled($element, $configCallback = null)
@@ -65,7 +64,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     /**
      * Return header title part of html for payment solution
      *
-     * @param Varien_Data_Form_Element_Abstract $element
+     * @param  Varien_Data_Form_Element_Abstract $element
      * @return string
      */
     protected function _getHeaderTitleHtml($element)
@@ -87,7 +86,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     /**
      * Return header comment part of html for payment solution
      *
-     * @param Varien_Data_Form_Element_Abstract $element
+     * @param  Varien_Data_Form_Element_Abstract $element
      * @return string
      */
     protected function _getHeaderCommentHtml($element)
@@ -98,7 +97,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     /**
      * Get collapsed state on-load
      *
-     * @param Varien_Data_Form_Element_Abstract $element
+     * @param  Varien_Data_Form_Element_Abstract $element
      * @return bool
      */
     protected function _getCollapseState($element)

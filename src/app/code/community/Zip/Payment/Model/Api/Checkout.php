@@ -3,9 +3,8 @@
 /**
  * Checkout API Model
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 use \Zip\Model\CreateCheckoutRequest;
@@ -34,6 +33,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
 
     /**
      * get API model
+     *
      * @return Zip\Api\CheckoutApi
      */
     protected function getApi()
@@ -81,8 +81,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                 $this->logException($e);
                 throw $e;
             }
-        }
-        else {
+        } else {
             $this->getLogger()->debug("Checkout ID already exists:" . json_encode($checkoutId));
         }
 
@@ -109,8 +108,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                 $this->logException($e);
                 throw $e;
             }
-        }
-        else {
+        } else {
             $this->getLogger()->debug("Checkout ID does not exist");
         }
 
@@ -189,10 +187,10 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     }
 
      /**
-     * Returns the prepared checkout configuration model
-     *
-     * @return Zip\Model\CheckoutConfiguration
-     */
+      * Returns the prepared checkout configuration model
+      *
+      * @return Zip\Model\CheckoutConfiguration
+      */
     protected function getCheckoutConfiguration()
     {
         $checkoutConfig = new CheckoutConfiguration();

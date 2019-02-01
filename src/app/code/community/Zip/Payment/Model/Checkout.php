@@ -3,9 +3,8 @@
 /**
  * Checkout model
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Model_Checkout
@@ -30,6 +29,7 @@ class Zip_Payment_Model_Checkout
 
     /**
      * Get logger object
+     *
      * @return Zip_Payment_Model_Logger
      */
     public function getLogger()
@@ -67,6 +67,7 @@ class Zip_Payment_Model_Checkout
 
     /**
      * Get config
+     *
      * @return Zip_Payment_Model_config
      */
     protected function getConfig()
@@ -80,8 +81,9 @@ class Zip_Payment_Model_Checkout
 
     /**
      * process checkout's response result
+     *
      * @param string $checkoutId Checkout ID From Url or other external place which need to validate
-     * @param object $state response result / checkout state
+     * @param object $state      response result / checkout state
      */
     public function handleResponse($checkoutId, $state)
     {
@@ -126,7 +128,9 @@ class Zip_Payment_Model_Checkout
 
                     $response['success'] = true;
                     $response['redirect_url'] = Zip_Payment_Model_Config::CHECKOUT_SUCCESS_URL_ROUTE;
+                    $this->getHelper()->emptyShoppingCart();
                     break;
+
                 // State is referred
                 case Zip_Payment_Model_Api_Checkout::STATE_REFERRED:
 
@@ -140,17 +144,16 @@ class Zip_Payment_Model_Checkout
                     $response['redirect_url'] = Zip_Payment_Model_Config::CHECKOUT_REFERRED_URL_ROUTE;
                     $this->getHelper()->emptyShoppingCart();
                     break;
+
                 // Other states
                 default:
 
                     $this->getLogger()->debug("Handle {$state} checkout");
-
                     if ($isReferred) {
                         $this->cancelReferredOrder($checkoutId);
                     }
 
                     $response['message'] = $this->generateMessage($state);
-
                     break;
             }
 
@@ -243,6 +246,7 @@ class Zip_Payment_Model_Checkout
 
     /**
      * add invoice and process payment for existing order
+     *
      * @param $order
      */
     protected function placeOrderWithExistingOrder($order)

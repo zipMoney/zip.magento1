@@ -3,9 +3,8 @@
 /**
  * Refund API Model
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 use \Zip\Model\CreateRefundRequest;
@@ -20,6 +19,7 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
 
     /**
      * get API model
+     *
      * @return Zip\Api\RefundApi
      */
     protected function getApi()
@@ -33,9 +33,10 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
 
     /**
      * create a refund
+     *
      * @param string $chargeId Charge ID
-     * @param string $amount Charge Amount
-     * @param string $reason reason of refund
+     * @param string $amount   Charge Amount
+     * @param string $reason   reason of refund
      */
     public function create($chargeId, $amount, $reason)
     {

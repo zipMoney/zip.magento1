@@ -3,9 +3,8 @@
 /**
  * Checkout controller
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
@@ -18,7 +17,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function responseAction()
     {
-        if(!$this->getHelper()->isActive()) {
+        if (!$this->getHelper()->isActive()) {
             return;
         }
 
@@ -46,7 +45,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function startAction()
     {
-        if(!$this->getHelper()->isActive()) {
+        if (!$this->getHelper()->isActive()) {
             return;
         }
 
@@ -56,7 +55,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         /**
          * re-generate checkout session data if there is any one empty
          */
-        if(empty($checkoutId) || empty($redirectUrl)) {
+        if (empty($checkoutId) || empty($redirectUrl)) {
             $this->getHelper()->getCurrentPaymentMethod()->getCheckoutRedirectUrl();
             $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
             $redirectUrl = $this->getHelper()->getCheckoutRedirectUrlFromSession();
@@ -76,7 +75,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function failureAction()
     {
-        if(!$this->getHelper()->isActive()) {
+        if (!$this->getHelper()->isActive()) {
             return;
         }
 
@@ -99,7 +98,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
      */
     public function referredAction()
     {
-        if(!$this->getHelper()->isActive()) {
+        if (!$this->getHelper()->isActive()) {
             return;
         }
 
