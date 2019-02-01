@@ -31,8 +31,8 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
         $block->setTemplate($this->noticeTemplate);
         $block->setData(
             array(
-            'version_notification' => $this->notificationFeedModel->getVersionUpgradeNotification(),
-            'latest_news' => $this->getLatestNews()
+                'version_notification' => $this->notificationFeedModel->getVersionUpgradeNotification(),
+                'latest_news' => $this->getLatestNews()
             )
         );
 
