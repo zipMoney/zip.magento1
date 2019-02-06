@@ -226,7 +226,9 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getMetadata()
     {
-        $metadata = new Metadata();
+        //object not working must use array
+        $metadata['platform'] = "Magento 1";
+        $metadata['version'] = Mage::getVersion();
         return $metadata;
     }
 
