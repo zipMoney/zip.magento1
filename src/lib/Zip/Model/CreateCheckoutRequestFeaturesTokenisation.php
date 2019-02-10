@@ -198,10 +198,10 @@ class CreateCheckoutRequestFeaturesTokenisation implements ArrayAccess
     public function __toString()
     {
         if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
+            return json_encode(\Zip\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
         }
 
-        return json_encode(Zip\ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(\Zip\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

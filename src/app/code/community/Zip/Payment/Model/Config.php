@@ -199,7 +199,7 @@ class Zip_Payment_Model_Config
             $logFile = $this->getValue(self::CONFIG_DEBUG_LOG_FILE_PATH);
 
             if (empty($logFile)) {
-                $logFileName = self::DEFAULT_LOG_FILE_NAME;
+                $logFile = self::DEFAULT_LOG_FILE_NAME;
             }
 
             $this->logFile = $logFile;

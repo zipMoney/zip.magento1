@@ -127,9 +127,9 @@ class ApiClient
         }
 
         // form data
-        if ($postData and in_array('Content-Type: application/x-www-form-urlencoded', $headers, true)) {
+        if ($postData && in_array('Content-Type: application/x-www-form-urlencoded', $headers, true)) {
             $postData = http_build_query($postData);
-        } elseif ((is_object($postData) or is_array($postData)) and !in_array('Content-Type: multipart/form-data', $headers, true)) { // json model
+        } elseif ((is_object($postData) or is_array($postData)) && !in_array('Content-Type: multipart/form-data', $headers, true)) { // json model
             $postData = json_encode(ObjectSerializer::sanitizeForSerialization($postData));
         }
 
@@ -205,8 +205,9 @@ class ApiClient
 
         // debugging for curl
         if ($this->config->getDebug()) {
-            error_log("[DEBUG] HTTP Request header: " . PHP_EOL . print_r($headers, true) . PHP_EOL, 3, $this->config->getDebugFile());
-            error_log("[DEBUG] HTTP Request body: " . PHP_EOL . print_r($postData, true) . PHP_EOL, 3, $this->config->getDebugFile());
+            $headerData = $this->sanitizePrivateData($headers);
+            error_log("[DEBUG] HTTP Request header: " . PHP_EOL . implode(', ', $headerData) . PHP_EOL, 3, $this->config->getDebugFile());
+            error_log("[DEBUG] HTTP Request body: " . PHP_EOL . $this->sanitizePrivateData($postData) . PHP_EOL, 3, $this->config->getDebugFile());
 
             curl_setopt($curl, CURLOPT_VERBOSE, 1);
         } else {
@@ -236,7 +237,7 @@ class ApiClient
             !empty($headerParams['Idempotency-Key']));
         // debug HTTP response body
         if ($this->config->getDebug()) {
-            error_log("[DEBUG] HTTP Response body: " . PHP_EOL . print_r($http_body, true) . PHP_EOL, 3, $this->config->getDebugFile());
+            error_log("[DEBUG] HTTP Response body: " . PHP_EOL . $this->sanitizePrivateData($http_body) . PHP_EOL, 3, $this->config->getDebugFile());
         }
 
         // Handle the response
@@ -375,5 +376,55 @@ class ApiClient
         }
 
         return $headers;
+    }
+
+    /**
+     * Need to protect privacy here before we logging
+     */
+    public function getPrivateData()
+    {
+        return [
+            'line1',
+            'line2',
+            'last_name',
+            'phone',
+            'email',
+            'birth_date'
+        ];
+    }
+
+    protected function sanitizePrivateData($debug)
+    {
+        if (is_string($debug) && !empty($debug)) {
+            $json = json_decode($debug, true);
+            if (is_array($json)) {
+                return json_encode($this->sanitizeArrData($json));
+            }
+        } elseif (is_array($debug)) {
+            return $this->sanitizeArrData($debug);
+        }
+
+        return $debug;
+    }
+
+    /**
+     * hide the customer privacy data from our log
+     * such as phone, address, email, lastname, dob
+     */
+    protected function sanitizeArrData($debugData)
+    {
+        if (is_array($debugData) && !empty($this->getPrivateData())) {
+            foreach ($debugData as $key => $val) {
+                if (is_array($val)) {
+                    $debugData[$key] = $this->sanitizeArrData($debugData[$key]);
+                } elseif (in_array($key, $this->getPrivateData()) && !is_numeric($key)) {
+                    $debugData[$key] = '****';
+                } elseif (stristr($val, 'Authorization: Bearer') !== false) {
+                    $debugData[$key] = '****';
+                }
+            }
+        }
+
+        return $debugData;
     }
 }

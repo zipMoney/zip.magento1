@@ -36,10 +36,9 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
      * Check whether current payment method is enabled
      *
      * @param  Varien_Data_Form_Element_Abstract $element
-     * @param  callback|null                     $configCallback
      * @return bool
      */
-    protected function isPaymentEnabled($element, $configCallback = null)
+    protected function isPaymentEnabled($element)
     {
         $groupConfig = $this->getGroup($element)->asArray();
         $activePath = isset($groupConfig['active_path']) ? $groupConfig['active_path'] : '';
