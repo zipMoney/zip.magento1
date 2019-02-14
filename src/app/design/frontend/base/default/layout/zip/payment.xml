@@ -15,13 +15,13 @@
         checkout pages 
     -->
 
-    <!-- Layout handler for Checkout pages -->
-    <checkout_layout_hander>
+    <!-- Layout handle for Checkout pages -->
+    <checkout_layout_handle>
         <reference name="before_body_end">
             <block type="zip_payment/checkout_overlay" name="zip.payment.checkout.overlay" template="zip/payment/checkout/overlay.phtml"/>
             <block type="zip_payment/checkout_script" name="zip.payment.checkout.js" template="zip/payment/checkout/js.phtml"/>
         </reference>
-    </checkout_layout_hander>
+    </checkout_layout_handle>
     <!-- End Layout handler for Checkout pages -->
 
     <!-- 

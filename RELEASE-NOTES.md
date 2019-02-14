@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Include PHP SDK in the package, do not need composer to install it
 - Handle referred applications
 - Support in-plugin health check function
+- Support PHP 5.3 and Magento 1.7
 
 ### Fix
 
