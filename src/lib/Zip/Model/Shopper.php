@@ -14,17 +14,20 @@ use \ArrayAccess;
 class Shopper implements ArrayAccess
 {
     const DISCRIMINATOR = 'subclass';
+    const PHONE_NUMBER_MAX_LENGTH = 20;
 
     /**
-      * The original name of the model.
-      * @var string
-      */
+     * The original name of the model.
+     *
+     * @var string
+     */
     protected static $swaggerModelName = 'Shopper';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      * @var string[]
-      */
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @var string[]
+     */
     protected static $zipTypes = array(
         'title' => 'string',
         'first_name' => 'string',
@@ -45,6 +48,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Array of attributes where the key is the local name, and the value is the original name
+     *
      * @var string[]
      */
     protected static $attributeMap = array(
@@ -63,6 +67,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Array of attributes to setter functions (for deserialization of responses)
+     *
      * @var string[]
      */
     protected static $setters = array(
@@ -81,6 +86,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Array of attributes to getter functions (for serialization of requests)
+     *
      * @var string[]
      */
     protected static $getters = array(
@@ -119,6 +125,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets allowable values of the enum
+     *
      * @return string[]
      */
     public function getGenderAllowableValues()
@@ -133,12 +140,14 @@ class Shopper implements ArrayAccess
 
     /**
      * Associative array for storing property values
+     *
      * @var mixed[]
      */
     protected $container = array();
 
     /**
      * Constructor
+     *
      * @param mixed[] $data Associated array of property values initializing the model
      */
     public function __construct(array $data = null)
@@ -231,6 +240,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets title
+     *
      * @return string
      */
     public function getTitle()
@@ -240,7 +250,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets title
-     * @param string $title The shopper's title
+     *
+     * @param  string $title The shopper's title
      * @return $this
      */
     public function setTitle($title)
@@ -252,6 +263,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets first_name
+     *
      * @return string
      */
     public function getFirstName()
@@ -261,7 +273,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets first_name
-     * @param string $first_name The shopper's first name
+     *
+     * @param  string $first_name The shopper's first name
      * @return $this
      */
     public function setFirstName($first_name)
@@ -273,6 +286,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets last_name
+     *
      * @return string
      */
     public function getLastName()
@@ -282,7 +296,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets last_name
-     * @param string $last_name The shopper's last name
+     *
+     * @param  string $last_name The shopper's last name
      * @return $this
      */
     public function setLastName($last_name)
@@ -294,6 +309,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets middle_name
+     *
      * @return string
      */
     public function getMiddleName()
@@ -303,7 +319,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets middle_name
-     * @param string $middle_name The shopper's middle name
+     *
+     * @param  string $middle_name The shopper's middle name
      * @return $this
      */
     public function setMiddleName($middle_name)
@@ -315,6 +332,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets phone
+     *
      * @return string
      */
     public function getPhone()
@@ -324,13 +342,15 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets phone
-     * @param string $phone The shopper's contact phone number
+     *
+     * @param  string $phone The shopper's contact phone number
      * @return $this
      */
     public function setPhone($phone)
     {
-        if (!is_null($phone) && (!preg_match("/^\\+?[\\d\\s]+$/", $phone))) {
-            throw new \InvalidArgumentException("invalid value for $phone when calling Shopper., must conform to the pattern /^\\+?[\\d\\s]+$/.");
+        if (!empty($phone)) {
+            // Only accept phone number with maximum 20 length
+            $phone = substr(trim($phone), 0, self::PHONE_NUMBER_MAX_LENGTH);
         }
 
         $this->container['phone'] = $phone;
@@ -340,6 +360,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets email
+     *
      * @return string
      */
     public function getEmail()
@@ -349,7 +370,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets email
-     * @param string $email The shopper's email address
+     *
+     * @param  string $email The shopper's email address
      * @return $this
      */
     public function setEmail($email)
@@ -361,6 +383,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets birth_date
+     *
      * @return \DateTime
      */
     public function getBirthDate()
@@ -370,7 +393,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets birth_date
-     * @param \DateTime $birth_date The shopper's birth date in the form yyyy-mm-dd
+     *
+     * @param  \DateTime $birth_date The shopper's birth date in the form yyyy-mm-dd
      * @return $this
      */
     public function setBirthDate($birth_date)
@@ -382,6 +406,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets gender
+     *
      * @return string
      */
     public function getGender()
@@ -391,7 +416,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets gender
-     * @param string $gender The shopper's gender
+     *
+     * @param  string $gender The shopper's gender
      * @return $this
      */
     public function setGender($gender)
@@ -408,6 +434,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets statistics
+     *
      * @return Zip\Model\ShopperStatistics
      */
     public function getStatistics()
@@ -417,7 +444,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets statistics
-     * @param Zip\Model\ShopperStatistics $statistics
+     *
+     * @param  Zip\Model\ShopperStatistics $statistics
      * @return $this
      */
     public function setStatistics($statistics)
@@ -429,6 +457,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets billing_address
+     *
      * @return Zip\Model\Address
      */
     public function getBillingAddress()
@@ -438,7 +467,8 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets billing_address
-     * @param Zip\Model\Address $billing_address
+     *
+     * @param  Zip\Model\Address $billing_address
      * @return $this
      */
     public function setBillingAddress($billing_address)
@@ -449,6 +479,7 @@ class Shopper implements ArrayAccess
     }
     /**
      * Returns true if offset exists. False otherwise.
+     *
      * @param  integer $offset Offset
      * @return boolean
      */
@@ -459,6 +490,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets offset.
+     *
      * @param  integer $offset Offset
      * @return mixed
      */
@@ -469,6 +501,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Sets value based on offset.
+     *
      * @param  integer $offset Offset
      * @param  mixed   $value  Value to be set
      * @return void
@@ -484,6 +517,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Unsets offset.
+     *
      * @param  integer $offset Offset
      * @return void
      */
@@ -494,6 +528,7 @@ class Shopper implements ArrayAccess
 
     /**
      * Gets the string presentation of the object
+     *
      * @return string
      */
     public function __toString()
