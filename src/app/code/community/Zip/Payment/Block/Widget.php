@@ -96,7 +96,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
                 /**
                  * Make sure there one widget type is enable for current page type
                  */
-                if (!is_null($enabled) && boolval($enabled)) {
+                if (!is_null($enabled) && $enabled) {
                     return true;
                 }
             }
@@ -119,7 +119,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
             $path = self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType;
             $enabled = $helper->getConfig()->getValue($path . '/enabled');
 
-            if (!is_null($enabled) && boolval($enabled)) {
+            if (!is_null($enabled) && $enabled) {
                 $widgetType = $widgetType == 'widget' ? $pageType . '_' . $widgetType : $widgetType;
                 $selectors[$widgetType] = $helper->getConfig()->getValue($path . '/selector');
             }
