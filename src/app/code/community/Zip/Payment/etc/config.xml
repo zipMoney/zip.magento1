@@ -242,7 +242,7 @@
                     <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
                 </debug>
                 <admin_notification>
-                    <feed_url>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/zip_payment.json</feed_url>
+                    <feed_url>https://static.zipmoney.com.au/lib/js/notification/magento1.json</feed_url>
                 </admin_notification>
                 <widgets>
                     <enabled>1</enabled>
