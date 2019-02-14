@@ -383,14 +383,14 @@ class ApiClient
      */
     public function getPrivateData()
     {
-        return [
+        return array(
             'line1',
             'line2',
             'last_name',
             'phone',
             'email',
             'birth_date'
-        ];
+        );
     }
 
     protected function sanitizePrivateData($debug)
@@ -413,7 +413,8 @@ class ApiClient
      */
     protected function sanitizeArrData($debugData)
     {
-        if (is_array($debugData) && !empty($this->getPrivateData())) {
+        $privateData = $this->getPrivateData();
+        if (is_array($debugData) && !empty($privateData)) {
             foreach ($debugData as $key => $val) {
                 if (is_array($val)) {
                     $debugData[$key] = $this->sanitizeArrData($debugData[$key]);

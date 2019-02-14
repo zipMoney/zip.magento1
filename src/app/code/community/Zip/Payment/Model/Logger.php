@@ -8,7 +8,7 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
+class Zip_Payment_Model_Logger
 {
     const CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH = 'payment/zip_payment/debug/log_private_data_keys';
 
@@ -61,7 +61,7 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
         $file = $this->getConfig()->getLogFile();
 
         $debugData = $this->sanitizeDebugData($message);
-        parent::log($debugData, $level, $file, $forceLog);
+        Mage::log($debugData, $level, $file, $forceLog);
     }
 
     /**
@@ -117,6 +117,11 @@ class Zip_Payment_Model_Logger extends Mage_Core_Model_Logger
         }
 
         $this->log($message, $logLevel);
+    }
+
+    public function logException(Exception $e)
+    {
+        Mage::logException($e);
     }
 
 }
