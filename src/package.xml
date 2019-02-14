@@ -32,7 +32,6 @@
                             <dir name="System">
                                 <dir name="Config">
                                     <dir name="Field">
-                                        <file name="Active.php" hash="d4bb3a70e83b8c538136f2eb069dc8ca"/>
                                         <file name="CredentialButton.php" hash="6c4ad150aa7a81c41d47ace0dff7697e"/>
                                         <file name="HealthCheck.php" hash="f986bbad29d94e5cdaae97bf5c2255d1"/>
                                         <file name="Version.php" hash="43f41ce533d28c551a66015580e11eae"/>
