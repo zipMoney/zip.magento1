@@ -8,24 +8,24 @@
 <div class="std">
 
     <div class="page-title">
-        <img src="<?= $logo ?>" title="<?= $slogan ?>" alt="<?= $slogan ?>"/>
-        <h1><?= $slogan ?></h1>
+        <img src="<?php echo $logo ?>" title="<?php echo $slogan ?>" alt="<?php echo $slogan ?>"/>
+        <h1><?php echo $slogan ?></h1>
     </div>
 
-    <h2 class="sub-title"><?= $heading ?></h2>
+    <h2 class="sub-title"><?php echo $heading ?></h2>
 
     <div> 
-        <?php if(!empty($messageItems)): ?>
+        <?php if(!empty($messageItems)) : ?>
             <ul>
                 <?php foreach ($messageItems as $item): ?>
                     <li>
-                        <?= $item->getText() ?>
+                        <?php echo $item->getText() ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
         <p>
-            <?= $this->getContentHtml() ?>
+            <?php echo $this->getContentHtml() ?>
         </p>             
     </div>
 
