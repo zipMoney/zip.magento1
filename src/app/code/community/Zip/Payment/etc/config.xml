@@ -144,7 +144,7 @@
                     <log_file>zip_payment.log</log_file>
                 </debug>
                 <admin_notification>
-                    <enabled>1</enabled>
+                    <enabled>0</enabled>
                 </admin_notification>
                 <widgets>
                     <debug>0</debug>
