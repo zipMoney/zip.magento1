@@ -3,9 +3,8 @@
 /**
  * Block class of admin group
  *
- * @package     Zip_Payment
- * @author      Zip Co - Plugin Team
- *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
  **/
 
 class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
@@ -47,10 +46,10 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
         $notificationField = Zip_Payment_Model_Adminhtml_Notification_Feed::NOTIFICATION_FIELD;
 
         if (isset($this->notificationData[$notificationField])) {
-            $feedData = $this->notificationData[$notificationField];
+            $feedData = array_reverse($this->notificationData[$notificationField]);
 
             if (!empty($feedData)) {
-                return array_reverse($feedData)[0];
+                return $feedData[0];
             }
         }
 
@@ -60,7 +59,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     /**
      * Return collapse state
      *
-     * @param Varien_Data_Form_Element_Abstract $element
+     * @param  Varien_Data_Form_Element_Abstract $element
      * @return bool
      */
     protected function _getCollapseState($element)
