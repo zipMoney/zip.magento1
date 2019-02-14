@@ -76,7 +76,6 @@
                                         <tooltip>Set to 'Yes' to enable Zip Payment as a secure payment method on your website</tooltip>
                                         <config_path>payment/zip_payment/active</config_path>
                                         <frontend_type>select</frontend_type>
-                                        <frontend_model>zip_payment/adminhtml_system_config_field_active</frontend_model>
                                         <source_model>adminhtml/system_config_source_yesno</source_model>
                                         <sort_order>20</sort_order>
                                         <show_in_default>1</show_in_default>
@@ -185,17 +184,6 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>0</show_in_store>
                                                     </display_mode>
-                                                    <!-- <custom_script translate="label">
-                                                        <label>Custom Script</label>
-                                                        <tooltip>Define custom script for checkout page</tooltip>
-                                                        <comment>You're able to enter the url of script which will be loaded on the checkout page</comment>
-                                                        <config_path>payment/zip_payment/checkout/custom_script</config_path>
-                                                        <frontend_type>text</frontend_type>
-                                                        <sort_order>50</sort_order>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>0</show_in_store>
-                                                    </custom_script> -->
                                                     <min_order_total translate="label">
                                                         <label>Minimum Order Total</label>
                                                         <tooltip>The minimum order value amount required to checkout</tooltip>

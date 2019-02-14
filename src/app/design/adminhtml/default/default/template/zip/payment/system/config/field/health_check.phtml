@@ -5,14 +5,14 @@
 
 <div id="zip-payment-healthcheck">
 
-    <?php if(!empty($status)): ?>
-        <span class="<?= strtolower($this->getStatusLabel($status)) ?>"><?= $this->getStatusLabel($status) ?></span>
+    <?php if(!empty($status)) : ?>
+        <span class="<?php echo strtolower($this->getStatusLabel($status)) ?>"><?php echo $this->getStatusLabel($status) ?></span>
     <?php endif; ?>
     
-    <?php if(count($items) > 0): ?>
+    <?php if(count($items) > 0) : ?>
         <ul>
             <?php foreach ($items as $item): ?>
-                <li class="<?= strtolower($this->getStatusLabel($item['status'])) ?>"><?= $item['label'] ?></li>
+                <li class="<?php echo strtolower($this->getStatusLabel($item['status'])) ?>"><?php echo $item['label'] ?></li>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>

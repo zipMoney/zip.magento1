@@ -142,10 +142,15 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         $billing = $this->getQuote()->getBillingAddress();
         $shipping = $this->getQuote()->getShippingAddress();
 
-        $firstName = !empty($billing->getFirstname()) ? $billing->getFirstname() : $shipping->getFirstname();
-        $lastName = !empty($billing->getLastname()) ? $billing->getLastname() : $shipping->getLastname();
-        $email = !empty($billing->getEmail()) ? $billing->getEmail() : $shipping->getEmail();
-        $phone = !empty($billing->getTelephone()) ? $billing->getTelephone() : $shipping->getTelephone();
+        $billingFirstName = $billing->getFirstname();
+        $billingLastName = $billing->getLastname();
+        $billingEmail = $billing->getEmail();
+        $billingPhone = $billing->getTelephone();
+
+        $firstName = !empty($billingFirstName) ?: $shipping->getFirstname();
+        $lastName = !empty($billingLastName) ?: $shipping->getLastname();
+        $email = !empty($billingEmail) ?: $shipping->getEmail();
+        $phone = !empty($billingPhone) ?: $shipping->getTelephone();
 
         $shopper->setEmail($email);
         $shopper->setFirstName($firstName);

@@ -16,4 +16,4 @@ if [ ! -d "${dist_dir}" ]; then
 fi
 
 cd ${src_dir}
-tar -zcvf ../${dist_dir}/${filename} *
+tar --exclude='notification_sample.json' -zcvf ../${dist_dir}/${filename} *

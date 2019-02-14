@@ -14,17 +14,20 @@ use \ArrayAccess;
 class Customer implements ArrayAccess
 {
     const DISCRIMINATOR = 'subclass';
+    const PHONE_NUMBER_MAX_LENGTH = 20;
 
     /**
-      * The original name of the model.
-      * @var string
-      */
+     * The original name of the model.
+     *
+     * @var string
+     */
     protected static $swaggerModelName = 'customer';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      * @var string[]
-      */
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @var string[]
+     */
     protected static $zipTypes = array(
         'title' => 'string',
         'first_name' => 'string',
@@ -43,6 +46,7 @@ class Customer implements ArrayAccess
 
     /**
      * Array of attributes where the key is the local name, and the value is the original name
+     *
      * @var string[]
      */
     protected static $attributeMap = array(
@@ -59,6 +63,7 @@ class Customer implements ArrayAccess
 
     /**
      * Array of attributes to setter functions (for deserialization of responses)
+     *
      * @var string[]
      */
     protected static $setters = array(
@@ -75,6 +80,7 @@ class Customer implements ArrayAccess
 
     /**
      * Array of attributes to getter functions (for serialization of requests)
+     *
      * @var string[]
      */
     protected static $getters = array(
@@ -111,6 +117,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets allowable values of the enum
+     *
      * @return string[]
      */
     public function getGenderAllowableValues()
@@ -125,12 +132,14 @@ class Customer implements ArrayAccess
 
     /**
      * Associative array for storing property values
+     *
      * @var mixed[]
      */
     protected $container = array();
 
     /**
      * Constructor
+     *
      * @param mixed[] $data Associated array of property values initializing the model
      */
     public function __construct(array $data = null)
@@ -221,6 +230,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets title
+     *
      * @return string
      */
     public function getTitle()
@@ -230,7 +240,8 @@ class Customer implements ArrayAccess
 
     /**
      * Sets title
-     * @param string $title Customer's title
+     *
+     * @param  string $title Customer's title
      * @return $this
      */
     public function setTitle($title)
@@ -242,6 +253,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets first_name
+     *
      * @return string
      */
     public function getFirstName()
@@ -251,7 +263,8 @@ class Customer implements ArrayAccess
 
     /**
      * Sets first_name
-     * @param string $first_name Customer's first name
+     *
+     * @param  string $first_name Customer's first name
      * @return $this
      */
     public function setFirstName($first_name)
@@ -263,6 +276,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets middle_name
+     *
      * @return string
      */
     public function getMiddleName()
@@ -272,7 +286,8 @@ class Customer implements ArrayAccess
 
     /**
      * Sets middle_name
-     * @param string $middle_name Customer's middle name
+     *
+     * @param  string $middle_name Customer's middle name
      * @return $this
      */
     public function setMiddleName($middle_name)
@@ -284,6 +299,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets last_name
+     *
      * @return string
      */
     public function getLastName()
@@ -293,7 +309,8 @@ class Customer implements ArrayAccess
 
     /**
      * Sets last_name
-     * @param string $last_name Customer's last name
+     *
+     * @param  string $last_name Customer's last name
      * @return $this
      */
     public function setLastName($last_name)
@@ -305,6 +322,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets phone
+     *
      * @return string
      */
     public function getPhone()
@@ -314,11 +332,17 @@ class Customer implements ArrayAccess
 
     /**
      * Sets phone
-     * @param string $phone Customer's phone number
+     *
+     * @param  string $phone Customer's phone number
      * @return $this
      */
     public function setPhone($phone)
     {
+        if (!empty($phone)) {
+            // Only accept phone number with maximum 20 length
+            $phone = substr(trim($phone), 0, self::PHONE_NUMBER_MAX_LENGTH);
+        }
+
         $this->container['phone'] = $phone;
 
         return $this;
@@ -326,6 +350,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets email
+     *
      * @return string
      */
     public function getEmail()
@@ -335,7 +360,8 @@ class Customer implements ArrayAccess
 
     /**
      * Sets email
-     * @param string $email Customer's email
+     *
+     * @param  string $email Customer's email
      * @return $this
      */
     public function setEmail($email)
@@ -347,6 +373,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets birth_date
+     *
      * @return \DateTime
      */
     public function getBirthDate()
@@ -356,7 +383,8 @@ class Customer implements ArrayAccess
 
     /**
      * Sets birth_date
-     * @param \DateTime $birth_date Customer's date of birth
+     *
+     * @param  \DateTime $birth_date Customer's date of birth
      * @return $this
      */
     public function setBirthDate($birth_date)
@@ -368,6 +396,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets gender
+     *
      * @return string
      */
     public function getGender()
@@ -377,7 +406,8 @@ class Customer implements ArrayAccess
 
     /**
      * Sets gender
-     * @param string $gender Customer's gender
+     *
+     * @param  string $gender Customer's gender
      * @return $this
      */
     public function setGender($gender)
@@ -393,6 +423,7 @@ class Customer implements ArrayAccess
     }
     /**
      * Returns true if offset exists. False otherwise.
+     *
      * @param  integer $offset Offset
      * @return boolean
      */
@@ -403,6 +434,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets offset.
+     *
      * @param  integer $offset Offset
      * @return mixed
      */
@@ -413,6 +445,7 @@ class Customer implements ArrayAccess
 
     /**
      * Sets value based on offset.
+     *
      * @param  integer $offset Offset
      * @param  mixed   $value  Value to be set
      * @return void
@@ -428,6 +461,7 @@ class Customer implements ArrayAccess
 
     /**
      * Unsets offset.
+     *
      * @param  integer $offset Offset
      * @return void
      */
@@ -438,6 +472,7 @@ class Customer implements ArrayAccess
 
     /**
      * Gets the string presentation of the object
+     *
      * @return string
      */
     public function __toString()

@@ -4,20 +4,20 @@
     $methodCode = $this->getMethodCode();
 ?>
 
-<?php if(!empty($logo)): ?>
-    <img src="<?= $logo ?>" alt="Zip Payment"/>
+<?php if(!empty($logo)) : ?>
+    <img src="<?php echo $logo ?>" alt="Zip Payment"/>
 <?php endif; ?>
 
-<?php if(!empty($title)): ?>
-    <span data-zm-asset="checkouttitle" data-zm-widget="inline"><?= $title ?></span>
+<?php if(!empty($title)) : ?>
+    <span data-zm-asset="checkouttitle" data-zm-widget="inline"><?php echo $title ?></span>
 <?php endif; ?>
 
 
 <style type="text/css">
-input#p_method_<?= $methodCode ?> {
+input#p_method_<?php echo $methodCode ?> {
     height: 30px;
 }
-input#p_method_<?= $methodCode ?> + label > img {
+input#p_method_<?php echo $methodCode ?> + label > img {
     height: 36px;
     vertical-align: middle;
     padding: 5px 0;
@@ -25,7 +25,7 @@ input#p_method_<?= $methodCode ?> + label > img {
     line-height: 26px;
     margin-right: 5px;
 }
-input#p_method_<?= $methodCode ?> + label  > span {
+input#p_method_<?php echo $methodCode ?> + label  > span {
     display: inline-block;
     line-height: 26px;
     padding: 5px 0;

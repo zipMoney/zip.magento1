@@ -16,15 +16,17 @@ class OrderItem implements ArrayAccess
     const DISCRIMINATOR = 'subclass';
 
     /**
-      * The original name of the model.
-      * @var string
-      */
+     * The original name of the model.
+     *
+     * @var string
+     */
     protected static $swaggerModelName = 'OrderItem';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      * @var string[]
-      */
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @var string[]
+     */
     protected static $zipTypes = array(
         'name' => 'string',
         'amount' => 'float',
@@ -45,6 +47,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Array of attributes where the key is the local name, and the value is the original name
+     *
      * @var string[]
      */
     protected static $attributeMap = array(
@@ -63,6 +66,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Array of attributes to setter functions (for deserialization of responses)
+     *
      * @var string[]
      */
     protected static $setters = array(
@@ -81,6 +85,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Array of attributes to getter functions (for serialization of requests)
+     *
      * @var string[]
      */
     protected static $getters = array(
@@ -117,10 +122,9 @@ class OrderItem implements ArrayAccess
     const TYPE_DISCOUNT = 'discount';
     const TYPE_STORE_CREDIT = 'store_credit';
 
-
-
     /**
      * Gets allowable values of the enum
+     *
      * @return string[]
      */
     public function getTypeAllowableValues()
@@ -137,12 +141,14 @@ class OrderItem implements ArrayAccess
 
     /**
      * Associative array for storing property values
+     *
      * @var mixed[]
      */
     protected $container = array();
 
     /**
      * Constructor
+     *
      * @param mixed[] $data Associated array of property values initializing the model
      */
     public function __construct(array $data = null)
@@ -235,6 +241,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets name
+     *
      * @return string
      */
     public function getName()
@@ -244,7 +251,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets name
-     * @param string $name
+     *
+     * @param  string $name
      * @return $this
      */
     public function setName($name)
@@ -256,6 +264,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets amount
+     *
      * @return float
      */
     public function getAmount()
@@ -265,7 +274,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets amount
-     * @param float $amount
+     *
+     * @param  float $amount
      * @return $this
      */
     public function setAmount($amount)
@@ -277,6 +287,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets reference
+     *
      * @return string
      */
     public function getReference()
@@ -286,7 +297,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets reference
-     * @param string $reference
+     *
+     * @param  string $reference
      * @return $this
      */
     public function setReference($reference)
@@ -298,6 +310,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets description
+     *
      * @return string
      */
     public function getDescription()
@@ -307,7 +320,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets description
-     * @param string $description
+     *
+     * @param  string $description
      * @return $this
      */
     public function setDescription($description)
@@ -319,6 +333,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets quantity
+     *
      * @return float
      */
     public function getQuantity()
@@ -328,7 +343,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets quantity
-     * @param float $quantity
+     *
+     * @param  float $quantity
      * @return $this
      */
     public function setQuantity($quantity)
@@ -344,6 +360,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets type
+     *
      * @return string
      */
     public function getType()
@@ -353,7 +370,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets type
-     * @param string $type
+     *
+     * @param  string $type
      * @return $this
      */
     public function setType($type)
@@ -370,6 +388,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets image_uri
+     *
      * @return string
      */
     public function getImageUri()
@@ -379,7 +398,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets image_uri
-     * @param string $image_uri
+     *
+     * @param  string $image_uri
      * @return $this
      */
     public function setImageUri($image_uri)
@@ -391,6 +411,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets item_uri
+     *
      * @return string
      */
     public function getItemUri()
@@ -400,7 +421,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets item_uri
-     * @param string $item_uri
+     *
+     * @param  string $item_uri
      * @return $this
      */
     public function setItemUri($item_uri)
@@ -412,6 +434,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets product_code
+     *
      * @return string
      */
     public function getProductCode()
@@ -421,7 +444,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets product_code
-     * @param string $product_code
+     *
+     * @param  string $product_code
      * @return $this
      */
     public function setProductCode($product_code)
@@ -437,6 +461,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets additional_details
+     *
      * @return Zip\Model\OrderItemAdditionalDetails[]
      */
     public function getAdditionalDetails()
@@ -446,7 +471,8 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets additional_details
-     * @param Zip\Model\OrderItemAdditionalDetails[] $additional_details
+     *
+     * @param  Zip\Model\OrderItemAdditionalDetails[] $additional_details
      * @return $this
      */
     public function setAdditionalDetails($additional_details)
@@ -457,6 +483,7 @@ class OrderItem implements ArrayAccess
     }
     /**
      * Returns true if offset exists. False otherwise.
+     *
      * @param  integer $offset Offset
      * @return boolean
      */
@@ -467,6 +494,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets offset.
+     *
      * @param  integer $offset Offset
      * @return mixed
      */
@@ -477,6 +505,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Sets value based on offset.
+     *
      * @param  integer $offset Offset
      * @param  mixed   $value  Value to be set
      * @return void
@@ -492,6 +521,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Unsets offset.
+     *
      * @param  integer $offset Offset
      * @return void
      */
@@ -502,6 +532,7 @@ class OrderItem implements ArrayAccess
 
     /**
      * Gets the string presentation of the object
+     *
      * @return string
      */
     public function __toString()

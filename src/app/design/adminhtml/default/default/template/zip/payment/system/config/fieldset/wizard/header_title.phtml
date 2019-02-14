@@ -4,32 +4,34 @@
     $element = $this->getElement();
     $groupConfig = $this->getConfig();
     $notification = $this->getData('notification');
+    $legend = $element->getLegend();
+    $comment = $element->getComment();
 ?>
 
 <div class="config-heading">
     <div class="heading">
         <span class="heading-title">
-            <?php if(!empty($logo)): ?>
-                <img class="logo" alt="<?= $element->getLegend() ?>" title="<?= $element->getLegend() ?>" src="<?= $logo ?>"/>
+            <?php if(!empty($logo)) : ?>
+                <img class="logo" alt="<?php echo $legend ?>" title="<?php echo $legend ?>" src="<?php echo $logo ?>"/>
             <?php endif; ?>
-            <?php if(!empty($element->getLegend())): ?>
+            <?php if(!empty($legend)) : ?>
                 <strong>
-                    <span class="legend"><?= $element->getLegend() ?> <?= $this->getData('version') ?></span>
+                    <span class="legend"><?php echo $legend ?> <?php echo $this->getData('version') ?></span>
                 </strong>
             <?php endif; ?>
         </span>
         <span class="heading-intro">
-            <?php if (!empty($element->getComment())): ?>
-                <?= $element->getComment() ?>
+            <?php if (!empty($comment)) : ?>
+                <?php echo $comment ?>
             <?php endif; ?>
         </span>
     </div>
 
     <div class="button-container">
-        <button type="button" class="button" id="<?= $element->getHtmlId() ?>-head" 
-        onclick="toggleSolution.call(this, '<?= $element->getHtmlId() ?>', '<?= $this->getUrl('*/*/state') ?>'); return false;">
-            <span class="state-closed"><?= $this->__('Configure') ?></span>
-            <span class="state-opened"><?= $this->__('Close') ?></span>
+        <button type="button" class="button" id="<?php echo $element->getHtmlId() ?>-head" 
+        onclick="toggleSolution.call(this, '<?php echo $element->getHtmlId() ?>', '<?php echo $this->getUrl('*/*/state') ?>'); return false;">
+            <span class="state-closed"><?php echo $this->__('Configure') ?></span>
+            <span class="state-opened"><?php echo $this->__('Close') ?></span>
         </button>
     </div>
 
