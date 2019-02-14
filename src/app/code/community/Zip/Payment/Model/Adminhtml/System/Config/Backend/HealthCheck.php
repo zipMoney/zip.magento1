@@ -104,7 +104,8 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 curl_exec($curl);
 
                 $sslVerified = curl_getinfo($curl, CURLINFO_SSL_VERIFYRESULT) == 0;
-                $isAccessible = !empty(curl_getinfo($curl, CURLINFO_PRIMARY_IP));
+                $ipAddress = curl_getinfo($curl, CURLINFO_PRIMARY_IP);
+                $isAccessible = !empty($ipAddress);
                 $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
                 // if API certification invalid

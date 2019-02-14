@@ -4,25 +4,25 @@
 ?>
 
 <div id="zip-payment-notice">
-    <?php if(!empty($versionNotification)): ?>
+    <?php if(!empty($versionNotification)) : ?>
         <p class="version">
-            <span><?= $versionNotification['title'] ?></span>
+            <span><?php echo $versionNotification['title'] ?></span>
 
-            <?php if(!empty($versionNotification['url'])): ?>
-                &nbsp;<a href="<?= $versionNotification['url'] ?>" target="_blank">learn more</a>
+            <?php if(!empty($versionNotification['url'])) : ?>
+                &nbsp;<a href="<?php echo $versionNotification['url'] ?>" target="_blank">learn more</a>
             <?php endif; ?>
         </p>
     <?php endif; ?>
-    <?php if(!empty($latestNews)): ?>
+    <?php if(!empty($latestNews)) : ?>
         <p class="news">
-            <strong><?= $latestNews['title'] ?></strong>
+            <strong><?php echo $latestNews['title'] ?></strong>
 
-            <?php if(!empty($latestNews['description'])): ?>
-                <br/> <span><?= $latestNews['description'] ?></span>
+            <?php if(!empty($latestNews['description'])) : ?>
+                <br/> <span><?php echo $latestNews['description'] ?></span>
             <?php endif; ?>
 
-            <?php if(!empty($latestNews['url'])): ?>
-                &nbsp;<a href="<?= $latestNews['url'] ?>" target="_blank">learn more</a>
+            <?php if(!empty($latestNews['url'])) : ?>
+                &nbsp;<a href="<?php echo $latestNews['url'] ?>" target="_blank">learn more</a>
             <?php endif; ?>
         </p>
     <?php endif; ?>

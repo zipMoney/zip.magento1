@@ -119,6 +119,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         $address = $model->getShippingAddress();
         $isPickup = $model->getIsVirtual() || $address == null;
         $shippingDetail->setPickup($isPickup);
+        $region = $address->getRegion();
 
         if (!$isPickup) {
             $shippingAddress = new Address();
@@ -130,7 +131,7 @@ abstract class Zip_Payment_Model_Api_Abstract
                 ->setLine2($address->getStreet2())
                 ->setCountry($address->getCountryId())
                 ->setPostalCode($address->getPostcode())
-                ->setState(empty($address->getRegion()) ? $address->getCity() : $address->getRegion())
+                ->setState(empty($region) ? $address->getCity() : $region)
                 ->setCity($address->getCity());
 
             $shippingDetail->setAddress($shippingAddress);
