@@ -135,7 +135,8 @@ abstract class Zip_Payment_Model_Api_Abstract
 
             $shippingDetail->setAddress($shippingAddress);
 
-            // $shippingDetail->setTracking() // TODO
+            // TODO: implementation for tracking
+            // $shippingDetail->setTracking()
         }
 
         return $shippingDetail;
@@ -176,7 +177,7 @@ abstract class Zip_Payment_Model_Api_Abstract
                 ->setDescription((string) strip_tags($item->getDescription()))
                 ->setAmount($price)
                 ->setQuantity($quantity)
-                ->setType('sku')
+                ->setType(OrderItem::TYPE_SKU)
                 ->setItemUri((string) $product->getProductUrl())
                 ->setImageUri($thumbnailUrl);
 
@@ -192,24 +193,36 @@ abstract class Zip_Payment_Model_Api_Abstract
             $shippingItem
                 ->setName('Shipping')
                 ->setAmount((float) $shippingAmount)
-                ->setType('shipping')
+                ->setType(OrderItem::TYPE_SHIPPING)
                 ->setQuantity(1);
 
             $orderItems[] = $shippingItem;
         }
 
-         $grandTotal = $model->getGrandTotal() ?: 0.00;
-         //no matter discount or reward point or store credit
-         $remaining = $grandTotal - $totalItemAmount - $shippingAmount;
+        $grandTotal = $model->getGrandTotal() ?: 0.00;
 
-        if ($remaining < 0) {
+        // no matter discount or reward point or store credit
+        $remaining = $grandTotal - $totalItemAmount - $shippingAmount;
+
+        // Add fee or discount when remaining is not 0
+        if ($remaining > 0) {
+            $feeItem = new OrderItem;
+
+            $feeItem
+                ->setName('Fee')
+                ->setAmount((float) $remaining)
+                ->setType(OrderItem::TYPE_SHIPPING)
+                ->setQuantity(1);
+
+            $orderItems[] = $feeItem;
+        } else if ($remaining < 0) {
             $discountItem = new OrderItem();
 
             $discountItem
-                ->setName("Discount")
+                ->setName('Discount')
                 ->setAmount((float) $remaining)
                 ->setQuantity(1)
-                ->setType("discount");
+                ->setType(OrderItem::TYPE_DISCOUNT);
 
             $orderItems[] = $discountItem;
         }
@@ -226,7 +239,7 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getMetadata()
     {
-        //object not working must use array
+        // object not working must use array
         $metadata['platform'] = "Magento 1";
         $metadata['version'] = Mage::getVersion();
         return $metadata;
