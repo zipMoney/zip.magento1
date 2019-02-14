@@ -206,26 +206,16 @@ abstract class Zip_Payment_Model_Api_Abstract
         $remaining = $grandTotal - $totalItemAmount - $shippingAmount;
 
         // Add fee or discount when remaining is not 0
-        if ($remaining > 0) {
-            $feeItem = new OrderItem;
+        if ($remaining !== 0) {
+            $remainingItem = new OrderItem;
 
-            $feeItem
-                ->setName('Fee')
-                ->setAmount((float) $remaining)
-                ->setType(OrderItem::TYPE_SHIPPING)
-                ->setQuantity(1);
-
-            $orderItems[] = $feeItem;
-        } else if ($remaining < 0) {
-            $discountItem = new OrderItem();
-
-            $discountItem
-                ->setName('Discount')
+            $remainingItem
+                ->setName($remaining > 0 ? 'Fee' : 'Discount')
                 ->setAmount((float) $remaining)
                 ->setQuantity(1)
-                ->setType(OrderItem::TYPE_DISCOUNT);
+                ->setType($remaining > 0 ? OrderItem::TYPE_SHIPPING : OrderItem::TYPE_DISCOUNT);
 
-            $orderItems[] = $discountItem;
+            $orderItems[] = $remainingItem;
         }
 
         return $orderItems;
