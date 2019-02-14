@@ -274,7 +274,7 @@
             </php>
             <extension>
                 <name>Core</name>
-                <min/>
+                <min>1.7.0</min>
                 <max/>
             </extension>
         </required>

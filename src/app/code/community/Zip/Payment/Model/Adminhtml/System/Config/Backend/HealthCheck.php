@@ -18,7 +18,6 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const CURL_EXTENSION_DISABLED = 'CURL extension has not been installed or disabled';
     const CURL_SSL_VERIFICATION_DISABLED_MESSAGE = 'CURL SSL Verification has been disabled';
     const API_CERTIFICATE_INVALID_MESSAGE = 'SSL Certificate is not valid for the API';
-    const API_INACCESSIBLE_MESSAGE = 'Failed to access Zip Payment API';
     const API_PRIVATE_KEY_INVALID_MESSAGE = 'Your API private key is empty or invalid';
     const API_PUBLIC_KEY_INVALID_MESSAGE = 'Your API public key is empty or invalid';
     const API_CREDENTIAL_INVALID_MESSAGE = 'Your API credential is invalid';
@@ -104,18 +103,11 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 curl_exec($curl);
 
                 $sslVerified = curl_getinfo($curl, CURLINFO_SSL_VERIFYRESULT) == 0;
-                $ipAddress = curl_getinfo($curl, CURLINFO_PRIMARY_IP);
-                $isAccessible = !empty($ipAddress);
                 $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
                 // if API certification invalid
                 if (!$sslVerified) {
                     $this->appendFailedItem(self::STATUS_WARNING, self::API_CERTIFICATE_INVALID_MESSAGE);
-                }
-
-                // if API server is inaccessible
-                if (!$isAccessible) {
-                    $this->appendFailedItem(self::STATUS_ERROR, self::API_INACCESSIBLE_MESSAGE);
                 }
 
                 // if API credential is invalid

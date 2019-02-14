@@ -68,10 +68,10 @@ class Zip_Payment_Model_Observer
      */
     public function setCheckoutLayoutHandle($observer)
     {
-        $layoutHander = 'checkout_layout_hander';
+        $layoutHandle = 'checkout_layout_handle';
 
         if (Mage::helper('zip_payment')->isOnepageCheckout() || Mage::helper('zip_payment')->isOnestepCheckout()) {
-            Mage::app()->getLayout()->getUpdate()->addHandle($layoutHander);
+            Mage::app()->getLayout()->getUpdate()->addHandle($layoutHandle);
         }
     }
 
