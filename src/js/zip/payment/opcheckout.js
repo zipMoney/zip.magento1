@@ -14,7 +14,7 @@ if('Zip' in window && Zip.Checkout) {
 
                 save: function () {
                     // support Zip Payment order placement
-                    Zip.Checkout.placeOrder(this.reviewSave);
+                    Zip.Checkout.placeOrder(this.reviewSave.bind(this));
 
                 }
 
