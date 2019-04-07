@@ -219,7 +219,7 @@
                     </failure>
                     <referred>
                         <heading>Order Placed Successfully</heading>
-                        <content><![CDATA[<p>Congratulations! You have successfully placed your order, pending approval of your Zip Money application.</p><p>You will recevie an email with instructions shortly on whether your application has been approved or not. If approved you will be able to complete your purchase following the link in the email.</p>]]></content>
+                        <content><![CDATA[<p>Congratulations! You have successfully placed your order, pending approval of your Zip Money application.</p><p>You will receive an email with instructions shortly on whether your application has been approved or not. If approved you will be able to complete your purchase following the link in the email.</p>]]></content>
                     </referred>
                     <onestepcheckouts>
                         <onestepcheckout_index_index>1</onestepcheckout_index_index>

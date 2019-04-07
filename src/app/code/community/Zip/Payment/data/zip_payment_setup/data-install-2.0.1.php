@@ -7,7 +7,6 @@
 
 
 if (Mage::getModel('admin/block')) {
-
     // add block permission for all zip payment blocks
 
     $blocks = array(
