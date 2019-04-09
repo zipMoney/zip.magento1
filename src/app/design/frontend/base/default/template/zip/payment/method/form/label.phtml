@@ -1,7 +1,7 @@
 <?php
-    $logo = $this->getLogo();
-    $title = $this->getTitle();
-    $methodCode = $this->getMethodCode();
+    $logo = $this->escapeUrl($this->getLogo());
+    $title = $this->escapeHtml($this->getTitle());
+    $methodCode = $this->escapeHtml($this->getMethodCode());
 ?>
 
 <?php if(!empty($logo)) : ?>

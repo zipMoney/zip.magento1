@@ -92,7 +92,7 @@ class CheckoutApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/json'));
-        if ($_header_accept !== NULL) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 
@@ -210,7 +210,7 @@ class CheckoutApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/json'));
-        if ($_header_accept !== NULL) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 

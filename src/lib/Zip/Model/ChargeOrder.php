@@ -118,7 +118,7 @@ class ChargeOrder implements ArrayAccess
     {
         $invalid_properties = array();
 
-        if ($this->container['reference'] !== NULL && (strlen($this->container['reference']) > 50)) {
+        if ($this->container['reference'] !== null && (strlen($this->container['reference']) > 50)) {
             $invalid_properties[]
                 = "invalid value for 'reference', the character length must be smaller than or equal to 50.";
         }
@@ -127,7 +127,7 @@ class ChargeOrder implements ArrayAccess
             $invalid_properties[] = "'shipping' can't be null";
         }
 
-        if ($this->container['cart_reference'] !== NULL && (strlen($this->container['cart_reference']) > 100)) {
+        if ($this->container['cart_reference'] !== null && (strlen($this->container['cart_reference']) > 100)) {
             $invalid_properties[]
                 = "invalid value for 'cart_reference', the character length must be smaller than or equal to 100.";
         }
@@ -175,7 +175,7 @@ class ChargeOrder implements ArrayAccess
      */
     public function setReference($reference)
     {
-        if ($reference !== NULL && (strlen($reference) > 50)) {
+        if ($reference !== null && (strlen($reference) > 50)) {
             throw new \InvalidArgumentException(
                 'invalid length for $reference when calling ChargeOrder., must be smaller than or equal to 50.'
             );
@@ -244,7 +244,7 @@ class ChargeOrder implements ArrayAccess
      */
     public function setCartReference($cart_reference)
     {
-        if ($cart_reference !== NULL && (strlen($cart_reference) > 100)) {
+        if ($cart_reference !== null && (strlen($cart_reference) > 100)) {
             throw new \InvalidArgumentException(
                 'invalid length for $cart_reference when calling ChargeOrder., must be smaller than or equal to 100.'
             );
@@ -282,7 +282,7 @@ class ChargeOrder implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if ($offset === NULL) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

@@ -132,7 +132,7 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
      */
     public function getFeedUrl()
     {
-        if ($this->_feedUrl === NULL) {
+        if ($this->_feedUrl === null) {
             $this->_feedUrl = $this->getConfig()->getValue(self::CONFIG_FEED_URL_PATH);
         }
 
@@ -151,7 +151,7 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
             )
         );
 
-        $curl->write(Zend_Http_Client::GET, $this->getFeedUrl(), '1.0');
+        $curl->write(Zend_Http_Client::GET, $this->getFeedUrl());
         $data = $curl->read();
 
         if ($data === false) {

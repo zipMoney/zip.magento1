@@ -1,6 +1,6 @@
 <?php
-    $logo = $this->getLogo();
-    $title = $this->getMethod()->getTitle();
+    $logo = $this->escapeUrl($this->getLogo());
+    $title = $this->escapeHtml($this->getMethod()->getTitle());
 ?>
 
 <div id="zip_payment_info">

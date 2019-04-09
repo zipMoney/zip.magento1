@@ -5,11 +5,11 @@
 
 <div id="zip_payment_info">
     <?php if(!empty($logo)) : ?>
-        <img src="<?php echo $logo ?>" alt="Zip Payment"/>
+        <img src="<?php echo $this->escapeUrl($logo) ?>" alt="Zip Payment"/>
     <?php endif; ?>
 
     <?php if(!empty($title)) : ?>
-        <span><?php echo $title ?></span>
+        <span><?php echo $this->escapeHtml($title) ?></span>
     <?php endif; ?>
 </div>
 
@@ -18,7 +18,7 @@
     <?php foreach ($specificInfo as $label => $value):?>
     <tr>
         <td><?php echo $this->escapeHtml($label)?>:</td>
-        <td><?php echo nl2br(implode($this->getValueAsArray($value, true), "\n"))?></td>
+        <td><?php echo nl2br(implode($this->getValueAsArray($value, true), ["\n"]))?></td>
     </tr>
     <?php endforeach; ?>
 </table>

@@ -43,8 +43,10 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     protected function getHealthResult()
     {
         $config = Mage::helper('zip_payment')->getConfig();
+        $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
+                ->generateApiConfiguration();
 
-        $sslEnabled = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
+        $sslEnabled = Mage::app()->getStore()->isFrontUrlSecure() && Mage::app()->getRequest()->isSecure();
         $curlEnabled = function_exists('curl_version');
         $publicKey = $config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
         $privateKey = $config->getValue(self::CONFIG_PRIVATE_KEY_PATH);
@@ -73,26 +75,17 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         if (!$curlEnabled) {
             $this->appendFailedItem(self::STATUS_ERROR, self::CURL_EXTENSION_DISABLED);
         } else {
-            $curl = curl_init();
+            $curl = new Varien_Http_Adapter_Curl();
+            $curl->setConfig(
+                array(
+                    'timeout' => 10
+                )
+            );
 
-            $curlSSLVerificationEnabled = curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER) &&
-            curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER);
-
-            $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
-            ->generateApiConfiguration();
-
-            $url = $apiConfig->getHost();
-
-            curl_setopt($curl, CURLOPT_NOBODY, true);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 20);
-            curl_setopt($curl, CURLOPT_URL, $url);
+            $curlSSLVerificationEnabled = $curl->getInfo(CURLOPT_SSL_VERIFYPEER);
 
             // if SSL verification is disabled
             if (!$curlSSLVerificationEnabled) {
-                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-
                 $this->appendFailedItem(self::STATUS_WARNING, self::CURL_SSL_VERIFICATION_DISABLED_MESSAGE);
             }
 
@@ -106,11 +99,10 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     'Zip-Version: 2017-03-01'
                 );
 
-                curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-                curl_exec($curl);
+                $curl->write(Zend_Http_Client::GET, $apiConfig->getHost(), '1.1', $headers);
 
-                $sslVerified = curl_getinfo($curl, CURLINFO_SSL_VERIFYRESULT) == 0;
-                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                $sslVerified = $curl->getInfo(CURLINFO_SSL_VERIFYRESULT) == 0;
+                $httpCode = $curl->getInfo(CURLINFO_HTTP_CODE);
 
                 // if API certification invalid
                 if (!$sslVerified) {
@@ -126,7 +118,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 $this->appendFailedItem(self::STATUS_ERROR, self::CONFIG_PRIVATE_KEY_PATH);
             }
 
-            curl_close($curl);
+            $curl->close();
         }
 
         usort(
@@ -144,7 +136,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
      */
     protected function appendFailedItem($status, $label)
     {
-        if ($status !== NULL && $this->result['overall_status'] < $status) {
+        if ($status !== null && $this->result['overall_status'] < $status) {
             $this->result['overall_status'] = $status;
         }
 

@@ -9,11 +9,11 @@
     Zip.Checkout = Zip.Checkout || {};
 
     Zip.Checkout.settings = {
-        methodCode: '<?php echo $this->getMethodCode() ?>',
+        methodCode: '<?php echo $this->escapeHtml($this->getMethodCode()) ?>',
         isRedirect: <?php echo $this->isRedirect() ? 'true' : 'false' ?>,
-        checkoutUrl: '<?php echo $this->getCheckoutUrl() ?>',
-        responseUrl: '<?php echo $this->getResponseUrl() ?>',
-        logLevel: '<?php echo $this->getLogLevel() ?>'
+        checkoutUrl: '<?php echo $this->escapeUrl($this->getCheckoutUrl()) ?>',
+        responseUrl: '<?php echo $this->escapeUrl($this->getResponseUrl()) ?>',
+        logLevel: '<?php echo $this->escapeHtml($this->getLogLevel()) ?>'
     };
 
     //]]>
@@ -21,7 +21,7 @@
     </script>
 
     <?php foreach ($this->getCheckoutScriptList() as $scriptUrl) :?>
-        <script type="text/javascript" src="<?php echo $scriptUrl ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->escapeUrl($scriptUrl) ?>"></script>
     <?php endforeach; ?>
 
 <?php endif; ?>

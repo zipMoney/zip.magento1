@@ -413,7 +413,7 @@ class Customer implements ArrayAccess
     public function setGender($gender)
     {
         $allowed_values = array('Male', 'Female', 'Other');
-        if ($gender !== NULL && (!in_array($gender, $allowed_values))) {
+        if ($gender !== null && (!in_array($gender, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'gender', must be one of 'Male', 'Female', 'Other'");
         }
 
@@ -452,7 +452,7 @@ class Customer implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if ($offset === NULL) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

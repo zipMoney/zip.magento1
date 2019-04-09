@@ -183,7 +183,7 @@ class OrderItem implements ArrayAccess
             $invalid_properties[] = "'amount' can't be null";
         }
 
-        if ($this->container['quantity'] !== NULL && ($this->container['quantity'] <= 0)) {
+        if ($this->container['quantity'] !== null && ($this->container['quantity'] <= 0)) {
             $invalid_properties[] = "invalid value for 'quantity', must be bigger than 0.";
         }
 
@@ -197,7 +197,7 @@ class OrderItem implements ArrayAccess
                 = "invalid value for 'type', must be one of 'sku', 'tax', 'shipping', 'discount', 'store_credit'.";
         }
 
-        if ($this->container['product_code'] !== NULL && (strlen($this->container['product_code']) > 200)) {
+        if ($this->container['product_code'] !== null && (strlen($this->container['product_code']) > 200)) {
             $invalid_properties[]
                 = "invalid value for 'product_code', the character length must be smaller than or equal to 200.";
         }
@@ -352,7 +352,7 @@ class OrderItem implements ArrayAccess
      */
     public function setQuantity($quantity)
     {
-        if ($quantity !== NULL && ($quantity <= 0)) {
+        if ($quantity !== null && ($quantity <= 0)) {
             throw new \InvalidArgumentException(
                 'invalid value for quantity when calling OrderItem., must be bigger than 0.'
             );
@@ -457,7 +457,7 @@ class OrderItem implements ArrayAccess
      */
     public function setProductCode($product_code)
     {
-        if ($product_code !== NULL && (strlen($product_code) > 200)) {
+        if ($product_code !== null && (strlen($product_code) > 200)) {
             throw new \InvalidArgumentException(
                 'invalid length for $product_code when calling OrderItem., must be smaller than or equal to 200.'
             );
@@ -521,7 +521,7 @@ class OrderItem implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if ($offset === NULL) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

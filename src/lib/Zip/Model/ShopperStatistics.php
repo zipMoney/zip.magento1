@@ -393,7 +393,7 @@ class ShopperStatistics implements ArrayAccess
     public function setCurrency($currency)
     {
         $allowed_values = array('AUD', 'NZD');
-        if ($currency !== NULL && (!in_array($currency, $allowed_values))) {
+        if ($currency !== null && (!in_array($currency, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'currency', must be one of 'AUD', 'NZD'");
         }
 
@@ -461,7 +461,7 @@ class ShopperStatistics implements ArrayAccess
     public function setFraudCheckResult($fraud_check_result)
     {
         $allowed_values = array('pass', 'fail', 'unknown');
-        if ($fraud_check_result !== NULL && (!in_array($fraud_check_result, $allowed_values))) {
+        if ($fraud_check_result !== null && (!in_array($fraud_check_result, $allowed_values))) {
             throw new \InvalidArgumentException(
                 "Invalid value for 'fraud_check_result', must be one of 'pass', 'fail', 'unknown'"
             );
@@ -499,7 +499,7 @@ class ShopperStatistics implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if ($offset === NULL) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

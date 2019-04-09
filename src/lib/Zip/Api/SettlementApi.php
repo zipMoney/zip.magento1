@@ -97,7 +97,7 @@ class SettlementApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/javascript'));
-        if ($_header_accept !== NULL) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 
@@ -190,7 +190,7 @@ class SettlementApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/javascript'));
-        if ($_header_accept !== NULL) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 

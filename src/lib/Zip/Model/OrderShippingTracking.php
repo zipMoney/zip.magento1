@@ -113,17 +113,17 @@ class OrderShippingTracking implements ArrayAccess
     {
         $invalid_properties = array();
 
-        if ($this->container['uri'] !== NULL && (strlen($this->container['uri']) > 500)) {
+        if ($this->container['uri'] !== null && (strlen($this->container['uri']) > 500)) {
             $invalid_properties[]
                 = "invalid value for 'uri', the character length must be smaller than or equal to 500.";
         }
 
-        if ($this->container['number'] !== NULL && (strlen($this->container['number']) > 120)) {
+        if ($this->container['number'] !== null && (strlen($this->container['number']) > 120)) {
             $invalid_properties[]
                 = "invalid value for 'number', the character length must be smaller than or equal to 120.";
         }
 
-        if ($this->container['carrier'] !== NULL && (strlen($this->container['carrier']) > 120)) {
+        if ($this->container['carrier'] !== null && (strlen($this->container['carrier']) > 120)) {
             $invalid_properties[]
                 = "invalid value for 'carrier', the character length must be smaller than or equal to 120.";
         }
@@ -171,7 +171,7 @@ class OrderShippingTracking implements ArrayAccess
      */
     public function setUri($uri)
     {
-        if ($uri !== NULL && (strlen($uri) > 500)) {
+        if ($uri !== null && (strlen($uri) > 500)) {
             throw new \InvalidArgumentException(
                 'invalid length for $uri when calling OrderShippingTracking.,
                 must be smaller than or equal to 500.'
@@ -199,7 +199,7 @@ class OrderShippingTracking implements ArrayAccess
      */
     public function setNumber($number)
     {
-        if ($number !== NULL && (strlen($number) > 120)) {
+        if ($number !== null && (strlen($number) > 120)) {
             throw new \InvalidArgumentException(
                 'invalid length for $number when calling OrderShippingTracking.,
                 must be smaller than or equal to 120.'
@@ -227,7 +227,7 @@ class OrderShippingTracking implements ArrayAccess
      */
     public function setCarrier($carrier)
     {
-        if ($carrier !== NULL && (strlen($carrier) > 120)) {
+        if ($carrier !== null && (strlen($carrier) > 120)) {
             throw new \InvalidArgumentException(
                 'invalid length for $carrier when calling OrderShippingTracking.,
                 must be smaller than or equal to 120.'
@@ -266,7 +266,7 @@ class OrderShippingTracking implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if ($offset === NULL) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

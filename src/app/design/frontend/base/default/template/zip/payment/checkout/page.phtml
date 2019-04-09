@@ -1,7 +1,7 @@
 <?php
-    $logo = $this->getLogo();
-    $slogan = $this->getSlogan();
-    $heading = $this->getHeadingText();
+    $logo = $this->escapeUrl($this->getLogo());
+    $slogan = $this->escapeHtml($this->getSlogan());
+    $heading = $this->escapeHtml($this->getHeadingText());
     $messageItems = $this->getMessageItems();
 ?>
 
@@ -14,23 +14,23 @@
 
     <h2 class="sub-title"><?php echo $heading ?></h2>
 
-    <div> 
+    <div>
         <?php if(!empty($messageItems)) : ?>
             <ul>
                 <?php foreach ($messageItems as $item): ?>
                     <li>
-                        <?php echo $item->getText() ?>
+                        <?php echo $this->escapeHtml($item->getText()) ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
         <p>
             <?php echo $this->getContentHtml() ?>
-        </p>             
+        </p>
     </div>
 
     <div class="buttons-set">
-        <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'">
+        <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->escapeUrl($this->getUrl()) ?>'">
             <span><span><?php echo $this->__('Continue Shopping') ?></span></span>
         </button>
     </div>

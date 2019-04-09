@@ -1,11 +1,11 @@
-<?php 
-    $version = $this->getVersion();
-    $logo = $this->getLogo();
+<?php
+    $version = $this->escapeHtml($this->getVersion());
+    $logo = $this->escapeUrl($this->getLogo());
     $element = $this->getElement();
     $groupConfig = $this->getConfig();
     $notification = $this->getData('notification');
-    $legend = $element->getLegend();
-    $comment = $element->getComment();
+    $legend = $this->escapeHtml($element->getLegend());
+    $comment = $this->escapeHtml($element->getComment());
 ?>
 
 <div class="config-heading">
@@ -16,7 +16,7 @@
             <?php endif; ?>
             <?php if(!empty($legend)) : ?>
                 <strong>
-                    <span class="legend"><?php echo $legend ?> <?php echo $this->getData('version') ?></span>
+                    <span class="legend"><?php echo $legend ?> <?php echo $version ?></span>
                 </strong>
             <?php endif; ?>
         </span>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="button-container">
-        <button type="button" class="button" id="<?php echo $element->getHtmlId() ?>-head" 
+        <button type="button" class="button" id="<?php echo $element->getHtmlId() ?>-head"
         onclick="toggleSolution.call(this, '<?php echo $element->getHtmlId() ?>', '<?php echo $this->getUrl('*/*/state') ?>'); return false;">
             <span class="state-closed"><?php echo $this->__('Configure') ?></span>
             <span class="state-opened"><?php echo $this->__('Close') ?></span>
