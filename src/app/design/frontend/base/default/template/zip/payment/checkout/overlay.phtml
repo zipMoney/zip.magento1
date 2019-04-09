@@ -1,13 +1,14 @@
 <?php
-    $logo = $this->escapeUrl($this->getLogo());
-    $slogan = $this->escapeHtml($this->getSlogan());
+    $logo = $this->getLogo();
+    $slogan = $this->getSlogan();
 ?>
 
 <div id="zip_payment_overlay">
     <div class="container">
         <div class="page-title">
-            <img src="<?php echo $logo ?>" title="<?php echo $slogan ?>" alt="<?php echo $slogan ?>"/>
-            <h1><?php echo $slogan ?></h1>
+            <img src="<?php echo $this->escapeUrl($logo); ?>" title="<?php echo $this->escapeHtml($slogan); ?>"
+            alt="<?php echo $this->escapeHtml($slogan); ?>"/>
+            <h1><?php echo $this->escapeHtml($slogan); ?></h1>
         </div>
 
         <div>
@@ -16,7 +17,7 @@
         </div>
 
         <p>
-            <img src="<?php echo $this->escapeUrl($this->getLoaderImageUrl()) ?>" />
+            <img src="<?php echo $this->escapeUrl($this->getLoaderImageUrl()); ?>" />
         </p>
     </div>
 </div>

@@ -7,16 +7,16 @@ if (!$this->isActive()) {
 <script type="text/javascript">
 
 // Zip widgets configuration
-zip_widget_merchantId = '<?php echo $this->escapeHtml($this->getMerchantId()) ?>';
-zip_widget_env = '<?php echo $this->escapeHtml($this->getEnvironment()) ?>';
+zip_widget_merchantId = '<?php echo $this->escapeHtml($this->getMerchantId()); ?>';
+zip_widget_env = '<?php echo $this->escapeHtml($this->getEnvironment()); ?>';
 
 <?php foreach ($this->getElementSelectors() as $key => $selector): ?>
-    zip_widget_<?php echo $this->escapeHtml($key) ?>="<?php echo $this->escapeHtml($selector) ?>";
+    zip_widget_<?php echo $this->escapeHtml($key); ?>="<?php echo $this->escapeHtml($selector); ?>";
 <?php endforeach; ?>
 
 </script>
 
-<script type="text/javascript" src="<?php echo $this->getLibScript() ?>"></script>
+<script type="text/javascript" src="<?php echo $this->escapeUrl($this->getLibScript()); ?>"></script>
 
 <?php if ($this->isDebugModeEnabled()) : ?>
 <script type="text/javascript">

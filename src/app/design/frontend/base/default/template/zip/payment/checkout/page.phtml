@@ -1,37 +1,39 @@
 <?php
-    $logo = $this->escapeUrl($this->getLogo());
-    $slogan = $this->escapeHtml($this->getSlogan());
-    $heading = $this->escapeHtml($this->getHeadingText());
+    $logo = $this->getLogo();
+    $slogan = $this->getSlogan();
+    $heading = $this->getHeadingText();
     $messageItems = $this->getMessageItems();
 ?>
 
 <div class="std">
 
     <div class="page-title">
-        <img src="<?php echo $logo ?>" title="<?php echo $slogan ?>" alt="<?php echo $slogan ?>"/>
-        <h1><?php echo $slogan ?></h1>
+        <img src="<?php echo $this->escapeUrl($logo); ?>" title="<?php echo $this->escapeHtml($slogan); ?>"
+        alt="<?php echo $this->escapeHtml($slogan); ?>"/>
+        <h1><?php echo $this->escapeHtml($slogan); ?></h1>
     </div>
 
-    <h2 class="sub-title"><?php echo $heading ?></h2>
+    <h2 class="sub-title"><?php echo $this->escapeHtml($heading); ?></h2>
 
     <div>
         <?php if(!empty($messageItems)) : ?>
             <ul>
                 <?php foreach ($messageItems as $item): ?>
                     <li>
-                        <?php echo $this->escapeHtml($item->getText()) ?>
+                        <?php echo $this->escapeHtml($item->getText()); ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
         <p>
-            <?php echo $this->getContentHtml() ?>
+            <?php echo $this->getContentHtml(); ?>
         </p>
     </div>
 
     <div class="buttons-set">
-        <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->escapeUrl($this->getUrl()) ?>'">
-            <span><span><?php echo $this->__('Continue Shopping') ?></span></span>
+        <button type="button" class="button" title="<?php echo $this->escapeHtml($this->__('Continue Shopping')); ?>"
+        onclick="window.location='<?php echo $this->escapeUrl($this->getUrl()); ?>'">
+            <span><span><?php echo $this->escapeHtml($this->__('Continue Shopping')); ?></span></span>
         </button>
     </div>
 

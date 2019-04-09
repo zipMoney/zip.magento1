@@ -1,15 +1,15 @@
 <?php
-    $methodCode = $this->escapeHtml($this->getMethodCode());
+    $methodCode = $this->getMethodCode();
 ?>
 
-<p id="payment_form_<?php echo $methodCode ?>" style="display: none">
+<p id="payment_form_<?php echo $this->escapeHtml($methodCode); ?>" style="display: none">
     <span zm-widget="inline" zm-asset="checkoutdescription"></span>
     <a href="javascript:void(0)" class="zip-hover" zm-widget="popup" zm-popup-asset="checkoutdialog">Learn more</a></li>
 </p>
 
 <style type="text/css">
-#payment_form_<?php echo $methodCode ?> span,
-#payment_form_<?php echo $methodCode ?> a {
+#payment_form_<?php echo $this->escapeHtml($methodCode); ?> span,
+#payment_form_<?php echo $this->escapeHtml($methodCode); ?> a {
     display: inline-block !important;
 }
 </style>

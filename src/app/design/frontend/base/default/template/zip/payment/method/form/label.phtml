@@ -1,23 +1,23 @@
 <?php
-    $logo = $this->escapeUrl($this->getLogo());
-    $title = $this->escapeHtml($this->getTitle());
-    $methodCode = $this->escapeHtml($this->getMethodCode());
+    $logo = $this->getLogo();
+    $title = $this->getTitle();
+    $methodCode = $this->getMethodCode();
 ?>
 
 <?php if(!empty($logo)) : ?>
-    <img src="<?php echo $logo ?>" alt="Zip Payment"/>
+    <img src="<?php echo $this->escapeUrl($logo); ?>" alt="Zip Payment"/>
 <?php endif; ?>
 
 <?php if(!empty($title)) : ?>
-    <span data-zm-asset="checkouttitle" data-zm-widget="inline"><?php echo $title ?></span>
+    <span data-zm-asset="checkouttitle" data-zm-widget="inline"><?php echo $this->escapeHtml($title); ?></span>
 <?php endif; ?>
 
 
 <style type="text/css">
-input#p_method_<?php echo $methodCode ?> {
+input#p_method_<?php echo $this->escapeHtml($methodCode); ?> {
     height: 30px;
 }
-input#p_method_<?php echo $methodCode ?> + label > img {
+input#p_method_<?php echo $this->escapeHtml($methodCode); ?> + label > img {
     height: 36px;
     vertical-align: middle;
     padding: 5px 0;
@@ -25,7 +25,7 @@ input#p_method_<?php echo $methodCode ?> + label > img {
     line-height: 26px;
     margin-right: 5px;
 }
-input#p_method_<?php echo $methodCode ?> + label  > span {
+input#p_method_<?php echo $this->escapeHtml($methodCode); ?> + label  > span {
     display: inline-block;
     line-height: 26px;
     padding: 5px 0;
