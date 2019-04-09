@@ -48,7 +48,7 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
             Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_ERROR => $helper->__('Error')
         );
 
-        return (!is_null($statusLevel) && isset($statusList[$statusLevel])) ? $statusList[$statusLevel] : null;
+        return ($statusLevel !== NULL && isset($statusList[$statusLevel])) ? $statusList[$statusLevel] : null;
     }
 
 

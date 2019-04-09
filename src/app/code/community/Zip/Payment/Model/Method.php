@@ -172,7 +172,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             $configValue = $this->getConfig()->getValue("payment/{$this->getCode()}/checkout/referred/{$field}");
         }
 
-        if (is_null($configValue)) {
+        if ($configValue === NULL) {
             $configValue = $this->getConfig()->getValue("payment/{$this->getCode()}/{$field}");
         }
 

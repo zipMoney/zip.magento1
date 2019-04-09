@@ -174,7 +174,7 @@ class CreateTokenRequest implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === NULL) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

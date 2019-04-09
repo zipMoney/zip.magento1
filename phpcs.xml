@@ -101,4 +101,5 @@
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
     <rule ref="Zend.Files.ClosingTag"/>
+    <rule ref="MEQP1.Security.DiscouragedFunction.FoundWithAlternative"/>
 </ruleset>

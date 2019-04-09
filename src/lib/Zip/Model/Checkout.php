@@ -318,7 +318,7 @@ class Checkout implements ArrayAccess
     public function setType($type)
     {
         $allowed_values = array('standard', 'express');
-        if (!is_null($type) && (!in_array($type, $allowed_values))) {
+        if ($type !== NULL && (!in_array($type, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'type', must be one of 'standard', 'express'");
         }
 
@@ -531,7 +531,7 @@ class Checkout implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === NULL) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

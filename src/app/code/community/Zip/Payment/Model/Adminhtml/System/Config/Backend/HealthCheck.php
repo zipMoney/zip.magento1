@@ -144,7 +144,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
      */
     protected function appendFailedItem($status, $label)
     {
-        if (!is_null($status) && $this->result['overall_status'] < $status) {
+        if ($status !== NULL && $this->result['overall_status'] < $status) {
             $this->result['overall_status'] = $status;
         }
 
