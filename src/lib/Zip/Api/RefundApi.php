@@ -139,23 +139,28 @@ class RefundApi
                 '/refunds'
             );
 
-            return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
+            return array($this->apiClient->getSerializer()
+                ->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 201:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 401:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 402:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
             }
@@ -250,11 +255,13 @@ class RefundApi
                 '/refunds'
             );
 
-            return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\InlineResponse200[]', $httpHeader), $statusCode, $httpHeader);
+            return array($this->apiClient->getSerializer()
+                ->deserialize($response, 'Zip\Model\InlineResponse200[]', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\InlineResponse200[]', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\InlineResponse200[]', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
             }
@@ -344,11 +351,13 @@ class RefundApi
                 '/refunds/{id}'
             );
 
-            return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
+            return array($this->apiClient->getSerializer()
+                ->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
             }

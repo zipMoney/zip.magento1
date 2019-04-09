@@ -69,7 +69,7 @@ class Zip_Payment_Model_Config
 
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
     const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
-    const CONFIG_CEHCKOUT_DISPLAY_MODE_PATH = 'payment/zip_payment/checkout/display_mode';
+    const CONFIG_CHECKOUT_DISPLAY_MODE_PATH = 'payment/zip_payment/checkout/display_mode';
     const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/checkout/custom_script';
     const CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH = 'payment/zip_payment/checkout/onestepcheckouts';
 

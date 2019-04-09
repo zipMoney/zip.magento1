@@ -28,7 +28,10 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         $state = $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_RESULT);
         // get checkout id from checkout url parameter
         // filter the result to remove additional GTM string
-        $checkoutId = preg_replace('/\?.+$/', '', $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_CHECKOUT_ID) ?: '');
+        $checkoutId = preg_replace(
+            '/\?.+$/', '',
+            $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_CHECKOUT_ID) ?: ''
+        );
 
         try {
             $response = Mage::getSingleton('zip_payment/checkout')->handleResponse($checkoutId, $state);
@@ -88,7 +91,10 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $this->getLogger()->debug('Successfully redirect to the failure page.');
         } catch (Exception $e) {
             $this->getLogger()->error(json_encode($this->getRequest()->getParams()));
-            Mage::getSingleton('checkout/session')->addError($this->getHelper()->__('An error occurred during redirecting to failure page.'));
+            Mage::getSingleton('checkout/session')
+                ->addError(
+                    $this->getHelper()->__('An error occurred during redirecting to failure page.')
+                );
         }
 
     }
@@ -111,7 +117,10 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $this->getLogger()->debug('Successfully redirect to the referred page.');
         } catch (Exception $e) {
             $this->getLogger()->error(json_encode($this->getRequest()->getParams()));
-            Mage::getSingleton('checkout/session')->addError($this->getHelper()->__('An error occurred during redirecting to referred page.'));
+            Mage::getSingleton('checkout/session')
+                ->addError(
+                    $this->getHelper()->__('An error occurred during redirecting to referred page.')
+                );
         }
 
     }

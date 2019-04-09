@@ -37,7 +37,10 @@ class Zip_Payment_Model_Logger
     public function getPrivateDataKeys()
     {
         if ($this->privateDataKeys === null) {
-            $this->privateDataKeys = explode(',', (string) $this->getConfig()->getValue(self::CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH));
+            $this->privateDataKeys = explode(
+                ',',
+                (string) $this->getConfig()->getValue(self::CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH)
+            );
         }
 
         return $this->privateDataKeys;
@@ -74,7 +77,10 @@ class Zip_Payment_Model_Logger
     {
         if (is_array($debugData) && is_array($this->getPrivateDataKeys())) {
             foreach ($debugData as $key => $value) {
-                if (in_array($key, $this->getPrivateDataKeys())) {
+                if (in_array(
+                    $key, (array) $this->getPrivateDataKeys()
+                )
+                ) {
                     $debugData[$key] = '****';
                 } else {
                     if (is_array($debugData[$key])) {

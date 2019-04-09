@@ -38,7 +38,9 @@ class Zip_Payment_Block_Method_Info extends Mage_Payment_Block_Info
         $info = array();
 
         if (isset($additionalInformation[Zip_Payment_Model_Config::PAYMENT_RECEIPT_NUMBER_KEY])) {
-            $info[self::RECEIPT_NUMBER_LABEL] = $additionalInformation[Zip_Payment_Model_Config::PAYMENT_RECEIPT_NUMBER_KEY];
+            $info[self::RECEIPT_NUMBER_LABEL] = $additionalInformation[
+                Zip_Payment_Model_Config::PAYMENT_RECEIPT_NUMBER_KEY
+            ];
         }
 
         return $transport->addData($info);

@@ -112,8 +112,14 @@ class ApiClient
      * @throws Zip\ApiException on a non 2xx response
      * @return mixed
      */
-    public function callApi($resourcePath, $method, $queryParams, $postData, $headerParams, $responseType = null, $endpointPath = null)
-    {
+    public function callApi(
+        $resourcePath,
+        $method,
+        $queryParams,
+        $postData,
+        $headerParams,
+        $responseType = null
+    ) {
         $headers = array();
 
         // construct the http header
@@ -170,7 +176,10 @@ class ApiClient
         }
 
         if ($this->config->getCurlProxyUser()) {
-            curl_setopt($curl, CURLOPT_PROXYUSERPWD, $this->config->getCurlProxyUser() . ':' . $this->config->getCurlProxyPassword());
+            curl_setopt(
+                $curl, CURLOPT_PROXYUSERPWD,
+                $this->config->getCurlProxyUser() . ':' . $this->config->getCurlProxyPassword()
+            );
         }
 
         if (!empty($queryParams)) {
@@ -206,8 +215,16 @@ class ApiClient
         // debugging for curl
         if ($this->config->getDebug()) {
             $headerData = $this->sanitizePrivateData($headers);
-            error_log("[DEBUG] HTTP Request header: " . PHP_EOL . implode(', ', $headerData) . PHP_EOL, 3, $this->config->getDebugFile());
-            error_log("[DEBUG] HTTP Request body: " . PHP_EOL . $this->sanitizePrivateData($postData) . PHP_EOL, 3, $this->config->getDebugFile());
+            error_log(
+                "[DEBUG] HTTP Request header: " . PHP_EOL . implode(', ', $headerData) . PHP_EOL,
+                3,
+                $this->config->getDebugFile()
+            );
+            error_log(
+                "[DEBUG] HTTP Request body: " . PHP_EOL . $this->sanitizePrivateData($postData) . PHP_EOL,
+                3,
+                $this->config->getDebugFile()
+            );
 
             curl_setopt($curl, CURLOPT_VERBOSE, 1);
         } else {
@@ -237,18 +254,23 @@ class ApiClient
             !empty($headerParams['Idempotency-Key']));
         // debug HTTP response body
         if ($this->config->getDebug()) {
-            error_log("[DEBUG] HTTP Response body: " . PHP_EOL . $this->sanitizePrivateData($http_body) . PHP_EOL, 3, $this->config->getDebugFile());
+            error_log(
+                "[DEBUG] HTTP Response body: " . PHP_EOL . $this->sanitizePrivateData($http_body) . PHP_EOL,
+                3,
+                $this->config->getDebugFile()
+            );
         }
 
         // Handle the response
         if ($response_info['http_code'] === 0) {
             $curl_error_message = curl_error($curl);
+            $error_message = "API call to $url failed:";
 
             // curl_exec can sometimes fail but still return a blank message from curl_error().
             if (!empty($curl_error_message)) {
-                $error_message = "API call to $url failed: $curl_error_message";
+                $error_message .= $curl_error_message;
             } else {
-                $error_message = "API call to $url failed, but for an unknown reason. This could happen if you are disconnected from the network.";
+                $error_message .= "This could happen if you are disconnected from the network.";
             }
 
             $exception = new ApiException($error_message, 0, null, null);

@@ -7,7 +7,8 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_Adminhtml_Block_System_Config_Form_Field
+class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck
+extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /**
      * @var string

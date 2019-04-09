@@ -61,7 +61,9 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
             foreach ($this->feedData[self::NOTIFICATION_FIELD] as $item) {
                 $data[] = array(
                     'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_NOTICE,
-                    'date_added'    => isset($item['date']) ? gmdate('Y-m-d H:i:s', strtotime($item['date'])) : date('Y-m-d H:i:s'),
+                    'date_added'    => isset($item['date']) ?
+                    gmdate('Y-m-d H:i:s', strtotime($item['date'])) :
+                    date('Y-m-d H:i:s'),
                     'title'         => isset($item['title']) ? $item['title'] : self::DEFAULT_NOTIFICATION_TITLE,
                     'description'   => isset($item['description']) ? $item['description'] : '',
                     'url'           => isset($item['url']) ? $item['url'] : ''
@@ -94,16 +96,27 @@ class Zip_Payment_Model_Adminhtml_Notification_Feed extends Mage_AdminNotificati
             $this->feedData = $this->getFeedData();
         }
 
-        if (!empty($currentVersion) && isset($this->feedData[self::RELEASE_FIELD]) && isset($this->feedData[self::RELEASE_FIELD][self::VERSION_FIELD])) {
+        $isVersionUpdated = !empty($currentVersion) &&
+        isset($this->feedData[self::RELEASE_FIELD]) &&
+        isset($this->feedData[self::RELEASE_FIELD][self::VERSION_FIELD]);
+
+        if ($isVersionUpdated) {
             $item = $this->feedData[self::RELEASE_FIELD];
             $latestVersion = trim($item[self::VERSION_FIELD]);
 
             if (!empty($latestVersion) && $currentVersion < $latestVersion) {
                 return array(
                     'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_MAJOR,
-                    'date_added'    => isset($item['date']) ? gmdate('Y-m-d H:i:s', strtotime($item['date'])) : date('Y-m-d H:i:s'),
-                    'title'         => isset($item['title']) ? $item['title'] : 'New Zip Payment version ' . $latestVersion . ' is available now!',
+
+                    'date_added'    => isset($item['date']) ?
+                    gmdate('Y-m-d H:i:s', strtotime($item['date'])) :
+                    date('Y-m-d H:i:s'),
+
+                    'title'         => isset($item['title']) ?
+                    $item['title'] : 'New Zip Payment version ' . $latestVersion . ' is available now!',
+
                     'description'   => isset($item['description']) ? $item['description'] : '',
+
                     'url'           => isset($item['url']) ? $item['url'] : ''
                 );
             }

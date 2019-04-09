@@ -79,7 +79,10 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
                 )
             );
 
-            $isLandingPageEnabled = $this->getHelper()->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
+            $isLandingPageEnabled = $this
+                ->getHelper()
+                ->getConfig()
+                ->getFlag(Zip_Payment_Model_Config::CONFIG_LANDING_PAGE_ENABLED_PATH);
 
             if ($isLandingPageEnabled) {
                 $breadcrumbs->addCrumb(

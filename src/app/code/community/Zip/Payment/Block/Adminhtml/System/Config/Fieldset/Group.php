@@ -7,7 +7,8 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group
+extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
     protected $noticeTemplate = 'zip/payment/system/config/fieldset/group/notice.phtml';
 

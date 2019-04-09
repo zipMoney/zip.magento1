@@ -7,7 +7,8 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard
+extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
     protected $headerTitleTemplate = 'zip/payment/system/config/fieldset/wizard/header_title.phtml';
     protected $noticeTemplate = 'zip/payment/system/config/fieldset/wizard/notice.phtml';
@@ -43,7 +44,10 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
         $groupConfig = $this->getGroup($element)->asArray();
         $activePath = isset($groupConfig['active_path']) ? $groupConfig['active_path'] : '';
 
-        return !empty($activePath) ? (bool) (string) $this->_getConfigDataModel()->getConfigDataValue($activePath) : false;
+        return !empty($activePath) ? (bool) (string) $this->
+            _getConfigDataModel()
+            ->getConfigDataValue($activePath) :
+            false;
     }
 
     /**

@@ -213,7 +213,9 @@ class Checkout implements ArrayAccess
 
         $allowed_values = array("created", "expired", "approved", "completed", "cancelled", "declined");
         if (!in_array($this->container['state'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'state', must be one of 'created', 'expired', 'approved', 'completed', 'cancelled', 'declined'.";
+            $invalid_properties[]
+                = "invalid value for 'state',
+                must be one of 'created', 'expired', 'approved', 'completed', 'cancelled', 'declined'.";
         }
 
         return $invalid_properties;
@@ -448,7 +450,10 @@ class Checkout implements ArrayAccess
     {
         $allowed_values = array('created', 'expired', 'approved', 'completed', 'cancelled', 'declined');
         if ((!in_array($state, $allowed_values))) {
-            throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'created', 'expired', 'approved', 'completed', 'cancelled', 'declined'");
+            throw new \InvalidArgumentException(
+                "Invalid value for 'state',
+                must be one of 'created', 'expired', 'approved', 'completed', 'cancelled', 'declined'"
+            );
         }
 
         $this->container['state'] = $state;
@@ -467,7 +472,8 @@ class Checkout implements ArrayAccess
 
     /**
      * Sets customer_id
-     * @param string $customer_id The id of the customer who has approved this checkout request. Only present if approved.
+     * @param string $customer_id The id of the customer who has approved this checkout request.
+     * Only present if approved.
      * @return $this
      */
     public function setCustomerId($customer_id)

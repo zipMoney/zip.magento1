@@ -30,7 +30,9 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
      */
     public function getMethodCode()
     {
-        return Mage::helper('zip_payment')->getConfig()->getMethodCode();
+        return Mage::helper('zip_payment')
+            ->getConfig()
+            ->getMethodCode();
     }
 
     /**
@@ -40,7 +42,8 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
      */
     public function getCheckoutUrl()
     {
-        return Mage::helper('zip_payment')->getUrl(Zip_Payment_Model_Config::CHECKOUT_START_URL_ROUTE);
+        return Mage::helper('zip_payment')
+        ->getUrl(Zip_Payment_Model_Config::CHECKOUT_START_URL_ROUTE);
     }
 
     /**
@@ -50,7 +53,9 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
      */
     public function getResponseUrl()
     {
-        return Mage::helper('zip_payment')->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) . '?' . Zip_Payment_Model_Config::URL_PARAM_RESULT . '=';
+        return Mage::helper('zip_payment')
+            ->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) .
+            '?' . Zip_Payment_Model_Config::URL_PARAM_RESULT . '=';
     }
 
     /**
@@ -58,7 +63,9 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
      */
     public function getCheckoutJsLibUrl()
     {
-        return Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_JS_LIB_PATH);
+        return Mage::helper('zip_payment')
+            ->getConfig()
+            ->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_JS_LIB_PATH);
     }
 
     /**
@@ -73,7 +80,9 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
         if (Mage::helper('zip_payment')->isOnepageCheckout()) {
             array_push($scriptList, $scriptBaseUrl . self::ONEPAGE_CHECKOUT_JS_PATH);
         } else {
-            $customScript = Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH);
+            $customScript = Mage::helper('zip_payment')
+                ->getConfig()
+                ->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH);
             if ($customScript) {
                 array_push($scriptList, $customScript);
             }
@@ -90,7 +99,12 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
      */
     public function isRedirect()
     {
-        return Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CEHCKOUT_DISPLAY_MODE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
+        $displayMode = Mage::helper('zip_payment')
+            ->getConfig()
+            ->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_DISPLAY_MODE_PATH);
+
+        return $displayMode == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::
+        DISPLAY_MODE_REDIRECT;
     }
 
     /**

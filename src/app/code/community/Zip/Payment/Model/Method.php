@@ -187,7 +187,9 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function getConfigPaymentAction()
     {
-        $this->paymentAction || $this->paymentAction = $this->_getHelper()->isReferredCheckout() ? self::ACTION_ORDER : parent::getConfigPaymentAction();
+        $this->paymentAction || $this->paymentAction = $this->_getHelper()->isReferredCheckout() ?
+        self::ACTION_ORDER :
+        parent::getConfigPaymentAction();
 
         return $this->paymentAction;
     }
@@ -363,9 +365,13 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                 $checkoutState = $this->_getHelper()->getCheckoutStateFromSession();
 
                 if (!$checkoutState) {
-                    Mage::throwException($this->_getHelper()->__('Invalid Checkout state, payment will not be processing.'));
+                    Mage::throwException(
+                        $this->_getHelper()->__('Invalid Checkout state, payment will not be processing.')
+                    );
                 } else if ($checkoutState !== Zip_Payment_Model_Api_Checkout::STATE_APPROVED) {
-                    Mage::throwException($this->_getHelper()->__('Checkout is %s, payment will not be processing.', $checkoutState));
+                    Mage::throwException(
+                        $this->_getHelper()->__('Checkout is %s, payment will not be processing.', $checkoutState)
+                    );
                 }
 
                 $checkoutId = $this->_getHelper()->getCheckoutIdFromSession();
@@ -441,7 +447,9 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             $refund = Mage::getModel('zip_payment/api_refund', array('store_id' => $storeId))
             ->create($chargeId, $amount, $reason);
 
-            $this->getLogger()->info($this->_getHelper()->__("Refund for Order [ %s ] for amount %s was successful", $orderId, $amount));
+            $this->getLogger()->info(
+                $this->_getHelper()->__("Refund for Order [ %s ] for amount %s was successful", $orderId, $amount)
+            );
 
             $payment
                 ->setTransactionId($refund->getId())

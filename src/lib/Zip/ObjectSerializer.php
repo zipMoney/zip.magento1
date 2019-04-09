@@ -236,13 +236,24 @@ class ObjectSerializer
             } else {
                 return null;
             }
-        } elseif (in_array($class, array('DateTime', 'bool', 'boolean', 'byte', 'double', 'float', 'int', 'integer', 'mixed', 'number', 'object', 'string', 'void'), true)) {
+        } elseif (in_array(
+            $class,
+            array(
+                'DateTime', 'bool', 'boolean', 'byte', 'double', 'float',
+                'int', 'integer', 'mixed', 'number', 'object', 'string', 'void'),
+            true
+        )
+        ) {
             settype($data, $class);
             return $data;
         } elseif ($class === '\SplFileObject') {
             // determine file name
             if (array_key_exists('Content-Disposition', $httpHeaders)
-                && preg_match('/inline; filename=[\'"]?([^\'"\s]+)[\'"]?$/i', $httpHeaders['Content-Disposition'], $match)
+                && preg_match(
+                    '/inline; filename=[\'"]?([^\'"\s]+)[\'"]?$/i',
+                    $httpHeaders['Content-Disposition'],
+                    $match
+                )
             ) {
                 $filename = Configuration::getDefaultConfiguration()->getTempFolderPath() . sanitizeFilename($match[1]);
             } else {
@@ -252,7 +263,12 @@ class ObjectSerializer
             $deserialized = new \SplFileObject($filename, "w");
             $byte_written = $deserialized->fwrite($data);
             if (Configuration::getDefaultConfiguration()->getDebug()) {
-                error_log("[DEBUG] Written $byte_written byte to $filename. Please move the file to a proper folder or delete the temp file after processing.".PHP_EOL, 3, Configuration::getDefaultConfiguration()->getDebugFile());
+                error_log(
+                    "[DEBUG] Written $byte_written byte to $filename.
+                    Please move the file to a proper folder or delete the temp file after processing." . PHP_EOL,
+                    3,
+                    Configuration::getDefaultConfiguration()->getDebugFile()
+                );
             }
 
             return $deserialized;

@@ -91,7 +91,8 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
             }
 
             foreach ($this->supportedWidgetTypes as $widgetType) {
-                $enabled = $this->getConfig()->getValue(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType . '/enabled');
+                $enabled = $this->getConfig()
+                    ->getValue(self::CONFIG_WIDGET_PATH_PREFIX . $pageType . '_page/' . $widgetType . '/enabled');
 
                 /**
                  * Make sure there one widget type is enable for current page type

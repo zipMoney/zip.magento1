@@ -75,8 +75,12 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         } else {
             $curl = curl_init();
 
-            $curlSSLVerificationEnabled = curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER) && curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER);
-            $apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration();
+            $curlSSLVerificationEnabled = curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER) &&
+            curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER);
+
+            $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
+            ->generateApiConfiguration();
+
             $url = $apiConfig->getHost();
 
             curl_setopt($curl, CURLOPT_NOBODY, true);
@@ -94,7 +98,10 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
 
             try {
                 $headers = array(
-                    'Authorization: ' . $apiConfig->getApiKeyPrefix('Authorization') . ' ' . $apiConfig->getApiKey('Authorization'),
+                    'Authorization: ' .
+                    $apiConfig->getApiKeyPrefix('Authorization') .
+                    ' ' .
+                    $apiConfig->getApiKey('Authorization'),
                     'Content-Type: application/json',
                     'Zip-Version: 2017-03-01'
                 );

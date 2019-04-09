@@ -23,6 +23,18 @@ What things you need to install the software and how to install them
 composer run-script deploy:package
 ```
 
+- Run lint
+
+``` shell
+composer run-script lint
+```
+
+or with lint issue fixes
+
+``` shell
+composer run-script lint:fix
+```
+
 ## Installation
 
 ### Install via FTP
@@ -67,7 +79,7 @@ composer run-script deploy:package
 - *Payment Action*: define how payment will be handled, immediate capture or authorize only
 - *Display Mode*: different display mode on checkout page to handle Zip confirmation page
 
-#### Referred Appication
+#### Referred Application
 
 - *Order Handling*: whether new order will be created for referred application
 - *New Order Status*: define the order status for referred application
