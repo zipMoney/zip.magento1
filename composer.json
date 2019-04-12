@@ -4,6 +4,7 @@
     "version": "2.0.1",
     "scripts": {
         "deploy:package": "sh ./build/shell/deploy-package.sh",
+        "deploy:post": "sh ./build/shell/post-deploy.sh",
         "test:unit": "php ./vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php ./test/Test.php",
         "lint": "sh ./vendor/bin/phpcs",
         "lint:fix": "sh ./vendor/bin/phpcbf",
