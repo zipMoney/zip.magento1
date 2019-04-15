@@ -14,6 +14,7 @@ use \ArrayAccess;
 class OrderItem implements ArrayAccess
 {
     const DISCRIMINATOR = 'subclass';
+    const PRODUCT_CODE_MAX_LENGTH = 49;
 
     /**
      * The original name of the model.
@@ -450,8 +451,10 @@ class OrderItem implements ArrayAccess
      */
     public function setProductCode($product_code)
     {
-        if (!is_null($product_code) && (strlen($product_code) > 200)) {
-            throw new \InvalidArgumentException('invalid length for $product_code when calling OrderItem., must be smaller than or equal to 200.');
+
+        if (!empty($product_code)) {
+            // Only accept phone number with maximum 20 length
+            $product_code = substr(trim($product_code), 0, self::PRODUCT_CODE_MAX_LENGTH);
         }
 
         $this->container['product_code'] = $product_code;
