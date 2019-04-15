@@ -38,8 +38,8 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
      */
     protected function getApi()
     {
-        if ($this->api === null) {
-            $this->api = new CheckoutApi();
+        if ($this->_api === null) {
+            $this->_api = new CheckoutApi();
         }
 
         return $this->api;
@@ -76,7 +76,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                     throw new Mage_Payment_Exception("Could not create checkout");
                 }
 
-                $this->response = $checkout;
+                $this->_response = $checkout;
             } catch (ApiException $e) {
                 $this->logException($e);
                 throw $e;
@@ -103,7 +103,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
                     throw new Mage_Payment_Exception("Could not retrieve a checkout");
                 }
 
-                $this->response = $checkout;
+                $this->_response = $checkout;
             } catch (ApiException $e) {
                 $this->logException($e);
                 throw $e;

@@ -26,7 +26,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
 
-    protected $result = array(
+    protected $_result = array(
         'overall_status' => self::STATUS_SUCCESS,
         'items' => array()
     );
@@ -122,12 +122,12 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         }
 
         usort(
-            $this->result['items'], function ($a, $b) {
+            $this->_result['items'], function ($a, $b) {
                 return $b['status'] - $a['status'];
             }
         );
 
-        return $this->result;
+        return $this->_result;
 
     }
 
@@ -136,11 +136,11 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
      */
     protected function appendFailedItem($status, $label)
     {
-        if ($status !== null && $this->result['overall_status'] < $status) {
-            $this->result['overall_status'] = $status;
+        if ($status !== null && $this->_result['overall_status'] < $status) {
+            $this->_result['overall_status'] = $status;
         }
 
-        $this->result['items'][] = array(
+        $this->_result['items'][] = array(
             "status" => $status,
             "label" => $label
         );

@@ -22,10 +22,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      *
      * @var Zip_Payment_Model_Config
      */
-    protected $config = null;
-    protected $logger = null;
-    protected $quote = null;
-    protected $paymentAction = null;
+    protected $_config = null;
+    protected $_logger = null;
+    protected $_quote = null;
+    protected $_paymentAction = null;
 
     /**
      * Payment Method features
@@ -65,12 +65,12 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function getConfig()
     {
-        if ($this->config == null) {
-            $this->config = $this->_getHelper()->getConfig();
-            $this->config->setMethod($this->getCode());
+        if ($this->_config == null) {
+            $this->_config = $this->_getHelper()->getConfig();
+            $this->_config->setMethod($this->getCode());
         }
 
-        return $this->config;
+        return $this->_config;
     }
 
     /**
@@ -80,11 +80,11 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function getLogger()
     {
-        if ($this->logger == null) {
-            $this->logger = Mage::getSingleton('zip_payment/logger');
+        if ($this->_logger == null) {
+            $this->_logger = Mage::getSingleton('zip_payment/logger');
         }
 
-        return $this->logger;
+        return $this->_logger;
     }
 
 
@@ -105,11 +105,11 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     protected function getQuote()
     {
-        if ($this->quote === null) {
-            $this->quote = $this->_getHelper()->getCheckoutSession()->getQuote();
+        if ($this->_quote === null) {
+            $this->_quote = $this->_getHelper()->getCheckoutSession()->getQuote();
         }
 
-        return $this->quote;
+        return $this->_quote;
     }
 
       /**
@@ -187,11 +187,11 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function getConfigPaymentAction()
     {
-        $this->paymentAction || $this->paymentAction = $this->_getHelper()->isReferredCheckout() ?
+        $this->_paymentAction || $this->_paymentAction = $this->_getHelper()->isReferredCheckout() ?
         self::ACTION_ORDER :
         parent::getConfigPaymentAction();
 
-        return $this->paymentAction;
+        return $this->_paymentAction;
     }
 
     /**
@@ -470,7 +470,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function cancel(Varien_Object $payment)
     {
-        if (!$payment->getOrder()->getInvoiceCollection()->count()) {
+        if ($payment->getOrder()->hasInvoices()) {
             $this->void($payment);
         }
 

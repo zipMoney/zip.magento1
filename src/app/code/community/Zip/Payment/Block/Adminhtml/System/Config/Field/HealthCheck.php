@@ -13,7 +13,7 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
     /**
      * @var string
      */
-    protected $template = 'zip/payment/system/config/field/health_check.phtml';
+    protected $_template = 'zip/payment/system/config/field/health_check.phtml';
     const HEALTH_CHECK_CACHE_ID = 'zip_payment_health_check';
 
     /**
@@ -22,8 +22,8 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
     protected function _prepareLayout()
     {
         parent::_prepareLayout();
-        if (!$this->getTemplate() && $this->template) {
-            $this->setTemplate($this->template);
+        if (!$this->getTemplate() && $this->_template) {
+            $this->setTemplate($this->_template);
         }
 
         return $this;

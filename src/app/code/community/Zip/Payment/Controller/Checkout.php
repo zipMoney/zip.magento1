@@ -13,7 +13,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
     /**
      * @var Zip_Payment_Model_Logger
      */
-    protected $logger = null;
+    protected $_logger = null;
 
     /**
      * Retrieve model helper
@@ -32,11 +32,11 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
      */
     public function getLogger()
     {
-        if ($this->logger == null) {
-            $this->logger = Mage::getSingleton('zip_payment/logger');
+        if ($this->_logger == null) {
+            $this->_logger = Mage::getSingleton('zip_payment/logger');
         }
 
-        return $this->logger;
+        return $this->_logger;
     }
 
 

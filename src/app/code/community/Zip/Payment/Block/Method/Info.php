@@ -11,19 +11,12 @@ class Zip_Payment_Block_Method_Info extends Mage_Payment_Block_Info
 {
     const RECEIPT_NUMBER_LABEL = 'Receipt Number';
 
-    protected $template = 'zip/payment/method/info/default.phtml';
-
-    /**
-     * Config model instance
-     *
-     * @var Zip_Payment_Model_Config
-     */
-    protected $config = null;
+    protected $_template = 'zip/payment/method/info/default.phtml';
 
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate($this->template);
+        $this->setTemplate($this->_template);
     }
 
     /**

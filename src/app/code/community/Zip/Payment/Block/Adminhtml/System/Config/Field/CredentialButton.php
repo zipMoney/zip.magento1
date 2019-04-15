@@ -17,7 +17,7 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
     /**
      * @var string
      */
-    protected $template = 'zip/payment/system/config/field/credential_button.phtml';
+    protected $_template = 'zip/payment/system/config/field/credential_button.phtml';
 
     /**
      * Set template to itself
@@ -26,7 +26,7 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
     {
         parent::_prepareLayout();
         if (!$this->getTemplate()) {
-            $this->setTemplate($this->template);
+            $this->setTemplate($this->_template);
         }
 
         return $this;

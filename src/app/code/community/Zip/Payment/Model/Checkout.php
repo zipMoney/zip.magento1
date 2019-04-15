@@ -15,17 +15,12 @@ class Zip_Payment_Model_Checkout
     /**
      * @var Zip_Payment_Model_Logger
      */
-    protected $logger = null;
+    protected $_logger = null;
 
     /**
      * @var Mage_Sales_Model_Quote
      */
-    protected $quote;
-
-    /**
-     * @var Zip_Payment_Model_config
-     */
-    protected $config = null;
+    protected $_quote;
 
     /**
      * Get logger object
@@ -34,11 +29,11 @@ class Zip_Payment_Model_Checkout
      */
     public function getLogger()
     {
-        if ($this->logger == null) {
-            $this->logger = Mage::getSingleton('zip_payment/logger');
+        if ($this->_logger == null) {
+            $this->_logger = Mage::getSingleton('zip_payment/logger');
         }
 
-        return $this->logger;
+        return $this->_logger;
     }
 
     /**
@@ -58,25 +53,11 @@ class Zip_Payment_Model_Checkout
      */
     protected function getQuote()
     {
-        if (empty($this->quote)) {
-            $this->quote = $this->getHelper()->getCheckoutSession()->getQuote();
+        if (empty($this->_quote)) {
+            $this->_quote = $this->getHelper()->getCheckoutSession()->getQuote();
         }
 
-        return $this->quote;
-    }
-
-    /**
-     * Get config
-     *
-     * @return Zip_Payment_Model_config
-     */
-    protected function getConfig()
-    {
-        if ($this->config == null) {
-            $this->config = $this->getHelper()->getConfig();
-        }
-
-        return $this->config;
+        return $this->_quote;
     }
 
     /**
@@ -138,7 +119,7 @@ class Zip_Payment_Model_Checkout
                 case Zip_Payment_Model_Api_Checkout::STATE_REFERRED:
 
                     $this->getLogger()->debug('Handle referred checkout');
-                    $needCreateOrder = $this->getConfig()
+                    $needCreateOrder = $this->getHelper()->getConfig()
                         ->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH);
 
                     if ($needCreateOrder) {

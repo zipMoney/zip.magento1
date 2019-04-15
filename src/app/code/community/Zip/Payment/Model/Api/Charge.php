@@ -21,9 +21,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     const AUTHORITY_TYPE_TOKEN = "account_token";
     const AUTHORITY_TYPE_STORECODE = "store_code";
 
-    protected $chargeId = null;
-    protected $receiptNumber = null;
-    protected $paymentAction = null;
+    protected $_paymentAction = null;
 
     /**
      * get API model
@@ -32,8 +30,8 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
      */
     public function getApi()
     {
-        if ($this->api === null) {
-            $this->api = new ChargeApi();
+        if ($this->_api === null) {
+            $this->_api = new ChargeApi();
         }
 
         return $this->api;
@@ -47,8 +45,8 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
      */
     public function create($order, $paymentAction)
     {
-        $this->order = $order;
-        $this->paymentAction = $paymentAction;
+        $this->_order = $order;
+        $this->_paymentAction = $paymentAction;
 
         $payload = $this->prepareCreatePayload();
 
@@ -66,7 +64,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
 
             $this->getLogger()->log($this->getHelper()->__("Charge State: %s", $charge->getState()));
 
-            $this->response = $charge;
+            $this->_response = $charge;
         } catch (ApiException $e) {
             $this->logException($e);
             throw $e;
@@ -107,7 +105,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
 
             $this->getLogger()->debug('Charge State: ' . $charge->getState());
 
-            $this->response = $charge;
+            $this->_response = $charge;
         } catch (ApiException $e) {
             $this->logException($e);
             throw $e;
@@ -137,7 +135,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
 
             $this->getLogger()->debug('Charge State: ' . $charge->getState());
 
-            $this->response = $charge;
+            $this->_response = $charge;
         } catch (ApiException $e) {
             $this->logException($e);
             throw $e;
@@ -207,7 +205,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
      */
     protected function isImmediateCapture()
     {
-        return $this->paymentAction == Zip_Payment_Model_Method::ACTION_AUTHORIZE_CAPTURE;
+        return $this->_paymentAction == Zip_Payment_Model_Method::ACTION_AUTHORIZE_CAPTURE;
     }
 
     /**

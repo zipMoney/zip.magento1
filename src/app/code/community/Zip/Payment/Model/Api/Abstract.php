@@ -10,18 +10,17 @@
 use \Zip\Model\OrderShipping;
 use \Zip\Model\OrderItem;
 use \Zip\Model\Address;
-use \Zip\Model\Metadata;
 use \Zip\ApiException;
 
 abstract class Zip_Payment_Model_Api_Abstract
 {
-    protected $api = null;
-    protected $apiConfig = null;
-    protected $logger = null;
-    protected $response = null;
-    protected $order = null;
-    protected $quote = null;
-    protected $storeId = null;
+    protected $_api = null;
+    protected $_apiConfig = null;
+    protected $_logger = null;
+    protected $_response = null;
+    protected $_order = null;
+    protected $_quote = null;
+    protected $_storeId = null;
 
     public function __construct($options)
     {
@@ -31,11 +30,11 @@ abstract class Zip_Payment_Model_Api_Abstract
             $storeId = Mage::app()->getStore()->getId();
         }
 
-        if ($this->apiConfig === null || $this->storeId !== $storeId) {
+        if ($this->_apiConfig === null || $this->_storeId !== $storeId) {
             // when api configuration is null or store id has been changed
             // new api configuration need to be created
-            $this->apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration($storeId);
-            $this->storeId = $storeId;
+            $this->_apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration($storeId);
+            $this->_storeId = $storeId;
         }
     }
 
@@ -49,11 +48,11 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getLogger()
     {
-        if ($this->logger == null) {
-            $this->logger = Mage::getModel('zip_payment/logger');
+        if ($this->_logger == null) {
+            $this->_logger = Mage::getModel('zip_payment/logger');
         }
 
-        return $this->logger;
+        return $this->_logger;
     }
 
     /**
@@ -71,7 +70,7 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getOrder()
     {
-        return $this->order;
+        return $this->_order;
     }
 
     /**
@@ -81,11 +80,11 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getQuote()
     {
-        if ($this->quote === null) {
-            $this->quote = $this->getHelper()->getCheckoutSession()->getQuote();
+        if ($this->_quote === null) {
+            $this->_quote = $this->getHelper()->getCheckoutSession()->getQuote();
         }
 
-        return $this->quote;
+        return $this->_quote;
     }
 
     /**
@@ -257,7 +256,7 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getResponse()
     {
-        return $this->response;
+        return $this->_response;
     }
 
 
