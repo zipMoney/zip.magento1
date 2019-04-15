@@ -115,6 +115,14 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         Mage::app()->getFrontController()->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
     }
 
+    /**
+     * check whether checkout display model is redirect
+     */
+    public function isRedirectCheckoutDisplayModel()
+    {
+        return Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CEHCKOUT_DISPLAY_MODE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
+    }
+
 
     /*******************************************
      * PAGE DETECTION
