@@ -242,4 +242,13 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
 
+    /**
+     * delete log file
+     */
+    public function removeLogFile($filename)
+    {
+        $path = Mage::getBaseDir('var') . DS . 'log' . DS . $filename;
+        $io = new Varien_Io_File();
+        $io->rm($path);
+    }
 }

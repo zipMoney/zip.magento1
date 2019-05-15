@@ -14,7 +14,7 @@ use \ArrayAccess;
 class Shopper implements ArrayAccess
 {
     const DISCRIMINATOR = 'subclass';
-    const PHONE_NUMBER_MAX_LENGTH = 20;
+    const PHONE_NUMBER_MAX_LENGTH = 15;
 
     /**
      * The original name of the model.
