@@ -99,12 +99,7 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
      */
     public function isRedirect()
     {
-        $displayMode = Mage::helper('zip_payment')
-            ->getConfig()
-            ->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_DISPLAY_MODE_PATH);
-
-        return $displayMode == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::
-        DISPLAY_MODE_REDIRECT;
+        return Mage::helper('zip_payment')->isRedirectCheckoutDisplayModel();
     }
 
     /**

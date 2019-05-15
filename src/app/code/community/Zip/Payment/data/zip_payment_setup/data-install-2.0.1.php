@@ -5,9 +5,8 @@
  * @author  Zip Co - Plugin Team
  **/
 
-
+// add block permission for all zip payment blocks
 if (Mage::getModel('admin/block')) {
-    // add block permission for all zip payment blocks
 
     $blocks = array(
         'zip_payment/widget',
@@ -24,3 +23,6 @@ if (Mage::getModel('admin/block')) {
             ->save();
     }
 }
+
+// Delete old log file
+Mage::helper('zip_payment')->removeLogFile('zipMoney-payment.log');

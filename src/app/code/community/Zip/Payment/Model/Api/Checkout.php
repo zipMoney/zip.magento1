@@ -191,11 +191,11 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
         return $order;
     }
 
-     /**
-      * Returns the prepared checkout configuration model
-      *
-      * @return Zip\Model\CheckoutConfiguration
-      */
+    /**
+     * Returns the prepared checkout configuration model
+     *
+     * @return Zip\Model\CheckoutConfiguration
+     */
     protected function getCheckoutConfiguration()
     {
         $checkoutConfig = new CheckoutConfiguration();
@@ -210,7 +210,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
      */
     public function getRedirectUrl()
     {
-        return $this->getResponse() ? $this->getResponse()->getUri() : null;
+        return $this->getHelper()->getCheckoutRedirectUrlFromSession();
     }
 
     /**
@@ -244,6 +244,4 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     {
         return $this->getResponse() ? $this->getResponse()->getOrder()->getReference() : null;
     }
-
-
 }
