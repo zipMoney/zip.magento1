@@ -105,11 +105,11 @@ abstract class Zip_Payment_Model_Api_Abstract
         }
     }
 
-     /**
-      * capture order's shipping details
-      *
-      * @return Zip\Model\OrderShipping
-      */
+    /**
+     * capture order's shipping details
+     *
+     * @return Zip\Model\OrderShipping
+     */
     protected function getOrderShipping()
     {
         $model = $this->getOrder() ?: $this->getQuote();
@@ -165,35 +165,36 @@ abstract class Zip_Payment_Model_Api_Abstract
             $product = $item->getProduct();
             $orderItem = new OrderItem();
 
-            $price = (float) $item->getPriceInclTax();
-            $quantity = (int) ($this->getOrder() ? $item->getQtyOrdered() : $item->getQty());
-            $amount = (float) ($price * $quantity);
+            $price = (float)$item->getPriceInclTax();
+            $quantity = (int)($this->getOrder() ? $item->getQtyOrdered() : $item->getQty());
+            $amount = (float)($price * $quantity);
             $totalItemAmount += $amount;
-            $thumbnailUrl = (string) Mage::helper('catalog/image')->init($product, 'thumbnail');
+            $thumbnailUrl = (string)Mage::helper('catalog/image')->init($product, 'thumbnail');
+            $safeSKU = mb_strcut($item->getSku(), 0, 50);
 
             $orderItem
-                ->setReference((string) $item->getId())
-                ->setProductCode((string) $item->getSku())
-                ->setName((string) $item->getName())
-                ->setDescription((string) strip_tags($item->getDescription()))
+                ->setReference((string)$item->getId())
+                ->setProductCode($safeSKU)
+                ->setName((string)$item->getName())
+                ->setDescription((string)strip_tags($item->getDescription()))
                 ->setAmount($price)
                 ->setQuantity($quantity)
                 ->setType(OrderItem::TYPE_SKU)
-                ->setItemUri((string) $product->getProductUrl())
+                ->setItemUri((string)$product->getProductUrl())
                 ->setImageUri($thumbnailUrl);
 
             $orderItems[] = $orderItem;
         }
 
-         //discount and other promotion to balance out
-         $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
+        //discount and other promotion to balance out
+        $shippingAmount = (float)($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
 
         if ($shippingAmount > 0) {
             $shippingItem = new OrderItem;
 
             $shippingItem
                 ->setName('Shipping')
-                ->setAmount((float) $shippingAmount)
+                ->setAmount((float)$shippingAmount)
                 ->setType(OrderItem::TYPE_SHIPPING)
                 ->setQuantity(1);
 
@@ -211,7 +212,7 @@ abstract class Zip_Payment_Model_Api_Abstract
 
             $remainingItem
                 ->setName($remaining > 0 ? 'Fee' : 'Discount')
-                ->setAmount((float) $remaining)
+                ->setAmount((float)$remaining)
                 ->setQuantity(1)
                 ->setType($remaining > 0 ? OrderItem::TYPE_SHIPPING : OrderItem::TYPE_DISCOUNT);
 
@@ -255,6 +256,4 @@ abstract class Zip_Payment_Model_Api_Abstract
     {
         return $this->response;
     }
-
-
 }
