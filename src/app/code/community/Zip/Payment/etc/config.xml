@@ -51,13 +51,13 @@
                 </observers>
             </controller_action_postdispatch_checkout_onepage_savepayment>
             <controller_action_layout_load_before>
-              <observers>
-                  <set_checkout_layout_handle>
-                      <class>zip_payment/observer</class>
-                      <method>setCheckoutLayoutHandle</method>
-                  </set_checkout_layout_handle>
-              </observers>
-          </controller_action_layout_load_before>
+                <observers>
+                    <set_checkout_layout_handle>
+                        <class>zip_payment/observer</class>
+                        <method>setCheckoutLayoutHandle</method>
+                    </set_checkout_layout_handle>
+                </observers>
+            </controller_action_layout_load_before>
         </events>
     </global>
 
@@ -127,6 +127,7 @@
                 <order_status>processing</order_status>
                 <sort_order>1</sort_order>
                 <checkout>
+                    <type>one_page</type>
                     <display_mode>redirect</display_mode>
                     <referred>
                         <order_creation>1</order_creation>

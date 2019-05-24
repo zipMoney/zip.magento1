@@ -210,7 +210,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         // return redirect url for one step checkout
-        if ($redirectUrl && (!$this->_getHelper()->isOnepageCheckout() || $this->_getHelper()->isRedirectCheckoutDisplayModel())) {
+        if ($redirectUrl && ($this->_getHelper()->isOneStepCheckout() || $this->_getHelper()->isRedirectCheckoutDisplayModel())) {
             return $redirectUrl;
         }
 

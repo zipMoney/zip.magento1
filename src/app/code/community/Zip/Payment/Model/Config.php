@@ -67,11 +67,11 @@ class Zip_Payment_Model_Config
     const CHECKOUT_SESSION_KEY = 'zip_payment_checkout';
     const ONEPAGE_CHECKOUT_IDENTIFIER = 'checkout_onepage_index';
 
+    const CONFIG_CHECKOUT_TYPE_PATH = 'payment/zip_payment/checkout/type';
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
     const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
     const CONFIG_CHECKOUT_DISPLAY_MODE_PATH = 'payment/zip_payment/checkout/display_mode';
     const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/checkout/custom_script';
-    const CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH = 'payment/zip_payment/checkout/onestepcheckouts';
 
     const CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH = 'payment/zip_payment/checkout/referred/order_creation';
     const CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH = 'payment/zip_payment/checkout/referred/order_status';

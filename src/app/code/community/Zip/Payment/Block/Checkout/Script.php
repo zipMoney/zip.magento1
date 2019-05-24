@@ -77,7 +77,7 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
         $baseScript = $scriptBaseUrl . self::CHECKOUT_JS_PATH;
         $scriptList = array($baseScript);
 
-        if (Mage::helper('zip_payment')->isOnepageCheckout()) {
+        if (Mage::helper('zip_payment')->isOnePageCheckout()) {
             array_push($scriptList, $scriptBaseUrl . self::ONEPAGE_CHECKOUT_JS_PATH);
         } else {
             $customScript = Mage::helper('zip_payment')

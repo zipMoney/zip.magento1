@@ -139,21 +139,18 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * is currently using one page checkout
      */
-    public function isOnepageCheckout()
+    public function isOnePageCheckout()
     {
-        return $this->getPageIdentifier() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER;
+        return $this->getPageIdentifier() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER &&
+        Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_TYPE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType::CHECKOUT_TYPE_ONE_PAGE;
     }
 
     /**
-     * checkout current page is onestep checkout
+     * is current page onestep checkout
      */
-    public function isOnestepCheckout()
+    public function isOneStepCheckout()
     {
-        return $this
-            ->getConfig()
-            ->getFlag(
-                Zip_Payment_Model_Config::CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH . '/' . $this->getPageIdentifier()
-            );
+        return Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_TYPE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType::CHECK_TYPE_ONE_STEP;
     }
 
     /**
