@@ -14,7 +14,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const STATUS_WARNING = 2;
     const STATUS_ERROR = 3;
 
-    const SSL_DISABLED_MESSAGE = 'Your site does not have SSL Certificates';
+    const SSL_DISABLED_MESSAGE = 'Your site {site_name} ({site_url}) does not have SSL';
     const CURL_EXTENSION_DISABLED = 'CURL extension has not been installed or disabled';
     const CURL_SSL_VERIFICATION_DISABLED_MESSAGE = 'CURL SSL Verification has been disabled';
     const API_CERTIFICATE_INVALID_MESSAGE = 'SSL Certificate is not valid for the API';
@@ -26,7 +26,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
 
-    protected $_result = array(
+    private $_result = array(
         'overall_status' => self::STATUS_SUCCESS,
         'items' => array()
     );
@@ -40,13 +40,12 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     /**
      * check multiple items and get health result
      */
-    protected function getHealthResult()
+    private function getHealthResult()
     {
         $config = Mage::helper('zip_payment')->getConfig();
         $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
                 ->generateApiConfiguration();
 
-        $sslEnabled = Mage::app()->getStore()->isFrontUrlSecure() && Mage::app()->getRequest()->isSecure();
         $curlEnabled = function_exists('curl_version');
         $publicKey = $config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
         $privateKey = $config->getValue(self::CONFIG_PRIVATE_KEY_PATH);
@@ -67,9 +66,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         }
 
         // check whether SSL is enabled
-        if (!$sslEnabled) {
-            $this->appendFailedItem(self::STATUS_WARNING, self::SSL_DISABLED_MESSAGE);
-        }
+        $this->checkStoreSSLSettings();
 
         // check whether CURL is enabled ot not
         if (!$curlEnabled) {
@@ -131,10 +128,35 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
 
     }
 
+    private function checkStoreSSLSettings()
+    {
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    if($store->getIsActive()) {
+                        $zipPaymentEnabled = Mage::getStoreConfig(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH, $store->getStoreId()) == 1;
+
+                        if($zipPaymentEnabled) {
+                            $storeSecureUrl = Mage::getStoreConfig(Mage_Core_Model_Url::XML_PATH_SECURE_URL, $store->getStoreId());
+                            $url = parse_url($storeSecureUrl);
+                            if($url['scheme'] !== 'https') {
+                                $this->appendFailedItem(self::STATUS_WARNING,
+                                self::SSL_DISABLED_MESSAGE
+                                .replace('{site_name}', $store->getFrontendName())
+                                .replace('{site_url}', $storeSecureUrl)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * append failed item into health result
      */
-    protected function appendFailedItem($status, $label)
+    private function appendFailedItem($status, $label)
     {
         if ($status !== null && $this->_result['overall_status'] < $status) {
             $this->_result['overall_status'] = $status;

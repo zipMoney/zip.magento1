@@ -15,7 +15,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType
     const CHECK_TYPE_ONE_STEP = 'one_step';
 
     /**
-     * Returns the display mode option array.
+     * Returns the option array for checkout types
      *
      * @return array
      */
