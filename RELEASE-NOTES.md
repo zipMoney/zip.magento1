@@ -9,14 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.bz2)
 
-### Core - Extension Refactoring
+### Core - Coding Standards
 
 - Apply PHP and Magento coding standards
 
-### Fix - Legacy issue fixes
+### Fix - Checkout Redirect for One Step checkout
 
 - Checkout Redirect for One Step checkout
+- Provide configuration options to define checkout type
 - Health check for SSL settings
+
+### Development - Create Docker compose for local development
+
+- Create docker compose for local development
 
 ## **2.0.0** - February 14, 2019
 

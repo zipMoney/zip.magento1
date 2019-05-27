@@ -1,0 +1,6 @@
+# Default configurion for PHP
+
+platform:
+    dir: 
+        root: var/www/html
+        config: usr/local/etc/php/conf.d
