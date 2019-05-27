@@ -141,10 +141,12 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                             $storeSecureUrl = Mage::getStoreConfig(Mage_Core_Model_Url::XML_PATH_SECURE_URL, $store->getStoreId());
                             $url = parse_url($storeSecureUrl);
                             if($url['scheme'] !== 'https') {
-                                $this->appendFailedItem(self::STATUS_WARNING,
-                                self::SSL_DISABLED_MESSAGE
-                                .replace('{site_name}', $store->getFrontendName())
-                                .replace('{site_url}', $storeSecureUrl)
+                                $this->appendFailedItem(
+                                    self::STATUS_WARNING,
+                                    self::SSL_DISABLED_MESSAGE
+                                    .replace('{site_name}', $store->getFrontendName())
+                                    .replace('{site_url}', $storeSecureUrl)
+                                );
                             }
                         }
                     }
