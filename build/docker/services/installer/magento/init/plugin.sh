@@ -7,46 +7,38 @@
 WEB_DIR="web"
 SOURCE_DIR="source"
 PLUGIN_DIR="plugin"
+echo "Processing plugins"
 
-# When magento folder not empty
-if [ "$(ls -A ${WEB_DIR})" ]; then
+IFS=" "
+set ${APP_PLUGINS}
+for plugin
+do
+    case $plugin in
+        *zip_payment*)
 
-    echo "Processing plugins"
+            echo "Installing ${plugin} plugin"
 
-    IFS=" "
-    set ${APP_PLUGINS}
-    for plugin
-    do
-        case $plugin in
-            *zip_payment*)
+            if [ ! -d "${WEB_DIR}/lib/Zip" ]; then
+                mkdir "${WEB_DIR}/lib/Zip"
+            fi
 
-                if [ -d "${SOURCE_DIR}/${plugin}" ]; then
+            if [ ! -d "${WEB_DIR}/app/code/community/Zip/Payment" ]; then
+                mkdir "${WEB_DIR}/app/code/community/Zip/Payment"
+            fi
 
-                    if [ ! -f "${WEB_DIR}/app/etc/modules/Zip_Payment.xml" ]; then
+            # Copy plugin code into project
+            cp -R ${PLUGIN_DIR}/app ${WEB_DIR}
+            cp -R ${PLUGIN_DIR}/js ${WEB_DIR}
+            cp -R ${PLUGIN_DIR}/lib ${WEB_DIR}
 
-                        echo "Installing ${plugin} plugin"
+        ;;
+        *)
+            echo "no match found in ${plugin}"
+    esac
 
-                        if [ ! -d "${WEB_DIR}/lib/Zip" ]; then
-                            mkdir "${WEB_DIR}/lib/Zip"
-                        fi
+done
 
-                        if [ ! -d "${WEB_DIR}/app/code/community/Zip/Payment" ]; then
-                            mkdir "${WEB_DIR}/app/code/community/Zip/Payment"
-                        fi
 
-                        # Copy plugin code into project
-                        cp -R ${SOURCE_DIR}/${plugin}/app ${WEB_DIR}
-                        cp -R ${SOURCE_DIR}/${plugin}/js ${WEB_DIR}
-                    fi
-                fi
-            ;;
-            *)
-                echo "no match found in ${plugin}"
-        esac
-
-    done
-
-fi
 
 # update configurations
 echo "Updating plugin configurations"

@@ -17,11 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Checkout Redirect for One Step checkout
 - Provide configuration options to define checkout type
-- Health check for SSL settings
+- Improve Health check for SSL settings
 
 ### Development - Create Docker compose for local development
 
-- Create docker compose for local development
+- Add docker for local development
 
 ## **2.0.0** - February 14, 2019
 

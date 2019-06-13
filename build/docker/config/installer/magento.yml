@@ -1,4 +1,4 @@
-# default configuration for magento
+# default configuration for Magento
 
 # App
 app:
@@ -6,10 +6,10 @@ app:
     host: magento.local
     framework:
         version: 1.9.4.1
-        source: https://github.com/OpenMage/magento-mirror/archive/${VERSION}.tar.gz
+        source: ${VERSION}.tar.gz
     sample:
         version: 1.9.2.4
-        source: https://static.zipmoney.com.au/plugin-frameworks/magento/magento-sample-${VERSION}.tar.bz2
+        source: ${VERSION}.tar.bz2
     admin:
         username: admin
         firstname: admin
@@ -34,15 +34,15 @@ app:
             version: 2.0.0
             config:
                 - payment/zip_payment/active=1;
-                - payment/zip_payment/private_key=I5xNZa3E/FwIHK0ZGj/TlntmMfNr4Q5BPIn8D1OqIIo=;
-                - payment/zip_payment/public_key=91cf9719-7a8c-49bf-82b1-ca9b9ef1b6fb;
-                - payment/zip_payment/widgets/home_page/banner/enabled=1;
-                - payment/zip_payment/widgets/product_page/banner/enabled=1;
-                - payment/zip_payment/widgets/product_page/tagline/enabled=1;
-                - payment/zip_payment/widgets/product_page/widget/enabled=1;
-                - payment/zip_payment/widgets/category_page/banner/enabled=1;
-                - payment/zip_payment/widgets/cart_page/tagline/enabled=1;
-                - payment/zip_payment/widgets/cart_page/widget/enabled=1;
+                - payment/zip_payment/private_key=I5xNZa3E/FwIHK0ZGj/TlntmMfNr4Q5BPIn8D1OqIIo=
+                - payment/zip_payment/public_key=91cf9719-7a8c-49bf-82b1-ca9b9ef1b6fb
+                - payment/zip_payment/widgets/home_page/banner/enabled=1
+                - payment/zip_payment/widgets/product_page/banner/enabled=1
+                - payment/zip_payment/widgets/product_page/tagline/enabled=1
+                - payment/zip_payment/widgets/product_page/widget/enabled=1
+                - payment/zip_payment/widgets/category_page/banner/enabled=1
+                - payment/zip_payment/widgets/cart_page/tagline/enabled=1
+                - payment/zip_payment/widgets/cart_page/widget/enabled=1
 
 # Server
 server:

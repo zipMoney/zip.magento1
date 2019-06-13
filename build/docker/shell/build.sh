@@ -33,17 +33,17 @@ source ${DOCKER_DIR}/shell/helpers/source.sh
 
 # run docker compose
 log INFO "Start to run Docker containers..."
-docker-compose -f ${DOCKER_DIR}/docker-compose.app.yml config
+# docker-compose -f ${DOCKER_DIR}/docker-compose.app.yml config
 docker-compose -f ${DOCKER_DIR}/docker-compose.app.yml up --build -d --quiet-pull
 log SUCCESS "Docker containers are running now."
 
 # waiting until application has been initalized
 log WAITING "Waiting for server ready..."
-docker_container_wait ${APP_HOST}-server "running" 60
+docker_container_wait ${APP_FRAMEWORK}-server "running" 60
 log SUCCESS "Server is ready now." 3
 
 log WAITING "Installing application..."
-docker_container_wait ${APP_HOST}-installer "exited" 300
+docker_container_wait ${APP_FRAMEWORK}-installer "exited" 300
 log SUCCESS "Application is ready now." 3
 
 # open the url on browser

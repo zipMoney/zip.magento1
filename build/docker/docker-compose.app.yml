@@ -13,7 +13,7 @@ services:
         volumes:
             - ${APP_DATA}:/tmp/web
             - ${SOURCE_DIR}:/tmp/source
-            - ${PLUGIN_DIR}:/tmp/source/zip_payment-2.0.0
+            - ${PLUGIN_DIR}:/tmp/plugin
             - ${SERVICE_DIR}/server/${SERVER_NAME}/certs:/tmp/certs
             - ${SERVICE_DIR}/installer/${APP_FRAMEWORK}/init:/tmp/init
         environment:

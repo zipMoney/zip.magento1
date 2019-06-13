@@ -97,7 +97,7 @@ do
                         fi
                         # does not include any source for the plugin
                     else
-                        plugins+=("${plugin_name}-${!version_var} ")
+                        plugins+=("$(echo "${plugin_name}" | tr '[:upper:]' '[:lower:]')-${!version_var} ")
                     fi
 
                     if [ ! -z ${!config_var} ]; then

@@ -17,6 +17,6 @@ RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN php -r "unlink('composer-setup.php');"
 
 # Download and install magerun
-RUN curl http://files.magerun.net/n98-magerun-latest.phar -o n98-magerun.phar
+RUN curl https://files.magerun.net/n98-magerun.phar -o n98-magerun.phar
 RUN chmod +x n98-magerun.phar
-RUN mv n98-magerun.phar /usr/local/bin/magerun
+RUN cp n98-magerun.phar /usr/local/bin/magerun
