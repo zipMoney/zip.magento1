@@ -1,5 +1,5 @@
 {
-    "name": "zip-payment-magento-1-extension",
+    "name": "zip-payment/magento-1-extension",
     "description": "Zip Payment Extension for Magento 1",
     "version": "2.0.0",
     "scripts": {
