@@ -30,7 +30,7 @@ function loadEnvFromJson() {
             tr -d '\n' |
             grep -o '"[A-Za-z_][A-Za-z_0-9]\+"\s*:\s*\("[^"]\+"\|[0-9\.]\+\|true\|false\|null\)' |
     sed 's/"\(.*\)"\s*:\s*"\?\([^"]\+\)"\?/\1=\2/'))
-    
+
     for env_config in "${env_configs[@]}"
     do
         export $env_config
@@ -45,22 +45,22 @@ do
     case $service in
         installer*)
             SERVICE_NAME=${APP_FRAMEWORK}
-            ;;
+        ;;
         server*)
             SERVICE_NAME=${SERVER_NAME}
-            ;;
+        ;;
         platform*)
             SERVICE_NAME=${PLATFORM_NAME}
-            ;;
+        ;;
         db*)
             SERVICE_NAME=${DATABASE_SERVER_NAME}
-            ;;
+        ;;
         *)
             log ERROR "Sorry, we can't recoginize this service"
-            ;;
+        ;;
     esac
 
-    CONFIG_FILE="${DOCKER_DIR}/config/${service}/${SERVICE_NAME}.yml"
+    CONFIG_FILE="${DOCKER_DIR}/config/${SERVICE_NAME}.yml"
 
     if [ -f "${CONFIG_FILE}" ]; then
         loadEnvFromYaml ${CONFIG_FILE}
