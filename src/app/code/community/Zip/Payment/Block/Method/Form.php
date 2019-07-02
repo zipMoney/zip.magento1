@@ -23,7 +23,7 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
 
     protected function getMethodLabelHtml()
     {
-        $block = Mage::app()->getLayout()->createBlock('core/_template');
+        $block = Mage::app()->getLayout()->createBlock('core/template');
         $block->setTemplate($this->_labelTemplate);
         $config = Mage::helper('zip_payment')->getConfig();
 

@@ -99,12 +99,12 @@ class Zip_Payment_Model_Config
     protected $_logFile = null;
     protected $_apiConfig = null;
 
-     /**
-      * Method code setter
-      *
-      * @param  string|Mage_Payment_Model_Method_Abstract $method
-      * @return Mage_Paypal_Model_Config
-      */
+    /**
+     * Method code setter
+     *
+     * @param  string|Mage_Payment_Model_Method_Abstract $method
+     * @return Mage_Paypal_Model_Config
+     */
     public function setMethod($method)
     {
         if ($method instanceof Mage_Payment_Model_Method_Abstract) {
@@ -290,7 +290,6 @@ class Zip_Payment_Model_Config
     {
         $value = $this->getValue($path, $storeId);
         return !empty($value) && 'false' !== $value;
-
     }
 
     /**********************************
@@ -311,5 +310,4 @@ class Zip_Payment_Model_Config
 
         return $this->getFlag("payment/{$methodCode}/active") && $this->isMerchantCountrySupported();
     }
-
 }
