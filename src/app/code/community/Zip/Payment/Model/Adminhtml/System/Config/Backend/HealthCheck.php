@@ -14,9 +14,8 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const STATUS_WARNING = 2;
     const STATUS_ERROR = 3;
 
-    const SSL_DISABLED_MESSAGE = 'Your site {site_name} ({site_url}) does not have SSL';
+    const SSL_DISABLED_MESSAGE = 'Your store {store_name} ({store_url}) does not have SSL';
     const CURL_EXTENSION_DISABLED = 'CURL extension has not been installed or disabled';
-    const CURL_SSL_VERIFICATION_DISABLED_MESSAGE = 'CURL SSL Verification has been disabled';
     const API_CERTIFICATE_INVALID_MESSAGE = 'SSL Certificate is not valid for the API';
     const API_PRIVATE_KEY_INVALID_MESSAGE = 'Your API private key is empty or invalid';
     const API_PUBLIC_KEY_INVALID_MESSAGE = 'Your API public key is empty or invalid';
@@ -79,13 +78,6 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 )
             );
 
-            $curlSSLVerificationEnabled = $curl->getInfo(CURLOPT_SSL_VERIFYPEER);
-
-            // if SSL verification is disabled
-            if (!$curlSSLVerificationEnabled) {
-                $this->appendFailedItem(self::STATUS_WARNING, self::CURL_SSL_VERIFICATION_DISABLED_MESSAGE);
-            }
-
             try {
                 $headers = array(
                     'Authorization: ' .
@@ -134,17 +126,22 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
-                    if($store->getIsActive()) {
-                        $zipPaymentEnabled = Mage::getStoreConfig(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH, $store->getStoreId()) == 1;
+                    if($store->getIsActive() == '1') {
+                        $zipPaymentEnabled = Mage::getStoreConfig(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH, $store->getStoreId()) == '1';
 
                         if($zipPaymentEnabled) {
                             $storeSecureUrl = Mage::getStoreConfig(Mage_Core_Model_Url::XML_PATH_SECURE_URL, $store->getStoreId());
                             $url = parse_url($storeSecureUrl);
+
                             if($url['scheme'] !== 'https') {
-                                $this->appendFailedItem(self::STATUS_WARNING,
-                                self::SSL_DISABLED_MESSAGE
-                                .replace('{site_name}', $store->getFrontendName())
-                                .replace('{site_url}', $storeSecureUrl)
+                                $message = self::SSL_DISABLED_MESSAGE;
+                                $message = str_replace('{store_name}', $store->getName(), $message);
+                                $message = str_replace('{store_url}', $storeSecureUrl, $message);
+
+                                $this->appendFailedItem(
+                                    self::STATUS_WARNING,
+                                    $message
+                                );
                             }
                         }
                     }
