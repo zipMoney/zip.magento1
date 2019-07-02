@@ -1,5 +1,0 @@
-config/host
-
-# application configuration
-
-services/server/nginx/logs/*

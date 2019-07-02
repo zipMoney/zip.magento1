@@ -12,6 +12,11 @@ DATA_SOURCE_FILE="sample.sql"
 # When magento folder is empty
 echo "Processing source code"
 
+# Create temp directory
+if [ ! -d "${TEMP_DIR}" ]; then
+    mkdir "${TEMP_DIR}"
+fi
+
 IFS=" "
 set ${APP_SOURCES}
 for source
@@ -28,13 +33,18 @@ do
                     tar_options="xvjf"
                 fi
 
-                ls -l
+                output_dir="${TEMP_DIR}/framework"
 
-                tar -$tar_options ${SOURCE_DIR}/${source} -C ${TEMP_DIR}
-                dir=$(find ${TEMP_DIR} -mindepth 1 -maxdepth 1 -type d)
-                mv $dir/* $dir/.* ${WEB_DIR}
+                if [ ! -d "${output_dir}" ]; then
+                    mkdir "${output_dir}"
+                fi
+
+                tar -$tar_options ${SOURCE_DIR}/${source} -C ${output_dir}
+                dir=$(find ${output_dir} -mindepth 1 -maxdepth 1 -type d)
+                cp -R $dir ${WEB_DIR}
             fi
         ;;
+
         *sample*)
             if [ -f "${SOURCE_DIR}/${source}" ]; then
                 extension=${source##*.}
@@ -46,20 +56,18 @@ do
                     tar_options="xvjf"
                 fi
 
-                sample_dir="${SOURCE_DIR}/sample"
+                output_dir="${TEMP_DIR}/sample"
 
-                if [ ! -d "${sample_dir}" ]; then
-                    mkdir ${sample_dir}
+                if [ ! -d "${output_dir}" ]; then
+                    mkdir ${output_dir}
                 fi
 
-                tar -$tar_options ${SOURCE_DIR}/${source} -C ${sample_dir}
-                dir=$(find ${sample_dir} -mindepth 1 -maxdepth 1 -type d)
+                tar -$tar_options ${SOURCE_DIR}/${source} -C ${output_dir}
+                dir=$(find ${output_dir} -mindepth 1 -maxdepth 1 -type d)
 
-                mv $dir/media/* $dir/media/.* ${WEB_DIR}/media
-                mv $dir/skin/* $dir/skin/.* ${WEB_DIR}/skin
-                mv $(find $dir -name "*.sql") ${WEB_DIR}/${DATA_SOURCE_FILE}
-
-                rm -rf ${sample_dir}
+                cp -R $dir/media ${WEB_DIR}/media
+                cp -R $dir/skin ${WEB_DIR}/skin
+                cp -R $(find $dir -name "*.sql") ${TEMP_DIR}/${DATA_SOURCE_FILE}
             fi
         ;;
         *)
@@ -71,24 +79,22 @@ done
 
 
 # Initalize Project
-if [ ! -f "web/app/etc/local.xml" ]; then
 
-    echo "Initalize magento"
+echo "Initalize magento"
 
-    # Generate local xml file
-    echo "Generating local xml file"
-    magerun --root-dir="${WEB_DIR}" local-config:generate "${DATABASE_HOST}" "${DATABASE_USER}" "${DATABASE_PASSWORD}" "${DATABASE_NAME}" "files" "admin";
+# Generate local xml file
+echo "Generating local xml file"
+magerun --root-dir="${WEB_DIR}" local-config:generate "${DATABASE_HOST}" "${DATABASE_USER}" "${DATABASE_PASSWORD}" "${DATABASE_NAME}" "files" "admin";
 
-    if [ -f "${WEB_DIR}/${DATA_SOURCE_FILE}" ]; then
-        echo "Importing sample data"
-        magerun --root-dir="${WEB_DIR}" db:import ${DATA_SOURCE_FILE}
-    fi
-
-    # Create admin user
-    echo "Creating admin user"
-    magerun --root-dir="${WEB_DIR}" admin:user:create "${ADMIN_USERNAME}" "${ADMIN_EMAIL}" "${ADMIN_PASSWORD}" "${ADMIN_FIRSTNAME}" "${ADMIN_LASTNAME}" "Administrators"
-
+if [ -f "${TEMP_DIR}/${DATA_SOURCE_FILE}" ]; then
+    echo "Importing sample data"
+    magerun --root-dir="${WEB_DIR}" db:import ../${TEMP_DIR}/${DATA_SOURCE_FILE}
 fi
+
+# Create admin user
+echo "Creating admin user"
+magerun --root-dir="${WEB_DIR}" admin:user:create "${ADMIN_USERNAME}" "${ADMIN_EMAIL}" "${ADMIN_PASSWORD}" "${ADMIN_FIRSTNAME}" "${ADMIN_LASTNAME}" "Administrators"
+
 
 # Update Configurations
 echo "Updating Configurations"
