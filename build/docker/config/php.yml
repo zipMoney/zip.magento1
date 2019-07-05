@@ -1,6 +1,7 @@
 # Default configurion for PHP
 
 platform:
-    dir: 
+    dir:
         root: var/www/html
         config: usr/local/etc/php/conf.d
+        log: var/log/php

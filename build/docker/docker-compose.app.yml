@@ -4,17 +4,17 @@ services:
     # Installer
     installer:
         build:
-            context: ${SERVICE_DIR}/installer
+            context: ${SERVICE_DIR}/${APP_FRAMEWORK}
             args:
                 NAME: ${PLATFORM_NAME}
                 VERSION: ${PLATFORM_VERSION}
-        image: ${APP_FRAMEWORK}-installer:${APP_FRAMEWORK_VERSION}
+        image: ${PROJECT_NAME}/${APP_FRAMEWORK}:${APP_FRAMEWORK_VERSION}
         container_name: ${APP_FRAMEWORK}-installer
         volumes:
             - ${APP_DATA}:/tmp/web
             - ${SOURCE_DIR}:/tmp/source
             - ${SERVICE_DIR}/${SERVER_NAME}/certs:/tmp/certs
-            - ${SERVICE_DIR}/installer/init:/tmp/init
+            - ${SERVICE_DIR}/${APP_FRAMEWORK}/init:/tmp/init
         environment:
             - APP_NAME=${APP_NAME}
             - APP_HOST=${APP_HOST}
@@ -56,7 +56,7 @@ services:
             args:
                 NAME: ${SERVER_NAME}
                 VERSION: ${SERVER_VERSION}
-        image: ${APP_FRAMEWORK}-server-${SERVER_NAME}:${SERVER_VERSION}
+        image: ${PROJECT_NAME}/${SERVER_NAME}:${SERVER_VERSION}
         container_name: ${APP_FRAMEWORK}-server
         restart: always
         volumes:
@@ -68,7 +68,6 @@ services:
         environment:
             - SERVER_DIR_CONFIG=${SERVER_DIR_CONFIG}
             - SERVER_DIR_SSL=${SERVER_DIR_SSL}
-        # entrypoint: /tmp/init/entrypoint.sh
         ports:
             - ${SERVER_PORT_HTTP}:80
             - ${SERVER_PORT_HTTPS}:443
@@ -94,13 +93,14 @@ services:
             args:
                 NAME: ${PLATFORM_NAME}
                 VERSION: ${PLATFORM_VERSION}
-        image: ${APP_FRAMEWORK}-platform-${PLATFORM_NAME}:${PLATFORM_VERSION}
+        image: ${PROJECT_NAME}/${PLATFORM_NAME}:${PLATFORM_VERSION}
         container_name: ${APP_FRAMEWORK}-platform
         restart: always
         volumes:
             - ${APP_DATA}:/${PLATFORM_DIR_ROOT}
             - ${SERVICE_DIR}/${PLATFORM_NAME}/conf:/${PLATFORM_DIR_CONFIG}
-            - ${SERVICE_DIR}/installer/init:/tmp/init
+            - ${SERVICE_DIR}/${PLATFORM_NAME}/logs:/${PLATFORM_DIR_LOG}
+            - ${SERVICE_DIR}/${PLATFORM_NAME}/init:/tmp/init
         networks:
             - frontend
             - backend
@@ -121,17 +121,15 @@ services:
             args:
                 NAME: ${DATABASE_SERVER_NAME}
                 VERSION: ${DATABASE_SERVER_VERSION}
-        image: ${APP_FRAMEWORK}-db-${DATABASE_SERVER_NAME}:${DATABASE_SERVER_VERSION}
+        image: ${PROJECT_NAME}/${DATABASE_SERVER_NAME}:${DATABASE_SERVER_VERSION}
         container_name: ${APP_FRAMEWORK}-db
         restart: always
         ports:
             - ${DATABASE_PORT}:3306
         volumes:
             - db-data:/${DATABASE_DIR_ROOT}
-            # - ${SOURCE_DIR}/${APP_DATA_FILE}:/tmp/${APP_DATA_FILE}
             - ${SERVICE_DIR}/${DATABASE_SERVER_NAME}/init:/docker-entrypoint-initdb.d
         environment:
-            # - APP_DATA_FILE=${APP_DATA_FILE}
             - ${DATABASE_ENV_VARIABLE_ROOT_PASSWORD}=${DATABASE_ROOT_PASSWORD}
             - ${DATABASE_ENV_VARIABLE_NAME}=${DATABASE_NAME}
             - ${DATABASE_ENV_VARIABLE_USER}=${DATABASE_USER_NAME}
@@ -151,10 +149,10 @@ services:
 # Networks
 networks:
     frontend:
-        name: ${APP_FRAMEWORK}_frontend
+        name: ${PROJECT_NAME}_frontend
         driver: bridge
     backend:
-        name: ${APP_FRAMEWORK}_backend
+        name: ${PROJECT_NAME}_backend
         driver: bridge
 
 volumes:

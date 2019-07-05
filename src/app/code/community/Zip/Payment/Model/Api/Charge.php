@@ -34,7 +34,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
             $this->_api = new ChargeApi();
         }
 
-        return $this->api;
+        return $this->_api;
     }
 
     /**

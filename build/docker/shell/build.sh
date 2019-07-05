@@ -6,6 +6,9 @@
 
 DOCKER_DIR='./build/docker'
 
+name=$(cat composer.json | grep -m 1 name | head -1 | awk -F: '{ print $2 }' | sed 's/[ ",]//g');
+
+export PROJECT_NAME=$name
 export APP_FRAMEWORK=$1
 export APP_ENV=${2:-local}
 

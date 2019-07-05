@@ -41,7 +41,7 @@ do
 
                 tar -$tar_options ${SOURCE_DIR}/${source} -C ${output_dir}
                 dir=$(find ${output_dir} -mindepth 1 -maxdepth 1 -type d)
-                cp -R $dir ${WEB_DIR}
+                cp -R $dir/* ${WEB_DIR}
             fi
         ;;
 
@@ -95,11 +95,17 @@ fi
 echo "Creating admin user"
 magerun --root-dir="${WEB_DIR}" admin:user:create "${ADMIN_USERNAME}" "${ADMIN_EMAIL}" "${ADMIN_PASSWORD}" "${ADMIN_FIRSTNAME}" "${ADMIN_LASTNAME}" "Administrators"
 
+echo "Creating customer"
+magerun --root-dir="${WEB_DIR}" admin:user:create "${ADMIN_USERNAME}" "${ADMIN_EMAIL}" "${ADMIN_PASSWORD}" "${ADMIN_FIRSTNAME}" "${ADMIN_LASTNAME}" "Administrators"
 
 # Update Configurations
 echo "Updating Configurations"
 magerun --root-dir="${WEB_DIR}" config:set "web/unsecure/base_url" "http://${APP_HOST}/"
 magerun --root-dir="${WEB_DIR}" config:set "web/secure/base_url" "https://${APP_HOST}/"
+
+# Drop table customer_flowpassword
+echo "Database update"
+magerun --root-dir="${WEB_DIR}" "drop table customer_flowpassword;"
 
 # update custom configurations
 IFS="|"

@@ -42,7 +42,7 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
             $this->_api = new CheckoutApi();
         }
 
-        return $this->api;
+        return $this->_api;
     }
 
     /**

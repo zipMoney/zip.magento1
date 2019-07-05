@@ -25,7 +25,7 @@ class Zip_Payment_Model_Api_Refund extends Zip_Payment_Model_Api_Abstract
             $this->_api = new RefundApi();
         }
 
-        return $this->api;
+        return $this->_api;
     }
 
     /**

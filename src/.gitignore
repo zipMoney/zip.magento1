@@ -8,3 +8,5 @@
 !app/locale/en_US/Zip_Payment.csv
 !js/zip/payment
 !lib/Zip
+!notification_sample.json
+!package.xml

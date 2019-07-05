@@ -203,14 +203,14 @@
     <custom>
         <payment>
             <zip_payment>
-                <logo>http://d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
+                <logo>//d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
                 <portal>
                     <sandbox>https://merchant.sandbox.zipmoney.com.au/</sandbox>
                     <production>https://merchant.zipmoney.com.au/</production>
                 </portal>
                 <checkout>
                     <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
-                    <loader_image>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
+                    <loader_image>//s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
                     <error>
                         <general>Something went wrong. Please try to checkout out again</general>
                     </error>
