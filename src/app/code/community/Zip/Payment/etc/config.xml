@@ -145,7 +145,7 @@
                     <log_file>zip_payment.log</log_file>
                 </debug>
                 <admin_notification>
-                    <enabled>0</enabled>
+                    <enabled>1</enabled>
                 </admin_notification>
                 <widgets>
                     <debug>0</debug>
@@ -203,14 +203,14 @@
     <custom>
         <payment>
             <zip_payment>
-                <logo>//d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
+                <logo>https://zip.co/assets/zip/logos/zip/primary.svg</logo>
                 <portal>
                     <sandbox>https://merchant.sandbox.zipmoney.com.au/</sandbox>
                     <production>https://merchant.zipmoney.com.au/</production>
                 </portal>
                 <checkout>
-                    <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
-                    <style>//zip-labs-assets.s3-ap-southeast-2.amazonaws.com/plugin/magento1/checkout.css</style>
+                    <js_lib>https://static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
+                    <style>https://zip-labs-assets.s3-ap-southeast-2.amazonaws.com/plugin/magento1/checkout.css</style>
                     <error>
                         <general>Something went wrong. Please try to checkout out again</general>
                     </error>
@@ -243,7 +243,7 @@
                     <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
                 </debug>
                 <admin_notification>
-                    <feed_url>https://static.zipmoney.com.au/lib/js/notification/magento1.json</feed_url>
+                    <feed_url>https://zip-labs-assets.s3-ap-southeast-2.amazonaws.com/plugin/magento1/notification.json</feed_url>
                 </admin_notification>
                 <widgets>
                     <enabled>1</enabled>

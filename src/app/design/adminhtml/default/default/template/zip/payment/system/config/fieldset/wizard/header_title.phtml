@@ -27,7 +27,7 @@
         </span>
         <span class="heading-intro">
             <?php if (!empty($comment)) : ?>
-                <?php echo $comment; ?>
+                <?php echo $this->escapeHtml($comment); ?>
             <?php endif; ?>
         </span>
     </div>
@@ -62,7 +62,7 @@
     color: #4f4f4f;
 }
 .zip-payment .config-heading .heading .logo {
-    height: 28px;
+    height: 25px;
     line-height: 40px;
     vertical-align: middle;
     margin: 6px 0px;

@@ -25,7 +25,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
 
-    private $_result = array(
+    protected $_result = array(
         'overall_status' => self::STATUS_SUCCESS,
         'items' => array()
     );
@@ -39,7 +39,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     /**
      * check multiple items and get health result
      */
-    private function getHealthResult()
+    protected function getHealthResult()
     {
         $config = Mage::helper('zip_payment')->getConfig();
         $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
@@ -120,40 +120,43 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
 
     }
 
-    private function checkStoreSSLSettings()
+    protected function checkStoreSSLSettings()
     {
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
-                    if($store->getIsActive() == '1') {
-                        $zipPaymentEnabled = Mage::getStoreConfig(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH, $store->getStoreId()) == '1';
+                    if ($store->getIsActive() !== '1'
+                        || Mage::getStoreConfig(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH, $store->getStoreId()) !== '1'
+                    ) {
+                        continue;
+                    }
 
-                        if($zipPaymentEnabled) {
-                            $storeSecureUrl = Mage::getStoreConfig(Mage_Core_Model_Url::XML_PATH_SECURE_URL, $store->getStoreId());
-                            $url = parse_url($storeSecureUrl);
+                    $storeSecureUrl = Mage::getStoreConfig(
+                        Mage_Core_Model_Url::XML_PATH_SECURE_URL, $store->getStoreId()
+                    );
+                    $url = parse_url($storeSecureUrl);
 
-                            if($url['scheme'] !== 'https') {
-                                $message = self::SSL_DISABLED_MESSAGE;
-                                $message = str_replace('{store_name}', $store->getName(), $message);
-                                $message = str_replace('{store_url}', $storeSecureUrl, $message);
+                    if ($url['scheme'] !== 'https') {
+                        $message = self::SSL_DISABLED_MESSAGE;
+                        $message = str_replace('{store_name}', $store->getName(), $message);
+                        $message = str_replace('{store_url}', $storeSecureUrl, $message);
 
-                                $this->appendFailedItem(
-                                    self::STATUS_WARNING,
-                                    $message
-                                );
-                            }
-                        }
+                        $this->appendFailedItem(
+                            self::STATUS_WARNING,
+                            $message
+                        );
                     }
                 }
             }
         }
     }
 
+
     /**
      * append failed item into health result
      */
-    private function appendFailedItem($status, $label)
+    protected function appendFailedItem($status, $label)
     {
         if ($status !== null && $this->_result['overall_status'] < $status) {
             $this->_result['overall_status'] = $status;

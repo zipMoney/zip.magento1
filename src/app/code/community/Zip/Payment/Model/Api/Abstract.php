@@ -186,7 +186,8 @@ abstract class Zip_Payment_Model_Api_Abstract
         }
 
         //discount and other promotion to balance out
-        $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
+        $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() :
+        $model->getShippingAddress()->getShippingAmount());
 
         if ($shippingAmount > 0) {
             $shippingItem = new OrderItem;

@@ -11,11 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Core - Coding Standards
 
-- Apply PHP and Magento coding standards
+- Apply latest  PHP and Magento coding standards
 - Improve Health check for SSL settings
 - Provide configuration options to define checkout type
 - Add product type into payment information for order
-- Enhance checkout overlay
+- Improve UI for checkout overlay nd spinner
+- Enable admin notifications by default
 
 ### Fix - Checkout Redirect for One Step checkout
 
@@ -36,7 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Refactored the whole plugin to improve payment process and fix all fundamental issues
 - Admin configurations been rebuilt, including new structured configuration panel, admin wizard and admin notifications
-- Able to handle store credit, discount & loyalty programs
+- Support all discount extensions, including gift-card, store credit, reward points and more
+- Support handling fee, shipping insurance and other surcharges.
 - Support redirect (by default) and lightbox to process checkout
 - Include PHP SDK in the package, do not need composer to install it
 - Handle referred applications

@@ -210,7 +210,9 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         // return redirect url for one step checkout
-        if ($redirectUrl && ($this->_getHelper()->isOneStepCheckout() || $this->_getHelper()->isRedirectCheckoutDisplayModel())) {
+        if ($redirectUrl && ($this->_getHelper()->isOneStepCheckout()
+            || $this->_getHelper()->isRedirectCheckoutDisplayModel())
+        ) {
             return $redirectUrl;
         }
 
@@ -425,7 +427,8 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         $creditmemo = Mage::app()->getRequest()->getParam('creditmemo');
-        $reason = isset($param['comment_text']) && !empty($param['comment_text']) ? $param['comment_text'] : 'N/A';
+        $reason = isset($creditmemo['comment_text']) && !empty($creditmemo['comment_text']) ?
+        $creditmemo['comment_text'] : 'N/A';
 
         $transactionID = $payment->getParentTransactionID();
 
@@ -444,6 +447,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 
             // Create refund
             $this->getLogger()->debug('Refund store id: ' . $storeId);
+
             $refund = Mage::getModel('zip_payment/api_refund', array('store_id' => $storeId))
             ->create($chargeId, $amount, $reason);
 

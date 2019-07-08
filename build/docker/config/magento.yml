@@ -45,6 +45,7 @@ app:
                 - payment/zip_payment/active=1;
                 - payment/zip_payment/private_key=I5xNZa3E/FwIHK0ZGj/TlntmMfNr4Q5BPIn8D1OqIIo=
                 - payment/zip_payment/public_key=91cf9719-7a8c-49bf-82b1-ca9b9ef1b6fb
+                - payment/zip_payment/debug/log_level=7
                 - payment/zip_payment/widgets/home_page/banner/enabled=1
                 - payment/zip_payment/widgets/product_page/banner/enabled=1
                 - payment/zip_payment/widgets/product_page/tagline/enabled=1

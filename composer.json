@@ -6,8 +6,8 @@
         "docker": "sh ./build/docker/shell/build.sh magento",
         "deploy:post": "sh ./build/shell/post-deploy.sh",
         "test:unit": "php ./vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php ./test/Test.php",
-        "lint": "sh ./vendor/bin/phpcs",
-        "lint:fix": "sh ./vendor/bin/phpcbf",
+        "lint": "sh ./vendor/bin/phpcs src/app/code/community/Zip/Payment src/app/design/adminhtml/default/default/template/zip/payment src/app/design/frontend/base/default/template/zip/payment",
+        "lint:fix": "sh ./vendor/bin/phpcbf src/app/code/community/Zip/Payment src/app/design/adminhtml/default/default/template/zip/payment src/app/design/frontend/base/default/template/zip/payment",
         "post-install": [
             "sh ./build/shell/post-install.sh"
         ]
