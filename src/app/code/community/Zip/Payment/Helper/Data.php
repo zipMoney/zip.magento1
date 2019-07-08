@@ -120,7 +120,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isRedirectCheckoutDisplayModel()
     {
-        return Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CEHCKOUT_DISPLAY_MODE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
+        return $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_DISPLAY_MODE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
     }
 
 
@@ -139,17 +139,18 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * is currently using one page checkout
      */
-    public function isOnepageCheckout()
+    public function isOnePageCheckout()
     {
-        return $this->getPageIdentifier() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER;
+        return $this->getPageIdentifier() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER &&
+            Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_TYPE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType::CHECKOUT_TYPE_ONE_PAGE;
     }
 
     /**
-     * checkout current page is onestep checkout
+     * is current page onestep checkout
      */
-    public function isOnestepCheckout()
+    public function isOneStepCheckout()
     {
-        return $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH . '/' . $this->getPageIdentifier());
+        return Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_TYPE_PATH) == Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType::CHECK_TYPE_ONE_STEP;
     }
 
     /**
@@ -158,11 +159,12 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     public function isReferredOrder($order)
     {
         if ($order && $order->getId()) {
-            return $order->getStatus() === $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH);
+            return $order->getStatus() === $this
+                ->getConfig()
+                ->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH);
         }
 
         return false;
-
     }
 
 
@@ -192,15 +194,16 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
     }
 
-     /**
-      * get checkout id from checkout session
-      *
-      * @return string
-      */
+    /**
+     * get checkout id from checkout session
+     *
+     * @return string
+     */
     public function getCheckoutIdFromSession()
     {
         $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY] : null;
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY]) ?
+            $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY] : null;
     }
 
     /**
@@ -211,7 +214,8 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCheckoutRedirectUrlFromSession()
     {
         $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY] : null;
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY]) ?
+            $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY] : null;
     }
 
     /**
@@ -222,7 +226,8 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCheckoutStateFromSession()
     {
         $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY] : null;
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY]) ?
+            $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY] : null;
     }
 
     /**

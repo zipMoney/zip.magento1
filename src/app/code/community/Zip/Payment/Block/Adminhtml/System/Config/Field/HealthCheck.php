@@ -7,12 +7,13 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_Adminhtml_Block_System_Config_Form_Field
+class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck
+extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /**
      * @var string
      */
-    protected $template = 'zip/payment/system/config/field/health_check.phtml';
+    protected $_template = 'zip/payment/system/config/field/health_check.phtml';
     const HEALTH_CHECK_CACHE_ID = 'zip_payment_health_check';
 
     /**
@@ -21,8 +22,8 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
     protected function _prepareLayout()
     {
         parent::_prepareLayout();
-        if (!$this->getTemplate() && $this->template) {
-            $this->setTemplate($this->template);
+        if (!$this->getTemplate() && $this->_template) {
+            $this->setTemplate($this->_template);
         }
 
         return $this;
@@ -47,7 +48,7 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_HealthCheck extends Mage_A
             Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck::STATUS_ERROR => $helper->__('Error')
         );
 
-        return (!is_null($statusLevel) && isset($statusList[$statusLevel])) ? $statusList[$statusLevel] : null;
+        return ($statusLevel !== null && isset($statusList[$statusLevel])) ? $statusList[$statusLevel] : null;
     }
 
 

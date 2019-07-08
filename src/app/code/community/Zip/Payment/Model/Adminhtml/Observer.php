@@ -13,26 +13,6 @@ class Zip_Payment_Model_Adminhtml_Observer
 {
 
     /**
-     * Config model instance
-     *
-     * @var Zip_Payment_Model_Config
-     */
-    protected $config = null;
-
-    /**
-     * get config instance
-     */
-    protected function getConfig()
-    {
-        if ($this->config == null) {
-            $this->config = $this->getHelper()->getConfig();
-        }
-
-        return $this->config;
-    }
-
-
-    /**
      * get model helper
      */
     protected function getHelper()
@@ -45,7 +25,7 @@ class Zip_Payment_Model_Adminhtml_Observer
      */
     public function checkAdminNotifications(Varien_Event_Observer $observer)
     {
-        $enabled = $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_NOTIFICATION_ENABLED_PATH);
+        $enabled = $this->getHelper()->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_NOTIFICATION_ENABLED_PATH);
 
         if ($enabled) {
             Mage::getSingleton('zip_payment/adminhtml_notification_feed')->checkUpdate();

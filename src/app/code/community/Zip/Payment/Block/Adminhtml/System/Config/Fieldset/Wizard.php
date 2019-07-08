@@ -7,18 +7,12 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard
+extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
-    protected $headerTitleTemplate = 'zip/payment/system/config/fieldset/wizard/header_title.phtml';
-    protected $noticeTemplate = 'zip/payment/system/config/fieldset/wizard/notice.phtml';
+    protected $_headerTitleTemplate = 'zip/payment/system/config/fieldset/wizard/header_title.phtml';
+    protected $_noticeTemplate = 'zip/payment/system/config/fieldset/wizard/notice.phtml';
 
-    protected $pluginCurrentVersion = '';
-
-    protected function _construct()
-    {
-        $this->pluginCurrentVersion = Mage::helper('zip_payment')->getCurrentVersion();
-        parent::_construct();
-    }
 
     /**
      * Add custom css class
@@ -43,7 +37,10 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
         $groupConfig = $this->getGroup($element)->asArray();
         $activePath = isset($groupConfig['active_path']) ? $groupConfig['active_path'] : '';
 
-        return !empty($activePath) ? (bool) (string) $this->_getConfigDataModel()->getConfigDataValue($activePath) : false;
+        return !empty($activePath) ? (bool) (string) $this->
+            _getConfigDataModel()
+            ->getConfigDataValue($activePath) :
+            false;
     }
 
     /**
@@ -69,10 +66,10 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Wizard extends Mage_Adm
     protected function _getHeaderTitleHtml($element)
     {
         $block = Mage::app()->getLayout()->createBlock('core/template');
-        $block->setTemplate($this->headerTitleTemplate);
+        $block->setTemplate($this->_headerTitleTemplate);
         $block->setData(
             array(
-            'version' => $this->pluginCurrentVersion,
+            'version' => Mage::helper('zip_payment')->getCurrentVersion(),
             'logo' => Mage::helper('zip_payment')->getConfig()->getLogo(),
             'element' => $element,
             'config' => $this->getGroup($element)->asArray()

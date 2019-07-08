@@ -161,17 +161,28 @@ class ShopperStatistics implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['account_created'] = isset($data['account_created']) ? $data['account_created'] : null;
-        $this->container['sales_total_count'] = isset($data['sales_total_count']) ? $data['sales_total_count'] : null;
-        $this->container['sales_total_amount'] = isset($data['sales_total_amount']) ? $data['sales_total_amount'] : null;
-        $this->container['sales_avg_amount'] = isset($data['sales_avg_amount']) ? $data['sales_avg_amount'] : null;
-        $this->container['sales_max_amount'] = isset($data['sales_max_amount']) ? $data['sales_max_amount'] : null;
-        $this->container['refunds_total_amount'] = isset($data['refunds_total_amount']) ? $data['refunds_total_amount'] : null;
-        $this->container['previous_chargeback'] = isset($data['previous_chargeback']) ? $data['previous_chargeback'] : null;
-        $this->container['currency'] = isset($data['currency']) ? $data['currency'] : null;
-        $this->container['last_login'] = isset($data['last_login']) ? $data['last_login'] : null;
-        $this->container['has_previous_purchases'] = isset($data['has_previous_purchases']) ? $data['has_previous_purchases'] : null;
-        $this->container['fraud_check_result'] = isset($data['fraud_check_result']) ? $data['fraud_check_result'] : null;
+        $this->container['account_created']
+            = isset($data['account_created']) ? $data['account_created'] : null;
+        $this->container['sales_total_count']
+            = isset($data['sales_total_count']) ? $data['sales_total_count'] : null;
+        $this->container['sales_total_amount']
+            = isset($data['sales_total_amount']) ? $data['sales_total_amount'] : null;
+        $this->container['sales_avg_amount']
+            = isset($data['sales_avg_amount']) ? $data['sales_avg_amount'] : null;
+        $this->container['sales_max_amount']
+            = isset($data['sales_max_amount']) ? $data['sales_max_amount'] : null;
+        $this->container['refunds_total_amount']
+            = isset($data['refunds_total_amount']) ? $data['refunds_total_amount'] : null;
+        $this->container['previous_chargeback']
+            = isset($data['previous_chargeback']) ? $data['previous_chargeback'] : null;
+        $this->container['currency']
+            = isset($data['currency']) ? $data['currency'] : null;
+        $this->container['last_login']
+            = isset($data['last_login']) ? $data['last_login'] : null;
+        $this->container['has_previous_purchases']
+            = isset($data['has_previous_purchases']) ? $data['has_previous_purchases'] : null;
+        $this->container['fraud_check_result']
+            = isset($data['fraud_check_result']) ? $data['fraud_check_result'] : null;
     }
 
     /**
@@ -382,7 +393,7 @@ class ShopperStatistics implements ArrayAccess
     public function setCurrency($currency)
     {
         $allowed_values = array('AUD', 'NZD');
-        if (!is_null($currency) && (!in_array($currency, $allowed_values))) {
+        if ($currency !== null && (!in_array($currency, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'currency', must be one of 'AUD', 'NZD'");
         }
 
@@ -450,8 +461,10 @@ class ShopperStatistics implements ArrayAccess
     public function setFraudCheckResult($fraud_check_result)
     {
         $allowed_values = array('pass', 'fail', 'unknown');
-        if (!is_null($fraud_check_result) && (!in_array($fraud_check_result, $allowed_values))) {
-            throw new \InvalidArgumentException("Invalid value for 'fraud_check_result', must be one of 'pass', 'fail', 'unknown'");
+        if ($fraud_check_result !== null && (!in_array($fraud_check_result, $allowed_values))) {
+            throw new \InvalidArgumentException(
+                "Invalid value for 'fraud_check_result', must be one of 'pass', 'fail', 'unknown'"
+            );
         }
 
         $this->container['fraud_check_result'] = $fraud_check_result;
@@ -486,7 +499,7 @@ class ShopperStatistics implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

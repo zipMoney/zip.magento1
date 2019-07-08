@@ -1,37 +1,47 @@
-<?php 
+<?php
     $version = $this->getVersion();
-    $logo = $this->getLogo();
+    $logo = $this->escapeUrl($this->getLogo());
     $element = $this->getElement();
     $groupConfig = $this->getConfig();
     $notification = $this->getData('notification');
     $legend = $element->getLegend();
     $comment = $element->getComment();
+    $stateUrl = $this->getUrl('*/*/state');
 ?>
 
 <div class="config-heading">
     <div class="heading">
         <span class="heading-title">
             <?php if(!empty($logo)) : ?>
-                <img class="logo" alt="<?php echo $legend ?>" title="<?php echo $legend ?>" src="<?php echo $logo ?>"/>
+                <img class="logo" alt="<?php echo $this->escapeHtml($legend); ?>"
+                title="<?php echo $this->escapeHtml($legend); ?>"
+                src="<?php echo $this->escapeUrl($logo); ?>"/>
             <?php endif; ?>
             <?php if(!empty($legend)) : ?>
                 <strong>
-                    <span class="legend"><?php echo $legend ?> <?php echo $this->getData('version') ?></span>
+                    <span class="legend">
+                        <?php echo $this->escapeHtml($legend); ?> <?php echo $this->escapeHtml($version); ?>
+                    </span>
                 </strong>
             <?php endif; ?>
         </span>
         <span class="heading-intro">
             <?php if (!empty($comment)) : ?>
-                <?php echo $comment ?>
+                <?php echo $comment; ?>
             <?php endif; ?>
         </span>
     </div>
 
     <div class="button-container">
-        <button type="button" class="button" id="<?php echo $element->getHtmlId() ?>-head" 
-        onclick="toggleSolution.call(this, '<?php echo $element->getHtmlId() ?>', '<?php echo $this->getUrl('*/*/state') ?>'); return false;">
-            <span class="state-closed"><?php echo $this->__('Configure') ?></span>
-            <span class="state-opened"><?php echo $this->__('Close') ?></span>
+        <button type="button" class="button" id="<?php echo $element->getHtmlId(); ?>-head"
+        onclick="toggleSolution.call(
+            this,
+            '<?php echo $element->getHtmlId(); ?>',
+            '<?php echo $this->escapeUrl($stateUrl); ?>'
+        );
+        return false;">
+            <span class="state-closed"><?php echo $this->escapeHtml($this->__('Configure')); ?></span>
+            <span class="state-opened"><?php echo $this->escapeHtml($this->__('Close')); ?></span>
         </button>
     </div>
 

@@ -10,18 +10,17 @@
 use \Zip\Model\OrderShipping;
 use \Zip\Model\OrderItem;
 use \Zip\Model\Address;
-use \Zip\Model\Metadata;
 use \Zip\ApiException;
 
 abstract class Zip_Payment_Model_Api_Abstract
 {
-    protected $api = null;
-    protected $apiConfig = null;
-    protected $logger = null;
-    protected $response = null;
-    protected $order = null;
-    protected $quote = null;
-    protected $storeId = null;
+    protected $_api = null;
+    protected $_apiConfig = null;
+    protected $_logger = null;
+    protected $_response = null;
+    protected $_order = null;
+    protected $_quote = null;
+    protected $_storeId = null;
 
     public function __construct($options)
     {
@@ -31,11 +30,11 @@ abstract class Zip_Payment_Model_Api_Abstract
             $storeId = Mage::app()->getStore()->getId();
         }
 
-        if ($this->apiConfig === null || $this->storeId !== $storeId) {
+        if ($this->_apiConfig === null || $this->_storeId !== $storeId) {
             // when api configuration is null or store id has been changed
             // new api configuration need to be created
-            $this->apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration($storeId);
-            $this->storeId = $storeId;
+            $this->_apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration($storeId);
+            $this->_storeId = $storeId;
         }
     }
 
@@ -49,11 +48,11 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getLogger()
     {
-        if ($this->logger == null) {
-            $this->logger = Mage::getModel('zip_payment/logger');
+        if ($this->_logger == null) {
+            $this->_logger = Mage::getModel('zip_payment/logger');
         }
 
-        return $this->logger;
+        return $this->_logger;
     }
 
     /**
@@ -71,7 +70,7 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getOrder()
     {
-        return $this->order;
+        return $this->_order;
     }
 
     /**
@@ -81,11 +80,11 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getQuote()
     {
-        if ($this->quote === null) {
-            $this->quote = $this->getHelper()->getCheckoutSession()->getQuote();
+        if ($this->_quote === null) {
+            $this->_quote = $this->getHelper()->getCheckoutSession()->getQuote();
         }
 
-        return $this->quote;
+        return $this->_quote;
     }
 
     /**
@@ -165,36 +164,36 @@ abstract class Zip_Payment_Model_Api_Abstract
             $product = $item->getProduct();
             $orderItem = new OrderItem();
 
-            $price = (float)$item->getPriceInclTax();
-            $quantity = (int)($this->getOrder() ? $item->getQtyOrdered() : $item->getQty());
-            $amount = (float)($price * $quantity);
+            $price = (float) $item->getPriceInclTax();
+            $quantity = (int) ($this->getOrder() ? $item->getQtyOrdered() : $item->getQty());
+            $amount = (float) ($price * $quantity);
             $totalItemAmount += $amount;
-            $thumbnailUrl = (string)Mage::helper('catalog/image')->init($product, 'thumbnail');
+            $thumbnailUrl = (string) Mage::helper('catalog/image')->init($product, 'thumbnail');
             $safeSKU = mb_strcut($item->getSku(), 0, 50);
 
             $orderItem
-                ->setReference((string)$item->getId())
+                ->setReference((string) $item->getId())
                 ->setProductCode($safeSKU)
-                ->setName((string)$item->getName())
-                ->setDescription((string)strip_tags($item->getDescription()))
+                ->setName((string) $item->getName())
+                ->setDescription((string) strip_tags($item->getDescription()))
                 ->setAmount($price)
                 ->setQuantity($quantity)
                 ->setType(OrderItem::TYPE_SKU)
-                ->setItemUri((string)$product->getProductUrl())
+                ->setItemUri((string) $product->getProductUrl())
                 ->setImageUri($thumbnailUrl);
 
             $orderItems[] = $orderItem;
         }
 
         //discount and other promotion to balance out
-        $shippingAmount = (float)($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
+        $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
 
         if ($shippingAmount > 0) {
             $shippingItem = new OrderItem;
 
             $shippingItem
                 ->setName('Shipping')
-                ->setAmount((float)$shippingAmount)
+                ->setAmount((float) $shippingAmount)
                 ->setType(OrderItem::TYPE_SHIPPING)
                 ->setQuantity(1);
 
@@ -212,7 +211,7 @@ abstract class Zip_Payment_Model_Api_Abstract
 
             $remainingItem
                 ->setName($remaining > 0 ? 'Fee' : 'Discount')
-                ->setAmount((float)$remaining)
+                ->setAmount((float) $remaining)
                 ->setQuantity(1)
                 ->setType($remaining > 0 ? OrderItem::TYPE_SHIPPING : OrderItem::TYPE_DISCOUNT);
 
@@ -232,8 +231,10 @@ abstract class Zip_Payment_Model_Api_Abstract
     protected function getMetadata()
     {
         // object not working must use array
-        $metadata['platform'] = "Magento 1";
-        $metadata['version'] = Mage::getVersion();
+        $metadata['platform'] = 'Magento 1';
+        $metadata['platform_version'] = Mage::getVersion();
+        $metadata['plugin'] = 'zip-magento1';
+        $metadata['plugin_version'] = '2.1.0';
         return $metadata;
     }
 
@@ -254,6 +255,6 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getResponse()
     {
-        return $this->response;
+        return $this->_response;
     }
 }

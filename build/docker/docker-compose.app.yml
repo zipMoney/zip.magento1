@@ -1,0 +1,159 @@
+version: '3.7'
+
+services:
+    # Installer
+    installer:
+        build:
+            context: ${SERVICE_DIR}/${APP_FRAMEWORK}
+            args:
+                NAME: ${PLATFORM_NAME}
+                VERSION: ${PLATFORM_VERSION}
+        image: ${PROJECT_NAME}/${APP_FRAMEWORK}:${APP_FRAMEWORK_VERSION}
+        container_name: ${APP_FRAMEWORK}-installer
+        volumes:
+            - ${APP_DATA}:/tmp/web
+            - ${SOURCE_DIR}:/tmp/source
+            - ${SERVICE_DIR}/${SERVER_NAME}/certs:/tmp/certs
+            - ${SERVICE_DIR}/${APP_FRAMEWORK}/init:/tmp/init
+        environment:
+            - APP_NAME=${APP_NAME}
+            - APP_HOST=${APP_HOST}
+            - APP_SOURCES=${APP_SOURCES}
+            - APP_PLUGINS=${APP_PLUGINS}
+            - APP_CONFIGURATIONS=${APP_CONFIGURATIONS}
+            - PLUGIN_CONFIGURATIONS=${PLUGIN_CONFIGURATIONS}
+            - DATABASE_HOST=db
+            - DATABASE_USER=${DATABASE_USER_NAME}
+            - DATABASE_PASSWORD=${DATABASE_USER_PASSWORD}
+            - DATABASE_NAME=${DATABASE_NAME}
+            - ADMIN_USERNAME=${APP_ADMIN_USERNAME}
+            - ADMIN_FIRSTNAME=${APP_ADMIN_FIRSTNAME}
+            - ADMIN_LASTNAME=${APP_ADMIN_LASTNAME}
+            - ADMIN_EMAIL=${APP_ADMIN_EMAIL}
+            - ADMIN_PASSWORD=${APP_ADMIN_PASSWORD}
+        entrypoint: /tmp/init/entrypoint.sh
+        depends_on:
+            - db
+            - server
+        networks:
+            - frontend
+            - backend
+        deploy:
+            replicas: 1
+            update_config:
+                parallelism: 1
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+                delay: 10s
+                max_attempts: ${MAX_ATTEMPTS}
+
+    # Server
+    server:
+        hostname: ${APP_URL}
+        build:
+            context: ${SERVICE_DIR}/${SERVER_NAME}
+            args:
+                NAME: ${SERVER_NAME}
+                VERSION: ${SERVER_VERSION}
+        image: ${PROJECT_NAME}/${SERVER_NAME}:${SERVER_VERSION}
+        container_name: ${APP_FRAMEWORK}-server
+        restart: always
+        volumes:
+            - ${APP_DATA}:/${SERVER_DIR_ROOT}
+            - ${SERVICE_DIR}/${SERVER_NAME}/conf:/${SERVER_DIR_CONFIG}
+            - ${SERVICE_DIR}/${SERVER_NAME}/certs:/${SERVER_DIR_SSL}
+            - ${SERVICE_DIR}/${SERVER_NAME}/logs:/${SERVER_DIR_LOG}
+            - ${SERVICE_DIR}/${SERVER_NAME}/init:/tmp/init
+        environment:
+            - SERVER_DIR_CONFIG=${SERVER_DIR_CONFIG}
+            - SERVER_DIR_SSL=${SERVER_DIR_SSL}
+        ports:
+            - ${SERVER_PORT_HTTP}:80
+            - ${SERVER_PORT_HTTPS}:443
+        depends_on:
+            - platform
+            - db
+        networks:
+            - backend
+        deploy:
+            replicas: ${DEPLOY_REPLICAS}
+            update_config:
+                parallelism: ${DEPLOY_REPLICAS}
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+                delay: 10s
+                max_attempts: ${MAX_ATTEMPTS}
+
+    # Platform
+    platform:
+        build:
+            context: ${SERVICE_DIR}/${PLATFORM_NAME}
+            args:
+                NAME: ${PLATFORM_NAME}
+                VERSION: ${PLATFORM_VERSION}
+        image: ${PROJECT_NAME}/${PLATFORM_NAME}:${PLATFORM_VERSION}
+        container_name: ${APP_FRAMEWORK}-platform
+        restart: always
+        volumes:
+            - ${APP_DATA}:/${PLATFORM_DIR_ROOT}
+            - ${SERVICE_DIR}/${PLATFORM_NAME}/conf:/${PLATFORM_DIR_CONFIG}
+            - ${SERVICE_DIR}/${PLATFORM_NAME}/logs:/${PLATFORM_DIR_LOG}
+            - ${SERVICE_DIR}/${PLATFORM_NAME}/init:/tmp/init
+        networks:
+            - frontend
+            - backend
+        deploy:
+            replicas: ${DEPLOY_REPLICAS}
+            update_config:
+                parallelism: ${DEPLOY_REPLICAS}
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+                delay: 10s
+                max_attempts: ${MAX_ATTEMPTS}
+
+    # Database
+    db:
+        build:
+            context: ${SERVICE_DIR}/${DATABASE_SERVER_NAME}
+            args:
+                NAME: ${DATABASE_SERVER_NAME}
+                VERSION: ${DATABASE_SERVER_VERSION}
+        image: ${PROJECT_NAME}/${DATABASE_SERVER_NAME}:${DATABASE_SERVER_VERSION}
+        container_name: ${APP_FRAMEWORK}-db
+        restart: always
+        ports:
+            - ${DATABASE_PORT}:3306
+        volumes:
+            - db-data:/${DATABASE_DIR_ROOT}
+            - ${SERVICE_DIR}/${DATABASE_SERVER_NAME}/init:/docker-entrypoint-initdb.d
+        environment:
+            - ${DATABASE_ENV_VARIABLE_ROOT_PASSWORD}=${DATABASE_ROOT_PASSWORD}
+            - ${DATABASE_ENV_VARIABLE_NAME}=${DATABASE_NAME}
+            - ${DATABASE_ENV_VARIABLE_USER}=${DATABASE_USER_NAME}
+            - ${DATABASE_ENV_VARIABLE_PASSWORD}=${DATABASE_USER_PASSWORD}
+        networks:
+            - backend
+        deploy:
+            replicas: ${DEPLOY_REPLICAS}
+            update_config:
+                parallelism: ${DEPLOY_REPLICAS}
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+                delay: 10s
+                max_attempts: ${MAX_ATTEMPTS}
+
+# Networks
+networks:
+    frontend:
+        name: ${PROJECT_NAME}_frontend
+        driver: bridge
+    backend:
+        name: ${PROJECT_NAME}_backend
+        driver: bridge
+
+volumes:
+    db-data:

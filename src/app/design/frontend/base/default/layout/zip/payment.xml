@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
 
-    <!-- 
-        Zip Payment Widgets 
+    <!--
+        Zip Payment Widgets
     -->
 
     <default>
         <reference name="before_body_end">
-            <block type="zip_payment/widget" name="zip.payment.widget" template="zip/payment/widgets.phtml"/> 
+            <block type="zip_payment/widget" name="zip.payment.widget" template="zip/payment/widgets.phtml"/>
         </reference>
     </default>
 
-    <!-- 
-        checkout pages 
+    <!--
+        checkout pages
     -->
 
     <!-- Layout handle for Checkout pages -->
@@ -24,8 +24,8 @@
     </checkout_layout_handle>
     <!-- End Layout handler for Checkout pages -->
 
-    <!-- 
-        Zip Payment Pages 
+    <!--
+        Zip Payment Pages
     -->
 
     <!-- Failure page -->
@@ -76,4 +76,4 @@
     </zip_payment_checkout_referred>
     <!-- End Referred page -->
 
-</layout> 
+</layout>

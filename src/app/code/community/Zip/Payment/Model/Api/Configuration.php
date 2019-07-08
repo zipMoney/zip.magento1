@@ -42,7 +42,11 @@ class Zip_Payment_Model_Api_Configuration
             $extensionVersion = $this->getHelper()->getCurrentVersion();
 
             $apiConfig
-                ->setApiKey('Authorization', Mage::helper('core')->decrypt($config->getValue(Zip_Payment_Model_Config::CONFIG_PRIVATE_KEY_PATH, $storeId)))
+                ->setApiKey(
+                    'Authorization',
+                    Mage::helper('core')
+                        ->decrypt($config->getValue(Zip_Payment_Model_Config::CONFIG_PRIVATE_KEY_PATH, $storeId))
+                )
                 ->setEnvironment($config->getValue(Zip_Payment_Model_Config::CONFIG_ENVIRONMENT_PATH, $storeId))
                 ->setApiKeyPrefix('Authorization', 'Bearer')
                 ->setPlatform("Magento/{$magentoVersion} Zip_Payment/{$extensionVersion}")

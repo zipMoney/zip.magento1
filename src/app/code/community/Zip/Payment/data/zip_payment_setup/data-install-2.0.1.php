@@ -7,7 +7,6 @@
 
 // add block permission for all zip payment blocks
 if (Mage::getModel('admin/block')) {
-
     $blocks = array(
         'zip_payment/widget',
         'zip_payment/checkout_overlay',

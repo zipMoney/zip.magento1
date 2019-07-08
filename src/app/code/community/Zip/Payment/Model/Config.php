@@ -67,11 +67,11 @@ class Zip_Payment_Model_Config
     const CHECKOUT_SESSION_KEY = 'zip_payment_checkout';
     const ONEPAGE_CHECKOUT_IDENTIFIER = 'checkout_onepage_index';
 
+    const CONFIG_CHECKOUT_TYPE_PATH = 'payment/zip_payment/checkout/type';
     const CONFIG_CHECKOUT_GENERAL_ERROR_PATH = 'payment/zip_payment/checkout/error/general';
     const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
-    const CONFIG_CEHCKOUT_DISPLAY_MODE_PATH = 'payment/zip_payment/checkout/display_mode';
+    const CONFIG_CHECKOUT_DISPLAY_MODE_PATH = 'payment/zip_payment/checkout/display_mode';
     const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/checkout/custom_script';
-    const CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH = 'payment/zip_payment/checkout/onestepcheckouts';
 
     const CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH = 'payment/zip_payment/checkout/referred/order_creation';
     const CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH = 'payment/zip_payment/checkout/referred/order_status';
@@ -92,25 +92,25 @@ class Zip_Payment_Model_Config
      */
     const CONFIG_NOTIFICATION_ENABLED_PATH = 'payment/zip_payment/admin_notification/enabled';
 
-    protected $methodCode = self::METHOD_CODE;
-    protected $debugEnabled = null;
-    protected $logEnabled = null;
-    protected $logLevel = null;
-    protected $logFile = null;
-    protected $apiConfig = null;
+    protected $_methodCode = self::METHOD_CODE;
+    protected $_debugEnabled = null;
+    protected $_logEnabled = null;
+    protected $_logLevel = null;
+    protected $_logFile = null;
+    protected $_apiConfig = null;
 
-     /**
-      * Method code setter
-      *
-      * @param  string|Mage_Payment_Model_Method_Abstract $method
-      * @return Mage_Paypal_Model_Config
-      */
+    /**
+     * Method code setter
+     *
+     * @param  string|Mage_Payment_Model_Method_Abstract $method
+     * @return Mage_Paypal_Model_Config
+     */
     public function setMethod($method)
     {
         if ($method instanceof Mage_Payment_Model_Method_Abstract) {
-            $this->methodCode = $method->getCode();
+            $this->_methodCode = $method->getCode();
         } elseif (is_string($method)) {
-            $this->methodCode = $method;
+            $this->_methodCode = $method;
         }
 
         return $this;
@@ -124,7 +124,7 @@ class Zip_Payment_Model_Config
      */
     public function getMethodCode()
     {
-        return $this->methodCode;
+        return $this->_methodCode;
     }
 
     /**********************************
@@ -148,11 +148,11 @@ class Zip_Payment_Model_Config
 
     public function isDebugEnabled()
     {
-        if ($this->debugEnabled === null) {
-            $this->debugEnabled = $this->getFlag(self::CONFIG_DEBUG_ENABLED_PATH);
+        if ($this->_debugEnabled === null) {
+            $this->_debugEnabled = $this->getFlag(self::CONFIG_DEBUG_ENABLED_PATH);
         }
 
-        return $this->debugEnabled;
+        return $this->_debugEnabled;
     }
 
     /**
@@ -162,11 +162,11 @@ class Zip_Payment_Model_Config
      */
     public function getLogLevel()
     {
-        if ($this->logLevel === null) {
-            $this->logLevel = (int) $this->getValue(self::CONFIG_DEBUG_LOG_LEVEL_PATH);
+        if ($this->_logLevel === null) {
+            $this->_logLevel = (int) $this->getValue(self::CONFIG_DEBUG_LOG_LEVEL_PATH);
         }
 
-        return $this->logLevel;
+        return $this->_logLevel;
     }
 
     /**
@@ -174,18 +174,18 @@ class Zip_Payment_Model_Config
      */
     public function isLogEnabled()
     {
-        if ($this->logEnabled === null) {
-            $this->logEnabled = false;
+        if ($this->_logEnabled === null) {
+            $this->_logEnabled = false;
 
             if ($this->isDebugEnabled()) {
                 $isDeveloperLogActive = $this->getFlag(self::CONFIG_DEVELOPER_LOG_ACTIVE_PATH);
                 $logLevel = $this->getLogLevel();
 
-                $this->logEnabled = ($isDeveloperLogActive && $logLevel >= 0);
+                $this->_logEnabled = ($isDeveloperLogActive && $logLevel >= 0);
             }
         }
 
-        return $this->logEnabled;
+        return $this->_logEnabled;
     }
 
     /**
@@ -195,17 +195,17 @@ class Zip_Payment_Model_Config
      */
     public function getLogFile()
     {
-        if ($this->logFile === null) {
+        if ($this->_logFile === null) {
             $logFile = $this->getValue(self::CONFIG_DEBUG_LOG_FILE_PATH);
 
             if (empty($logFile)) {
                 $logFile = self::DEFAULT_LOG_FILE_NAME;
             }
 
-            $this->logFile = $logFile;
+            $this->_logFile = $logFile;
         }
 
-        return $this->logFile;
+        return $this->_logFile;
     }
 
     /**********************************
@@ -290,7 +290,6 @@ class Zip_Payment_Model_Config
     {
         $value = $this->getValue($path, $storeId);
         return !empty($value) && 'false' !== $value;
-
     }
 
     /**********************************
@@ -311,5 +310,4 @@ class Zip_Payment_Model_Config
 
         return $this->getFlag("payment/{$methodCode}/active") && $this->isMerchantCountrySupported();
     }
-
 }

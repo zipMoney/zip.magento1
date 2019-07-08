@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## **2.1.0** - July 8, 2019
+
+> Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.bz2)
+
+### Core - Coding Standards
+
+- Apply PHP and Magento coding standards
+- Improve Health check for SSL settings
+- Provide configuration options to define checkout type
+- Add product type into payment information for order
+
+### Fix - Checkout Redirect for One Step checkout
+
+- Checkout Redirect for One Step checkout
+- Composer needs a vendor/package name
+- Using secure https url in secure website for checkout resources
+
+### Engineering - Create Docker compose for local development
+
+- Add docker for local development and testing
+- Update Bitbucket Pipeline
+
 ## **2.0.0** - February 14, 2019
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.bz2)
@@ -30,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v1.0.6.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v1.0.6.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v1.0.6.bz2)
 
-### Development - Coding Standard with Codacy
+### Engineering - Coding Standard with Codacy
 
 - Add Codacy status in README file
 - Apply coding standard to the plugin and fix Bugs

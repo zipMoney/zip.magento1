@@ -7,7 +7,8 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Expanded extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Expanded
+extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
     /**
      * Return collapse state

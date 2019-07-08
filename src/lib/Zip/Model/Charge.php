@@ -191,7 +191,9 @@ class Charge implements ArrayAccess
 
         $allowed_values = array("authorised", "captured", "cancelled", "refunded", "declined");
         if (!in_array($this->container['state'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'state', must be one of 'authorised', 'captured', 'cancelled', 'refunded', 'declined'.";
+            $invalid_properties[]
+                = "invalid value for 'state',
+                must be one of 'authorised', 'captured', 'cancelled', 'refunded', 'declined'.";
         }
 
         if ($this->container['captured_amount'] === null) {
@@ -380,7 +382,10 @@ class Charge implements ArrayAccess
     {
         $allowed_values = array('authorised', 'captured', 'cancelled', 'refunded', 'declined');
         if ((!in_array($state, $allowed_values))) {
-            throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'authorised', 'captured', 'cancelled', 'refunded', 'declined'");
+            throw new \InvalidArgumentException(
+                "Invalid value for 'state',
+                must be one of 'authorised', 'captured', 'cancelled', 'refunded', 'declined'"
+            );
         }
 
         $this->container['state'] = $state;
@@ -405,7 +410,9 @@ class Charge implements ArrayAccess
     public function setCapturedAmount($captured_amount)
     {
         if (($captured_amount < 0)) {
-            throw new \InvalidArgumentException('invalid value for $captured_amount when calling Charge., must be bigger than or equal to 0.');
+            throw new \InvalidArgumentException(
+                'invalid value for $captured_amount when calling Charge., must be bigger than or equal to 0.'
+            );
         }
 
         $this->container['captured_amount'] = $captured_amount;
@@ -430,7 +437,9 @@ class Charge implements ArrayAccess
     public function setRefundedAmount($refunded_amount)
     {
         if (($refunded_amount < 0)) {
-            throw new \InvalidArgumentException('invalid value for $refunded_amount when calling Charge., must be bigger than or equal to 0.');
+            throw new \InvalidArgumentException(
+                'invalid value for $refunded_amount when calling Charge., must be bigger than or equal to 0.'
+            );
         }
 
         $this->container['refunded_amount'] = $refunded_amount;
@@ -549,7 +558,7 @@ class Charge implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

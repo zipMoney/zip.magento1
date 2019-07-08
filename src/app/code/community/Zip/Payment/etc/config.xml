@@ -3,7 +3,7 @@
 
     <modules>
         <Zip_Payment>
-            <version>2.0.0</version>
+            <version>2.1.0</version>
         </Zip_Payment>
     </modules>
 
@@ -51,13 +51,13 @@
                 </observers>
             </controller_action_postdispatch_checkout_onepage_savepayment>
             <controller_action_layout_load_before>
-              <observers>
-                  <set_checkout_layout_handle>
-                      <class>zip_payment/observer</class>
-                      <method>setCheckoutLayoutHandle</method>
-                  </set_checkout_layout_handle>
-              </observers>
-          </controller_action_layout_load_before>
+                <observers>
+                    <set_checkout_layout_handle>
+                        <class>zip_payment/observer</class>
+                        <method>setCheckoutLayoutHandle</method>
+                    </set_checkout_layout_handle>
+                </observers>
+            </controller_action_layout_load_before>
         </events>
     </global>
 
@@ -127,6 +127,7 @@
                 <order_status>processing</order_status>
                 <sort_order>1</sort_order>
                 <checkout>
+                    <type>one_page</type>
                     <display_mode>redirect</display_mode>
                     <referred>
                         <order_creation>1</order_creation>
@@ -202,14 +203,14 @@
     <custom>
         <payment>
             <zip_payment>
-                <logo>http://d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
+                <logo>//d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
                 <portal>
                     <sandbox>https://merchant.sandbox.zipmoney.com.au/</sandbox>
                     <production>https://merchant.zipmoney.com.au/</production>
                 </portal>
                 <checkout>
                     <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
-                    <loader_image>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
+                    <loader_image>//s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
                     <error>
                         <general>Something went wrong. Please try to checkout out again</general>
                     </error>

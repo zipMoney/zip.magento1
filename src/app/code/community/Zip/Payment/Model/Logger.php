@@ -12,8 +12,8 @@ class Zip_Payment_Model_Logger
 {
     const CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH = 'payment/zip_payment/debug/log_private_data_keys';
 
-    protected $config = null;
-    protected $privateDataKeys = null;
+    protected $_config = null;
+    protected $_privateDataKeys = null;
 
     /**
      * get configuration model
@@ -22,11 +22,11 @@ class Zip_Payment_Model_Logger
      */
     protected function getConfig()
     {
-        if ($this->config === null) {
-            $this->config = Mage::getSingleton('zip_payment/config');
+        if ($this->_config === null) {
+            $this->_config = Mage::getSingleton('zip_payment/config');
         }
 
-        return $this->config;
+        return $this->_config;
     }
 
     /**
@@ -36,11 +36,14 @@ class Zip_Payment_Model_Logger
      */
     public function getPrivateDataKeys()
     {
-        if ($this->privateDataKeys === null) {
-            $this->privateDataKeys = explode(',', (string) $this->getConfig()->getValue(self::CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH));
+        if ($this->_privateDataKeys === null) {
+            $this->_privateDataKeys = explode(
+                ',',
+                (string) $this->getConfig()->getValue(self::CONFIG_DEBUG_PRIVATE_DATA_KEYS_PATH)
+            );
         }
 
-        return $this->privateDataKeys;
+        return $this->_privateDataKeys;
     }
 
     /**
@@ -74,7 +77,10 @@ class Zip_Payment_Model_Logger
     {
         if (is_array($debugData) && is_array($this->getPrivateDataKeys())) {
             foreach ($debugData as $key => $value) {
-                if (in_array($key, $this->getPrivateDataKeys())) {
+                if (in_array(
+                    $key, (array) $this->getPrivateDataKeys()
+                )
+                ) {
                     $debugData[$key] = '****';
                 } else {
                     if (is_array($debugData[$key])) {

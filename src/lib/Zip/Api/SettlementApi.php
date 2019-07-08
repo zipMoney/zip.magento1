@@ -97,7 +97,7 @@ class SettlementApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/javascript'));
-        if (!is_null($_header_accept)) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 
@@ -134,19 +134,23 @@ class SettlementApi
                 '/settlements/{id}'
             );
 
-            return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Settlement', $httpHeader), $statusCode, $httpHeader);
+            return array($this->apiClient->getSerializer()
+                ->deserialize($response, 'Zip\Model\Settlement', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Settlement', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\Settlement', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 404:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
             }
@@ -186,7 +190,7 @@ class SettlementApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/javascript'));
-        if (!is_null($_header_accept)) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 
