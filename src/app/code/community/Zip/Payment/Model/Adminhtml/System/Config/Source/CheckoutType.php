@@ -12,7 +12,8 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType
 {
 
     const CHECKOUT_TYPE_ONE_PAGE = 'one_page';
-    const CHECK_TYPE_ONE_STEP = 'one_step';
+    const CHECKOUT_TYPE_ONE_STEP = 'one_step';
+    const CHECKOUT_TYPE_OTHERS = 'others';
 
     /**
      * Returns the option array for checkout types
@@ -27,8 +28,12 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType
                 'label' => Mage::helper('zip_payment')->__('One Page Checkout')
             ),
             array(
-                'value' => self::CHECK_TYPE_ONE_STEP,
+                'value' => self::CHECKOUT_TYPE_ONE_STEP,
                 'label' => Mage::helper('zip_payment')->__('One Step Checkout')
+            ),
+            array(
+                'value' => self::CHECKOUT_TYPE_OTHERS,
+                'label' => Mage::helper('zip_payment')->__('Others')
             )
         );
     }
