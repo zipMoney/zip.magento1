@@ -8,12 +8,16 @@
 if ('Zip' in window && Zip.Checkout) {
     Object.extend(
         Zip.Checkout, {
+            setOverlay: function (show = true) {
+                var $overlay = document.getElementById('zip_payment--checkout_overlay');
 
-            showOverlay: function () {
-                document.getElementById('zip_payment_overlay').setAttribute('class', 'active');
-            },
-            hideOverlay: function () {
-                document.getElementById('zip_payment_overlay').removeAttribute('class');
+                if ($overlay) {
+                    if (show) {
+                        $overlay.setAttribute('class', 'active');
+                    } else {
+                        $overlay.removeAttribute('class');
+                    }
+                }
             },
             redirectTo: function (url) {
                 location.href = url;
@@ -21,7 +25,7 @@ if ('Zip' in window && Zip.Checkout) {
 
             placeOrder: function (callback) {
                 if (payment.currentMethod == Zip.Checkout.settings.methodCode) {
-                    Zip.Checkout.showOverlay();
+                    Zip.Checkout.setOverlay(true);
 
                     // if current display mode is lightbox and redirect url is not same as response url
                     if (Zip.Checkout) {
@@ -39,7 +43,7 @@ if ('Zip' in window && Zip.Checkout) {
                                         Zip.Checkout.redirectTo(url);
                                         break;
                                     case 'cancelled':
-                                        Zip.Checkout.hideOverlay();
+                                        Zip.Checkout.setOverlay(false);
                                         return;
                                     default:
                                         $j.ajax({
@@ -47,7 +51,7 @@ if ('Zip' in window && Zip.Checkout) {
                                             type: 'GET',
                                             success: function (resp) {
                                                 if (resp.error_message) {
-                                                    Zip.Checkout.hideOverlay();
+                                                    Zip.Checkout.setOverlay(false);
                                                     alert(resp.error_message);
                                                 } else if (resp.redirect_url) {
                                                     Zip.Checkout.redirectTo(resp.redirect_url);

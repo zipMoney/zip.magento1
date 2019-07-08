@@ -210,7 +210,7 @@
                 </portal>
                 <checkout>
                     <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
-                    <loader_image>//s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
+                    <style>//zip-labs-assets.s3-ap-southeast-2.amazonaws.com/plugin/magento1/checkout.css</style>
                     <error>
                         <general>Something went wrong. Please try to checkout out again</general>
                     </error>

@@ -69,10 +69,10 @@ extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
         $block->setTemplate($this->_headerTitleTemplate);
         $block->setData(
             array(
-            'version' => Mage::helper('zip_payment')->getCurrentVersion(),
-            'logo' => Mage::helper('zip_payment')->getConfig()->getLogo(),
-            'element' => $element,
-            'config' => $this->getGroup($element)->asArray()
+                'version' => Mage::helper('zip_payment')->getCurrentVersion(),
+                'logo' => Mage::helper('zip_payment')->getConfig()->getLogo(),
+                'element' => $element,
+                'config' => $this->getGroup($element)->asArray()
             )
         );
 

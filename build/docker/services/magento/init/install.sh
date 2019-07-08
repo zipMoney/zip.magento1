@@ -96,7 +96,7 @@ echo "Creating admin user"
 magerun --root-dir="${WEB_DIR}" admin:user:create "${ADMIN_USERNAME}" "${ADMIN_EMAIL}" "${ADMIN_PASSWORD}" "${ADMIN_FIRSTNAME}" "${ADMIN_LASTNAME}" "Administrators"
 
 echo "Creating customer"
-magerun --root-dir="${WEB_DIR}" admin:user:create "${ADMIN_USERNAME}" "${ADMIN_EMAIL}" "${ADMIN_PASSWORD}" "${ADMIN_FIRSTNAME}" "${ADMIN_LASTNAME}" "Administrators"
+magerun --root-dir="${WEB_DIR}" customer:create "${CUSTOMER_EMAIL}" "${CUSTOMER_PASSWORD}" "${CUSTOMER_FIRSTNAME}" "${CUSTOMER_LASTNAME}" "base"
 
 # Update Configurations
 echo "Updating Configurations"
@@ -106,6 +106,21 @@ magerun --root-dir="${WEB_DIR}" config:set "web/secure/base_url" "https://${APP_
 # Drop table customer_flowpassword
 echo "Database update"
 magerun --root-dir="${WEB_DIR}" "drop table customer_flowpassword;"
+
+# Change Order Prefix
+magerun --root-dir="${WEB_DIR}" db:query "
+UPDATE eav_entity_store
+
+INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
+
+SET eav_entity_store.increment_prefix='${ORDER_PREFIX}'
+
+WHERE eav_entity_type.entity_type_code='order';"
+
+# Diable all cache
+if [ ${CUSTOMER_DISABLE} = "true" ]; then
+    magerun --root-dir="${WEB_DIR}" cache:disable
+fi
 
 # update custom configurations
 IFS="|"

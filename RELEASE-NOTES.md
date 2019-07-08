@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve Health check for SSL settings
 - Provide configuration options to define checkout type
 - Add product type into payment information for order
+- Enhance checkout overlay
 
 ### Fix - Checkout Redirect for One Step checkout
 

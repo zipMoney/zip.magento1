@@ -1,52 +1,27 @@
 <?php
-    $logo = $this->getLogo();
-    $slogan = $this->getSlogan();
+    $isActive = $this->isActive();
 ?>
 
-<div id="zip_payment_overlay">
+<?php if($isActive) : ?>
+
+<div id="zip_payment--checkout_overlay">
     <div class="container">
-        <div class="page-title">
-            <img src="<?php echo $this->escapeUrl($logo); ?>" title="<?php echo $this->escapeHtml($slogan); ?>"
-            alt="<?php echo $this->escapeHtml($slogan); ?>"/>
-            <h1><?php echo $this->escapeHtml($slogan); ?></h1>
+        <div class="zip-spinner">
+            <span id="spin1"
+                class="spin"></span>
+            <span id="spin2"
+                class="spin"></span>
+            <span id="spin3"
+                class="spin"></span>
+            <span id="spin4"
+                class="spin"></span>
         </div>
 
         <div>
-            <h2>Processing your Zip payment</h2>
+            <h2><strong>Processing your Zip payment</strong></h2>
             <h3>Please do not refresh or close this page</h3>
         </div>
-
-        <p>
-            <img src="<?php echo $this->escapeUrl($this->getLoaderImageUrl()); ?>" />
-        </p>
     </div>
 </div>
 
-<style type="text/css">
-#zip_payment_overlay {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(245, 245, 245, 0.85);
-    z-index: 9999;
-    text-align: center;
-}
-#zip_payment_overlay .container {
-    width: 100% !important;
-    padding: 10% 20px 10% 20px;
-}
-#zip_payment_overlay .container > div {
-    margin-bottom: 40px;
-}
-#zip_payment_overlay.active {
-    display: block !important;
-}
-#zip_payment_overlay img {
-    display: inline-block;
-}
-</style>
+<?php endif; ?>
