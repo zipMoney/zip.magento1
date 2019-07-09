@@ -186,8 +186,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         }
 
         //discount and other promotion to balance out
-        $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() :
-        $model->getShippingAddress()->getShippingAmount());
+        $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
 
         if ($shippingAmount > 0) {
             $shippingItem = new OrderItem;
@@ -244,8 +243,11 @@ abstract class Zip_Payment_Model_Api_Abstract
      *
      * @return string
      */
-    protected function getIdempotencyKey()
+    protected function getIdempotencyKey($id = '')
     {
+        if ($id !== '' && $id !== null) {
+            return sha1($id);
+        }
         return uniqid();
     }
 
