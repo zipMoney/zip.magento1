@@ -39,7 +39,6 @@ abstract class Zip_Payment_Model_Api_Abstract
     }
 
     abstract protected function getApi();
-    abstract protected function prepareCreatePayload();
 
     /**
      * Get logger object
@@ -134,9 +133,6 @@ abstract class Zip_Payment_Model_Api_Abstract
                 ->setCity($address->getCity());
 
             $shippingDetail->setAddress($shippingAddress);
-
-            // TODO: implementation for tracking
-            // $shippingDetail->setTracking()
         }
 
         return $shippingDetail;
@@ -248,6 +244,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         if ($id !== '' && $id !== null) {
             return sha1($id);
         }
+
         return uniqid();
     }
 
