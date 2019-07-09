@@ -58,14 +58,40 @@ app:
 server:
     name: nginx
     version: latest
+    dir:
+        root: var/www/html
+        config: etc/nginx/conf.d
+        ssl: etc/ssl/certs
+        log: var/log/nginx
+    port:
+        http: 80
+        https: 443
 
 # Platform
 platform:
     name: php
     version: 5.6-fpm
+    dir:
+        root: var/www/html
+        config: usr/local/etc/php/conf.d
+        log: var/log/php
 
 # Datbase
 database:
     server:
         name: mariadb
         version: latest
+    dir:
+        root: var/lib/mysql
+    root:
+        user: root
+        password: root
+    user:
+        name: user
+        password: password
+    port: 3306
+    env_variable:
+        name: MYSQL_DATABASE
+        root_password: MYSQL_ROOT_PASSWORD
+        user: MYSQL_USER
+        password: MYSQL_PASSWORD

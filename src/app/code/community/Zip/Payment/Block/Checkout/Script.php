@@ -69,16 +69,6 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
     }
 
     /**
-     * get url of checkout styles
-     */
-    public function getCheckoutStyleUrl()
-    {
-        return Mage::helper('zip_payment')
-            ->getConfig()
-            ->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_STYLE_PATH);
-    }
-
-    /**
      * get a list of script urls for supporting specific kind of checkout
      */
     public function getCheckoutScriptList()

@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Engineering - Create Docker compose for local development
 
-- Add docker for local development and testing
+- Add docker support for local development and testing
 - Update Bitbucket Pipeline
 
 ## **2.0.0** - February 14, 2019

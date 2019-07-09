@@ -36,8 +36,8 @@ source ${DOCKER_DIR}/shell/helpers/source.sh
 
 # run docker compose
 log INFO "Start to run Docker containers..."
-# docker-compose -f ${DOCKER_DIR}/docker-compose.app.yml config
-docker-compose -f ${DOCKER_DIR}/docker-compose.app.yml up --build -d --quiet-pull
+# docker-compose -f ${DOCKER_DIR}/docker-compose.yml config
+docker-compose -f ${DOCKER_DIR}/docker-compose.yml up --build -d --quiet-pull
 log SUCCESS "Docker containers are running now."
 
 # waiting until application has been initalized

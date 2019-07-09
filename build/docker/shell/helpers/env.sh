@@ -23,52 +23,14 @@ function loadEnvFromYaml() {
     done
 }
 
-# Generate config file to enviornment variables
-function loadEnvFromJson() {
-    local FILE=$1
-    env_configs=($(cat ${FILE} |
-            tr -d '\n' |
-            grep -o '"[A-Za-z_][A-Za-z_0-9]\+"\s*:\s*\("[^"]\+"\|[0-9\.]\+\|true\|false\|null\)' |
-    sed 's/"\(.*\)"\s*:\s*"\?\([^"]\+\)"\?/\1=\2/'))
+# load config file into environments
+CONFIG_FILE="${DOCKER_DIR}/docker-config.yml"
 
-    for env_config in "${env_configs[@]}"
-    do
-        export $env_config
-    done
-}
-
-# Load all environment variables for all services
-services=( "installer" "server" "platform" "db" )
-
-for service in "${services[@]}"
-do
-    case $service in
-        installer*)
-            SERVICE_NAME=${APP_FRAMEWORK}
-        ;;
-        server*)
-            SERVICE_NAME=${SERVER_NAME}
-        ;;
-        platform*)
-            SERVICE_NAME=${PLATFORM_NAME}
-        ;;
-        db*)
-            SERVICE_NAME=${DATABASE_SERVER_NAME}
-        ;;
-        *)
-            log ERROR "Sorry, we can't recoginize this service"
-        ;;
-    esac
-
-    CONFIG_FILE="${DOCKER_DIR}/config/${SERVICE_NAME}.yml"
-
-    if [ -f "${CONFIG_FILE}" ]; then
-        loadEnvFromYaml ${CONFIG_FILE}
-    else
-        log ERROR "Can't load ${SERVICE_NAME}'s docker configuration file: ${CONFIG_FILE}"
-    fi
-
-done
+if [ -f "${CONFIG_FILE}" ]; then
+    loadEnvFromYaml ${CONFIG_FILE}
+else
+    log ERROR "Can't load ${SERVICE_NAME}'s docker configuration file: ${CONFIG_FILE}"
+fi
 
 # set env variables for configruations
 export APP_CONFIGURATIONS=${APP_CONFIG[*]}

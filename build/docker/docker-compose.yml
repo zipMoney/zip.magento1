@@ -31,6 +31,12 @@ services:
             - ADMIN_LASTNAME=${APP_ADMIN_LASTNAME}
             - ADMIN_EMAIL=${APP_ADMIN_EMAIL}
             - ADMIN_PASSWORD=${APP_ADMIN_PASSWORD}
+            - CUSTOMER_EMAIL=${APP_CUSTOMER_EMAIL}
+            - CUSTOMER_PASSWORD=${APP_CUSTOMER_PASSWORD}
+            - CUSTOMER_FIRSTNAME=${APP_CUSTOMER_FIRSTNAME}
+            - CUSTOMER_LASTNAME=${APP_CUSTOMER_LASTNAME}
+            - ORDER_PREFIX=${APP_ORDER_PREFIX}
+            - CACHE_DISABLE=${APP_CACHE_DISABLE}
         entrypoint: /tmp/init/entrypoint.sh
         depends_on:
             - db
