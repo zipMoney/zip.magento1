@@ -52,7 +52,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
 
         try {
             $charge = $this->getApi()
-                ->chargesCreate($payload, $this->getIdempotencyKey());
+                ->chargesCreate($payload, $this->getIdempotencyKey($order->getIncrementId()));
 
             if (isset($charge->error)) {
                 Mage::throwException($this->getHelper()->__('Could not create the charge'));
@@ -120,7 +120,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     public function cancel($chargeId)
     {
         try {
-            $this->getLogger()->debug('Cancel charge: '. $chargeId);
+            $this->getLogger()->debug('Cancel charge: ' . $chargeId);
 
             $charge = $this->getApi()
                 ->chargesCancel($chargeId, $this->getIdempotencyKey());
@@ -180,7 +180,6 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
             ->setCartReference((string) $this->getOrder()->getId());
 
         return $chargeOrder;
-
     }
 
 
@@ -222,5 +221,10 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     public function getReceiptNumber()
     {
         return $this->getResponse() ? $this->getResponse()->getReceiptNumber() : null;
+    }
+
+    public function getProduct()
+    {
+        return $this->getResponse() ? $this->getResponse()->getProduct() : null;
     }
 }
