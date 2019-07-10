@@ -459,7 +459,7 @@ class OrderItem implements ArrayAccess
     public function setProductCode($product_code)
     {
         if (!empty($product_code)) {
-            // Only accept phone number with maximum 20 length
+            // Only accept product SKU with maximum 49 length
             $product_code = substr(trim($product_code), 0, self::PRODUCT_CODE_MAX_LENGTH);
         }
 

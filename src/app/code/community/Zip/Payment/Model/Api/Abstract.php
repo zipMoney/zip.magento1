@@ -165,11 +165,10 @@ abstract class Zip_Payment_Model_Api_Abstract
             $amount = (float) ($price * $quantity);
             $totalItemAmount += $amount;
             $thumbnailUrl = (string) Mage::helper('catalog/image')->init($product, 'thumbnail');
-            $safeSKU = mb_strcut($item->getSku(), 0, 50);
 
             $orderItem
                 ->setReference((string) $item->getId())
-                ->setProductCode($safeSKU)
+                ->setProductCode((string) $item->getSku())
                 ->setName((string) $item->getName())
                 ->setDescription((string) strip_tags($item->getDescription()))
                 ->setAmount($price)
