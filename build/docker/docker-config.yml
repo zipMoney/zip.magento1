@@ -76,7 +76,7 @@ platform:
         config: usr/local/etc/php/conf.d
         log: var/log/php
 
-# Datbase
+# Database
 database:
     server:
         name: mariadb
