@@ -137,12 +137,23 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::app()->getFrontController()->getAction()->getFullActionName();
     }
 
+
+    /**
+     * get path for current page
+     */
+    public function getPagePath()
+    {
+        $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+        $url = Mage::getSingleton('core/url')->parseUrl($currentUrl);
+        return $url->getPath();
+    }
+
     /**
      * is currently using one page checkout
      */
     public function isUsingOnePageCheckout()
     {
-        return $this->getPageIdentifier() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER &&
+        return $this->getPagePath() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER &&
             $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_TYPE_PATH) ==
             Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType::CHECKOUT_TYPE_ONE_PAGE;
     }
@@ -152,7 +163,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isUsingOneStepCheckout()
     {
-        return ($this->getPageIdentifier() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER || $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH . '/' . $this->getPageIdentifier())) && 
+        return $this->getPagePath() == rtrim($this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_PATH), '/') && 
         $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_TYPE_PATH) ==
         Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType::CHECKOUT_TYPE_ONE_STEP;
     }

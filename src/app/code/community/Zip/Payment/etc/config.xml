@@ -209,6 +209,7 @@
                     <production>https://merchant.zipmoney.com.au/</production>
                 </portal>
                 <checkout>
+                    <path>/checkout/onepage</path>
                     <js_lib>https://static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
                     <error>
                         <general>Something went wrong. Please try to checkout out again</general>
@@ -221,14 +222,6 @@
                         <heading>Order Placed Successfully</heading>
                         <content><![CDATA[<p>Congratulations! You have successfully placed your order, pending approval of your Zip Money application.</p><p>You will receive an email with instructions shortly on whether your application has been approved or not. If approved you will be able to complete your purchase following the link in the email.</p>]]></content>
                     </referred>
-                    <onestepcheckouts>
-                        <onestepcheckout_index_index>1</onestepcheckout_index_index>
-                        <iwd_opc_index_index>1</iwd_opc_index_index>
-                        <opc_index_index>1</opc_index_index>
-                        <aitcheckout_checkout_index>1</aitcheckout_checkout_index>
-                        <aw_onestepcheckout_index_index>1</aw_onestepcheckout_index_index>
-                        <gomage_checkout_onepage_index>1</gomage_checkout_onepage_index>
-                    </onestepcheckouts>
                 </checkout>
                 <country_currency>
                     <supported_countries>AU,NZ</supported_countries>
