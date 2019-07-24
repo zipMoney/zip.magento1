@@ -231,8 +231,8 @@
                     </onestepcheckouts>
                 </checkout>
                 <country_currency>
-                    <supported_countries>AU</supported_countries>
-                    <supported_currencies>AUD</supported_currencies>
+                    <supported_countries>AU,NZ</supported_countries>
+                    <supported_currencies>AUD,NZD</supported_currencies>
                 </country_currency>
                 <api>
                     <timeout>0</timeout>

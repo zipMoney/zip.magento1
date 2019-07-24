@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Provide configuration options to define checkout type
 - Add product type into payment information for order
 - Improve UI for checkout overlay and spinner
+- Add country and currency supports for New Zealand
 
 ### Fix - Checkout Redirect for One Step checkout
 
