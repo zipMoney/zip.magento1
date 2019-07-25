@@ -437,8 +437,9 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                 Mage::throwException($this->_getHelper()->__('Please provide refund amount'));
             }
 
-            $orderId = $payment->getOrder()->getIncrementId();
-            $storeId = $payment->getOrder()->getStoreId();
+            $order = $payment->getOrder();
+            $orderId = $order->getIncrementId();
+            $storeId = $order->getStoreId();
             $chargeId = preg_replace('/_rn_[0-9]+?$/i', '', $transactionID);
 
             // Create refund
@@ -453,7 +454,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
             $payment
                 ->setTransactionId($refund->getId())
                 ->setIsTransactionClosed(true)
-                ->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_VOID);
+                ->setStatus(self::STATUS_VOID);
         } catch (Exception $e) {
             $this->_getHelper()->unsetCheckoutSessionData();
             Mage::throwException($this->_getHelper()->__('Could not refund the payment - ' . $e->getMessage()));
@@ -469,7 +470,10 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      */
     public function cancel(Varien_Object $payment)
     {
-        if ($payment->getOrder()->hasInvoices()) {
+        $order = $payment->getOrder();
+
+        // when order state is not `Pending` and order invoices have not been generated
+        if ($order->getState() !== Mage_Sales_Model_Order::STATE_PENDING_PAYMENT && !$payment->getOrder()->getInvoiceCollection()->count()) {
             $this->void($payment);
         }
 
