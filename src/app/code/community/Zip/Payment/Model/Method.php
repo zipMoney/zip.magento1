@@ -492,7 +492,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         $orderId = $payment->getOrder()->getIncrementId();
-        $chargeId = $payment->getParentTransactionID();
+        $chargeId = preg_replace('/^' . self::AUTHORIZE_TRANSACTION_ID_PREFIX . '/i', '', $payment->getParentTransactionID());
         $storeId = $payment->getOrder()->getStoreId();
 
         $this->getLogger()->debug('Cancel Charge For Order: ' . $orderId);
