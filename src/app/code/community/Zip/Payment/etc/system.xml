@@ -196,6 +196,7 @@
                                                     </sort_order>
                                                 </fields>
                                             </zip_payment_setting_payment>
+
                                             <zip_payment_setting_checkout type="group" translate="label">
                                                 <label>Checkout</label>
                                                 <frontend_type>text</frontend_type>
@@ -204,7 +205,7 @@
                                                 <show_in_store>1</show_in_store>
                                                 <sort_order>20</sort_order>
                                                 <fields>
-                                                    <type translate="label">
+                                                    <checkout_type translate="label">
                                                         <label>Checkout Type</label>
                                                         <tooltip>Select checkout type. one page checkout or one step checkout</tooltip>
                                                         <comment>This setting is used to identify which type of checkout has been used</comment>
@@ -215,8 +216,8 @@
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
-                                                    </type>
-                                                    <path translate="label">
+                                                    </checkout_type>
+                                                    <checkout_path translate="label">
                                                         <label>Path of Checkout Page</label>
                                                         <tooltip>Please enter a path to identify checkout page, not includes last slash</tooltip>
                                                         <comment>Sample checkout path: /checkout/onepage, /onestepcheckout</comment>
@@ -226,7 +227,7 @@
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
-                                                    </path>
+                                                    </checkout_path>
                                                     <display_mode translate="label">
                                                         <label>Display Mode</label>
                                                         <tooltip>Select display mode for Zip Checkout, popup or redirect</tooltip>
@@ -239,46 +240,12 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                     </display_mode>
-                                                    <referred_application type="group" translate="label">
-                                                        <label>Referred Appication</label>
-                                                        <frontend_type>text</frontend_type>
-                                                        <show_in_default>1</show_in_default>
-                                                        <show_in_website>1</show_in_website>
-                                                        <show_in_store>1</show_in_store>
-                                                        <sort_order>40</sort_order>
-                                                        <fields>
-                                                            <order_creation translate="label">
-                                                                <label>Order Handling</label>
-                                                                <tooltip>Zip Money refer application default order handling</tooltip>
-                                                                <comment>Required for Zip Money product only. The default value is “Yes”, create order for referred application</comment>
-                                                                <config_path>payment/zip_payment/checkout/referred/order_creation</config_path>
-                                                                <frontend_type>select</frontend_type>
-                                                                <source_model>adminhtml/system_config_source_yesno</source_model>
-                                                                <sort_order>10</sort_order>
-                                                                <show_in_default>1</show_in_default>
-                                                                <show_in_website>1</show_in_website>
-                                                                <show_in_store>1</show_in_store>
-                                                            </order_creation>
-
-                                                            <order_status translate="label">
-                                                                <label>New Order Status</label>
-                                                                <tooltip>Define the order status when a referred order be placed</tooltip>
-                                                                <frontend_type>select</frontend_type>
-                                                                <config_path>payment/zip_payment/checkout/referred/order_status</config_path>
-                                                                <source_model>adminhtml/system_config_source_order_status_new</source_model>
-                                                                <sort_order>20</sort_order>
-                                                                <show_in_default>1</show_in_default>
-                                                                <show_in_website>1</show_in_website>
-                                                                <show_in_store>1</show_in_store>
-                                                            </order_status>
-                                                        </fields>
-                                                    </referred_application>
                                                     <click_collect translate="label comment">
-                                                        <label>Click & Collect Method Code</label>
-                                                        <tooltip>Enter a method code to help zip Payment recognize the Click & Collect shipping method</tooltip>
-                                                        <comment>We'll use regex expression to match all shipping methods includes this method code. eg: 'pick_up' method code will match all shipping methods like '***pick_up****'. Empty field means Zip Payment will not detect Click & Collect shipping method.</comment>
+                                                        <label>Click and Collect Method Code</label>
+                                                        <comment>Enter a method code to help zip Payment recognize the Click and Collect shipping method</comment>
+                                                        <tooltip>We'll use regex expression to match all shipping methods includes this method code. eg: 'pick_up' method code will match all shipping methods like '***pick_up****'. Empty field means Zip Payment will not detect Click and Collect shipping method.</tooltip>
                                                         <config_path>payment/zip_payment/checkout/click_collect</config_path>
-                                                        <sort_order>50</sort_order>
+                                                        <sort_order>40</sort_order>
                                                         <frontend_type>text</frontend_type>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
@@ -286,6 +253,41 @@
                                                     </click_collect>
                                                 </fields>
                                             </zip_payment_setting_checkout>
+
+                                            <zip_payment_referred_application type="group" translate="label">
+                                                <label>Referred Appication</label>
+                                                <frontend_type>text</frontend_type>
+                                                <show_in_default>1</show_in_default>
+                                                <show_in_website>1</show_in_website>
+                                                <show_in_store>1</show_in_store>
+                                                <sort_order>40</sort_order>
+                                                <fields>
+                                                    <order_creation translate="label">
+                                                        <label>Order Handling</label>
+                                                        <tooltip>Zip Money refer application default order handling</tooltip>
+                                                        <comment>Required for Zip Money product only. The default value is “Yes”, create order for referred application</comment>
+                                                        <config_path>payment/zip_payment/checkout/referred/order_creation</config_path>
+                                                        <frontend_type>select</frontend_type>
+                                                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                                                        <sort_order>10</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </order_creation>
+
+                                                    <order_status translate="label">
+                                                        <label>New Order Status</label>
+                                                        <tooltip>Define the order status when a referred order be placed</tooltip>
+                                                        <frontend_type>select</frontend_type>
+                                                        <config_path>payment/zip_payment/checkout/referred/order_status</config_path>
+                                                        <source_model>adminhtml/system_config_source_order_status_new</source_model>
+                                                        <sort_order>20</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </order_status>
+                                                </fields>
+                                            </zip_payment_referred_application>
 
                                             <zip_payment_setting_country_currency type="group" translate="label">
                                                 <label>Country and Currency</label>
