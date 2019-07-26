@@ -472,8 +472,8 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     {
         $order = $payment->getOrder();
 
-        // when order state is not `Pending` and order invoices have not been generated
-        if ($order->getState() !== Mage_Sales_Model_Order::STATE_PENDING_PAYMENT && !$payment->getOrder()->getInvoiceCollection()->count()) {
+        // when order is a referred order and order invoices have not been generated
+        if (!$this->_getHelper()->isReferredOrder($order) && !$order->getInvoiceCollection()->count()) {
             $this->void($payment);
         }
 

@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## **2.1.0** - July 25, 2019
+## **2.1.0** - July 26, 2019
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.bz2)
 
@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve UI for checkout overlay and spinner
 - Add country and currency supports for New Zealand
 - Add Cancel function for Authorized Charge
+- Add support for Click & Collect shipping method
 
 ### Fix - Checkout Redirect for One Step checkout
 
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Using secure https url in secure website for checkout resources
 - Only accept product SKU with maximum 49 length
 - Only accept phone number with maximum 15 length
+- Fix Void function for Authorized Charge
 
 ### Engineering - Create Docker compose for local development
 

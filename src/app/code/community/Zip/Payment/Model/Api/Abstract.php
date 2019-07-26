@@ -115,7 +115,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         $shippingDetail = new OrderShipping();
 
         $address = $model->getShippingAddress();
-        $isPickup = $model->getIsVirtual() || $address == null;
+        $isPickup = $this->getHelper()->isPickupOrder($model);
         $shippingDetail->setPickup($isPickup);
         $region = $address->getRegion();
 

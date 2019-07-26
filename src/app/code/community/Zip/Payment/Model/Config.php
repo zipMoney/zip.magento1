@@ -75,8 +75,17 @@ class Zip_Payment_Model_Config
     const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/checkout/custom_script';
     const CONFIG_CHECKOUT_PATH_PATH = 'payment/zip_payment/checkout/path';
 
+    /**
+     * Referred
+     */
+
     const CONFIG_CHECKOUT_REFERRED_ORDER_CREATION_PATH = 'payment/zip_payment/checkout/referred/order_creation';
     const CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH = 'payment/zip_payment/checkout/referred/order_status';
+
+    /**
+     * Click & Collect
+     */
+    const CONFIG_CHECKOUT_CLICK_COLLECT_PATH = 'payment/zip_payment/checkout/click_collect';
 
     /**
      * Response

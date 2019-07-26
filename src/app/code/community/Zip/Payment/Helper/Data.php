@@ -185,6 +185,34 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return false;
     }
 
+    /**
+     * check whether an order is a pickup order
+     */
+    public function isPickupOrder($order)
+    {
+        if ($order && $order->getId()) {
+            // virtual product will use pick up shipping method
+            if($order->getIsVirtual()) {
+                return true;
+            }
+            $shippingAddress = $order->getShippingAddress();
+            if($shippingAddress == null) {
+                return true;
+            }
+            $shippingMethod = $shippingAddress->getShippingMethod();
+            if(empty($shippingMethod)) {
+                return true;
+            }
+            // Check click and collect and set pickup as true
+            $clickCollect = $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_CLICK_COLLECT_PATH);
+            if(!empty($clickCollect) && preg_match('/.' . $clickCollect .  '*/', $shippingMethod)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     /*******************************************
      * SESSION
