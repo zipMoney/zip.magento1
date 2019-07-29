@@ -41,4 +41,5 @@ pipelines:
             - echo "Deploying to Production"
             # - npm run deploy
             # - npm run test:e2e
+            - sh ./build/shell/install-packages.sh
             - sh ./build/shell/post-deploy.sh
