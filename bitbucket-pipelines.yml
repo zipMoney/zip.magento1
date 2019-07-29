@@ -41,4 +41,4 @@ pipelines:
             - echo "Deploying to Production"
             # - npm run deploy
             # - npm run test:e2e
-            - compose run-script deploy:post
+            - sh ./build/shell/post-deploy.sh
