@@ -3,7 +3,7 @@
 ##########################################################
 ## Post-deployment Shell Script
 ##########################################################
-$FILE_NAME = 'composer.json'
+$FILE_NAME='composer.json'
 
 # get release version
 RELEASE_VERSION=$(cat $FILE_NAME | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[ ",]//g');
