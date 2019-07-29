@@ -3,6 +3,7 @@
 ##########################################################
 ## Post-deployment Shell Script
 ##########################################################
+$FILE_NAME = 'composer.json'
 
 # get release version
 RELEASE_VERSION=$(cat $FILE_NAME | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[ ",]//g');
@@ -19,10 +20,10 @@ git push origin release/${RELEASE_VERSION}
 ## Deploy code to the Github
 ##########################################################
 
-GITHUB_REPO="https://github.com/zipMoney/zip.magento1"
+# GITHUB_REPO="https://github.com/zipMoney/zip.magento1"
 
-# curl -u ${GITHUB_USERNAME}:${GITHUB_ACCESS_TOKEN} https://api.github.com/user
-git remote add github ${GITHUB_REPO}
-git push github master
-git push github release/${RELEASE_VERSION}
-git push --tags github
+# # curl -u ${GITHUB_USERNAME}:${GITHUB_ACCESS_TOKEN} https://api.github.com/user
+# git remote add github ${GITHUB_REPO}
+# git push github master
+# git push github release/${RELEASE_VERSION}
+# git push --tags github
