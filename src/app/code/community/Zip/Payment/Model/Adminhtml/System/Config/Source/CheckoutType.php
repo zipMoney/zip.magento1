@@ -25,7 +25,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType
         return array(
             array(
                 'value' => self::CHECKOUT_TYPE_ONE_PAGE,
-                'label' => Mage::helper('zip_payment')->__('One Page Checkout')
+                'label' => Mage::helper('zip_payment')->__('Default Magento Checkout')
             ),
             array(
                 'value' => self::CHECKOUT_TYPE_ONE_STEP,

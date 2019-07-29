@@ -242,8 +242,8 @@
                                                     </display_mode>
                                                     <click_collect translate="label comment">
                                                         <label>Click and Collect Method Code</label>
-                                                        <comment>Enter a method code to help zip Payment recognize the Click and Collect shipping method</comment>
-                                                        <tooltip>We'll use regex expression to match all shipping methods includes this method code. eg: 'pick_up' method code will match all shipping methods like '***pick_up****'. Empty field means Zip Payment will not detect Click and Collect shipping method.</tooltip>
+                                                        <comment>Enter a code/word to help Zip recognise the 'Click and Collect' shipping method.</comment>
+                                                        <tooltip>We'll use regex expression to match all shipping methods includes this method code. pickup means '*pickup*' that will matched "auspost_pickup" or "pickup_****" or "pickup****". Empty field means Zip Payment will not detect Click and Collect shipping method.</tooltip>
                                                         <config_path>payment/zip_payment/checkout/click_collect</config_path>
                                                         <sort_order>40</sort_order>
                                                         <frontend_type>text</frontend_type>
