@@ -7,19 +7,20 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
+class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group
+extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
-    protected $noticeTemplate = 'zip/payment/system/config/fieldset/group/notice.phtml';
+    protected $_noticeTemplate = 'zip/payment/system/config/fieldset/group/notice.phtml';
 
-    protected $notificationFeedModel = null;
-    protected $currentVersion = '';
-    protected $notificationData = array();
+    protected $_notificationFeedModel = null;
+    protected $_currentVersion = '';
+    protected $_notificationData = array();
 
     protected function _construct()
     {
-        $this->notificationFeedModel = Mage::getSingleton('zip_payment/adminhtml_notification_feed');
-        $this->currentVersion = Mage::helper('zip_payment')->getCurrentVersion();
-        $this->notificationData = $this->notificationFeedModel->getFeedData();
+        $this->_notificationFeedModel = Mage::getSingleton('zip_payment/adminhtml_notification_feed');
+        $this->_currentVersion = Mage::helper('zip_payment')->getCurrentVersion();
+        $this->_notificationData = $this->_notificationFeedModel->getFeedData();
 
         parent::_construct();
     }
@@ -27,10 +28,10 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     protected function _getHeaderCommentHtml($element)
     {
         $block = Mage::app()->getLayout()->createBlock('core/template');
-        $block->setTemplate($this->noticeTemplate);
+        $block->setTemplate($this->_noticeTemplate);
         $block->setData(
             array(
-                'version_notification' => $this->notificationFeedModel->getVersionUpgradeNotification(),
+                'version_notification' => $this->_notificationFeedModel->getVersionUpgradeNotification(),
                 'latest_news' => $this->getLatestNews()
             )
         );
@@ -45,8 +46,8 @@ class Zip_Payment_Block_Adminhtml_System_Config_Fieldset_Group extends Mage_Admi
     {
         $notificationField = Zip_Payment_Model_Adminhtml_Notification_Feed::NOTIFICATION_FIELD;
 
-        if (isset($this->notificationData[$notificationField])) {
-            $feedData = array_reverse($this->notificationData[$notificationField]);
+        if (isset($this->_notificationData[$notificationField])) {
+            $feedData = array_reverse($this->_notificationData[$notificationField]);
 
             if (!empty($feedData)) {
                 return $feedData[0];

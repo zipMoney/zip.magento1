@@ -14,9 +14,8 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const STATUS_WARNING = 2;
     const STATUS_ERROR = 3;
 
-    const SSL_DISABLED_MESSAGE = 'Your site does not have SSL Certificates';
+    const SSL_DISABLED_MESSAGE = 'Your store {store_name} ({store_url}) does not have SSL';
     const CURL_EXTENSION_DISABLED = 'CURL extension has not been installed or disabled';
-    const CURL_SSL_VERIFICATION_DISABLED_MESSAGE = 'CURL SSL Verification has been disabled';
     const API_CERTIFICATE_INVALID_MESSAGE = 'SSL Certificate is not valid for the API';
     const API_PRIVATE_KEY_INVALID_MESSAGE = 'Your API private key is empty or invalid';
     const API_PUBLIC_KEY_INVALID_MESSAGE = 'Your API public key is empty or invalid';
@@ -26,7 +25,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
 
-    protected $result = array(
+    protected $_result = array(
         'overall_status' => self::STATUS_SUCCESS,
         'items' => array()
     );
@@ -43,8 +42,9 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     protected function getHealthResult()
     {
         $config = Mage::helper('zip_payment')->getConfig();
+        $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
+                ->generateApiConfiguration();
 
-        $sslEnabled = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
         $curlEnabled = function_exists('curl_version');
         $publicKey = $config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
         $privateKey = $config->getValue(self::CONFIG_PRIVATE_KEY_PATH);
@@ -65,45 +65,33 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         }
 
         // check whether SSL is enabled
-        if (!$sslEnabled) {
-            $this->appendFailedItem(self::STATUS_WARNING, self::SSL_DISABLED_MESSAGE);
-        }
+        $this->checkStoreSSLSettings();
 
         // check whether CURL is enabled ot not
         if (!$curlEnabled) {
             $this->appendFailedItem(self::STATUS_ERROR, self::CURL_EXTENSION_DISABLED);
         } else {
-            $curl = curl_init();
-
-            $curlSSLVerificationEnabled = curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER) && curl_getinfo($curl, CURLOPT_SSL_VERIFYPEER);
-            $apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration();
-            $url = $apiConfig->getHost();
-
-            curl_setopt($curl, CURLOPT_NOBODY, true);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 20);
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            // if SSL verification is disabled
-            if (!$curlSSLVerificationEnabled) {
-                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-
-                $this->appendFailedItem(self::STATUS_WARNING, self::CURL_SSL_VERIFICATION_DISABLED_MESSAGE);
-            }
+            $curl = new Varien_Http_Adapter_Curl();
+            $curl->setConfig(
+                array(
+                    'timeout' => 10
+                )
+            );
 
             try {
                 $headers = array(
-                    'Authorization: ' . $apiConfig->getApiKeyPrefix('Authorization') . ' ' . $apiConfig->getApiKey('Authorization'),
+                    'Authorization: ' .
+                    $apiConfig->getApiKeyPrefix('Authorization') .
+                    ' ' .
+                    $apiConfig->getApiKey('Authorization'),
                     'Content-Type: application/json',
                     'Zip-Version: 2017-03-01'
                 );
 
-                curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-                curl_exec($curl);
+                $curl->write(Zend_Http_Client::GET, $apiConfig->getHost(), '1.1', $headers);
 
-                $sslVerified = curl_getinfo($curl, CURLINFO_SSL_VERIFYRESULT) == 0;
-                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                $sslVerified = $curl->getInfo(CURLINFO_SSL_VERIFYRESULT) == 0;
+                $httpCode = $curl->getInfo(CURLINFO_HTTP_CODE);
 
                 // if API certification invalid
                 if (!$sslVerified) {
@@ -119,29 +107,62 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 $this->appendFailedItem(self::STATUS_ERROR, self::CONFIG_PRIVATE_KEY_PATH);
             }
 
-            curl_close($curl);
+            $curl->close();
         }
 
         usort(
-            $this->result['items'], function ($a, $b) {
+            $this->_result['items'], function ($a, $b) {
                 return $b['status'] - $a['status'];
             }
         );
 
-        return $this->result;
+        return $this->_result;
 
     }
+
+    protected function checkStoreSSLSettings()
+    {
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    if ($store->getIsActive() !== '1'
+                        || Mage::getStoreConfig(Zip_Payment_Model_Config::CONFIG_ACTIVE_PATH, $store->getStoreId()) !== '1'
+                    ) {
+                        continue;
+                    }
+
+                    $storeSecureUrl = Mage::getStoreConfig(
+                        Mage_Core_Model_Url::XML_PATH_SECURE_URL, $store->getStoreId()
+                    );
+                    $url = parse_url($storeSecureUrl);
+
+                    if ($url['scheme'] !== 'https') {
+                        $message = self::SSL_DISABLED_MESSAGE;
+                        $message = str_replace('{store_name}', $store->getName(), $message);
+                        $message = str_replace('{store_url}', $storeSecureUrl, $message);
+
+                        $this->appendFailedItem(
+                            self::STATUS_WARNING,
+                            $message
+                        );
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * append failed item into health result
      */
     protected function appendFailedItem($status, $label)
     {
-        if (!is_null($status) && $this->result['overall_status'] < $status) {
-            $this->result['overall_status'] = $status;
+        if ($status !== null && $this->_result['overall_status'] < $status) {
+            $this->_result['overall_status'] = $status;
         }
 
-        $this->result['items'][] = array(
+        $this->_result['items'][] = array(
             "status" => $status,
             "label" => $label
         );

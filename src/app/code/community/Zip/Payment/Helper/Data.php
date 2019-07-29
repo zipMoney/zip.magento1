@@ -115,6 +115,15 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         Mage::app()->getFrontController()->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
     }
 
+    /**
+     * check whether checkout display model is redirect
+     */
+    public function isRedirectCheckoutDisplayModel()
+    {
+        return $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_DISPLAY_MODE_PATH) ==
+            Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
+    }
+
 
     /*******************************************
      * PAGE DETECTION
@@ -128,20 +137,38 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::app()->getFrontController()->getAction()->getFullActionName();
     }
 
+
     /**
-     * is currently using one page checkout
+     * get path for current page
      */
-    public function isOnepageCheckout()
+    public function getPagePath()
     {
-        return $this->getPageIdentifier() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER;
+        $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+        $url = Mage::getSingleton('core/url')->parseUrl($currentUrl);
+        return $url->getPath();
     }
 
     /**
-     * checkout current page is onestep checkout
+     * is currently using one page checkout
      */
-    public function isOnestepCheckout()
+    public function isUsingOnePageCheckout()
     {
-        return $this->getConfig()->getFlag(Zip_Payment_Model_Config::CONFIG_CHECKOUT_ONESTEPCHECKOUTS_PATH . '/' . $this->getPageIdentifier());
+        return $this->getPagePath() == Zip_Payment_Model_Config::ONEPAGE_CHECKOUT_IDENTIFIER &&
+            $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_TYPE_PATH) ==
+            Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType::CHECKOUT_TYPE_ONE_PAGE;
+    }
+
+    /**
+     * is current page onestep checkout
+     */
+    public function isUsingOneStepCheckout()
+    {
+        $path = rtrim($this->getPagePath(), '/');
+        $checkoutPath = rtrim($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_PATH_PATH), '/');
+
+        return $path == $checkoutPath &&
+        $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_TYPE_PATH) ==
+        Zip_Payment_Model_Adminhtml_System_Config_Source_CheckoutType::CHECKOUT_TYPE_ONE_STEP;
     }
 
     /**
@@ -150,11 +177,40 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     public function isReferredOrder($order)
     {
         if ($order && $order->getId()) {
-            return $order->getStatus() === $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH);
+            return $order->getStatus() === $this
+                ->getConfig()
+                ->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_REFERRED_ORDER_STATUS_PATH);
         }
 
         return false;
+    }
 
+    /**
+     * check whether an order is a pickup order
+     */
+    public function isPickupOrder($order)
+    {
+        if ($order && $order->getId()) {
+            // virtual product will use pick up shipping method
+            if($order->getIsVirtual()) {
+                return true;
+            }
+            $shippingAddress = $order->getShippingAddress();
+            if($shippingAddress == null) {
+                return true;
+            }
+            $shippingMethod = $shippingAddress->getShippingMethod();
+            if(empty($shippingMethod)) {
+                return true;
+            }
+            // Check click and collect and set pickup as true
+            $clickCollect = $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_CLICK_COLLECT_PATH);
+            if(!empty($clickCollect) && preg_match('/.' . $clickCollect .  '*/', $shippingMethod)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -184,15 +240,16 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->getCheckoutSession()->getData(Zip_Payment_Model_Config::CHECKOUT_SESSION_KEY);
     }
 
-     /**
-      * get checkout id from checkout session
-      *
-      * @return string
-      */
+    /**
+     * get checkout id from checkout session
+     *
+     * @return string
+     */
     public function getCheckoutIdFromSession()
     {
         $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY] : null;
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY]) ?
+            $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_ID_KEY] : null;
     }
 
     /**
@@ -203,7 +260,8 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCheckoutRedirectUrlFromSession()
     {
         $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY] : null;
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY]) ?
+            $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_REDIRECT_URL_KEY] : null;
     }
 
     /**
@@ -214,7 +272,8 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCheckoutStateFromSession()
     {
         $sessionData = $this->getCheckoutSessionData();
-        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY]) ? $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY] : null;
+        return isset($sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY]) ?
+            $sessionData[Zip_Payment_Model_Api_Checkout::CHECKOUT_STATE_KEY] : null;
     }
 
     /**
@@ -234,4 +293,13 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
 
+    /**
+     * delete log file
+     */
+    public function removeLogFile($filename)
+    {
+        $path = Mage::getBaseDir('var') . DS . 'log' . DS . $filename;
+        $io = new Varien_Io_File();
+        $io->rm($path);
+    }
 }

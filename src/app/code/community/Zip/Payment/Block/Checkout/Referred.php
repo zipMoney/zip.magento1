@@ -13,6 +13,6 @@ class Zip_Payment_Block_Checkout_Referred extends Zip_Payment_Block_Checkout_Pag
     const CONFIG_CHECKOUT_REFERRED_HEADING_PATH = 'payment/zip_payment/checkout/referred/heading';
     const CONFIG_CHECKOUT_REFERRED_CONTENT_PATH = 'payment/zip_payment/checkout/referred/content';
 
-    protected $headingTextConfigPath = self::CONFIG_CHECKOUT_REFERRED_HEADING_PATH;
-    protected $contentHtmlConfigPath = self::CONFIG_CHECKOUT_REFERRED_CONTENT_PATH;
+    protected $_headingTextConfigPath = self::CONFIG_CHECKOUT_REFERRED_HEADING_PATH;
+    protected $_contentHtmlConfigPath = self::CONFIG_CHECKOUT_REFERRED_CONTENT_PATH;
 }

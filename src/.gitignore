@@ -1,0 +1,11 @@
+*
+!.gitignore
+!app/code/community/Zip/Payment
+!app/design/adminhtml/default/default/template/zip/payment
+!app/design/frontend/base/default/layout/zip/payment.xml
+!app/design/frontend/base/default/template/zip/payment
+!app/etc/modules/Zip_Payment.xml
+!app/locale/en_US/Zip_Payment.csv
+!js/zip/payment
+!lib/Zip
+

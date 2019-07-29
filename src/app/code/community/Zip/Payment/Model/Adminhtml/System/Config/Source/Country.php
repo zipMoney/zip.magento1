@@ -15,7 +15,9 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_Country extends Mage_Admi
     public function toOptionArray($isMultiselect = false)
     {
         $options = array();
-        $supportedCountries = Mage::helper('zip_payment')->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_SUPPORTED_COUNTRIES_PATH);
+        $supportedCountries = Mage::helper('zip_payment')
+            ->getConfig()
+            ->getValue(Zip_Payment_Model_Config::CONFIG_SUPPORTED_COUNTRIES_PATH);
 
         if (!empty($supportedCountries)) {
             $supportedCountries = explode(',', (string) $supportedCountries);

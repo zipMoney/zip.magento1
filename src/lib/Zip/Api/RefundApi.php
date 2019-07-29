@@ -94,7 +94,7 @@ class RefundApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/javascript'));
-        if (!is_null($_header_accept)) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 
@@ -139,23 +139,28 @@ class RefundApi
                 '/refunds'
             );
 
-            return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
+            return array($this->apiClient->getSerializer()
+                ->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 201:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 400:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 401:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 402:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\ErrorResponse', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
             }
@@ -201,7 +206,7 @@ class RefundApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/javascript'));
-        if (!is_null($_header_accept)) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 
@@ -250,11 +255,13 @@ class RefundApi
                 '/refunds'
             );
 
-            return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\InlineResponse200[]', $httpHeader), $statusCode, $httpHeader);
+            return array($this->apiClient->getSerializer()
+                ->deserialize($response, 'Zip\Model\InlineResponse200[]', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\InlineResponse200[]', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\InlineResponse200[]', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
             }
@@ -301,7 +308,7 @@ class RefundApi
         $headerParams = array();
         $formParams = array();
         $_header_accept = $this->apiClient->selectHeaderAccept(array('application/javascript'));
-        if (!is_null($_header_accept)) {
+        if ($_header_accept !== null) {
             $headerParams['Accept'] = $_header_accept;
         }
 
@@ -344,11 +351,13 @@ class RefundApi
                 '/refunds/{id}'
             );
 
-            return array($this->apiClient->getSerializer()->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
+            return array($this->apiClient->getSerializer()
+                ->deserialize($response, 'Zip\Model\Refund', $httpHeader), $statusCode, $httpHeader);
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()
+                        ->deserialize($e->getResponseBody(), 'Zip\Model\Refund', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
             }

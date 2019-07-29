@@ -14,7 +14,7 @@ use \ArrayAccess;
 class Shopper implements ArrayAccess
 {
     const DISCRIMINATOR = 'subclass';
-    const PHONE_NUMBER_MAX_LENGTH = 20;
+    const PHONE_NUMBER_MAX_LENGTH = 15;
 
     /**
      * The original name of the model.
@@ -181,7 +181,7 @@ class Shopper implements ArrayAccess
             $invalid_properties[] = "'last_name' can't be null";
         }
 
-        if (!is_null($this->container['phone']) && !preg_match("/^\\+?[\\d\\s]+$/", $this->container['phone'])) {
+        if ($this->container['phone'] !== null && !preg_match("/^\\+?[\\d\\s]+$/", $this->container['phone'])) {
             $invalid_properties[] = "invalid value for 'phone', must be conform to the pattern /^\\+?[\\d\\s]+$/.";
         }
 
@@ -423,7 +423,7 @@ class Shopper implements ArrayAccess
     public function setGender($gender)
     {
         $allowed_values = array('Male', 'Female', 'Other');
-        if (!is_null($gender) && (!in_array($gender, $allowed_values))) {
+        if ($gender !== null && (!in_array($gender, $allowed_values))) {
             throw new \InvalidArgumentException("Invalid value for 'gender', must be one of 'Male', 'Female', 'Other'");
         }
 
@@ -508,7 +508,7 @@ class Shopper implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

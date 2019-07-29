@@ -130,7 +130,8 @@ class Authority implements ArrayAccess
 
         $allowed_values = array("checkout_id", "store_code", "account_token");
         if (!in_array($this->container['type'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'type', must be one of 'checkout_id', 'store_code', 'account_token'.";
+            $invalid_properties[]
+                = "invalid value for 'type', must be one of 'checkout_id', 'store_code', 'account_token'.";
         }
 
         if ($this->container['value'] === null) {
@@ -183,7 +184,9 @@ class Authority implements ArrayAccess
     {
         $allowed_values = array('checkout_id', 'store_code', 'account_token');
         if ((!in_array($type, $allowed_values))) {
-            throw new \InvalidArgumentException("Invalid value for 'type', must be one of 'checkout_id', 'store_code', 'account_token'");
+            throw new \InvalidArgumentException(
+                "Invalid value for 'type', must be one of 'checkout_id', 'store_code', 'account_token'"
+            );
         }
 
         $this->container['type'] = $type;
@@ -239,7 +242,7 @@ class Authority implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

@@ -10,18 +10,17 @@
 use \Zip\Model\OrderShipping;
 use \Zip\Model\OrderItem;
 use \Zip\Model\Address;
-use \Zip\Model\Metadata;
 use \Zip\ApiException;
 
 abstract class Zip_Payment_Model_Api_Abstract
 {
-    protected $api = null;
-    protected $apiConfig = null;
-    protected $logger = null;
-    protected $response = null;
-    protected $order = null;
-    protected $quote = null;
-    protected $storeId = null;
+    protected $_api = null;
+    protected $_apiConfig = null;
+    protected $_logger = null;
+    protected $_response = null;
+    protected $_order = null;
+    protected $_quote = null;
+    protected $_storeId = null;
 
     public function __construct($options)
     {
@@ -31,16 +30,15 @@ abstract class Zip_Payment_Model_Api_Abstract
             $storeId = Mage::app()->getStore()->getId();
         }
 
-        if ($this->apiConfig === null || $this->storeId !== $storeId) {
+        if ($this->_apiConfig === null || $this->_storeId !== $storeId) {
             // when api configuration is null or store id has been changed
             // new api configuration need to be created
-            $this->apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration($storeId);
-            $this->storeId = $storeId;
+            $this->_apiConfig = Mage::getSingleton('zip_payment/api_configuration')->generateApiConfiguration($storeId);
+            $this->_storeId = $storeId;
         }
     }
 
     abstract protected function getApi();
-    abstract protected function prepareCreatePayload();
 
     /**
      * Get logger object
@@ -49,11 +47,11 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getLogger()
     {
-        if ($this->logger == null) {
-            $this->logger = Mage::getModel('zip_payment/logger');
+        if ($this->_logger == null) {
+            $this->_logger = Mage::getModel('zip_payment/logger');
         }
 
-        return $this->logger;
+        return $this->_logger;
     }
 
     /**
@@ -71,7 +69,7 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getOrder()
     {
-        return $this->order;
+        return $this->_order;
     }
 
     /**
@@ -81,11 +79,11 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getQuote()
     {
-        if ($this->quote === null) {
-            $this->quote = $this->getHelper()->getCheckoutSession()->getQuote();
+        if ($this->_quote === null) {
+            $this->_quote = $this->getHelper()->getCheckoutSession()->getQuote();
         }
 
-        return $this->quote;
+        return $this->_quote;
     }
 
     /**
@@ -105,11 +103,11 @@ abstract class Zip_Payment_Model_Api_Abstract
         }
     }
 
-     /**
-      * capture order's shipping details
-      *
-      * @return Zip\Model\OrderShipping
-      */
+    /**
+     * capture order's shipping details
+     *
+     * @return Zip\Model\OrderShipping
+     */
     protected function getOrderShipping()
     {
         $model = $this->getOrder() ?: $this->getQuote();
@@ -117,7 +115,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         $shippingDetail = new OrderShipping();
 
         $address = $model->getShippingAddress();
-        $isPickup = $model->getIsVirtual() || $address == null;
+        $isPickup = $this->getHelper()->isPickupOrder($model);
         $shippingDetail->setPickup($isPickup);
         $region = $address->getRegion();
 
@@ -135,9 +133,6 @@ abstract class Zip_Payment_Model_Api_Abstract
                 ->setCity($address->getCity());
 
             $shippingDetail->setAddress($shippingAddress);
-
-            // TODO: implementation for tracking
-            // $shippingDetail->setTracking()
         }
 
         return $shippingDetail;
@@ -185,8 +180,8 @@ abstract class Zip_Payment_Model_Api_Abstract
             $orderItems[] = $orderItem;
         }
 
-         //discount and other promotion to balance out
-         $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
+        //discount and other promotion to balance out
+        $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() : $model->getShippingAddress()->getShippingAmount());
 
         if ($shippingAmount > 0) {
             $shippingItem = new OrderItem;
@@ -231,8 +226,10 @@ abstract class Zip_Payment_Model_Api_Abstract
     protected function getMetadata()
     {
         // object not working must use array
-        $metadata['platform'] = "Magento 1";
-        $metadata['version'] = Mage::getVersion();
+        $metadata['platform'] = 'Magento 1';
+        $metadata['platform_version'] = Mage::getVersion();
+        $metadata['plugin'] = 'zip-magento1';
+        $metadata['plugin_version'] = '2.1.0';
         return $metadata;
     }
 
@@ -241,8 +238,12 @@ abstract class Zip_Payment_Model_Api_Abstract
      *
      * @return string
      */
-    protected function getIdempotencyKey()
+    protected function getIdempotencyKey($id = '')
     {
+        if ($id !== '' && $id !== null) {
+            return sha1($id);
+        }
+
         return uniqid();
     }
 
@@ -253,8 +254,6 @@ abstract class Zip_Payment_Model_Api_Abstract
      */
     protected function getResponse()
     {
-        return $this->response;
+        return $this->_response;
     }
-
-
 }

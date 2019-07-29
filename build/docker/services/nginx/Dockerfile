@@ -1,0 +1,6 @@
+ARG NAME
+ARG VERSION
+
+FROM $NAME:$VERSION
+
+WORKDIR /var/www/html

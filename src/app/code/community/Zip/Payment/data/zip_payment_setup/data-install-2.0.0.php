@@ -1,8 +1,6 @@
 <?php
 
 /**
- * Checkout controller
- *
  * @package Zip_Payment
  * @author  Zip Co - Plugin Team
  **/

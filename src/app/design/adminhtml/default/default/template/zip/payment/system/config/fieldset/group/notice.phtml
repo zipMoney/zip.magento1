@@ -6,23 +6,25 @@
 <div id="zip-payment-notice">
     <?php if(!empty($versionNotification)) : ?>
         <p class="version">
-            <span><?php echo $versionNotification['title'] ?></span>
+            <span><?php echo $this->escapeHtml($versionNotification['title']); ?></span>
 
             <?php if(!empty($versionNotification['url'])) : ?>
-                &nbsp;<a href="<?php echo $versionNotification['url'] ?>" target="_blank">learn more</a>
+                &nbsp;<a href="<?php echo $this->escapeUrl($versionNotification['url']); ?>"
+                target="_blank">learn more</a>
             <?php endif; ?>
         </p>
     <?php endif; ?>
     <?php if(!empty($latestNews)) : ?>
         <p class="news">
-            <strong><?php echo $latestNews['title'] ?></strong>
+            <strong><?php echo $this->escapeHtml($latestNews['title']); ?></strong>
 
             <?php if(!empty($latestNews['description'])) : ?>
-                <br/> <span><?php echo $latestNews['description'] ?></span>
+                <br/> <span><?php echo $this->escapeHtml($latestNews['description']); ?></span>
             <?php endif; ?>
 
             <?php if(!empty($latestNews['url'])) : ?>
-                &nbsp;<a href="<?php echo $latestNews['url'] ?>" target="_blank">learn more</a>
+                &nbsp;<a href="<?php echo $this->escapeUrl($latestNews['url']); ?>"
+                target="_blank">learn more</a>
             <?php endif; ?>
         </p>
     <?php endif; ?>

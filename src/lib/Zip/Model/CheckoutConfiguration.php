@@ -137,7 +137,10 @@ class CheckoutConfiguration implements ArrayAccess
 
     /**
      * Sets redirect_uri
-     * @param string $redirect_uri The URI to redirect after the checkout is complete.  This must be provided, even if using in-context checkout.  If using redirection we will automatically redirect to this url with the result and checkoutId.  If using in-context we will not automatically redirect to this URI.
+     * @param string $redirect_uri The URI to redirect after the checkout is complete.
+     * This must be provided, even if using in-context checkout.
+     * If using redirection we will automatically redirect to this url with the result and checkoutId.
+     * If using in-context we will not automatically redirect to this URI.
      * @return $this
      */
     public function setRedirectUri($redirect_uri)
@@ -174,7 +177,7 @@ class CheckoutConfiguration implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

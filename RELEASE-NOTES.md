@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## **2.1.0** - July 29, 2019
+
+> Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.bz2)
+
+### Core - Coding Standards
+
+- Apply latest PHP and Magento coding standards
+- Improve Health check for SSL settings
+- Provide configuration fields to define checkout type and checkout path
+- Add product type into payment information for order
+- Improve UI for checkout overlay and spinner
+- Add country and currency supports for New Zealand
+- Add Cancel function for Authorized Charge
+- Add support for Click & Collect shipping method
+
+### Fix - Checkout Redirect for One Step checkout
+
+- Checkout Redirect for One Step checkout
+- Composer needs a vendor/package name
+- Using secure https url in secure website for checkout resources
+- Only accept product SKU with maximum 49 length
+- Only accept phone number with maximum 15 length
+- Fix Void function for Authorized Charge
+
+### Engineering - Create Docker compose for local development
+
+- Add docker support for local development and testing
+- Update Bitbucket Pipeline
+
 ## **2.0.0** - February 14, 2019
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.0.0.bz2)
@@ -13,7 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Refactored the whole plugin to improve payment process and fix all fundamental issues
 - Admin configurations been rebuilt, including new structured configuration panel, admin wizard and admin notifications
-- Able to handle store credit, discount & loyalty programs
+- Support all discount extensions, including gift-card, store credit, reward points and more
+- Support handling fee, shipping insurance and other surcharges.
 - Support redirect (by default) and lightbox to process checkout
 - Include PHP SDK in the package, do not need composer to install it
 - Handle referred applications
@@ -30,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v1.0.6.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v1.0.6.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v1.0.6.bz2)
 
-### Development - Coding Standard with Codacy
+### Engineering - Coding Standard with Codacy
 
 - Add Codacy status in README file
 - Apply coding standard to the plugin and fix Bugs

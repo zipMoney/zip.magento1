@@ -93,7 +93,8 @@ class CaptureChargeRequest implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['amount'] = isset($data['amount']) ? $data['amount'] : null;
-        $this->container['is_partial_capture'] = isset($data['is_partial_capture']) ? $data['is_partial_capture'] : null;
+        $this->container['is_partial_capture']
+            = isset($data['is_partial_capture']) ? $data['is_partial_capture'] : null;
     }
 
     /**
@@ -110,7 +111,8 @@ class CaptureChargeRequest implements ArrayAccess
         }
 
         if (($this->container['amount'] < 0)) {
-            $invalid_properties[] = 'Invalid amount value while calling CaptureChargeRequest, must be equal or larger than 0';
+            $invalid_properties[]
+                = 'Invalid amount value while calling CaptureChargeRequest, must be equal or larger than 0';
         }
 
         return $invalid_properties;
@@ -174,7 +176,9 @@ class CaptureChargeRequest implements ArrayAccess
     public function setAmount($amount)
     {
         if (($amount < 0)) {
-            throw new \InvalidArgumentException('Invalid amount value while calling CaptureChargeRequest, must be equal or larger than 0.');
+            throw new \InvalidArgumentException(
+                'Invalid amount value while calling CaptureChargeRequest, must be equal or larger than 0.'
+            );
         }
 
         $this->container['amount'] = $amount;
@@ -210,7 +214,7 @@ class CaptureChargeRequest implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

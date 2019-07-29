@@ -224,7 +224,9 @@ class CreateRefundRequest implements ArrayAccess
     public function setAmount($amount)
     {
         if (($amount < 0)) {
-            throw new \InvalidArgumentException('invalid value for $amount when calling CreateRefundRequest., must be bigger than or equal to 0.');
+            throw new \InvalidArgumentException(
+                'invalid value for $amount when calling CreateRefundRequest., must be bigger than or equal to 0.'
+            );
         }
 
         $this->container['amount'] = $amount;
@@ -280,7 +282,7 @@ class CreateRefundRequest implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

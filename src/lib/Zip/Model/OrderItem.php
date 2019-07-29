@@ -14,6 +14,7 @@ use \ArrayAccess;
 class OrderItem implements ArrayAccess
 {
     const DISCRIMINATOR = 'subclass';
+    const PRODUCT_CODE_MAX_LENGTH = 49;
 
     /**
      * The original name of the model.
@@ -162,7 +163,8 @@ class OrderItem implements ArrayAccess
         $this->container['image_uri'] = isset($data['image_uri']) ? $data['image_uri'] : null;
         $this->container['item_uri'] = isset($data['item_uri']) ? $data['item_uri'] : null;
         $this->container['product_code'] = isset($data['product_code']) ? $data['product_code'] : null;
-        $this->container['additional_details'] = isset($data['additional_details']) ? $data['additional_details'] : null;
+        $this->container['additional_details']
+            = isset($data['additional_details']) ? $data['additional_details'] : null;
     }
 
     /**
@@ -182,7 +184,7 @@ class OrderItem implements ArrayAccess
             $invalid_properties[] = "'amount' can't be null";
         }
 
-        if (!is_null($this->container['quantity']) && ($this->container['quantity'] <= 0)) {
+        if ($this->container['quantity'] !== null && ($this->container['quantity'] <= 0)) {
             $invalid_properties[] = "invalid value for 'quantity', must be bigger than 0.";
         }
 
@@ -192,11 +194,13 @@ class OrderItem implements ArrayAccess
 
         $allowed_values = array("sku", "tax", "shipping", "discount", "store_credit");
         if (!in_array($this->container['type'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'type', must be one of 'sku', 'tax', 'shipping', 'discount', 'store_credit'.";
+            $invalid_properties[]
+                = "invalid value for 'type', must be one of 'sku', 'tax', 'shipping', 'discount', 'store_credit'.";
         }
 
-        if (!is_null($this->container['product_code']) && (strlen($this->container['product_code']) > 200)) {
-            $invalid_properties[] = "invalid value for 'product_code', the character length must be smaller than or equal to 200.";
+        if ($this->container['product_code'] !== null && (strlen($this->container['product_code']) > 200)) {
+            $invalid_properties[]
+                = "invalid value for 'product_code', the character length must be smaller than or equal to 200.";
         }
 
         return $invalid_properties;
@@ -349,8 +353,10 @@ class OrderItem implements ArrayAccess
      */
     public function setQuantity($quantity)
     {
-        if (!is_null($quantity) && ($quantity <= 0)) {
-            throw new \InvalidArgumentException('invalid value for quantity when calling OrderItem., must be bigger than 0.');
+        if ($quantity !== null && ($quantity <= 0)) {
+            throw new \InvalidArgumentException(
+                'invalid value for quantity when calling OrderItem., must be bigger than 0.'
+            );
         }
 
         $this->container['quantity'] = $quantity;
@@ -378,7 +384,9 @@ class OrderItem implements ArrayAccess
     {
         $allowed_values = array('sku', 'tax', 'shipping', 'discount', 'store_credit');
         if ((!in_array($type, $allowed_values))) {
-            throw new \InvalidArgumentException("Invalid value for 'type', must be one of 'sku', 'tax', 'shipping', 'discount', 'store_credit'");
+            throw new \InvalidArgumentException(
+                "Invalid value for 'type', must be one of 'sku', 'tax', 'shipping', 'discount', 'store_credit'"
+            );
         }
 
         $this->container['type'] = $type;
@@ -450,8 +458,9 @@ class OrderItem implements ArrayAccess
      */
     public function setProductCode($product_code)
     {
-        if (!is_null($product_code) && (strlen($product_code) > 200)) {
-            throw new \InvalidArgumentException('invalid length for $product_code when calling OrderItem., must be smaller than or equal to 200.');
+        if (!empty($product_code)) {
+            // Only accept product SKU with maximum 49 length
+            $product_code = substr(trim($product_code), 0, self::PRODUCT_CODE_MAX_LENGTH);
         }
 
         $this->container['product_code'] = $product_code;
@@ -512,7 +521,7 @@ class OrderItem implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

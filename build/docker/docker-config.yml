@@ -1,0 +1,97 @@
+# default configuration for Magento
+
+# App
+app:
+    name: magento
+    host: magento.local
+    framework:
+        version: 1.9.4.1
+        source: ${VERSION}.tar.gz
+    sample:
+        version: 1.9.2.4
+        source: ${VERSION}.tar.bz2
+    admin:
+        username: admin
+        firstname: admin
+        lastname: admin
+        email: admin@admin.com
+        password: admin123
+    customer:
+        email: plugin@zip.co
+        password: 123456C
+        firstname: plugin
+        lastname: zip
+    order:
+        prefix: ZIP
+    cache:
+        disable: true
+    config:
+        - general/country/default=AU
+        - general/region/state_required=AU
+        - general/locale/timezone=Australia/Sydney
+        - general/locale/code=en_AU
+        - general/locale/firstday=1
+        - general/store_information/name=Zip Test Store
+        - general/store_information/merchant_country=AU
+        - currency/options/base=AUD
+        - currency/options/default=AUD
+        - currency/options/allow=AUD
+        - payment/account/merchant_country=AU
+        - dev/log/active=1
+    plugin:
+        zip_payment:
+            version: 2.1.0
+            config:
+                - payment/zip_payment/active=1;
+                - payment/zip_payment/private_key=I5xNZa3E/FwIHK0ZGj/TlntmMfNr4Q5BPIn8D1OqIIo=
+                - payment/zip_payment/public_key=91cf9719-7a8c-49bf-82b1-ca9b9ef1b6fb
+                - payment/zip_payment/debug/log_level=7
+                - payment/zip_payment/widgets/home_page/banner/enabled=1
+                - payment/zip_payment/widgets/product_page/banner/enabled=1
+                - payment/zip_payment/widgets/product_page/tagline/enabled=1
+                - payment/zip_payment/widgets/product_page/widget/enabled=1
+                - payment/zip_payment/widgets/category_page/banner/enabled=1
+                - payment/zip_payment/widgets/cart_page/tagline/enabled=1
+                - payment/zip_payment/widgets/cart_page/widget/enabled=1
+
+# Server
+server:
+    name: nginx
+    version: latest
+    dir:
+        root: var/www/html
+        config: etc/nginx/conf.d
+        ssl: etc/ssl/certs
+        log: var/log/nginx
+    port:
+        http: 80
+        https: 443
+
+# Platform
+platform:
+    name: php
+    version: 5.6-fpm
+    dir:
+        root: var/www/html
+        config: usr/local/etc/php/conf.d
+        log: var/log/php
+
+# Database
+database:
+    server:
+        name: mariadb
+        version: latest
+    dir:
+        root: var/lib/mysql
+    root:
+        user: root
+        password: root
+    user:
+        name: user
+        password: password
+    port: 3306
+    env_variable:
+        name: MYSQL_DATABASE
+        root_password: MYSQL_ROOT_PASSWORD
+        user: MYSQL_USER
+        password: MYSQL_PASSWORD

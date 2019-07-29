@@ -118,16 +118,18 @@ class ChargeOrder implements ArrayAccess
     {
         $invalid_properties = array();
 
-        if (!is_null($this->container['reference']) && (strlen($this->container['reference']) > 50)) {
-            $invalid_properties[] = "invalid value for 'reference', the character length must be smaller than or equal to 50.";
+        if ($this->container['reference'] !== null && (strlen($this->container['reference']) > 50)) {
+            $invalid_properties[]
+                = "invalid value for 'reference', the character length must be smaller than or equal to 50.";
         }
 
         if ($this->container['shipping'] === null) {
             $invalid_properties[] = "'shipping' can't be null";
         }
 
-        if (!is_null($this->container['cart_reference']) && (strlen($this->container['cart_reference']) > 100)) {
-            $invalid_properties[] = "invalid value for 'cart_reference', the character length must be smaller than or equal to 100.";
+        if ($this->container['cart_reference'] !== null && (strlen($this->container['cart_reference']) > 100)) {
+            $invalid_properties[]
+                = "invalid value for 'cart_reference', the character length must be smaller than or equal to 100.";
         }
 
         return $invalid_properties;
@@ -173,8 +175,10 @@ class ChargeOrder implements ArrayAccess
      */
     public function setReference($reference)
     {
-        if (!is_null($reference) && (strlen($reference) > 50)) {
-            throw new \InvalidArgumentException('invalid length for $reference when calling ChargeOrder., must be smaller than or equal to 50.');
+        if ($reference !== null && (strlen($reference) > 50)) {
+            throw new \InvalidArgumentException(
+                'invalid length for $reference when calling ChargeOrder., must be smaller than or equal to 50.'
+            );
         }
 
         $this->container['reference'] = $reference;
@@ -240,8 +244,10 @@ class ChargeOrder implements ArrayAccess
      */
     public function setCartReference($cart_reference)
     {
-        if (!is_null($cart_reference) && (strlen($cart_reference) > 100)) {
-            throw new \InvalidArgumentException('invalid length for $cart_reference when calling ChargeOrder., must be smaller than or equal to 100.');
+        if ($cart_reference !== null && (strlen($cart_reference) > 100)) {
+            throw new \InvalidArgumentException(
+                'invalid length for $cart_reference when calling ChargeOrder., must be smaller than or equal to 100.'
+            );
         }
 
         $this->container['cart_reference'] = $cart_reference;
@@ -276,7 +282,7 @@ class ChargeOrder implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;

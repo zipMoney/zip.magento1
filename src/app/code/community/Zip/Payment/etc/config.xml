@@ -3,7 +3,7 @@
 
     <modules>
         <Zip_Payment>
-            <version>2.0.0</version>
+            <version>2.1.0</version>
         </Zip_Payment>
     </modules>
 
@@ -51,13 +51,13 @@
                 </observers>
             </controller_action_postdispatch_checkout_onepage_savepayment>
             <controller_action_layout_load_before>
-              <observers>
-                  <set_checkout_layout_handle>
-                      <class>zip_payment/observer</class>
-                      <method>setCheckoutLayoutHandle</method>
-                  </set_checkout_layout_handle>
-              </observers>
-          </controller_action_layout_load_before>
+                <observers>
+                    <set_checkout_layout_handle>
+                        <class>zip_payment/observer</class>
+                        <method>setCheckoutLayoutHandle</method>
+                    </set_checkout_layout_handle>
+                </observers>
+            </controller_action_layout_load_before>
         </events>
     </global>
 
@@ -127,6 +127,8 @@
                 <order_status>processing</order_status>
                 <sort_order>1</sort_order>
                 <checkout>
+                    <type>one_page</type>
+                    <path>/checkout/onepage</path>
                     <display_mode>redirect</display_mode>
                     <referred>
                         <order_creation>1</order_creation>
@@ -144,7 +146,7 @@
                     <log_file>zip_payment.log</log_file>
                 </debug>
                 <admin_notification>
-                    <enabled>0</enabled>
+                    <enabled>1</enabled>
                 </admin_notification>
                 <widgets>
                     <debug>0</debug>
@@ -202,14 +204,13 @@
     <custom>
         <payment>
             <zip_payment>
-                <logo>http://d3k1w8lx8mqizo.cloudfront.net/INTEGRATIONS/2016/zippay/logos/zipPay-logo-onWhite.png</logo>
+                <logo>https://zip.co/assets/zip/logos/zip/primary.svg</logo>
                 <portal>
                     <sandbox>https://merchant.sandbox.zipmoney.com.au/</sandbox>
                     <production>https://merchant.zipmoney.com.au/</production>
                 </portal>
                 <checkout>
-                    <js_lib>//static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
-                    <loader_image>https://s3-ap-southeast-2.amazonaws.com/zip-labs-assets/defaults/ajax-loader.gif</loader_image>
+                    <js_lib>https://static.zipmoney.com.au/checkout/checkout-v1.min.js</js_lib>
                     <error>
                         <general>Something went wrong. Please try to checkout out again</general>
                     </error>
@@ -219,20 +220,12 @@
                     </failure>
                     <referred>
                         <heading>Order Placed Successfully</heading>
-                        <content><![CDATA[<p>Congratulations! You have successfully placed your order, pending approval of your Zip Money application.</p><p>You will recevie an email with instructions shortly on whether your application has been approved or not. If approved you will be able to complete your purchase following the link in the email.</p>]]></content>
+                        <content><![CDATA[<p>Congratulations! You have successfully placed your order, pending approval of your Zip Money application.</p><p>You will receive an email with instructions shortly on whether your application has been approved or not. If approved you will be able to complete your purchase following the link in the email.</p>]]></content>
                     </referred>
-                    <onestepcheckouts>
-                        <onestepcheckout_index_index>1</onestepcheckout_index_index>
-                        <iwd_opc_index_index>1</iwd_opc_index_index>
-                        <opc_index_index>1</opc_index_index>
-                        <aitcheckout_checkout_index>1</aitcheckout_checkout_index>
-                        <aw_onestepcheckout_index_index>1</aw_onestepcheckout_index_index>
-                        <gomage_checkout_onepage_index>1</gomage_checkout_onepage_index>
-                    </onestepcheckouts>
                 </checkout>
                 <country_currency>
-                    <supported_countries>AU</supported_countries>
-                    <supported_currencies>AUD</supported_currencies>
+                    <supported_countries>AU,NZ</supported_countries>
+                    <supported_currencies>AUD,NZD</supported_currencies>
                 </country_currency>
                 <api>
                     <timeout>0</timeout>
@@ -242,7 +235,7 @@
                     <log_private_data_keys>ACCT,EXPDATE,CVV2,CARDISSUE,CARDSTART,CREDITCARDTYPE,USER,PWD,SIGNATURE</log_private_data_keys>
                 </debug>
                 <admin_notification>
-                    <feed_url>https://static.zipmoney.com.au/lib/js/notification/magento1.json</feed_url>
+                    <feed_url>https://zip-labs-assets.s3-ap-southeast-2.amazonaws.com/plugin/magento1/notification.json</feed_url>
                 </admin_notification>
                 <widgets>
                     <enabled>1</enabled>

@@ -1,6 +1,7 @@
 vendor/
 public/
 publish/
+web/
 
 .DS_Store
 *.lock

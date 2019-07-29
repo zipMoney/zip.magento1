@@ -7,12 +7,13 @@
  * @author  Zip Co - Plugin Team
  **/
 
-class Zip_Payment_Block_Adminhtml_System_Config_Field_Version extends Mage_Adminhtml_Block_System_Config_Form_Field
+class Zip_Payment_Block_Adminhtml_System_Config_Field_Version
+extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /**
      * @var string
      */
-    protected $template = 'zip/payment/system/config/field/version.phtml';
+    protected $_template = 'zip/payment/system/config/field/version.phtml';
 
     /**
      * Set template to itself
@@ -20,8 +21,8 @@ class Zip_Payment_Block_Adminhtml_System_Config_Field_Version extends Mage_Admin
     protected function _prepareLayout()
     {
         parent::_prepareLayout();
-        if (!$this->getTemplate() && $this->template) {
-            $this->setTemplate($this->template);
+        if (!$this->getTemplate() && $this->_template) {
+            $this->setTemplate($this->_template);
         }
 
         return $this;

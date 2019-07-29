@@ -1,14 +1,13 @@
 {
     "name": "Zip Payment Plugin Notifications",
     "release": {
-        "version": "2.0.1",
-        "title": "Zip Payment version 2.0.1 is available now! New Tools to Fuel Your Growth",
+        "version": "2.1.0",
+        "title": "Zip Payment version 2.0.1 is available now!",
         "description": "fix keyName checking for arrow keys in IE11",
         "url": "https://zip.co/",
         "date": "2018/11/25"
     },
-    "notifications": [
-        {
+    "notifications": [{
             "title": "Own the way you pay at your favourite stores",
             "description": "Buy the things you love today and pay for them over time, interest free.",
             "url": "https://zip.co/stores/",
