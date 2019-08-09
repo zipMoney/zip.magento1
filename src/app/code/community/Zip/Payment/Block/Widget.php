@@ -139,7 +139,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         $helper = Mage::helper('zip_payment');
         $pageIdentifier = $helper->getPageIdentifier();
 
-        if ($helper-isCheckoutPage()) {
+        if ($helper->isCheckoutPage()) {
             return 'checkout';
         }
 
