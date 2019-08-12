@@ -144,16 +144,16 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         }
 
         switch ($pageIdentifier) {
-            case 'cms_index_index':
-                return 'home';
-            case 'catalog_product_view':
-                return 'product';
-            case 'catalog_category_view':
-                return 'category';
-            case 'checkout_cart_index':
-                return 'cart';
-            case 'cms_page_view':
-                return 'landing';
+        case 'cms_index_index':
+            return 'home';
+        case 'catalog_product_view':
+            return 'product';
+        case 'catalog_category_view':
+            return 'category';
+        case 'checkout_cart_index':
+            return 'cart';
+        case 'cms_page_view':
+            return 'landing';
         }
 
         return null;

@@ -155,8 +155,7 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $path = $this->getPagePath();
         $checkoutPath = rtrim($this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_PATH_PATH), '/');
-
-        return $path == $checkoutPath;
+        return strpos($path, $checkoutPath) !== false;
     }
 
     /**

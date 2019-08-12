@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fix - Checkout detection for One Page checkout
 
 - Fix checkout detection for default one page checkout
+- Fix syntax error in install script
+- Add function to detect whether current page is checkout page
 
 ## **2.1.0** - July 29, 2019
 
