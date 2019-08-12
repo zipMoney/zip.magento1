@@ -139,22 +139,12 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         $helper = Mage::helper('zip_payment');
         $pageIdentifier = $helper->getPageIdentifier();
 
-        if ($helper->isCheckoutPage()) {
-            return 'checkout';
-        }
-
-        switch ($pageIdentifier) {
-        case 'cms_index_index':
-            return 'home';
-        case 'catalog_product_view':
-            return 'product';
-        case 'catalog_category_view':
-            return 'category';
-        case 'checkout_cart_index':
-            return 'cart';
-        case 'cms_page_view':
-            return 'landing';
-        }
+        if ($helper->isCheckoutPage()) { return 'checkout'; }
+        if ($pageIdentifier == 'cms_index_index') { return 'home'; }
+        if ($pageIdentifier == 'catalog_product_view') { return 'product'; }
+        if ($pageIdentifier == 'catalog_category_view') { return 'category'; }
+        if ($pageIdentifier == 'checkout_cart_index') { return 'cart'; }
+        if ($pageIdentifier == 'cms_page_view') { return 'landing'; }
 
         return null;
     }
