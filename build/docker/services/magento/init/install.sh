@@ -111,7 +111,7 @@ echo "Change Order Prefix"
 magerun --root-dir="${WEB_DIR}" db:query "UPDATE eav_entity_store INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id SET eav_entity_store.increment_prefix='${ORDER_PREFIX}' WHERE eav_entity_type.entity_type_code='order';"
 
 # Disable all cache
-if [ "${CACHE_DISABLE}" == "true" ]; then
+if [ "${CACHE_DISABLE}" = "true" ]; then
     echo "Disable all cache"
     magerun --root-dir="${WEB_DIR}" cache:disable
 fi
