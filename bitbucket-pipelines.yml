@@ -16,6 +16,20 @@ pipelines:
           deployment: test
           script:
             - echo "Deploying to Test"
+    hotfix/*:
+        - step:
+          name: Unit Test
+          caches:
+            - composer
+          script:
+            - echo "Running Unit Test"
+        - step:
+            name: Deploy to Test
+            caches:
+                - composer
+            deployment: test
+            script:
+                - echo "Deploying to Test"
   branches:
     master: # Test, Build and Deploy
        - step:
