@@ -14,6 +14,12 @@ definitions:
             - composer
         script:
             - echo "Deploying to Test"
+    - step: &e2e-test
+        name: End-to-End Test
+        caches:
+            - node
+        script:
+            - echo "Running End-to-End Test"
 
 pipelines:
   pull-requests:
@@ -22,13 +28,16 @@ pipelines:
     develop:
       - step: *unit-test
       - step: *deploy-test
+      - step: *e2e-test
     hotfix/*:
       - step: *unit-test
       - step: *deploy-test
+      - step: *e2e-test
   branches:
     master: # Test, Build and Deploy
        - step: *unit-test
        - step: *deploy-test
+       - step: *e2e-test
        - step:
           name: Deploy to Production
           trigger: manual
