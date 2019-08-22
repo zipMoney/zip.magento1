@@ -1,50 +1,34 @@
 image: php:7.1.1
 
+definitions:
+  steps:
+    - step: &unit-test
+        name: Unit Test
+        caches:
+            - composer
+        script:
+            - echo "Running Unit Test"
+    - step: &deploy-test
+        name: Deploy to Test
+        caches:
+            - composer
+        script:
+            - echo "Deploying to Test"
+
 pipelines:
   pull-requests:
+    '**': #this runs as default for any branch not elsewhere defined
+      - step: *unit-test
     develop:
-      - step:
-          name: Unit Test
-          caches:
-            - composer
-          script:
-            - echo "Running Unit Test"
-      - step:
-          name: Deploy to Test
-          caches:
-            - composer
-          deployment: test
-          script:
-            - echo "Deploying to Test"
+      - step: *unit-test
+      - step: *deploy-test
     hotfix/*:
-        - step:
-          name: Unit Test
-          caches:
-            - composer
-          script:
-            - echo "Running Unit Test"
-        - step:
-            name: Deploy to Test
-            caches:
-                - composer
-            deployment: test
-            script:
-                - echo "Deploying to Test"
+      - step: *unit-test
+      - step: *deploy-test
   branches:
     master: # Test, Build and Deploy
-       - step:
-          name: Unit Test
-          caches:
-            - composer
-          script:
-            - echo "Running Unit Test"
-       - step:
-          name: Deploy to Test
-          caches:
-            - composer
-          deployment: test
-          script:
-            - echo "Deploying to Test"
+       - step: *unit-test
+       - step: *deploy-test
        - step:
           name: Deploy to Production
           trigger: manual

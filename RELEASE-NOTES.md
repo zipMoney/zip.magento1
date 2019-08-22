@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Engineering - Hotfix Pull Request
 
 - Support Hotfix Pull Request in Bitbucket Pipeline
+- Update Pipeline with definitions 
 - Add Random number for generating Order Number Prefix for Docker build
 
 ## **2.1.1** - August 12, 2019
