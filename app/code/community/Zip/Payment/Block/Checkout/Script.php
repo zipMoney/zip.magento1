@@ -55,7 +55,8 @@ class Zip_Payment_Block_Checkout_Script extends Mage_Core_Block_Template
     {
         return Mage::helper('zip_payment')
             ->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) .
-            '?' . Zip_Payment_Model_Config::URL_PARAM_RESULT . '=';
+            '?' . Zip_Payment_Model_Config::URL_PARAM_CHECKOUT_ID . '={checkoutId}&' .
+            Zip_Payment_Model_Config::URL_PARAM_RESULT . '={state}';
     }
 
     /**
