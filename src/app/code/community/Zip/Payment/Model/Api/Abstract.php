@@ -229,7 +229,7 @@ abstract class Zip_Payment_Model_Api_Abstract
         $metadata['platform'] = 'Magento 1';
         $metadata['platform_version'] = Mage::getVersion();
         $metadata['plugin'] = 'zip-magento1';
-        $metadata['plugin_version'] = '2.1.1';
+        $metadata['plugin_version'] = Zip_Payment_Model_Config::VERSION;
         return $metadata;
     }
 
