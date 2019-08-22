@@ -36,7 +36,10 @@ if ('Zip' in window && Zip.Checkout) {
                             redirectUri: Zip.Checkout.settings.responseUrl,
                             logLevel: Zip.Checkout.settings.logLevel,
                             onComplete: function (data) {
-                                var url = Zip.Checkout.settings.responseUrl + data.state;
+                                var url = Zip.Checkout.settings.responseUrl
+                                .replace(/&amp;/g, '&')
+                                .replace('{checkoutId}', data.checkoutId)
+                                .replace('{state}', data.state);
 
                                 switch (data.state) {
                                     case 'approved':

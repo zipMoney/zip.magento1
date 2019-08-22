@@ -22,7 +22,7 @@ app:
         firstname: plugin
         lastname: zip
     order:
-        prefix: ZIP
+        prefix: ZIP_
     cache:
         disable: true
     config:

@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## **2.1.2** - August 22, 2019
+
+> Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.2.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.2.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.2.bz2)
+
+### Fix - Issue with Lightbox mode
+
+- Fix 'The checkout Id does not exist' issue for 'lightbox' mode
+
+### Engineering - Hotfix Pull Request
+
+- Support Hotfix Pull Request in Bitbucket Pipeline
+- Update Pipeline with definitions 
+- Add Random number for generating Order Number Prefix for Docker build
+
 ## **2.1.1** - August 12, 2019
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.1.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.1.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.1.bz2)
