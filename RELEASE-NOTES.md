@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix 'The checkout Id does not exist' issue for 'lightbox' mode
 
+### Engineering - Generate random Order Number Prefix
+
+- Add Random number for generating Order Number Prefix
+
 ## **2.1.1** - August 12, 2019
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.1.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.1.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.1.bz2)
