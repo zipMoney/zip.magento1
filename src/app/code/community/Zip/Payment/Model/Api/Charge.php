@@ -224,7 +224,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     }
 
     /**
-     * get product
+     * get zip product name
      */
     public function getProduct()
     {
@@ -232,7 +232,7 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     }
 
     /**
-     * get state
+     * get order state
      */
     public function getState()
     {
