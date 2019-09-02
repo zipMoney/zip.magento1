@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## **2.1.3** - September 2, 2019
+
+> Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.3.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.3.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.3.bz2)
+
+### Fix - Issue with Order Cancel and Void from Admin
+
+- Fix order Cancel and Void functions from Magento Admin
+
 ## **2.1.2** - August 22, 2019
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.2.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.2.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.2.bz2)

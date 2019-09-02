@@ -223,8 +223,19 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
         return $this->getResponse() ? $this->getResponse()->getReceiptNumber() : null;
     }
 
+    /**
+     * get zip product name
+     */
     public function getProduct()
     {
         return $this->getResponse() ? $this->getResponse()->getProduct() : null;
+    }
+
+    /**
+     * get order state
+     */
+    public function getState()
+    {
+        return $this->getResponse() ? $this->getResponse()->getState() : null;
     }
 }
