@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.bz2)
 
-### Fix - Unclosing HTML tag in payment form template
+### Fix - Unclosed HTML tag in payment form template
 
-- Fix unclosing HTML tag in payment form
+- Fix unclosed HTML tag in payment form
 
 ### Engineering - Command to generate deployment package
 
