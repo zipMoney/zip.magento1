@@ -16,13 +16,16 @@ git push origin ${RELEASE_VERSION}
 git branch release/${RELEASE_VERSION}
 git push origin release/${RELEASE_VERSION}
 
+# merge master into developer
+git checkout master
+git merge develop
+
 ##########################################################
 ## Deploy code to the Github
 ##########################################################
 
-# GITHUB_REPO="https://github.com/zipMoney/zip.magento1"
-
 # # curl -u ${GITHUB_USERNAME}:${GITHUB_ACCESS_TOKEN} https://api.github.com/user
+# cd src
 # git remote add github ${GITHUB_REPO}
 # git push github master
 # git push github release/${RELEASE_VERSION}
