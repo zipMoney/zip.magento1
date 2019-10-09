@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix issue with specific countries on checkout page. Zip Payment was still appearing even the billing country is not been supported yet.
 
+### Engineering - Merge master into develop after deployment
+
+- Add script to Merge master into develop after deployment
+
 ## **2.1.4** - October 8, 2019
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.bz2)

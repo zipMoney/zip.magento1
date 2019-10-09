@@ -16,7 +16,7 @@ git push origin ${RELEASE_VERSION}
 git branch release/${RELEASE_VERSION}
 git push origin release/${RELEASE_VERSION}
 
-# merge master into developer
+# merge master into develop
 git checkout master
 git merge develop
 
