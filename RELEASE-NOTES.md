@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fix - Specific countries on checkout page
 
-- Fix issue with specific countries on checkout page. Zip Payment was still appearing even the billing country is not been supported yet.
+- Fix issue with specific countries on checkout page. Zip Payment option was still appearing on checkout page even the billing country is not been supported yet.
 
 ### Engineering - Merge master into develop after deployment
 
