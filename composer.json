@@ -1,7 +1,7 @@
 {
     "name": "zip/magento1",
     "description": "Zip Payment Extension for Magento 1",
-    "version": "2.2.0",
+    "version": "2.1.5",
     "scripts": {
         "docker": "sh ./build/docker/start.sh magento",
         "deploy:post": "sh ./build/shell/post-deploy.sh",
