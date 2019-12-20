@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## **2.2.0** - October 9, 2019
+
+> Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.2.0.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.2.0.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.2.0.bz2)
+
+### Fix - Specific countries on checkout page
+
+- Fix issue with specific countries on checkout page. Zip Payment option was still appearing on checkout page even the billing country is not been supported yet.
+
+### Engineering - Merge master into develop after deployment
+
+- Add script to Merge master into develop after deployment
+
 ## **2.1.4** - October 8, 2019
 
 > Download [Source code (zip)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.zip) | [Source code (gz)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.gz) | [Source code (bz2)](https://bitbucket.org/zipmoney-platform/zip.magento1/get/v2.1.4.bz2)

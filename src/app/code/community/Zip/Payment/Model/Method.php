@@ -173,7 +173,18 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         if ($configValue === null) {
-            $configValue = $this->getConfig()->getValue("payment/{$this->getCode()}/{$field}");
+            $configPath = "payment/{$this->getCode()}/{$field}";
+
+            switch($field) {
+                case 'allowspecific':
+                    $configPath = Zip_Payment_Model_Config::CONFIG_ALLOW_SPECIFIC_COUNTRIES_PATH;
+                    break;
+                case 'specificcountry':
+                    $configPath = Zip_Payment_Model_Config::CONFIG_SPECIFIC_COUNTRIES_PATH;
+                    break;
+            }
+
+            $configValue = $this->getConfig()->getValue($configPath);
         }
 
         return $configValue;
