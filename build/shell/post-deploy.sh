@@ -24,9 +24,7 @@ git merge develop
 ## Deploy code to the Github
 ##########################################################
 
-# # curl -u ${GITHUB_USERNAME}:${GITHUB_ACCESS_TOKEN} https://api.github.com/user
-# cd src
-# git remote add github ${GITHUB_REPO}
-# git push github master
-# git push github release/${RELEASE_VERSION}
-# git push --tags github
+curl -u ${GITHUB_USERNAME}:${GITHUB_ACCESS_TOKEN} https://api.github.com/user
+git remote add github ${GITHUB_REPO}
+git push github master
+git push github release/${RELEASE_VERSION}

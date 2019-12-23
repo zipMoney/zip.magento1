@@ -9,7 +9,7 @@
 
 class Zip_Payment_Model_Config
 {
-    const VERSION = '2.1.5';
+    const VERSION = '2.2.1';
     const METHOD_CODE = 'zip_payment';
     const LEGACY_METHOD_CODE = 'zipmoneypayment';
 
