@@ -115,7 +115,9 @@ abstract class Zip_Payment_Model_Api_Abstract
         $shippingDetail = new OrderShipping();
 
         $address = $model->getShippingAddress();
-        $isPickup = $this->getHelper()->isPickupOrder($model);
+
+        $shippingAmount = (float) ($this->getOrder() ? $model->getShippingInclTax() : $address->getShippingAmount());
+        $isPickup = $shippingAmount > 0 ? false : $this->getHelper()->isPickupOrder($model);
         $shippingDetail->setPickup($isPickup);
         $region = $address->getRegion();
 
@@ -201,15 +203,21 @@ abstract class Zip_Payment_Model_Api_Abstract
         $remaining = $grandTotal - $totalItemAmount - $shippingAmount;
 
         // Add fee or discount when remaining is not 0
-        if ($remaining !== 0) {
+        if ($remaining > 0) {
             $remainingItem = new OrderItem;
-
             $remainingItem
-                ->setName($remaining > 0 ? 'Fee' : 'Discount')
+                ->setName('Fee')
                 ->setAmount((float) $remaining)
                 ->setQuantity(1)
-                ->setType($remaining > 0 ? OrderItem::TYPE_SHIPPING : OrderItem::TYPE_DISCOUNT);
-
+                ->setType(OrderItem::TYPE_SHIPPING);
+            $orderItems[] = $remainingItem;
+        } else if ($remaining < 0) {
+            $remainingItem = new OrderItem;
+            $remainingItem
+                ->setName('Discount')
+                ->setAmount((float) $remaining)
+                ->setQuantity(1)
+                ->setType(OrderItem::TYPE_DISCOUNT);
             $orderItems[] = $remainingItem;
         }
 
