@@ -125,6 +125,7 @@ class Charge implements ArrayAccess
     const STATE_CANCELLED = 'cancelled';
     const STATE_DECLINED = 'declined';
     const STATE_REFUNDED = 'refunded';
+    const STATE_APPROVED = 'approved';
 
 
 
@@ -140,6 +141,7 @@ class Charge implements ArrayAccess
             self::STATE_CANCELLED,
             self::STATE_DECLINED,
             self::STATE_REFUNDED,
+            self::STATE_APPROVED
         );
     }
 
@@ -195,11 +197,11 @@ class Charge implements ArrayAccess
             $invalid_properties[] = "'state' can't be null";
         }
 
-        $allowed_values = array("authorised", "captured", "cancelled", "refunded", "declined");
+        $allowed_values = $this->getStateAllowableValues();
         if (!in_array($this->container['state'], $allowed_values)) {
             $invalid_properties[]
                 = "invalid value for 'state',
-                must be one of 'authorised', 'captured', 'cancelled', 'refunded', 'declined'.";
+                must be one of '".implode("','",$allowed_values)."'.";
         }
 
         if ($this->container['captured_amount'] === null) {
@@ -253,7 +255,7 @@ class Charge implements ArrayAccess
             return false;
         }
 
-        $allowed_values = array("authorised", "captured", "cancelled", "refunded", "declined");
+        $allowed_values = $this->getStateAllowableValues();
         if (!in_array($this->container['state'], $allowed_values)) {
             return false;
         }
@@ -386,11 +388,11 @@ class Charge implements ArrayAccess
      */
     public function setState($state)
     {
-        $allowed_values = array('authorised', 'captured', 'cancelled', 'refunded', 'declined');
+        $allowed_values = $this->getStateAllowableValues();
         if ((!in_array($state, $allowed_values))) {
             throw new \InvalidArgumentException(
                 "Invalid value for 'state',
-                must be one of 'authorised', 'captured', 'cancelled', 'refunded', 'declined'"
+                must be one of '".implode("','",$allowed_values)."'."
             );
         }
 

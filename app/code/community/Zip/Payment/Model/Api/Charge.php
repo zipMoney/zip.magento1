@@ -151,14 +151,15 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     public function prepareCreatePayload()
     {
         $chargeReq = new CreateChargeRequest();
-
+        $shouldCapture = $this->isImmediateCapture();
+        $capture = (strtoupper($this->getOrder()->getOrderCurrencyCode()) == 'AUD') ? $shouldCapture : true;
         $chargeReq
             ->setReference((string) $this->getOrder()->getIncrementId())
             ->setAmount((float) $this->getOrder()->getGrandTotal())
             ->setCurrency((string) $this->getOrder()->getOrderCurrencyCode())
             ->setOrder($this->getChargeOrder())
             ->setMetadata($this->getMetadata())
-            ->setCapture($this->isImmediateCapture())
+            ->setCapture($capture)
             ->setAuthority($this->getAuthority());
 
         return $chargeReq;

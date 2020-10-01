@@ -117,6 +117,8 @@ class ShopperStatistics implements ArrayAccess
 
     const CURRENCY_AUD = 'AUD';
     const CURRENCY_NZD = 'NZD';
+    const CURRENCY_GBP = 'GBP';
+    const CURRENCY_USD = 'USD';
     const FRAUD_CHECK_RESULT_PASS = 'pass';
     const FRAUD_CHECK_RESULT_FAIL = 'fail';
     const FRAUD_CHECK_RESULT_UNKNOWN = 'unknown';
@@ -132,6 +134,8 @@ class ShopperStatistics implements ArrayAccess
         return array(
             self::CURRENCY_AUD,
             self::CURRENCY_NZD,
+            self::CURRENCY_USD,
+            self::CURRENCY_GBP
         );
     }
 
@@ -194,9 +198,9 @@ class ShopperStatistics implements ArrayAccess
     {
         $invalid_properties = array();
 
-        $allowed_values = array("AUD", "NZD");
+        $allowed_values = $this->getCurrencyAllowableValues();
         if (!in_array($this->container['currency'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'currency', must be one of 'AUD', 'NZD'.";
+            $invalid_properties[] = "invalid value for 'currency', must be one of '".implode("','",$allowed_values)."'.";
         }
 
         $allowed_values = array("pass", "fail", "unknown");
@@ -215,7 +219,7 @@ class ShopperStatistics implements ArrayAccess
      */
     public function valid()
     {
-        $allowed_values = array("AUD", "NZD");
+        $allowed_values = $this->getCurrencyAllowableValues();
         if (!in_array($this->container['currency'], $allowed_values)) {
             return false;
         }
@@ -392,9 +396,9 @@ class ShopperStatistics implements ArrayAccess
      */
     public function setCurrency($currency)
     {
-        $allowed_values = array('AUD', 'NZD');
+        $allowed_values = $this->getCurrencyAllowableValues();
         if ($currency !== null && (!in_array($currency, $allowed_values))) {
-            throw new \InvalidArgumentException("Invalid value for 'currency', must be one of 'AUD', 'NZD'");
+            throw new \InvalidArgumentException("Invalid value for 'currency', must be one of '".implode("','",$allowed_values)."'.");
         }
 
         $this->container['currency'] = $currency;

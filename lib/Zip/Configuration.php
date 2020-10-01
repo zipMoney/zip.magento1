@@ -84,8 +84,8 @@ class Configuration
      * @var array
      */
     protected $supportedEnvironments = array(
-        "sandbox" => array("host" => "https://api.sandbox.zipmoney.com.au/merchant/v1"),
-        "production" => array("host" => 'https://api.zipmoney.com.au/merchant/v1')
+        "sandbox" => array("host" => "https://global-api.labs.au.edge.zip.co/merchant"),
+        "production" => array("host" => 'https://global-api.prod.au.edge.zip.co/merchant')
     );
 
     /**
