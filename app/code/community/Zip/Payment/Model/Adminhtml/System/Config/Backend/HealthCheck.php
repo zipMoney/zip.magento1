@@ -39,7 +39,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     /**
      * check multiple items and get health result
      */
-    protected function getHealthResult()
+    public function getHealthResult()
     {
         $config = Mage::helper('zip_payment')->getConfig();
         $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
@@ -79,20 +79,23 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             );
 
             try {
+                $apiConfig->setCurlTimeout(30);
                 $headers = array(
                     'Authorization: ' .
                     $apiConfig->getApiKeyPrefix('Authorization') .
                     ' ' .
                     $apiConfig->getApiKey('Authorization'),
+                    'Accept : application/json',
+                    'Zip-Version: 2017-03-01',
                     'Content-Type: application/json',
-                    'Zip-Version: 2017-03-01'
+                    'Idempotency-Key: ' .uniqid()
                 );
-
-                $curl->write(Zend_Http_Client::GET, $apiConfig->getHost(), '1.1', $headers);
-
+                $checkoutId = 'au-co_PxSeQfLlpaYn6bLMZSMv13';
+                $url = $apiConfig->getHost().'/checkouts/'.$checkoutId;
+                $curl->write(Zend_Http_Client::GET, $url, '1.1', $headers);
+                $response = $curl->read();
                 $sslVerified = $curl->getInfo(CURLINFO_SSL_VERIFYRESULT) == 0;
                 $httpCode = $curl->getInfo(CURLINFO_HTTP_CODE);
-
                 // if API certification invalid
                 if (!$sslVerified) {
                     $this->appendFailedItem(self::STATUS_WARNING, self::API_CERTIFICATE_INVALID_MESSAGE);
@@ -167,6 +170,21 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             "label" => $label
         );
 
+    }
+
+
+    /**
+     * Get logger object
+     *
+     * @return Zip_Payment_Model_Logger
+     */
+    protected function getLogger()
+    {
+        if ($this->_logger == null) {
+            $this->_logger = Mage::getModel('zip_payment/logger');
+        }
+
+        return $this->_logger;
     }
 
 }

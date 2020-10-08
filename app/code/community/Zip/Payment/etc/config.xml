@@ -91,7 +91,17 @@
             </modules>
         </translate>
     </frontend>
-
+    <admin>
+        <routers>
+            <zip_payment>
+                <use>admin</use>
+                <args>
+                    <module>Zip_Payment</module>
+                    <frontName>zip</frontName>
+                </args>
+            </zip_payment>
+        </routers>
+    </admin>
     <adminhtml>
         <events>
             <controller_action_predispatch_adminhtml>
