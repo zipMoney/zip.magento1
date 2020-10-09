@@ -102,6 +102,16 @@
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
                                     </credential_button>
+                                    <region translate="label">
+                                        <label>Region</label>
+                                        <config_path>payment/zip_payment/region</config_path>
+                                        <frontend_type>select</frontend_type>
+                                        <source_model>zip_payment/adminhtml_system_config_source_region</source_model>
+                                        <sort_order>47</sort_order>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
+                                    </region>
                                     <private_key translate="label">
                                         <label>Private Key</label>
                                         <tooltip>Enter the "Zip Partner Private Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
@@ -184,6 +194,17 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                     </min_order_total>
+                                                    <max_order_total translate="label">
+                                                        <label>Maximum Order Total</label>
+                                                        <tooltip>The maximum order value amount required to checkout</tooltip>
+                                                        <config_path>payment/zip_payment/max_order_total</config_path>
+                                                        <frontend_type>text</frontend_type>
+                                                        <frontend_class>validate-number</frontend_class>
+                                                        <sort_order>40</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </max_order_total>
                                                     <sort_order translate="label">
                                                         <label>Sort Order</label>
                                                         <tooltip>Give a number to define the position in payment option Zip Payment will be placed, 0 is the first position</tooltip>

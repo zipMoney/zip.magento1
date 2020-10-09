@@ -9,6 +9,9 @@ if (!$this->isActive()) {
 // Zip widgets configuration
 zip_widget_merchantId = '<?php echo $this->escapeHtml($this->getMerchantId()); ?>';
 zip_widget_env = '<?php echo $this->escapeHtml($this->getEnvironment()); ?>';
+zip_widget_region = '<?php echo $this->escapeHtml($this->getRegion()); ?>';
+zip_widget_max_price  = <?php echo $this->escapeHtml($this->getMaxOrderTotal()); ?>;
+zip_widget_min_price = <?php echo $this->escapeHtml($this->getMinOrderTotal()); ?>;
 
 <?php foreach ($this->getElementSelectors() as $key => $selector): ?>
     zip_widget_<?php echo $this->escapeHtml($key); ?>="<?php echo $this->escapeHtml($selector); ?>";

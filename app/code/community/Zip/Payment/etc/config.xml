@@ -133,6 +133,7 @@
                 <title>Zip - Own it now, pay later</title>
                 <model>zip_payment/method</model>
                 <environment>sandbox</environment>
+                <region>au</region>
                 <payment_action>authorize_capture</payment_action>
                 <order_status>processing</order_status>
                 <sort_order>1</sort_order>
