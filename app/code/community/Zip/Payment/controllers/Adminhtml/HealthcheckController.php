@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Health Check controller
+ *
+ * @package Zip_Payment
+ * @author  Zip Co - Plugin Team
+ **/
+
 use \Zip\Configuration;
 
 class Zip_Payment_Adminhtml_HealthcheckController extends Mage_Adminhtml_Controller_Action

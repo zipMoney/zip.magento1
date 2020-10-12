@@ -152,16 +152,6 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
             if ($enabled !== null && $enabled) {
                 $widgetType = $widgetType == 'widget' ? $pageType . '_' . $widgetType : $widgetType;
                 $selectors[$widgetType] = $helper->getConfig()->getValue($path . '/selector');
-                if ($pageType == 'product') {
-                    $widgetType = $widgetType == 'widget' ? $pageType . '_' . $widgetType : $widgetType;
-                    $selectors[$widgetType.'_price'] = $this->getCurrentProductPrice();
-                    $selectors[$widgetType.'_symbol'] = $this->getStoreCurrencySymbol();
-                }
-                if ($pageType == 'cart') {
-                    $widgetType = $widgetType == 'widget' ? $pageType . '_' . $widgetType : $widgetType;
-                    $selectors[$widgetType.'_price'] = $this->getQuoteTotal();
-                    $selectors[$widgetType.'_symbo'] = $this->getStoreCurrencySymbol();
-                }
             }
         }
 
