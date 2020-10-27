@@ -13,6 +13,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const STATUS_SUCCESS = 1;
     const STATUS_WARNING = 2;
     const STATUS_ERROR = 3;
+    const STATUS_OK = 0;
 
     const SSL_DISABLED_MESSAGE = 'Your store {store_name} ({store_url}) does not have SSL';
     const CURL_EXTENSION_DISABLED = 'CURL extension has not been installed or disabled';
@@ -30,6 +31,14 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         'items' => array()
     );
 
+    protected $_region = array(
+        'au' => 'Australia',
+        'nz' => 'New Zealand',
+        'us' => 'United States',
+        'uk' => 'United Kingdom',
+        'za' => 'South Africa',
+    );
+
     protected function _afterLoad()
     {
         $result = $this->getHealthResult();
@@ -42,6 +51,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     public function getHealthResult()
     {
         $config = Mage::helper('zip_payment')->getConfig();
+        $logger = Mage::getSingleton('zip_payment/logger');
         $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
                 ->generateApiConfiguration();
 
@@ -51,17 +61,17 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
 
         // check if private key is empty
         if (empty($privateKey)) {
-            $this->appendFailedItem(self::STATUS_ERROR, self::API_PRIVATE_KEY_INVALID_MESSAGE);
+            $this->appendItem(self::STATUS_ERROR, self::API_PRIVATE_KEY_INVALID_MESSAGE);
         }
 
         // check if public key is empty
         if (empty($publicKey)) {
-            $this->appendFailedItem(self::STATUS_ERROR, self::API_PUBLIC_KEY_INVALID_MESSAGE);
+            $this->appendItem(self::STATUS_ERROR, self::API_PUBLIC_KEY_INVALID_MESSAGE);
         }
 
         // check if current merchant country been supported
         if (!$config->isMerchantCountrySupported()) {
-            $this->appendFailedItem(self::STATUS_ERROR, self::MERCHANT_COUNTRY_NOT_SUPPORTED_MESSAGE);
+            $this->appendItem(self::STATUS_ERROR, self::MERCHANT_COUNTRY_NOT_SUPPORTED_MESSAGE);
         }
 
         // check whether SSL is enabled
@@ -69,7 +79,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
 
         // check whether CURL is enabled ot not
         if (!$curlEnabled) {
-            $this->appendFailedItem(self::STATUS_ERROR, self::CURL_EXTENSION_DISABLED);
+            $this->appendItem(self::STATUS_ERROR, self::CURL_EXTENSION_DISABLED);
         } else {
             $curl = new Varien_Http_Adapter_Curl();
             $curl->setConfig(
@@ -90,24 +100,49 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     'Content-Type: application/json',
                     'Idempotency-Key: ' .uniqid()
                 );
-                $checkoutId = 'au-co_PxSeQfLlpaYn6bLMZSMv13';
-                $url = $apiConfig->getHost().'/checkouts/'.$checkoutId;
+                $url = $apiConfig->getHost().'/me';
+                $isAuEndpoint = false;
+                // check api key length if it is more than or equal 50 then call SMI merchant info endpoint
+                // otherwise call checkout get api endpoint only for Australia
+                if (strlen($privateKey) <= 50) {
+                    $checkoutId = 'au-co_PxSeQfLlpaYn6bLMZSMv13';
+                    $url = $apiConfig->getHost().'/checkouts/'.$checkoutId;
+                    $isAuEndpoint = true;
+                }
                 $curl->write(Zend_Http_Client::GET, $url, '1.1', $headers);
                 $response = $curl->read();
                 $sslVerified = $curl->getInfo(CURLINFO_SSL_VERIFYRESULT) == 0;
                 $httpCode = $curl->getInfo(CURLINFO_HTTP_CODE);
+                $logger->debug('Response: '.json_encode($response));
                 // if API certification invalid
                 if (!$sslVerified) {
-                    $this->appendFailedItem(self::STATUS_WARNING, self::API_CERTIFICATE_INVALID_MESSAGE);
+                    $this->appendItem(self::STATUS_WARNING, self::API_CERTIFICATE_INVALID_MESSAGE);
                 }
 
                 // if API credential is invalid
                 if ($httpCode == '401') {
-                    $this->appendFailedItem(self::STATUS_ERROR, self::API_CREDENTIAL_INVALID_MESSAGE);
+                    $this->appendItem(self::STATUS_ERROR, self::API_CREDENTIAL_INVALID_MESSAGE);
+                }
+                if ($httpCode == '200' && $isAuEndpoint == false) {
+                    $result = preg_split('/^\r?$/m', $response, 2);
+                    $result = trim($result[1]);
+                    $data = json_decode($result);
+                    $this->appendItem( self::STATUS_OK, "Api key is valid for ".$data->name);
+                    $regions = $data->regions;
+                    if ($regions) {
+                        $regionList = 'Api is valid for below regions:<br>';
+                        foreach ($regions as $region) {
+                            $regionList .= $this->_region[$region].'<br>';
+                        }
+                        $this->appendItem(self::STATUS_OK, $regionList);
+                    }
+                }
+                if ($httpCode == '404' || $httpCode =='200' && $isAuEndpoint == true){
+                    $this->appendItem( self::STATUS_OK, "Api key is valid for Australia region.");
                 }
             }
             catch(Exception $e) {
-                $this->appendFailedItem(self::STATUS_ERROR, self::CONFIG_PRIVATE_KEY_PATH);
+                $this->appendItem(self::STATUS_ERROR, self::CONFIG_PRIVATE_KEY_PATH);
             }
 
             $curl->close();
@@ -145,7 +180,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                         $message = str_replace('{store_name}', $store->getName(), $message);
                         $message = str_replace('{store_url}', $storeSecureUrl, $message);
 
-                        $this->appendFailedItem(
+                        $this->appendItem(
                             self::STATUS_WARNING,
                             $message
                         );
@@ -157,9 +192,9 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
 
 
     /**
-     * append failed item into health result
+     * append success and failed item into health result
      */
-    protected function appendFailedItem($status, $label)
+    protected function appendItem($status, $label)
     {
         if ($status !== null && $this->_result['overall_status'] < $status) {
             $this->_result['overall_status'] = $status;
