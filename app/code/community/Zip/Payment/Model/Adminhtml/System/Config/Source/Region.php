@@ -32,6 +32,10 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_Region
             array(
                 'value' => 'us',
                 'label' => Mage::helper('zip_payment')->__('United States')
+            ),
+            array(
+                'value' => 'za',
+                'label' => Mage::helper('zip_payment')->__('South Africa')
             )
         );
     }

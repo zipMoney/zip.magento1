@@ -17,5 +17,5 @@ class Zip_Payment_Adminhtml_HealthcheckController extends Mage_Adminhtml_Control
         $result = $healthCheck->getHealthResult();
         Mage::app()->getResponse()->setBody(json_encode($result));
     }
-
 }
+

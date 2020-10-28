@@ -31,20 +31,6 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         'items' => array()
     );
 
-    protected $_region = array(
-        'au' => 'Australia',
-        'nz' => 'New Zealand',
-        'us' => 'United States',
-        'uk' => 'United Kingdom',
-        'za' => 'South Africa',
-    );
-
-    protected function _afterLoad()
-    {
-        $result = $this->getHealthResult();
-        $this->setValue($result);
-    }
-
     /**
      * check multiple items and get health result
      */
@@ -131,8 +117,9 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     $regions = $data->regions;
                     if ($regions) {
                         $regionList = 'Api is valid for below regions:<br>';
+                        $availableRegions = \Zip\Model\CurrencyUtil::getAvailableRegions();
                         foreach ($regions as $region) {
-                            $regionList .= $this->_region[$region].'<br>';
+                            $regionList .= $availableRegions[$region].'<br>';
                         }
                         $this->appendItem(self::STATUS_OK, $regionList);
                     }

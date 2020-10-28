@@ -31,10 +31,6 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
 
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $result = $element->getValue();
-        Mage::app()->saveCache($result['overall_status'], self::HEALTH_CHECK_CACHE_ID);
-        $this->addData($result);
-
         return $this->_toHtml();
     }
 
