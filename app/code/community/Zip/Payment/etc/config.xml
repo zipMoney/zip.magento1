@@ -235,8 +235,8 @@
                     </referred>
                 </checkout>
                 <country_currency>
-                    <supported_countries>AU,NZ,GB,US</supported_countries>
-                    <supported_currencies>AUD,NZD,GBP,USD</supported_currencies>
+                    <supported_countries>AU,NZ,GB,US,ZA</supported_countries>
+                    <supported_currencies>AUD,NZD,GBP,USD,ZAR</supported_currencies>
                 </country_currency>
                 <api>
                     <timeout>0</timeout>
