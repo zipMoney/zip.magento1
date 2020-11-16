@@ -59,7 +59,6 @@
                                         <sort_order>20</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
                                     </health_check>
                                 </fields>
                             </zip_payment_status>
@@ -68,7 +67,6 @@
                                 <frontend_type>text</frontend_type>
                                 <show_in_default>1</show_in_default>
                                 <show_in_website>1</show_in_website>
-                                <show_in_store>1</show_in_store>
                                 <sort_order>20</sort_order>
                                 <frontend_model>zip_payment/adminhtml_system_config_fieldset_expanded</frontend_model>
                                 <fields>
@@ -81,7 +79,6 @@
                                         <sort_order>20</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
                                     </active>
                                     <environment translate="label">
                                         <label>Environment</label>
@@ -92,7 +89,6 @@
                                         <sort_order>40</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
                                     </environment>
                                     <credential_button translate="button_label">
                                         <lable></lable>
@@ -110,7 +106,6 @@
                                         <sort_order>47</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
                                     </region>
                                     <private_key translate="label">
                                         <label>Private Key</label>
@@ -121,7 +116,6 @@
                                         <sort_order>50</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
                                     </private_key>
                                     <public_key>
                                         <label>Public Key</label>
@@ -131,7 +125,6 @@
                                         <sort_order>60</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
                                     </public_key>
                                     <zip_payment_setting_advanced type="group" translate="label">
                                         <label>Advanced Settings</label>
@@ -167,6 +160,7 @@
                                                         <config_path>payment/zip_payment/payment_action</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>zip_payment/adminhtml_system_config_source_paymentAction</source_model>
+                                                        <comment><![CDATA[Please select Immediate Capture for non AUD currency.]]></comment>
                                                         <sort_order>20</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
