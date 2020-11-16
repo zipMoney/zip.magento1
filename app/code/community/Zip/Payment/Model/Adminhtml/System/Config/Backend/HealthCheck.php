@@ -23,8 +23,6 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     const API_CREDENTIAL_INVALID_MESSAGE = 'Your API credential is invalid';
     const MERCHANT_COUNTRY_NOT_SUPPORTED_MESSAGE = 'Your merchant country not been supported';
 
-    const CONFIG_PRIVATE_KEY_PATH = 'payment/zip_payment/private_key';
-    const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
 
     protected $_result = array(
         'overall_status' => self::STATUS_SUCCESS,
@@ -34,17 +32,23 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
     /**
      * check multiple items and get health result
      */
-    public function getHealthResult()
+    public function getHealthResult($websiteCode, $apiKey = null, $publicKey = null, $env = null)
     {
         $config = Mage::helper('zip_payment')->getConfig();
         $logger = Mage::getSingleton('zip_payment/logger');
         $apiConfig = Mage::getSingleton('zip_payment/api_configuration')
-                ->generateApiConfiguration();
-
+            ->generateApiConfiguration();
+        $website = Mage::getModel('core/website')->load( $websiteCode,'code' );
+        $websiteId = (int)$website->getId();
+        $storeId = Mage::app()->getWebsite($websiteId)->getDefaultStore()->getId();
         $curlEnabled = function_exists('curl_version');
-        $publicKey = $config->getValue(self::CONFIG_PUBLIC_KEY_PATH);
-        $privateKey = $config->getValue(self::CONFIG_PRIVATE_KEY_PATH);
-
+        $publicKey = $publicKey ? $publicKey : $config->getValue(Zip_Payment_Model_Config::CONFIG_PUBLIC_KEY_PATH,$storeId);
+        $privateKey = $apiKey ? $apiKey : Mage::helper('core')
+            ->decrypt($config->getValue(Zip_Payment_Model_Config::CONFIG_PRIVATE_KEY_PATH,$storeId));
+        $environment = $env ? $env : $config->getValue(Zip_Payment_Model_Config::CONFIG_ENVIRONMENT_PATH,$storeId);
+        $apiConfig->setApiKey('Authorization', $privateKey)
+            ->setApiKeyPrefix('Authorization', 'Bearer')
+            ->setEnvironment($environment);
         // check if private key is empty
         if (empty($privateKey)) {
             $this->appendItem(self::STATUS_ERROR, self::API_PRIVATE_KEY_INVALID_MESSAGE);
@@ -137,8 +141,8 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
 
         usort(
             $this->_result['items'], function ($a, $b) {
-                return $b['status'] - $a['status'];
-            }
+            return $b['status'] - $a['status'];
+        }
         );
 
         return $this->_result;
@@ -208,5 +212,6 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
 
         return $this->_logger;
     }
+
 
 }
