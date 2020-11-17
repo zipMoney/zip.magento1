@@ -117,10 +117,10 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     $result = preg_split('/^\r?$/m', $response, 2);
                     $result = trim($result[1]);
                     $data = json_decode($result);
-                    $this->appendItem( self::STATUS_OK, "Api key is valid for ".$data->name);
+                    $this->appendItem( self::STATUS_OK, ucfirst($environment)." Api key is for ".$data->name);
                     $regions = $data->regions;
                     if ($regions) {
-                        $regionList = 'Api is valid for below regions:<br>';
+                        $regionList = ' Valid for below regions '.ucfirst($environment).' environment:<br>';
                         $availableRegions = \Zip\Model\CurrencyUtil::getAvailableRegions();
                         foreach ($regions as $region) {
                             $regionList .= $availableRegions[$region].'<br>';
@@ -129,7 +129,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     }
                 }
                 if ($httpCode == '404' || $httpCode =='200' && $isAuEndpoint == true){
-                    $this->appendItem( self::STATUS_OK, "Api key is valid for Australia region.");
+                    $this->appendItem( self::STATUS_OK, " Api key valid for Australia region ".ucfirst($environment)." environment.");
                 }
             }
             catch(Exception $e) {

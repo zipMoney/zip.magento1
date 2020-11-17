@@ -178,7 +178,7 @@
                         </tagline>
                         <widget>
                             <enabled>1</enabled>
-                            <selector>.product-shop .product-options-bottom</selector>
+                            <selector>.product-shop .extra-info</selector>
                         </widget>
                     </product_page>
                     <category_page>

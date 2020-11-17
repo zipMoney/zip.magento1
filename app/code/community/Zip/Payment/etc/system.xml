@@ -99,7 +99,7 @@
                                         <show_in_website>1</show_in_website>
                                     </credential_button>
                                     <region translate="label">
-                                        <label>Region</label>
+                                        <label>Widget Region</label>
                                         <config_path>payment/zip_payment/region</config_path>
                                         <frontend_type>select</frontend_type>
                                         <source_model>zip_payment/adminhtml_system_config_source_region</source_model>
@@ -107,25 +107,25 @@
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
                                     </region>
+                                    <public_key>
+                                        <label>Public Key</label>
+                                        <tooltip>Enter the "Zip Partner Public Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
+                                        <config_path>payment/zip_payment/public_key</config_path>
+                                        <frontend_type>text</frontend_type>
+                                        <sort_order>50</sort_order>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                    </public_key>
                                     <private_key translate="label">
                                         <label>Private Key</label>
                                         <tooltip>Enter the "Zip Partner Private Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
                                         <config_path>payment/zip_payment/private_key</config_path>
                                         <frontend_type>obscure</frontend_type>
                                         <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
-                                        <sort_order>50</sort_order>
-                                        <show_in_default>1</show_in_default>
-                                        <show_in_website>1</show_in_website>
-                                    </private_key>
-                                    <public_key>
-                                        <label>Public Key</label>
-                                        <tooltip>Enter the "Zip Partner Public Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
-                                        <config_path>payment/zip_payment/public_key</config_path>
-                                        <frontend_type>text</frontend_type>
                                         <sort_order>60</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
-                                    </public_key>
+                                    </private_key>
                                     <zip_payment_setting_advanced type="group" translate="label">
                                         <label>Advanced Settings</label>
                                         <frontend_class>config-advanced</frontend_class>
