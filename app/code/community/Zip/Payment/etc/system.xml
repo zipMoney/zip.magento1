@@ -55,7 +55,7 @@
                                         <frontend_type>label</frontend_type>
                                         <frontend_model>zip_payment/adminhtml_system_config_field_healthCheck</frontend_model>
                                         <backend_model>zip_payment/adminhtml_system_config_backend_healthCheck</backend_model>
-                                        <comment><![CDATA[Before Health check please save all zip configuration details.]]></comment>
+                                        <comment><![CDATA[Health check your API Key and environments]]></comment>
                                         <sort_order>20</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
