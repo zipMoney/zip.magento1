@@ -95,7 +95,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 // check api key length if it is more than or equal 50 then call SMI merchant info endpoint
                 // otherwise call checkout get api endpoint only for Australia
                 if (strlen($privateKey) <= 50) {
-                    $checkoutId = 'au-co_PxSeQfLlpaYn6bLMZSMv13';
+                    $checkoutId = 'co_healthcheck';
                     $url = $apiConfig->getHost().'/checkouts/'.$checkoutId;
                     $isAuEndpoint = true;
                 }
@@ -103,14 +103,13 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 $response = $curl->read();
                 $sslVerified = $curl->getInfo(CURLINFO_SSL_VERIFYRESULT) == 0;
                 $httpCode = $curl->getInfo(CURLINFO_HTTP_CODE);
-                $logger->debug('Response: '.json_encode($response));
                 // if API certification invalid
                 if (!$sslVerified) {
                     $this->appendItem(self::STATUS_WARNING, self::API_CERTIFICATE_INVALID_MESSAGE);
                 }
 
                 // if API credential is invalid
-                if ($httpCode == '401') {
+                if ($httpCode == '401' || $httpCode == '403' || ($httpCode == '404' && $isAuEndpoint == false)) {
                     $this->appendItem(self::STATUS_ERROR, self::API_CREDENTIAL_INVALID_MESSAGE);
                 }
                 if ($httpCode == '200' && $isAuEndpoint == false) {
@@ -120,7 +119,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     $this->appendItem( self::STATUS_OK, ucfirst($environment)." Api key is for ".$data->name);
                     $regions = $data->regions;
                     if ($regions) {
-                        $regionList = ' Valid for below regions '.ucfirst($environment).' environment:<br>';
+                        $regionList = ' key is valid for below regions '.ucfirst($environment).' environment:<br>';
                         $availableRegions = \Zip\Model\CurrencyUtil::getAvailableRegions();
                         foreach ($regions as $region) {
                             $regionList .= $availableRegions[$region].'<br>';
@@ -128,7 +127,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                         $this->appendItem(self::STATUS_OK, $regionList);
                     }
                 }
-                if ($httpCode == '404' || $httpCode =='200' && $isAuEndpoint == true){
+                if (($httpCode == '404' || $httpCode =='200') && $isAuEndpoint == true){
                     $this->appendItem( self::STATUS_OK, " Api key valid for Australia region ".ucfirst($environment)." environment.");
                 }
             }
