@@ -52,39 +52,34 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     {
         $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
 
-        if (empty($checkoutId)) {
-            $payload = $this->prepareCreatePayload();
+        $payload = $this->prepareCreatePayload();
 
-            try {
-                $this->getLogger()->debug("Create checkout");
+        try {
+            $this->getLogger()->debug("Create checkout");
 
-                $checkout = $this->getApi()->checkoutsCreate($payload);
+            $checkout = $this->getApi()->checkoutsCreate($payload);
 
-                if (isset($checkout->error)) {
-                    Mage::throwException($this->getHelper()->__('Something wrong when checkout been created'));
-                }
-
-                if (isset($checkout[self::CHECKOUT_ID_KEY]) && isset($checkout[self::CHECKOUT_REDIRECT_URL_KEY])) {
-                    // save checkout data into session
-                    $this->getHelper()->saveCheckoutSessionData(
-                        array(
-                            self::CHECKOUT_ID_KEY => $checkout[self::CHECKOUT_ID_KEY],
-                            self::CHECKOUT_REDIRECT_URL_KEY => $checkout[self::CHECKOUT_REDIRECT_URL_KEY]
-                        )
-                    );
-                } else {
-                    throw new Mage_Payment_Exception("Could not create checkout");
-                }
-
-                $this->_response = $checkout;
-            } catch (ApiException $e) {
-                $this->logException($e);
-                throw $e;
+            if (isset($checkout->error)) {
+                Mage::throwException($this->getHelper()->__('Something wrong when checkout been created'));
             }
-        } else {
-            $this->getLogger()->debug("Checkout ID already exists:" . json_encode($checkoutId));
-        }
 
+            if (isset($checkout[self::CHECKOUT_ID_KEY]) && isset($checkout[self::CHECKOUT_REDIRECT_URL_KEY])) {
+                // save checkout data into session
+                $this->getHelper()->saveCheckoutSessionData(
+                    array(
+                        self::CHECKOUT_ID_KEY => $checkout[self::CHECKOUT_ID_KEY],
+                        self::CHECKOUT_REDIRECT_URL_KEY => $checkout[self::CHECKOUT_REDIRECT_URL_KEY]
+                    )
+                );
+            } else {
+                throw new Mage_Payment_Exception("Could not create checkout");
+            }
+
+            $this->_response = $checkout;
+        } catch (ApiException $e) {
+            $this->logException($e);
+            throw $e;
+        }
         return $this;
     }
 
