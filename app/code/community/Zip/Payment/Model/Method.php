@@ -455,8 +455,9 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
 
             // Create refund
             $this->getLogger()->debug('Refund store id: ' . $storeId);
+            $refundAmount = $this->getMultiCurrencyAmount($payment, $amount);
             $refund = Mage::getModel('zip_payment/api_refund', array('store_id' => $storeId))
-                ->create($chargeId, $amount, $reason);
+                ->create($chargeId, $refundAmount, $reason);
 
             $this->getLogger()->info(
                 $this->_getHelper()->__("Refund for Order [ %s ] for amount %s was successful", $orderId, $amount)
@@ -472,6 +473,33 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         }
 
         return $this;
+    }
+
+    /**
+     * @param $payment
+     * @param $baseAmount
+     * @return mixed
+     * get currency converted refund amount
+     */
+
+    public function getMultiCurrencyAmount($payment, $baseAmount)
+    {
+        $order = $payment->getOrder();
+        $grandTotal = $order->getGrandTotal();
+        $baseGrandTotal = $order->getBaseGrandTotal();
+
+        $rate = $order->getBaseToOrderRate();
+        if ($rate == 0) $rate = 1;
+
+        // Full refund, ignore currency rate in case it changed
+        if ($baseAmount == $baseGrandTotal)
+            return $grandTotal;
+        // Partial refund, consider currency rate but don't refund more than the original amount
+        else if (is_numeric($rate))
+            return min($baseAmount * $rate, $grandTotal);
+        // Not a multicurrency refund
+        else
+            return $baseAmount;
     }
 
     /**
