@@ -10,6 +10,7 @@
 namespace Zip\Model;
 
 use \ArrayAccess;
+use \Zip\Model\CurrencyUtil;
 
 class ShopperStatistics implements ArrayAccess
 {
