@@ -10,6 +10,7 @@
 namespace Zip\Model;
 
 use \ArrayAccess;
+use \Zip\Model\CurrencyUtil;
 
 class ShopperStatistics implements ArrayAccess
 {
@@ -115,25 +116,9 @@ class ShopperStatistics implements ArrayAccess
         return self::$getters;
     }
 
-    const CURRENCY_AUD = 'AUD';
-    const CURRENCY_NZD = 'NZD';
     const FRAUD_CHECK_RESULT_PASS = 'pass';
     const FRAUD_CHECK_RESULT_FAIL = 'fail';
     const FRAUD_CHECK_RESULT_UNKNOWN = 'unknown';
-
-
-
-    /**
-     * Gets allowable values of the enum
-     * @return string[]
-     */
-    public function getCurrencyAllowableValues()
-    {
-        return array(
-            self::CURRENCY_AUD,
-            self::CURRENCY_NZD,
-        );
-    }
 
     /**
      * Gets allowable values of the enum
@@ -194,9 +179,9 @@ class ShopperStatistics implements ArrayAccess
     {
         $invalid_properties = array();
 
-        $allowed_values = array("AUD", "NZD");
-        if (!in_array($this->container['currency'], $allowed_values)) {
-            $invalid_properties[] = "invalid value for 'currency', must be one of 'AUD', 'NZD'.";
+        $allowed_values = currencyUtil::isValidCurrency($this->container['currency']);
+        if (!$allowed_values['valid']) {
+            $invalid_properties[] = $allowed_values['message'];
         }
 
         $allowed_values = array("pass", "fail", "unknown");
@@ -215,8 +200,8 @@ class ShopperStatistics implements ArrayAccess
      */
     public function valid()
     {
-        $allowed_values = array("AUD", "NZD");
-        if (!in_array($this->container['currency'], $allowed_values)) {
+        $allowed_values = currencyUtil::isValidCurrency($this->container['currency']);
+        if (!$allowed_values['valid']) {
             return false;
         }
 
@@ -392,9 +377,9 @@ class ShopperStatistics implements ArrayAccess
      */
     public function setCurrency($currency)
     {
-        $allowed_values = array('AUD', 'NZD');
-        if ($currency !== null && (!in_array($currency, $allowed_values))) {
-            throw new \InvalidArgumentException("Invalid value for 'currency', must be one of 'AUD', 'NZD'");
+        $allowed_values = currencyUtil::isValidCurrency($currency);
+        if (!is_null($currency) && (!$allowed_values['valid'])) {
+            throw new \InvalidArgumentException($allowed_values['message']);
         }
 
         $this->container['currency'] = $currency;

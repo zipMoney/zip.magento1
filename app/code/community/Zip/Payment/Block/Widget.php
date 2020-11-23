@@ -17,7 +17,10 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
 
     const CONFIG_PUBLIC_KEY_PATH = 'payment/zip_payment/public_key';
     const CONFIG_ENVIRONMENT_PATH = 'payment/zip_payment/environment';
+    const CONFIG_REGION_PATH = 'payment/zip_payment/region';
     const CONFIG_HOME_PAGE_PATH = 'web/default/cms_home_page';
+    const CONFIG_MIN_ORDER_TOTAL_PATH = 'payment/zip_payment/min_order_total';
+    const CONFIG_MAX_ORDER_TOTAL_PATH ='payment/zip_payment/max_order_total';
 
     protected $_supportedWidgetTypes = array('widget', 'banner', 'tagline');
 
@@ -56,6 +59,32 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     public function getEnvironment()
     {
         return $this->getConfig()->getValue(self::CONFIG_ENVIRONMENT_PATH);
+    }
+
+    /**
+     * get current region
+     */
+    public function getRegion()
+    {
+        return $this->getConfig()->getValue(self::CONFIG_REGION_PATH);
+    }
+
+    /**
+     * get min order total
+     */
+    public function getMinOrderTotal()
+    {
+        $minTotal = $this->getConfig()->getValue( self::CONFIG_MIN_ORDER_TOTAL_PATH);
+        return !empty($minTotal)? $minTotal :0;
+    }
+
+    /**
+     * get min order total
+     */
+    public function getMaxOrderTotal()
+    {
+        $maxTotal = $this->getConfig()->getValue( self::CONFIG_MAX_ORDER_TOTAL_PATH);
+        return !empty($maxTotal)? $maxTotal :0;
     }
 
     /**
@@ -149,5 +178,33 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         return null;
     }
 
+    /**
+     * get current product price
+     */
+    public function getCurrentProductPrice()
+    {
+        $currentProductId = Mage::registry('current_product')->getId();
+        $product = Mage::getModel('catalog/product')->load($currentProductId);
+        $productFinalPrice = $product->getFinalPrice();
+        return $productFinalPrice;
+    }
+
+    /**
+     * get current quote grand total
+     */
+    public function getQuoteTotal()
+    {
+        return Mage::getSingleton('checkout/session')->getQuote()->getData('grand_total');
+    }
+
+    /**
+     * get store currency symbol
+     */
+    public function getStoreCurrencySymbol()
+    {
+        $currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+        $currencySymbol = Mage::app()->getLocale()->currency($currencyCode)->getSymbol();
+        return $currencySymbol;
+    }
 
 }

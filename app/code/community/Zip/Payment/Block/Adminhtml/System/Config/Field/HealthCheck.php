@@ -13,7 +13,7 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
     /**
      * @var string
      */
-    protected $_template = 'zip/payment/system/config/field/health_check.phtml';
+    protected $_template = 'zip/payment/system/config/field/check_credential_button.phtml';
     const HEALTH_CHECK_CACHE_ID = 'zip_payment_health_check';
 
     /**
@@ -31,10 +31,6 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
 
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $result = $element->getValue();
-        Mage::app()->saveCache($result['overall_status'], self::HEALTH_CHECK_CACHE_ID);
-        $this->addData($result);
-
         return $this->_toHtml();
     }
 
@@ -51,6 +47,15 @@ extends Mage_Adminhtml_Block_System_Config_Form_Field
         return ($statusLevel !== null && isset($statusList[$statusLevel])) ? $statusList[$statusLevel] : null;
     }
 
+    /**
+     * Return ajax url for button
+     *
+     * @return string
+     */
+    public function getAjaxHealthCheckUrl()
+    {
+        return $this->getUrl('zip/adminhtml_healthcheck/check', array('_current'=>true));;
+    }
 
 
 }

@@ -4,7 +4,6 @@
 ?>
 
 <div id="zip-payment-healthcheck">
-
     <?php if(!empty($status)) : ?>
         <span class="<?php echo $this->escapeHtml(strtolower($this->getStatusLabel($status))); ?>">
             <?php echo $this->escapeHtml($this->getStatusLabel($status)); ?>

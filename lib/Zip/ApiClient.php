@@ -7,9 +7,9 @@
  * @author  Zip Co - Plugin Team
  */
 
-use Zip\ObjectSerializer;
-
 namespace Zip;
+
+use Zip\ObjectSerializer;
 
 class ApiClient
 {

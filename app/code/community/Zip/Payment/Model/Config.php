@@ -93,6 +93,15 @@ class Zip_Payment_Model_Config
      */
     const URL_PARAM_RESULT = 'result';
     const URL_PARAM_CHECKOUT_ID = 'checkoutId';
+    const URL_PARAM_API_KEY ='apikey';
+    const URL_PARAM_PUBLIC_KEY ='publickey';
+    const URL_PARAM_ENVIRONMENT = 'env';
+
+    /**
+     * environment variable
+     */
+    const PRODUCTION = 'production';
+    const SANDBOX = 'sandbox';
 
     /**
      * Charge

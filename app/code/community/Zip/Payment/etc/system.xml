@@ -55,6 +55,7 @@
                                         <frontend_type>label</frontend_type>
                                         <frontend_model>zip_payment/adminhtml_system_config_field_healthCheck</frontend_model>
                                         <backend_model>zip_payment/adminhtml_system_config_backend_healthCheck</backend_model>
+                                        <comment><![CDATA[Health check your API Key and environments]]></comment>
                                         <sort_order>20</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
@@ -100,28 +101,39 @@
                                         <sort_order>45</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
                                     </credential_button>
+                                    <region translate="label">
+                                        <label>Widget Region</label>
+                                        <config_path>payment/zip_payment/region</config_path>
+                                        <frontend_type>select</frontend_type>
+                                        <source_model>zip_payment/adminhtml_system_config_source_region</source_model>
+                                        <sort_order>47</sort_order>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
+                                    </region>
+                                    <public_key>
+                                        <label>Public Key</label>
+                                        <tooltip>Enter the "Zip Partner Public Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
+                                        <config_path>payment/zip_payment/public_key</config_path>
+                                        <frontend_type>text</frontend_type>
+                                        <sort_order>50</sort_order>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
+                                    </public_key>
                                     <private_key translate="label">
                                         <label>Private Key</label>
                                         <tooltip>Enter the "Zip Partner Private Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
                                         <config_path>payment/zip_payment/private_key</config_path>
                                         <frontend_type>obscure</frontend_type>
                                         <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
-                                        <sort_order>50</sort_order>
-                                        <show_in_default>1</show_in_default>
-                                        <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
-                                    </private_key>
-                                    <public_key>
-                                        <label>Public Key</label>
-                                        <tooltip>Enter the "Zip Partner Public Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
-                                        <config_path>payment/zip_payment/public_key</config_path>
-                                        <frontend_type>text</frontend_type>
                                         <sort_order>60</sort_order>
                                         <show_in_default>1</show_in_default>
                                         <show_in_website>1</show_in_website>
                                         <show_in_store>1</show_in_store>
-                                    </public_key>
+                                    </private_key>
                                     <zip_payment_setting_advanced type="group" translate="label">
                                         <label>Advanced Settings</label>
                                         <frontend_class>config-advanced</frontend_class>
@@ -156,6 +168,7 @@
                                                         <config_path>payment/zip_payment/payment_action</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>zip_payment/adminhtml_system_config_source_paymentAction</source_model>
+                                                        <comment><![CDATA[Please select Immediate Capture for non AUD currency.]]></comment>
                                                         <sort_order>20</sort_order>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
@@ -183,6 +196,17 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                     </min_order_total>
+                                                    <max_order_total translate="label">
+                                                        <label>Maximum Order Total</label>
+                                                        <tooltip>The maximum order value amount required to checkout</tooltip>
+                                                        <config_path>payment/zip_payment/max_order_total</config_path>
+                                                        <frontend_type>text</frontend_type>
+                                                        <frontend_class>validate-number</frontend_class>
+                                                        <sort_order>40</sort_order>
+                                                        <show_in_default>1</show_in_default>
+                                                        <show_in_website>1</show_in_website>
+                                                        <show_in_store>1</show_in_store>
+                                                    </max_order_total>
                                                     <sort_order translate="label">
                                                         <label>Sort Order</label>
                                                         <tooltip>Give a number to define the position in payment option Zip Payment will be placed, 0 is the first position</tooltip>
@@ -228,6 +252,8 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                     </checkout_path>
+                                                    <!-- for time being this feature is disable
+                                                            when checkout js lightbox issue will fix then we enable this
                                                     <display_mode translate="label">
                                                         <label>Display Mode</label>
                                                         <tooltip>Select display mode for Zip Checkout, popup or redirect</tooltip>
@@ -239,7 +265,7 @@
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
-                                                    </display_mode>
+                                                    </display_mode>-->
                                                     <click_collect translate="label comment">
                                                         <label>Click and Collect Method Code</label>
                                                         <comment>Enter a code/word to help Zip recognise the 'Click and Collect' shipping method.</comment>
@@ -413,7 +439,7 @@
                                                 <show_in_store>1</show_in_store>
                                                 <sort_order>50</sort_order>
                                                 <fields>
-                                                     <enabled translate="label">
+                                                    <enabled translate="label">
                                                         <label>Enabled</label>
                                                         <tooltip>Set to 'Yes' to fetch Zip notifications</tooltip>
                                                         <config_path>payment/zip_payment/admin_notification/enabled</config_path>

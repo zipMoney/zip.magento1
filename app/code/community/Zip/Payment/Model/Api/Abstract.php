@@ -190,6 +190,7 @@ abstract class Zip_Payment_Model_Api_Abstract
 
             $shippingItem
                 ->setName('Shipping')
+                ->setReference('Shipping')
                 ->setAmount((float) $shippingAmount)
                 ->setType(OrderItem::TYPE_SHIPPING)
                 ->setQuantity(1);
@@ -207,6 +208,7 @@ abstract class Zip_Payment_Model_Api_Abstract
             $remainingItem = new OrderItem;
             $remainingItem
                 ->setName('Fee')
+                ->setReference('Fee')
                 ->setAmount((float) $remaining)
                 ->setQuantity(1)
                 ->setType(OrderItem::TYPE_SHIPPING);
@@ -215,6 +217,7 @@ abstract class Zip_Payment_Model_Api_Abstract
             $remainingItem = new OrderItem;
             $remainingItem
                 ->setName('Discount')
+                ->setReference('Discount')
                 ->setAmount((float) $remaining)
                 ->setQuantity(1)
                 ->setType(OrderItem::TYPE_DISCOUNT);

@@ -91,7 +91,17 @@
             </modules>
         </translate>
     </frontend>
-
+    <admin>
+        <routers>
+            <zip_payment>
+                <use>admin</use>
+                <args>
+                    <module>Zip_Payment</module>
+                    <frontName>zip</frontName>
+                </args>
+            </zip_payment>
+        </routers>
+    </admin>
     <adminhtml>
         <events>
             <controller_action_predispatch_adminhtml>
@@ -123,6 +133,7 @@
                 <title>Zip - Own it now, pay later</title>
                 <model>zip_payment/method</model>
                 <environment>sandbox</environment>
+                <region>au</region>
                 <payment_action>authorize_capture</payment_action>
                 <order_status>processing</order_status>
                 <sort_order>1</sort_order>
@@ -167,7 +178,7 @@
                         </tagline>
                         <widget>
                             <enabled>1</enabled>
-                            <selector>.product-shop .product-options-bottom</selector>
+                            <selector>.product-shop .extra-info</selector>
                         </widget>
                     </product_page>
                     <category_page>
@@ -224,8 +235,8 @@
                     </referred>
                 </checkout>
                 <country_currency>
-                    <supported_countries>AU,NZ</supported_countries>
-                    <supported_currencies>AUD,NZD</supported_currencies>
+                    <supported_countries>AU,NZ,GB,US,ZA</supported_countries>
+                    <supported_currencies>AUD,NZD,GBP,USD,ZAR</supported_currencies>
                 </country_currency>
                 <api>
                     <timeout>0</timeout>
