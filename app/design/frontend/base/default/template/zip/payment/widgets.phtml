@@ -15,7 +15,7 @@ zip_widget_min_price = <?php echo $this->escapeHtml($this->getMinOrderTotal()); 
 <?php
 $pageType = $this->getWidgetPageType();
 if ($pageType == 'product') : ?>
-    zip_widget_produc_price = <?php echo $this->getCurrentProductPrice();?>;
+    zip_widget_product_price = <?php echo $this->getCurrentProductPrice();?>;
 <?php endif;
 if ($pageType == 'cart') : ?>
     zip_widget_cart_price = <?php echo $this->getQuoteTotal();?>;
