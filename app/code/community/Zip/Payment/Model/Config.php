@@ -73,6 +73,7 @@ class Zip_Payment_Model_Config
     const CONFIG_CHECKOUT_JS_LIB_PATH = 'payment/zip_payment/checkout/js_lib';
 
     const CONFIG_CHECKOUT_DISPLAY_MODE_PATH = 'payment/zip_payment/checkout/display_mode';
+    const CONFIG_CHECKOUT_DISPLAY_WIDGET_MODE_PATH = 'payment/zip_payment/widgets/display_widget_mode';
     const CONFIG_CHECKOUT_CUSTOM_SCRIPT_PATH = 'payment/zip_payment/checkout/custom_script';
     const CONFIG_CHECKOUT_PATH_PATH = 'payment/zip_payment/checkout/path';
 
