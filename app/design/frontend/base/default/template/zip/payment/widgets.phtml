@@ -13,7 +13,7 @@ zip_widget_region = '<?php echo $this->escapeHtml($this->getRegion()); ?>';
 zip_widget_max_price  = <?php echo $this->escapeHtml($this->getMaxOrderTotal()); ?>;
 zip_widget_min_price = <?php echo $this->escapeHtml($this->getMinOrderTotal()); ?>;
 // widget display inline if this value is true otherwise it will display iframe
-zip_widget_display_inline = '<?php  echo $this->isDisplayInlineWidget();?>';
+zip_widget_display_inline = <?php  echo $this->isDisplayInlineWidget();?>;
 <?php
 $pageType = $this->getWidgetPageType();
 if ($pageType == 'product') : ?>
