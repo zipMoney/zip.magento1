@@ -62,6 +62,15 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     }
 
     /**
+     * @return mixed
+     * get display widget mode inline of iframe.
+     */
+    public function getDisplayWidgetMode()
+    {
+        return $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_DISPLAY_WIDGET_MODE_PATH);
+    }
+
+    /**
      * get current region
      */
     public function getRegion()
@@ -185,7 +194,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     {
         $currentProductId = Mage::registry('current_product')->getId();
         $product = Mage::getModel('catalog/product')->load($currentProductId);
-        $productFinalPrice = $product->getFinalPrice();
+        $productFinalPrice = Mage::helper('core')->currency($product->getFinalPrice(), false, false);
         return $productFinalPrice;
     }
 
@@ -205,6 +214,19 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         $currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
         $currencySymbol = Mage::app()->getLocale()->currency($currencyCode)->getSymbol();
         return $currencySymbol;
+    }
+
+    /**
+     * display product widget in line
+     */
+    public function isDisplayInlineWidget()
+    {
+        $displayMode = $this->getDisplayWidgetMode();
+        $displayInline = "false";
+        if ($displayMode == 'inline') {
+            $displayInline = "true";
+        }
+        return $displayInline;
     }
 
 }

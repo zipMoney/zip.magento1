@@ -12,10 +12,12 @@ zip_widget_env = '<?php echo $this->escapeHtml($this->getEnvironment()); ?>';
 zip_widget_region = '<?php echo $this->escapeHtml($this->getRegion()); ?>';
 zip_widget_max_price  = <?php echo $this->escapeHtml($this->getMaxOrderTotal()); ?>;
 zip_widget_min_price = <?php echo $this->escapeHtml($this->getMinOrderTotal()); ?>;
+// widget display inline if this value is true otherwise it will display iframe
+zip_widget_display_inline = <?php  echo $this->isDisplayInlineWidget();?>;
 <?php
 $pageType = $this->getWidgetPageType();
 if ($pageType == 'product') : ?>
-    zip_widget_produc_price = <?php echo $this->getCurrentProductPrice();?>;
+    zip_widget_product_price = <?php echo $this->getCurrentProductPrice();?>;
 <?php endif;
 if ($pageType == 'cart') : ?>
     zip_widget_cart_price = <?php echo $this->getQuoteTotal();?>;

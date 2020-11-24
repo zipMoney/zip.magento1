@@ -468,6 +468,18 @@
                                 <comment><![CDATA[<p>Display Zip Payment marketing banner and popup on home page to give customers more information and increase conversions</p>]]></comment>
                                 <expanded>0</expanded>
                                 <fields>
+                                    <display_widget_mode translate="label">
+                                        <label> Display Widget Mode</label>
+                                        <tooltip>Select display widget mode for Zip Widget
+                                        </tooltip>
+                                        <config_path>payment/zip_payment/widgets/display_widget_mode</config_path>
+                                        <frontend_type>select</frontend_type>
+                                        <source_model>zip_payment/adminhtml_system_config_source_displayWidget</source_model>
+                                        <sort_order>9</sort_order>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
+                                    </display_widget_mode>
                                     <zip_payment_widgets_home_page type="group" translate="label">
                                         <label>Home Page</label>
                                         <expanded>1</expanded>
