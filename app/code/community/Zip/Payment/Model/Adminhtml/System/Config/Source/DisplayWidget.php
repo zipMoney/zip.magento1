@@ -30,7 +30,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayWidget
             ),
             array(
                 'value' => self::DISPLAY_WIDGET_INLINE,
-                'label' => Mage::helper('zip_payment')->__('In  line')
+                'label' => Mage::helper('zip_payment')->__('Inline')
             )
         );
     }
