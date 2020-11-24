@@ -194,7 +194,7 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
     {
         $currentProductId = Mage::registry('current_product')->getId();
         $product = Mage::getModel('catalog/product')->load($currentProductId);
-        $productFinalPrice = $product->getFinalPrice();
+        $productFinalPrice = Mage::helper('core')->currency($product->getFinalPrice(), false, false);
         return $productFinalPrice;
     }
 
