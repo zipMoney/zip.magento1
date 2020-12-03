@@ -236,7 +236,6 @@
                     </referred>
                 </checkout>
                 <country_currency>
-                    <supported_countries>AU,NZ,GB,US,ZA</supported_countries>
                     <supported_currencies>AUD,NZD,GBP,USD,ZAR</supported_currencies>
                 </country_currency>
                 <api>
