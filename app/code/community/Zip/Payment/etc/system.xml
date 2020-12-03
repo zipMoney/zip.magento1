@@ -326,7 +326,7 @@
                                                     <allowspecific translate="label">
                                                         <label>Payment from applicable countries</label>
                                                         <frontend_type>allowspecific</frontend_type>
-                                                        <source_model>zip_payment/adminhtml_system_config_source_payment_allspecificcountries</source_model>
+                                                        <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
                                                         <config_path>payment/zip_payment/country_currency/allow_specific_countries</config_path>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
@@ -336,7 +336,7 @@
                                                     <specificcountry translate="label">
                                                         <label>Payment from Specific countries</label>
                                                         <frontend_type>multiselect</frontend_type>
-                                                        <source_model>zip_payment/adminhtml_system_config_source_country</source_model>
+                                                        <source_model>adminhtml/system_config_source_country</source_model>
                                                         <config_path>payment/zip_payment/country_currency/specific_countries</config_path>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
