@@ -93,6 +93,7 @@ class Zip_Payment_Model_Config
      * Response
      */
     const URL_PARAM_RESULT = 'result';
+    const URL_PARAM_IFRAME = 'iframe';
     const URL_PARAM_CHECKOUT_ID = 'checkoutId';
     const URL_PARAM_API_KEY ='apikey';
     const URL_PARAM_PUBLIC_KEY ='publickey';

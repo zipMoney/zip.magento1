@@ -194,7 +194,18 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     protected function getCheckoutConfiguration()
     {
         $checkoutConfig = new CheckoutConfiguration();
-        $redirectUrl = $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE);
+        $redirectCheckout = Mage::helper('zip_payment')->isRedirectCheckoutDisplayModel();
+        $redirectUrl = $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE, ['_secure' => true]);
+        if (!$redirectCheckout) {
+            $redirectUrl = $this->getHelper()->getUrl(
+                Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE,
+                [
+                    '_secure' => true,
+                    '_query'=>['iframe'=>1]
+                ]
+            );
+        }
+        $this->getLogger()->log('Redirect url: '.$redirectUrl);
         $checkoutConfig->setRedirectUri($redirectUrl);
 
         return $checkoutConfig;

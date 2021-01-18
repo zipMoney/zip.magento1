@@ -7,6 +7,8 @@
  * @author  Zip Co - Plugin Team
  **/
 
+use \Zip\Model\CurrencyUtil;
+
 class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
 {
 
@@ -33,7 +35,36 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_CHECKOUT_ID) ?: ''
         );
 
+        $iframe = $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_IFRAME);
+
         try {
+            // as AU stack already handle iframe in redirect
+            $currencyCode = $this->getHelper()->getCheckoutSession()->getQuote()->getQuoteCurrencyCode();
+            if ($iframe && $currencyCode !== CurrencyUtil::CURRENCY_AUD) {
+                $this->loadLayout();
+                $url = $this->getResponseUrl($checkoutId, $state);
+                $block = $this->getLayout()
+                    ->createBlock('core/template')
+                    ->setTemplate('zip/payment/iframe/iframe_js.phtml');
+                /*
+                 *
+                 * $block = $this->getLayout()->createBlock(
+'Mage_Core_Block_Template',
+'my_block_name_here',
+array('template' => 'activecodeline/developer.phtml')
+);
+
+$this->getLayout()->getBlock('content')->append($block);
+
+//Release layout stream... lol... sounds fancy
+$this->renderLayout();
+                 */
+                $block->setData('checkoutId', $checkoutId);
+                $block->setData('state', $state);
+                $block->setData('redirectUrl', $url);
+                $this->getLayout()->getBlock('content')->append($block);
+                $this->renderLayout();
+            }
             $response = Mage::getSingleton('zip_payment/checkout')->handleResponse($checkoutId, $state);
             $this->redirectAfterResponse($response);
         } catch (Exception $e) {
@@ -123,6 +154,19 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
                 );
         }
 
+    }
+
+    /**
+     * Returns the response url.
+     *
+     * @return string
+     */
+    public function getResponseUrl($checkoutId, $state)
+    {
+        return $this->getHelper()
+                ->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE) .
+            '?' . Zip_Payment_Model_Config::URL_PARAM_CHECKOUT_ID . '='.$checkoutId.'&' .
+            Zip_Payment_Model_Config::URL_PARAM_RESULT . '='.$state;
     }
 
 
