@@ -39,7 +39,6 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         return $this->_logger;
     }
 
-
     /**
      * handle redirect after response been processed
      */
@@ -58,10 +57,7 @@ class Zip_Payment_Controller_Checkout extends Mage_Core_Controller_Front_Action
         } else {
             $this->_redirect($response['redirect_url'], array('_secure' => true));
         }
-
     }
-
-
 
     /**
      * create breadcrumb for checkout pages

@@ -38,5 +38,53 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
         return $block->toHtml();
     }
 
+    public function getQuoteCurrencyCode()
+    {
+        $checkoutSession = Mage::getSingleton('checkout/session');
+        $quote = $checkoutSession->getQuote();
+        if ($quote) {
+            return $quote->getQuoteCurrencyCode();
+        } else {
+            return null;
+        }
+    }
 
+    public function getCartTotal()
+    {
+        $checkoutSession = Mage::getSingleton('checkout/session');
+        $quote = $checkoutSession->getQuote();
+        if ($quote) {
+            return $quote->getGrandTotal();
+        } else {
+            return null;
+        }
+    }
+
+    public function getRepaymentData($currency, $total)
+    {
+        $repayment = array();
+        if (is_string($currency) 
+            && strtoupper($currency) !== 'AUD'
+            && is_numeric($total) 
+            && $total > 0
+        ) {
+            $now = strtotime("now");
+            $payment = round($total, 2)/4;
+            $todayLabel = date("d M", $now);
+            $payInTimes = 4;
+            for ( $i = 1; $i <= $payInTimes; $i++) {
+                if ($i == 1) {
+                    $repayment['Today\'s Payment ('.$todayLabel.')'] = $payment;
+                    continue;
+                }
+                $d = ($i - 1) * 14;
+                if ($i == $payInTimes) {
+                    $repayment["Payment $i (" .date("d M", strtotime("+$d day", $now)) . ')'] = $total - $payment * ($i - 1);
+                    continue;
+                }
+                $repayment["Payment $i (" .date("d M", strtotime("+$d day", $now)) . ')'] = $payment;
+            }
+        }
+        return $repayment;
+    }
 }

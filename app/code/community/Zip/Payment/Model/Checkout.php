@@ -353,6 +353,4 @@ class Zip_Payment_Model_Checkout
         return $message;
 
     }
-
-
 }

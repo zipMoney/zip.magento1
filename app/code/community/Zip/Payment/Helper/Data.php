@@ -48,7 +48,6 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getUrl($route, $param);
     }
 
-
     /**
      * Return checkout session object
      *
@@ -124,7 +123,6 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
             Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
     }
 
-
     /*******************************************
      * PAGE DETECTION
      *******************************************/
@@ -136,7 +134,6 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::app()->getFrontController()->getAction()->getFullActionName();
     }
-
 
     /**
      * get path for current page

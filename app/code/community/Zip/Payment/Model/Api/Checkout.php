@@ -50,8 +50,6 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
      */
     public function create()
     {
-        $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
-
         $payload = $this->prepareCreatePayload();
 
         try {
@@ -194,7 +192,12 @@ class Zip_Payment_Model_Api_Checkout extends Zip_Payment_Model_Api_Abstract
     protected function getCheckoutConfiguration()
     {
         $checkoutConfig = new CheckoutConfiguration();
+        $isRedirect = $this->getHelper()->isRedirectCheckoutDisplayModel();
         $redirectUrl = $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE);
+        if (!$isRedirect) {
+            $redirectUrl = stripos($redirectUrl, '?') === false ?
+                $redirectUrl . '?iframe=1' : $redirectUrl;
+        }
         $checkoutConfig->setRedirectUri($redirectUrl);
 
         return $checkoutConfig;

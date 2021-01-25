@@ -23,6 +23,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
 
         $this->getLogger()->debug('Zip_Payment_CheckoutController - responseAction');
         $this->getHelper()->getCheckoutSession()->getMessages(true);
+        $iframe = $this->getRequest()->getParam('iframe', false);
 
         // get response result
         $state = $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_RESULT);
@@ -33,6 +34,39 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $this->getRequest()->getParam(Zip_Payment_Model_Config::URL_PARAM_CHECKOUT_ID) ?: ''
         );
 
+        if ($iframe) {
+            $url = $this->getHelper()->getUrl(Zip_Payment_Model_Config::CHECKOUT_RESPONSE_URL_ROUTE);
+            $url .= stripos($url, '?') === false
+                ? '?checkoutId='. $checkoutId . '&result=' . $state
+                : '&checkoutId='. $checkoutId . '&result=' . $state;
+            $responseBody = '<p>Redirecting to <a href="'. $url .'">' . $url . '</a>, please wait...</p>
+            <script type="text/javascript">
+                if (window.self !== window.top) { // detect if current windw is an iFrame
+                    // setting parent redirect info
+                    window.parent.postMessage({
+                        msg: {
+                            eventType: \'complete\',
+                            data: {
+                                state: "' . $state . '", // get from URL parameter
+                                checkoutId: "' . $checkoutId . '" // get from URL parameter
+                            }
+                        },
+                        zipmoney: true
+                    }, \'*\');
+                    // close iframe
+                    window.parent.postMessage({
+                        msg: {
+                            eventType: \'close\'
+                        },
+                        zipmoney: true
+                    }, \'*\');
+                } else {
+                    window.location.href = \'' . $url . '\';
+                }
+            </script>';
+            return $this->getResponse()->setBody($responseBody);
+        }
+
         try {
             $response = Mage::getSingleton('zip_payment/checkout')->handleResponse($checkoutId, $state);
             $this->redirectAfterResponse($response);
@@ -40,7 +74,6 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $this->getLogger()->error($e->getMessage());
             $this->getHelper()->getCheckoutSession()->addError($e->getMessage());
         }
-
     }
 
     /**
@@ -63,7 +96,14 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
             $redirectUrl = $this->getHelper()->getCheckoutRedirectUrlFromSession();
         }
-
+        $mode = $this->getHelper()->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_DISPLAY_MODE_PATH);
+        if ($mode == 'lightbox') {
+            $checkoutSession = Mage::getSingleton('checkout/session');
+            $quote = $checkoutSession->getQuote();
+            if ($quote && strtoupper($quote->getQuoteCurrencyCode()) === 'NZD') {
+                $redirectUrl = stripos($redirectUrl, '?') !== false ? $redirectUrl . '&embedded=true' : $redirectUrl;
+            }
+        }
         $response = array(
             'id' => $checkoutId,
             'uri' => $redirectUrl,
@@ -96,7 +136,6 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
                     $this->getHelper()->__('An error occurred during redirecting to failure page.')
                 );
         }
-
     }
 
     /**
