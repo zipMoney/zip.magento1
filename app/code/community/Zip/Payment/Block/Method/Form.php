@@ -69,6 +69,7 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
             && $total > 0
         ) {
             $payInTimes = 4;
+            $repayment['Grand Total'] = round($total, 2);
             $now = strtotime("now");
             $div = round($total, 2)/4;
             $payment = round($div, 2);
