@@ -68,21 +68,23 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
             && is_numeric($total) 
             && $total > 0
         ) {
-            $now = strtotime("now");
-            $payment = round($total, 2)/4;
-            $todayLabel = date("d M", $now);
             $payInTimes = 4;
+            $now = strtotime("now");
+            $div = round($total, 2)/4;
+            $payment = round($div, 2);
+            $diff = ($div - $payment) * $payInTimes;
+            $todayLabel = date("d M", $now);
             for ( $i = 1; $i <= $payInTimes; $i++) {
                 if ($i == 1) {
-                    $repayment['Today\'s Payment ('.$todayLabel.')'] = $payment;
+                    $repayment['Today\'s Payment ('.$todayLabel.')'] = round($payment, 2);
                     continue;
                 }
                 $d = ($i - 1) * 14;
                 if ($i == $payInTimes) {
-                    $repayment["Payment $i (" .date("d M", strtotime("+$d day", $now)) . ')'] = $total - $payment * ($i - 1);
+                    $repayment["Payment $i (" .date("d M", strtotime("+$d day", $now)) . ')'] = round($payment + $diff, 2);
                     continue;
                 }
-                $repayment["Payment $i (" .date("d M", strtotime("+$d day", $now)) . ')'] = $payment;
+                $repayment["Payment $i (" .date("d M", strtotime("+$d day", $now)) . ')'] = round($payment, 2);
             }
         }
         return $repayment;
