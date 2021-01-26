@@ -64,7 +64,7 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
     {
         $repayment = array();
         if (is_string($currency) 
-            && strtoupper($currency) !== 'AUD'
+            && strtoupper($currency) !== \Zip\Model\CurrencyUtil::CURRENCY_AUD
             && is_numeric($total) 
             && $total > 0
         ) {

@@ -100,7 +100,7 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
         if ($mode == 'lightbox') {
             $checkoutSession = Mage::getSingleton('checkout/session');
             $quote = $checkoutSession->getQuote();
-            if ($quote && strtoupper($quote->getQuoteCurrencyCode()) === 'NZD') {
+            if ($quote && strtoupper($quote->getQuoteCurrencyCode()) === \Zip\Model\CurrencyUtil::CURRENCY_NZD) {
                 $redirectUrl = stripos($redirectUrl, '?') !== false ? $redirectUrl . '&embedded=true' : $redirectUrl;
             }
         }
