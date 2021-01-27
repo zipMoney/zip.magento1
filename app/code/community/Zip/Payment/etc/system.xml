@@ -94,15 +94,6 @@
                                         <show_in_website>1</show_in_website>
                                         <show_in_store>1</show_in_store>
                                     </environment>
-                                    <credential_button translate="button_label">
-                                        <lable></lable>
-                                        <frontend_model>zip_payment/adminhtml_system_config_field_credentialButton</frontend_model>
-                                        <comment><![CDATA[Switch keys by changing the above <strong>Environment</strong> field]]></comment>
-                                        <sort_order>45</sort_order>
-                                        <show_in_default>1</show_in_default>
-                                        <show_in_website>1</show_in_website>
-                                        <show_in_store>1</show_in_store>
-                                    </credential_button>
                                     <region translate="label">
                                         <label>Widget Region</label>
                                         <config_path>payment/zip_payment/region</config_path>
@@ -128,6 +119,7 @@
                                         <tooltip>Enter the "Zip Partner Private Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
                                         <config_path>payment/zip_payment/private_key</config_path>
                                         <frontend_type>obscure</frontend_type>
+                                        <comment><![CDATA[Please contact <strong>integrations@zip.co</strong> to get your global API key]]></comment>
                                         <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                                         <sort_order>60</sort_order>
                                         <show_in_default>1</show_in_default>
@@ -252,10 +244,8 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                     </checkout_path>
-                                                    <!-- for time being this feature is disable
-                                                            when checkout js lightbox issue will fix then we enable this
                                                     <display_mode translate="label">
-                                                        <label>Display Mode</label>
+                                                        <label>Checkout Mode</label>
                                                         <tooltip>Select display mode for Zip Checkout, popup or redirect</tooltip>
                                                         <comment>This setting is used to identify how can we handle checkout authentication and confirmation from Zip</comment>
                                                         <config_path>payment/zip_payment/checkout/display_mode</config_path>
@@ -265,7 +255,7 @@
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
-                                                    </display_mode>-->
+                                                    </display_mode>
                                                     <click_collect translate="label comment">
                                                         <label>Click and Collect Method Code</label>
                                                         <comment>Enter a code/word to help Zip recognise the 'Click and Collect' shipping method.</comment>
