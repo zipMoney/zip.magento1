@@ -9,6 +9,15 @@
 
 class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
 {
+    /**
+     * initial Zip lib classes
+     */
+    protected function _construct()
+    {
+        if (!class_exists('\Zip\Model\CurrencyUtil')) {
+            include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
+        }
+    }
 
     /**
      * Handling response from API response
