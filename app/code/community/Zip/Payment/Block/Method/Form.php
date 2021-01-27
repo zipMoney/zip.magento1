@@ -15,6 +15,9 @@ class Zip_Payment_Block_Method_Form extends Mage_Payment_Block_Form
     protected function _construct()
     {
         parent::_construct();
+        if (!class_exists('\Zip\Model\CurrencyUtil')) {
+            include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
+        }
 
         $this->setTemplate($this->_template);
         $this->setMethodLabelAfterHtml($this->getMethodLabelHtml());
