@@ -461,7 +461,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                 ->create($chargeId, $refundAmount, $reason);
 
             $this->getLogger()->info(
-                $this->_getHelper()->__("Refund for Order [ %s ] for amount %s was successful", $orderId, $amount)
+                $this->_getHelper()->__("Refund for Order [ %s ] for amount %s was successful", $orderId, $refundAmount)
             );
 
             $payment
@@ -482,7 +482,6 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
      * @return mixed
      * get currency converted refund amount
      */
-
     public function getMultiCurrencyAmount($payment, $baseAmount)
     {
         $order = $payment->getOrder();
@@ -493,14 +492,15 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
         if ($rate == 0) $rate = 1;
 
         // Full refund, ignore currency rate in case it changed
-        if ($baseAmount == $baseGrandTotal)
+        if ($baseAmount == $baseGrandTotal) {
             return $grandTotal;
-        // Partial refund, consider currency rate but don't refund more than the original amount
-        else if (is_numeric($rate))
-            return min($baseAmount * $rate, $grandTotal);
-        // Not a multicurrency refund
-        else
+        } else if (is_numeric($rate)) {
+            // Partial refund, consider currency rate but don't refund more than the original amount
+            return min(round($baseAmount * $rate, 2), $grandTotal);
+        } else {
+            // Not a multicurrency refund
             return $baseAmount;
+        }
     }
 
     /**
