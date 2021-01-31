@@ -36,7 +36,7 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
     protected $_canOrder                    = true;
     protected $_canAuthorize                = true;
     protected $_canCapture                  = true;
-    protected $_canCapturePartial           = false;
+    protected $_canCapturePartial           = true;
     protected $_canCaptureOnce              = true;
     protected $_canRefund                   = true;
     protected $_canRefundInvoicePartial     = true;
@@ -369,7 +369,8 @@ class Zip_Payment_Model_Method extends Mage_Payment_Model_Method_Abstract
                 if ($authId) {
                     // Capture Charge
                     $chargeId = preg_replace('/^' . self::AUTHORIZE_TRANSACTION_ID_PREFIX . '/i', '', $authId);
-                    $charge = $charge->capture($chargeId, $amount);
+                    $capturedAmount = $this->getMultiCurrencyAmount($payment, $amount);
+                    $charge = $charge->capture($chargeId, $capturedAmount);
                 }
             } else {
                 $checkoutState = $this->_getHelper()->getCheckoutStateFromSession();
