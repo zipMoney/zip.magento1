@@ -377,7 +377,7 @@ class ShopperStatistics implements ArrayAccess
      */
     public function setCurrency($currency)
     {
-        $allowed_values = currencyUtil::isValidCurrency($currency);
+        $allowed_values = CurrencyUtil::isValidCurrency($currency);
         if (!is_null($currency) && (!$allowed_values['valid'])) {
             throw new \InvalidArgumentException($allowed_values['message']);
         }
