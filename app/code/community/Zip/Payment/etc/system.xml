@@ -244,6 +244,7 @@
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
                                                     </checkout_path>
+                                                    <!--  iframe checking is disable until we fix zip checkout js issue to support iframe for all browse
                                                     <display_mode translate="label">
                                                         <label>Checkout Mode</label>
                                                         <tooltip>Select display mode for Zip Checkout, popup or redirect</tooltip>
@@ -255,7 +256,7 @@
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
                                                         <show_in_store>1</show_in_store>
-                                                    </display_mode>
+                                                    </display_mode>-->
                                                     <click_collect translate="label comment">
                                                         <label>Click and Collect Method Code</label>
                                                         <comment>Enter a code/word to help Zip recognise the 'Click and Collect' shipping method.</comment>

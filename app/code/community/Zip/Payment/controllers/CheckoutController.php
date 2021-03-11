@@ -105,8 +105,8 @@ class Zip_Payment_CheckoutController extends Zip_Payment_Controller_Checkout
             $checkoutId = $this->getHelper()->getCheckoutIdFromSession();
             $redirectUrl = $this->getHelper()->getCheckoutRedirectUrlFromSession();
         }
-        $mode = $this->getHelper()->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_DISPLAY_MODE_PATH);
-        if ($mode == 'lightbox') {
+        $isRedirect = $this->getHelper()->isRedirectCheckoutDisplayModel();
+        if (!$isRedirect) {
             $checkoutSession = Mage::getSingleton('checkout/session');
             $quote = $checkoutSession->getQuote();
             if ($quote && strtoupper($quote->getQuoteCurrencyCode()) === \Zip\Model\CurrencyUtil::CURRENCY_NZD) {
