@@ -247,7 +247,7 @@
                                                     <display_mode translate="label">
                                                         <label>Checkout Mode</label>
                                                         <tooltip>Select display mode for Zip Checkout, popup or redirect</tooltip>
-                                                        <comment>This setting is used to identify how can we handle checkout authentication and confirmation from Zip</comment>
+                                                        <comment>This setting is used to identify how can we handle checkout authentication and confirmation from Zip. Lightbox Zip checkout only work for AU region. Other region customer will redirect to zip for payment.</comment>
                                                         <config_path>payment/zip_payment/checkout/display_mode</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>zip_payment/adminhtml_system_config_source_displayMode</source_model>
