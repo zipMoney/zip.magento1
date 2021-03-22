@@ -7,7 +7,7 @@
 
         Zip.Checkout.settings = {
             methodCode: '<?php echo $this->escapeHtml($this->getMethodCode()); ?>',
-            isRedirect: <?php echo $this->isRedirect() ? 'true' : 'false'; ?>,
+            isRedirect: <?php echo $this->isRedirect() ? 1 : 0; ?>,
             checkoutUrl: '<?php echo $this->escapeUrl($this->getCheckoutUrl()); ?>',
             responseUrl: '<?php echo $this->escapeUrl($this->getResponseUrl()); ?>',
             logLevel: '<?php echo $this->escapeHtml($this->getLogLevel()); ?>'

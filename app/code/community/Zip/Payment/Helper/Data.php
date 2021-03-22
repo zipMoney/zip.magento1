@@ -119,6 +119,11 @@ class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isRedirectCheckoutDisplayModel()
     {
+        $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+        if ($currentCurrencyCode == \Zip\Model\CurrencyUtil::CURRENCY_AUD) {
+            return $this->getConfig()->getValue(Zip_Payment_Model_Config::CONFIG_CHECKOUT_DISPLAY_MODE_PATH) ==
+                Zip_Payment_Model_Adminhtml_System_Config_Source_DisplayMode::DISPLAY_MODE_REDIRECT;
+        }
         return true; //iframe checking is disable until we fix zip checkout js issue to support iframe for all browse
     }
 
