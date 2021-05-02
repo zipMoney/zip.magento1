@@ -14,6 +14,8 @@ zip_widget_max_price  = <?php echo $this->escapeHtml($this->getMaxOrderTotal());
 zip_widget_min_price = <?php echo $this->escapeHtml($this->getMinOrderTotal()); ?>;
 // widget display inline if this value is true otherwise it will display iframe
 zip_widget_display_inline = <?php  echo $this->isDisplayInlineWidget();?>;
+// if this value is set then it will show the translated content. language like es/en etc
+zip_widget_language = '<?php echo strtolower($this->getLocalLanguageCode());?>';
 <?php
 $pageType = $this->getWidgetPageType();
 if ($pageType == 'product') : ?>
