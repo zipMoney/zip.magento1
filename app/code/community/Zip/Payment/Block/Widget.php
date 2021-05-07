@@ -229,4 +229,14 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
         return $displayInline;
     }
 
+    /**
+     * @return false|string
+     * get current store language code
+     */
+    public function getLocalLanguageCode()
+    {
+        $languageCode = substr(Mage::app()->getStore()->getLanguageCode(), strpos(Mage::app()->getStore()->getLanguageCode(), '_'));
+        return $languageCode;
+    }
+
 }
