@@ -16,7 +16,7 @@
                 </zip_payment_group>
 
                 <zip_payment_solution>
-                    <zip_payment type="group" translate="label comment">
+                    <zip_payment type="group" translate="label comment" module="zip_payment">
                         <label><![CDATA[Zip Payment Solution]]></label>
                         <frontend_type>text</frontend_type>
                         <show_in_default>1</show_in_default>
@@ -29,7 +29,7 @@
                         <frontend_class>zip-payment</frontend_class>
                         <frontend_model>zip_payment/adminhtml_system_config_fieldset_wizard</frontend_model>
                         <active_path>payment/zip_payment/active</active_path>
-                        <comment><![CDATA[Zip Payment gives your customers the power to pay later, interest free &nbsp;&nbsp;<a href="https://zip.co/im-a-business" target="_blank">learn more</a><br/>Don't have an account? Click <a href="https://zippay.com.au/partner-sign-up/" target="_blank">here</a> to apply for a <strong>Zip Business Account</strong>]]></comment>
+                        <comment><![CDATA[Zip Payment gives your customers the power to pay later, interest free &nbsp;&nbsp;<a href='https://zip.co/im-a-business' target='_blank'>learn more</a><br/>Don't have an account? Click <a href='https://zippay.com.au/partner-sign-up/' target='_blank'>here</a> to apply for a <strong>Zip Business Account</strong>]]></comment>
                         <fields>
                             <zip_payment_status type="group" translate="label">
                                 <label>Status</label>
@@ -85,7 +85,7 @@
                                     </active>
                                     <environment translate="label">
                                         <label>Environment</label>
-                                        <tooltip>Only use "Production" in conjunction with production Zip partner credentials, and only use ‘Sandbox’ in conjunction with sandbox Zip partner credentials</tooltip>
+                                        <tooltip>Only use ‘Production‘ in conjunction with production Zip partner credentials, and only use ‘Sandbox’ in conjunction with sandbox Zip partner credentials</tooltip>
                                         <config_path>payment/zip_payment/environment</config_path>
                                         <frontend_type>select</frontend_type>
                                         <source_model>zip_payment/adminhtml_system_config_source_environment</source_model>
@@ -106,7 +106,7 @@
                                     </region>
                                     <public_key>
                                         <label>Public Key</label>
-                                        <tooltip>Enter the "Zip Partner Public Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
+                                        <tooltip>Enter the ‘Zip Partner Public Key‘. This can be located in your Zip partner dashboard. Note: these are different for ‘Production‘ and ‘Sandbox‘ environments.</tooltip>
                                         <config_path>payment/zip_payment/public_key</config_path>
                                         <frontend_type>text</frontend_type>
                                         <sort_order>50</sort_order>
@@ -116,7 +116,7 @@
                                     </public_key>
                                     <private_key translate="label">
                                         <label>Private Key</label>
-                                        <tooltip>Enter the "Zip Partner Private Key". This can be located in your Zip partner dashboard. Note: these are different for "Production" and "Sandbox" environments.</tooltip>
+                                        <tooltip>Enter the ‘Zip Partner Private Key‘. This can be located in your Zip partner dashboard. Note: these are different for ‘Production‘ and ‘Sandbox‘ environments.</tooltip>
                                         <config_path>payment/zip_payment/private_key</config_path>
                                         <frontend_type>obscure</frontend_type>
                                         <comment><![CDATA[Please contact <strong>integrations@zip.co</strong> to get your global API key]]></comment>
@@ -146,7 +146,7 @@
                                                     <title translate="label">
                                                         <label>Title</label>
                                                         <tooltip>This payment method title is used to display as payment method option</tooltip>
-                                                        <comment>It is recommended to set this value to "Zip - Own it now, pay later"</comment>
+                                                        <comment>It is recommended to set this value to ‘Zip - Own it now, pay later‘</comment>
                                                         <config_path>payment/zip_payment/title</config_path>
                                                         <frontend_type>text</frontend_type>
                                                         <sort_order>10</sort_order>
@@ -259,7 +259,7 @@
                                                     <click_collect translate="label comment">
                                                         <label>Click and Collect Method Code</label>
                                                         <comment>Enter a code/word to help Zip recognise the 'Click and Collect' shipping method.</comment>
-                                                        <tooltip>We'll use regex expression to match all shipping methods includes this method code. pickup means '*pickup*' that will matched "auspost_pickup" or "pickup_****" or "pickup****". Empty field means Zip Payment will not detect Click and Collect shipping method.</tooltip>
+                                                        <tooltip>We'll use regex expression to match all shipping methods includes this method code. pickup means '*pickup*' that will matched 'auspost_pickup' or 'pickup_****' or 'pickup****'. Empty field means Zip Payment will not detect Click and Collect shipping method.</tooltip>
                                                         <config_path>payment/zip_payment/checkout/click_collect</config_path>
                                                         <sort_order>40</sort_order>
                                                         <frontend_type>text</frontend_type>
@@ -271,7 +271,7 @@
                                             </zip_payment_setting_checkout>
 
                                             <zip_payment_referred_application type="group" translate="label">
-                                                <label>Referred Appication</label>
+                                                <label>Referred Application</label>
                                                 <frontend_type>text</frontend_type>
                                                 <show_in_default>1</show_in_default>
                                                 <show_in_website>1</show_in_website>
@@ -281,7 +281,7 @@
                                                     <order_creation translate="label">
                                                         <label>Order Handling</label>
                                                         <tooltip>Zip Money refer application default order handling</tooltip>
-                                                        <comment>Required for Zip Money product only. The default value is “Yes”, create order for referred application</comment>
+                                                        <comment>Required for Zip Money product only. The default value is 'Yes', create order for referred application</comment>
                                                         <config_path>payment/zip_payment/checkout/referred/order_creation</config_path>
                                                         <frontend_type>select</frontend_type>
                                                         <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -459,9 +459,8 @@
                                 <expanded>0</expanded>
                                 <fields>
                                     <display_widget_mode translate="label">
-                                        <label> Display Widget Mode</label>
-                                        <tooltip>Select display widget mode for Zip Widget
-                                        </tooltip>
+                                        <label>Display Widget Mode</label>
+                                        <tooltip>Select display widget mode for Zip Widget</tooltip>
                                         <config_path>payment/zip_payment/widgets/display_widget_mode</config_path>
                                         <frontend_type>select</frontend_type>
                                         <source_model>zip_payment/adminhtml_system_config_source_displayWidget</source_model>
