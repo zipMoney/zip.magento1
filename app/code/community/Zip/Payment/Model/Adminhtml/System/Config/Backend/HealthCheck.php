@@ -51,17 +51,17 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
             ->setEnvironment($environment);
         // check if private key is empty
         if (empty($privateKey)) {
-            $this->appendItem(self::STATUS_ERROR, self::API_PRIVATE_KEY_INVALID_MESSAGE);
+            $this->appendItem(self::STATUS_ERROR, $this->getHelper()->__(self::API_PRIVATE_KEY_INVALID_MESSAGE));
         }
 
         // check if public key is empty
         if (empty($publicKey)) {
-            $this->appendItem(self::STATUS_ERROR, self::API_PUBLIC_KEY_INVALID_MESSAGE);
+            $this->appendItem(self::STATUS_ERROR, $this->getHelper()->__(self::API_PUBLIC_KEY_INVALID_MESSAGE));
         }
 
         // check if current merchant country been supported
         if (!$config->isMerchantCountrySupported()) {
-            $this->appendItem(self::STATUS_ERROR, self::MERCHANT_COUNTRY_NOT_SUPPORTED_MESSAGE);
+            $this->appendItem(self::STATUS_ERROR, $this->getHelper()->__(self::MERCHANT_COUNTRY_NOT_SUPPORTED_MESSAGE));
         }
 
         // check whether SSL is enabled
@@ -105,12 +105,12 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 $httpCode = $curl->getInfo(CURLINFO_HTTP_CODE);
                 // if API certification invalid
                 if (!$sslVerified) {
-                    $this->appendItem(self::STATUS_WARNING, self::API_CERTIFICATE_INVALID_MESSAGE);
+                    $this->appendItem(self::STATUS_WARNING, $this->getHelper()->__(self::API_CERTIFICATE_INVALID_MESSAGE));
                 }
 
                 // if API credential is invalid
                 if ($httpCode == '401' || $httpCode == '403' || ($httpCode == '404' && $isAuEndpoint == false)) {
-                    $this->appendItem(self::STATUS_ERROR, self::API_CREDENTIAL_INVALID_MESSAGE);
+                    $this->appendItem(self::STATUS_ERROR, $this->getHelper()->__(self::API_CREDENTIAL_INVALID_MESSAGE));
                 }
                 if ($httpCode == '200' && $isAuEndpoint == false) {
                     $result = preg_split('/^\r?$/m', $response, 2);
@@ -119,7 +119,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     $this->appendItem( self::STATUS_OK, ucfirst($environment)." Api key is for ".$data->name);
                     $regions = $data->regions;
                     if ($regions) {
-                        $regionList = ' key is valid for below regions '.ucfirst($environment).' environment:<br>';
+                        $regionList = $this->getHelper()->__(' key is valid for below regions ').ucfirst($environment).$this->getHelper()->__(' environment:<br>');
                         $availableRegions = \Zip\Model\CurrencyUtil::getAvailableRegions();
                         foreach ($regions as $region) {
                             $regionList .= $availableRegions[$region].'<br>';
@@ -128,7 +128,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     }
                 }
                 if (($httpCode == '404' || $httpCode =='200') && $isAuEndpoint == true){
-                    $this->appendItem( self::STATUS_OK, " Api key valid for Australia region ".ucfirst($environment)." environment.");
+                    $this->appendItem( self::STATUS_OK, $this->getHelper()->__(" Api key valid for Australia region ").ucfirst($environment).$this->getHelper()->__(" environment."));
                 }
             }
             catch(Exception $e) {
@@ -166,7 +166,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     $url = parse_url($storeSecureUrl);
 
                     if ($url['scheme'] !== 'https') {
-                        $message = self::SSL_DISABLED_MESSAGE;
+                        $message = $this->getHelper()->__(self::SSL_DISABLED_MESSAGE);
                         $message = str_replace('{store_name}', $store->getName(), $message);
                         $message = str_replace('{store_url}', $storeSecureUrl, $message);
 
@@ -212,5 +212,14 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
         return $this->_logger;
     }
 
+    /**
+     * Retrieve model helper
+     *
+     * @return Zip_Payment_Helper_Data
+     */
+    protected function getHelper()
+    {
+        return Mage::helper('zip_payment');
+    }
 
 }

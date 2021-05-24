@@ -74,6 +74,15 @@
                 </args>
             </zip_payment>
         </routers>
+        <translate>
+            <modules>
+                <Zip_Payment>
+                    <files>
+                        <default>Zip_Payment.csv</default>
+                    </files>
+                </Zip_Payment>
+            </modules>
+        </translate>
         <layout>
             <updates>
                 <zip_payment>
@@ -81,15 +90,6 @@
                 </zip_payment>
             </updates>
         </layout>
-        <translate>
-            <modules>
-                <translations>
-                    <files>
-                        <default>Zip_Payment.csv</default>
-                    </files>
-                </translations>
-            </modules>
-        </translate>
     </frontend>
     <admin>
         <routers>
@@ -103,6 +103,15 @@
         </routers>
     </admin>
     <adminhtml>
+        <translate>
+            <modules>
+                <Zip_Payment>
+                    <files>
+                        <default>Zip_Payment.csv</default>
+                    </files>
+                </Zip_Payment>
+            </modules>
+        </translate>
         <events>
             <controller_action_predispatch_adminhtml>
                 <observers>
