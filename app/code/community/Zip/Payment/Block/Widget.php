@@ -235,7 +235,11 @@ class Zip_Payment_Block_Widget extends Mage_Core_Block_Template
      */
     public function getLocalLanguageCode()
     {
-        $languageCode = substr(Mage::app()->getStore()->getLanguageCode(), strpos(Mage::app()->getStore()->getLanguageCode(), '_'));
+        $languageCode = "en";
+        $lang = Mage::getStoreConfig('general/locale/code');
+        if (isset($lang)) {
+            $languageCode = substr($lang, 0, 2);
+        }
         return $languageCode;
     }
 
