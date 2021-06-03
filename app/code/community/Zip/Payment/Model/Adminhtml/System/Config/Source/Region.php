@@ -41,6 +41,14 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_Region
                 'value' => 'mx',
                 'label' => Mage::helper('zip_payment')->__('Mexico')
             ),
+            array(
+                'value' => 'ae',
+                'label' => Mage::helper('zip_payment')->__('United Arab Emirates')
+            ),
+            array(
+                'value' => 'ca',
+                'label' => Mage::helper('zip_payment')->__('Canada')
+            ),
         );
     }
 

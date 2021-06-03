@@ -55,6 +55,9 @@ class CurrencyUtil
             'us' => 'United States',
             'uk' => 'United Kingdom',
             'za' => 'South Africa',
+            'mx' => 'Mexico',
+            'ca' => 'Canada',
+            'ae' => 'United Arab Emirates'
         );
     }
 }
