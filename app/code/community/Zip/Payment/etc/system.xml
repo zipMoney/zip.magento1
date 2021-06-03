@@ -339,7 +339,7 @@
                                                     <allowed_currencies translate="label">
                                                         <label>Allowed Currencies</label>
                                                         <frontend_type>multiselect</frontend_type>
-                                                        <source_model>zip_payment/adminhtml_system_config_source_currency</source_model>
+                                                        <source_model>adminhtml/system_config_source_currency</source_model>
                                                         <config_path>payment/zip_payment/country_currency/allowed_currencies</config_path>
                                                         <show_in_default>1</show_in_default>
                                                         <show_in_website>1</show_in_website>
