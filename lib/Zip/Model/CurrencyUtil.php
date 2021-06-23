@@ -57,7 +57,9 @@ class CurrencyUtil
             'za' => 'South Africa',
             'mx' => 'Mexico',
             'ca' => 'Canada',
-            'ae' => 'United Arab Emirates'
+            'ae' => 'United Arab Emirates',
+            'pl' => 'Poland',
+            'cz' => 'Czech Republic',
         );
     }
 }
