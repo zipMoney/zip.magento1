@@ -62,6 +62,14 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
                 Mage::throwException($this->getHelper()->__('Invalid Charge'));
             }
 
+            if ($charge->getAmount() != $this->_order->getGrandTotal()) {
+                $messageWithAmount = $this->getHelper()->__("Charge Amount is not same as Order amount. Charge amount:- %s and order amount :-%s", $charge->getAmount(),$this->_order->getGrandTotal());
+                $this->getLogger()->log($messageWithAmount);
+                $refund = Mage::getModel('zip_payment/api_refund')
+                    ->create($charge->getId(), $charge->getAmount(), 'Charge Amount is not same as Order amount');
+                Mage::throwException($this->getHelper()->__('Could not process the payment' ));
+            }
+
             $this->getLogger()->log($this->getHelper()->__("Charge State: %s", $charge->getState()));
 
             $this->_response = $charge;
@@ -221,6 +229,14 @@ class Zip_Payment_Model_Api_Charge extends Zip_Payment_Model_Api_Abstract
     public function getReceiptNumber()
     {
         return $this->getResponse() ? $this->getResponse()->getReceiptNumber() : null;
+    }
+
+    /**
+     * get charge Amount
+     */
+    public function getAmount()
+    {
+        return $this->getResponse() ? $this->getResponse()->getAmount() : null;
     }
 
     /**
