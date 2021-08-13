@@ -4,7 +4,7 @@
         <payment>
             <groups>
                 <zip_payment_group translate="label comment" module="zip_payment">
-                    <label><![CDATA[Zip Payment - <i>Own it now, pay later</i>]]></label>
+                    <label><![CDATA[Zip Payment - <i>Zip now, pay later</i>]]></label>
                     <sort_order>600</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -146,7 +146,7 @@
                                                     <title translate="label">
                                                         <label>Title</label>
                                                         <tooltip>This payment method title is used to display as payment method option</tooltip>
-                                                        <comment>It is recommended to set this value to ‘Zip - Own it now, pay later‘</comment>
+                                                        <comment>It is recommended to set this value to ‘Zip now, pay later‘</comment>
                                                         <config_path>payment/zip_payment/title</config_path>
                                                         <frontend_type>text</frontend_type>
                                                         <sort_order>10</sort_order>

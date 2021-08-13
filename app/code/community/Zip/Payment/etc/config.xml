@@ -139,7 +139,7 @@
             </zipmoneypayment>
             <zip_payment>
                 <active>0</active>
-                <title>Zip - Own it now, pay later</title>
+                <title>Zip now, pay later</title>
                 <model>zip_payment/method</model>
                 <environment>sandbox</environment>
                 <region>au</region>
