@@ -122,7 +122,16 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                         $regionList = $this->getHelper()->__(' key is valid for below regions ').ucfirst($environment).$this->getHelper()->__(' environment:<br>');
                         $availableRegions = \Zip\Model\CurrencyUtil::getAvailableRegions();
                         foreach ($regions as $region) {
-                            $regionList .= $availableRegions[$region].'<br>';
+                            if ($region == 'uk') {
+                                $countryName = 'United Kingdom';
+                            } elseif ($region == 'twisto') {
+                                $countryName = 'Poland <br>';
+                                $countryName .= 'Czech Republic';
+                            } else {
+                                $countryModel = Mage::getModel('directory/country')->loadByCode($region);
+                                $countryName = $countryModel->getName();
+                            }
+                            $regionList .= $countryName . '<br>';
                         }
                         $this->appendItem(self::STATUS_OK, $regionList);
                     }
@@ -132,7 +141,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                 }
             }
             catch(Exception $e) {
-                $this->appendItem(self::STATUS_ERROR, self::CONFIG_PRIVATE_KEY_PATH);
+                $this->appendItem(self::STATUS_ERROR,  $this->getHelper()->__("Error occurred, Please try again."));
             }
 
             $curl->close();
