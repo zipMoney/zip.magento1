@@ -9,6 +9,7 @@
 
 class Zip_Payment_Model_Adminhtml_System_Config_Source_Region
 {
+    protected $_availbaleCountries = array("au","gb","mx","nz","ca","us","ae","sg","za");
     /**
      * Returns the region option array.
      *
@@ -16,40 +17,18 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_Region
      */
     public function toOptionArray()
     {
-        return array(
-            array(
-                'value' => 'au',
-                'label' => Mage::helper('zip_payment')->__('Australia')
-            ),
-            array(
-                'value' => 'nz',
-                'label' => Mage::helper('zip_payment')->__('New Zealand')
-            ),
-            array(
-                'value' => 'gb',
-                'label' => Mage::helper('zip_payment')->__('United Kingdom')
-            ),
-            array(
-                'value' => 'us',
-                'label' => Mage::helper('zip_payment')->__('United States')
-            ),
-            array(
-                'value' => 'za',
-                'label' => Mage::helper('zip_payment')->__('South Africa')
-            ),
-            array(
-                'value' => 'mx',
-                'label' => Mage::helper('zip_payment')->__('Mexico')
-            ),
-            array(
-                'value' => 'ae',
-                'label' => Mage::helper('zip_payment')->__('United Arab Emirates')
-            ),
-            array(
-                'value' => 'ca',
-                'label' => Mage::helper('zip_payment')->__('Canada')
-            ),
-        );
-    }
+        $countries = Mage::getResourceModel('directory/country_collection')->loadData()->toOptionArray(false);
+        $countryList = array();
+        foreach ($countries as $country) {
+            $countryCode = strtolower($country['value']);
+            if (in_array($countryCode, $this->_availbaleCountries)) {
+                $countryList[] = array (
+                    'value' => $countryCode,
+                    'label' => Mage::helper('zip_payment')->__($country['label'])
+                );
+            }
+        }
 
+        return $countryList;
+    }
 }
