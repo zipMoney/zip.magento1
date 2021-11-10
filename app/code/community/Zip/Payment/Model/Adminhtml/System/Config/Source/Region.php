@@ -9,7 +9,7 @@
 
 class Zip_Payment_Model_Adminhtml_System_Config_Source_Region
 {
-    protected $_availbaleCountries = array("au","gb","mx","nz","ca","us","ae","sg","za");
+    protected $_availableCountries = array("au","gb","mx","nz","ca","us","ae","sg","za");
     /**
      * Returns the region option array.
      *
@@ -21,7 +21,7 @@ class Zip_Payment_Model_Adminhtml_System_Config_Source_Region
         $countryList = array();
         foreach ($countries as $country) {
             $countryCode = strtolower($country['value']);
-            if (in_array($countryCode, $this->_availbaleCountries)) {
+            if (in_array($countryCode, $this->_availableCountries)) {
                 $countryList[] = array (
                     'value' => $countryCode,
                     'label' => Mage::helper('zip_payment')->__($country['label'])
