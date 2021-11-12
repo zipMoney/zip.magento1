@@ -120,7 +120,6 @@ class Zip_Payment_Model_Adminhtml_System_Config_Backend_HealthCheck extends Mage
                     $regions = $data->regions;
                     if ($regions) {
                         $regionList = $this->getHelper()->__(' key is valid for below regions ').ucfirst($environment).$this->getHelper()->__(' environment:<br>');
-                        $availableRegions = \Zip\Model\CurrencyUtil::getAvailableRegions();
                         foreach ($regions as $region) {
                             if ($region == 'uk') {
                                 $countryName = 'United Kingdom';
