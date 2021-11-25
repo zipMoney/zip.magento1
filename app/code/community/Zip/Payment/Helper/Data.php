@@ -9,6 +9,10 @@
 
 class Zip_Payment_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    public function __construct()
+    {
+        include_once Mage::getBaseDir('lib') . DS . 'Zip' . DS . 'autoload.php';
+    }
 
     /**
      * get config model
